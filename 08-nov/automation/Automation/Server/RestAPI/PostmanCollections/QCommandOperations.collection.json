@@ -1,0 +1,366 @@
+{
+	"info": {
+		"_postman_id": "e4c5b28f-f2c2-437f-b0d7-6b15f92d6ac1",
+		"name": "QCommand Operations",
+		"description": "######",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"######\",\"userName\":\"####\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\n\"providerId\":0,\"providerDomainName\":\"###\"\r\n},\"providerOrganization\":{\r\n\"providerId\":0,\"providerDomainName\":\"#####\"\r\n},\"errList\":[\r\n\r\n]\r\n}"
+				}
+			]
+		},
+		{
+			"name": "GET Client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"var rand = Math.floor(Math.random() * (jsonData.clientProperties.length));",
+							"",
+							"console.log(rand)",
+							"",
+							"postman.setEnvironmentVariable(\"clientId\", jsonData.clientProperties[0].client.clientEntity.clientId);          //set value of clientId",
+							"",
+							"postman.setEnvironmentVariable(\"clientName\", jsonData.clientProperties[0].client.clientEntity.clientName);          //set value of clientId",
+							"",
+							"console.log(\"value of clientId set to:\", postman.getEnvironmentVariable(\"clientId\"));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "QCommand",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200;",
+							"",
+							"pm.test(\"Respons body contains client names\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"NAME\");",
+							"});",
+							"",
+							"pm.test(\"Respons body contains client Active status\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"ACTIVE\");",
+							"});",
+							"",
+							"pm.test(\"Respons body contains client OS\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"OS\");",
+							"});",
+							"",
+							"pm.test(\"Respons body contains randomly parsed client\", function () {",
+							"    pm.expect(pm.response.text()).to.include(postman.getEnvironmentVariable(\"clientName\"));",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text\\plain"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/QCommand/qlist client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"QCommand",
+						"qlist client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Execute QCommand- qlist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "command",
+							"value": "qlist client",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ExecuteQCommand",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ExecuteQCommand"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

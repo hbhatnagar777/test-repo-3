@@ -1,0 +1,2869 @@
+{
+	"info": {
+		"_postman_id": "1251bf7c-f41e-4c3b-b5b7-21de08a3cf08",
+		"name": "AdditionalSettingsEntityClientLevel Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"TOKEN\", jsonData.token);",
+							"",
+							"console.log(\"QSDK Token obtained is: \"+jsonData.token);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"password\": \"{{Password}}\",\n  \"username\": \"{{UserName}}\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"password\": \"{{password}}\",\n  \"username\": \"{{userName}}\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true",
+							"name": "Access-Control-Allow-Credentials",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*",
+							"name": "Access-Control-Allow-Headers",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "OPTIONS, GET, POST, PUT, DELETE",
+							"name": "Access-Control-Allow-Methods",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": ""
+						},
+						{
+							"key": "Content-Length",
+							"value": "1043",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Apr 2018 17:52:47 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "CC6147EF5AD582B1CCBAC75AE56AFA94",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\n    \"aliasName\": \"1\",\n    \"userGUID\": \"AC3E5333-4585-4EFD-B566-4654C5C88C27\",\n    \"loginAttempts\": 0,\n    \"remainingLockTime\": 0,\n    \"smtpAddress\": \"email@domain.com\",\n    \"userName\": \"\",\n    \"providerType\": 1,\n    \"ccn\": 0,\n    \"token\": \"QSDK    \",\n    \"capability\": 4328650366975,\n    \"forcePasswordChange\": false,\n    \"isAccountLocked\": false,\n    \"ownerOrganization\": {\n        \"providerId\": 0,\n        \"providerDomainName\": \"Qinetix Commcell\"\n    },\n    \"providerOrganization\": {\n        \"providerId\": 0,\n        \"providerDomainName\": \"Qinetix Commcell\"\n    },\n    \"errList\": []\n}"
+				}
+			]
+		},
+		{
+			"name": "Entity Settings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdvanceKeyInfo",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdvanceKeyInfo"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Add Entity Settings - Boolean - Client level",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"additionalSettings\": [\r\n        {\r\n            \"restartService\": true,\r\n            \"registryKeys\": [\r\n                {\r\n                    \"deleted\": 0,\r\n                    \"relativepath\": \"WebConsole\",\r\n                    \"keyName\": \"skipCoreSetup\",\r\n                    \"type\": \"BOOLEAN\",\r\n                    \"value\": \"true\",\r\n                    \"enabled\": 1\r\n                }\r\n            ],\r\n            \"entityInfo\": {\r\n                \"clientId\": {{ClientID}},\r\n                \"_type_\": 3\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Entity Settings - check addition of skipCoreSetup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('additionalSettings'))\r",
+							"{\r",
+							"    cid = JSON.parse(postman.getEnvironmentVariable(\"ClientID\"));\r",
+							"    for (i = 0; i < jsonData.additionalSettings.length; i++)\r",
+							"    {\r",
+							"        var temp = JSON.stringify(jsonData.additionalSettings[i]);\r",
+							"        if(temp != \"{\\\"keyName\\\":\\\"Country\\\"}\") // For key 'Country', enityRegKeyInfo wont be present. So skip the key\r",
+							"        {\r",
+							"            if(jsonData.additionalSettings[i].keyName == \"skipCoreSetup\")\r",
+							"            {\r",
+							"                for(j = 0; j < jsonData.additionalSettings[i].enityRegKeyInfo.length; j++)\r",
+							"                {\r",
+							"                    keyValue = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.value;\r",
+							"                    keyName = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.keyName;\r",
+							"                    clientID = jsonData.additionalSettings[i].enityRegKeyInfo[j].entityInfo.clientId;\r",
+							"                    //console.log(tests[\"keyValue value is\"] = jsonData.additionalSettings[i].enityRegKeyInfo[0].registryKey.value); \r",
+							"                    if(keyValue == 'true' && keyName == 'skipCoreSetup' && clientID == cid)\r",
+							"                    {\r",
+							"                        passed = true;\r",
+							"                        break;\r",
+							"                    }\r",
+							"                }   \r",
+							"            }\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key 'skipCoreSetup' has been added with value 'true' on the given entity\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Edit Entity Settings - Boolean - Client level",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"additionalSettings\": [\r\n        {\r\n            \"restartService\": true,\r\n            \"registryKeys\": [\r\n                {\r\n                    \"deleted\": 0,\r\n                    \"relativepath\": \"WebConsole\",\r\n                    \"keyName\": \"skipCoreSetup\",\r\n                    \"type\": \"BOOLEAN\",\r\n                    \"value\": \"false\",\r\n                    \"enabled\": 1\r\n                }\r\n            ],\r\n            \"entityInfo\": {\r\n                \"clientId\": {{ClientID}},\r\n                \"_type_\": 3\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Entity Settings - check edit of skipCoreSetup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('additionalSettings'))\r",
+							"{\r",
+							"    cid = JSON.parse(postman.getEnvironmentVariable(\"ClientID\"));\r",
+							"    for (i = 0; i < jsonData.additionalSettings.length; i++)\r",
+							"    {\r",
+							"        var temp = JSON.stringify(jsonData.additionalSettings[i]);\r",
+							"        if(temp != \"{\\\"keyName\\\":\\\"Country\\\"}\") // For key 'Country', enityRegKeyInfo wont be present. So skip the key\r",
+							"        {\r",
+							"            if(jsonData.additionalSettings[i].keyName == \"skipCoreSetup\")\r",
+							"            {\r",
+							"                for(j = 0; j < jsonData.additionalSettings[i].enityRegKeyInfo.length; j++)\r",
+							"                {\r",
+							"                    keyValue = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.value;\r",
+							"                    keyName = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.keyName;\r",
+							"                    clientID = jsonData.additionalSettings[i].enityRegKeyInfo[j].entityInfo.clientId;\r",
+							"                    //console.log(tests[\"keyValue value is\"] = jsonData.additionalSettings[i].enityRegKeyInfo[0].registryKey.value); \r",
+							"                    if(keyValue == 'false' && keyName == 'skipCoreSetup' && clientID == cid)\r",
+							"                    {\r",
+							"                        passed = true;\r",
+							"                        break;\r",
+							"                    }\r",
+							"                }\r",
+							"            }\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key 'skipCoreSetup' has been edited with value 'false' on the given entity\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Delete Entity Settings - Boolean - Client level",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"additionalSettings\": [\r\n        {\r\n            \"restartService\": false,\r\n            \"registryKeys\": [\r\n                {\r\n                    \"deleted\": 1,\r\n                    \"relativepath\": \"WebConsole\",\r\n                    \"keyName\": \"skipCoreSetup\",\r\n                    \"type\": \"BOOLEAN\",\r\n                    \"value\": \"false\",\r\n                    \"enabled\": 1\r\n                }\r\n            ],\r\n            \"entityInfo\": {\r\n                \"clientId\": {{ClientID}},\r\n                \"_type_\": 3\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Entity Settings - check deletion of skipCoreSetup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"passed = true;\r",
+							"if(jsonData.hasOwnProperty('additionalSettings'))\r",
+							"{   \r",
+							"    cid = JSON.parse(postman.getEnvironmentVariable(\"ClientID\"));\r",
+							"    for (i = 0; i < jsonData.additionalSettings.length; i++)\r",
+							"    {\r",
+							"        var temp = JSON.stringify(jsonData.additionalSettings[i]);\r",
+							"        if(temp != \"{\\\"keyName\\\":\\\"Country\\\"}\" && (JSON.stringify(jsonData.additionalSettings[i]) == \"{\\\"keyName\\\": \\\"skipCoreSetup\\\"}\" )) // For key 'Country', enityRegKeyInfo wont be present. So skip the key\r",
+							"        {\r",
+							"            if(jsonData.additionalSettings[i].enityRegKeyInfo[0].registryKey.keyName == \"skipCoreSetup\")\r",
+							"            {\r",
+							"                //console.log(tests[\"stringify value\"] = JSON.stringify(jsonData.additionalSettings[i])); \r",
+							"                if(jsonData.additionalSettings[i].enityRegKeyInfo[0].entityInfo.clientId == cid)\r",
+							"                {\r",
+							"                    passed = false; //skipCoreSetup should not be present for given client ID after deletion\r",
+							"                    break;\r",
+							"                }\r",
+							"                \r",
+							"            } \r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"else\r",
+							"{\r",
+							"    passed = true; //If 'additionalSettings' is not present also pass the testcase\r",
+							"}\r",
+							"console.log(tests[\"json body\"] = jsonData); \r",
+							"if(tests[\"The key 'skipCoreSetup' has been set deleted\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Add Entity Settings - String- Client level",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"additionalSettings\": [\r\n        {\r\n            \"restartService\": false,\r\n            \"registryKeys\": [\r\n                {\r\n                    \"deleted\": 0,\r\n                    \"relativepath\": \"MSExchangeMBAgent\",\r\n                    \"keyName\": \"autodiscoverurl\",\r\n                    \"type\": \"STRING\",\r\n                    \"value\": \"https://testurl.com/test_test/#/%%^&$/test\",\r\n                    \"enabled\": 1\r\n                }\r\n            ],\r\n            \"entityInfo\": {\r\n                \"clientId\": {{ClientID}},\r\n                \"_type_\": 3\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Entity Settings - check addition of autodiscoverurl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('additionalSettings'))\r",
+							"{\r",
+							"    cid = JSON.parse(postman.getEnvironmentVariable(\"ClientID\"));\r",
+							"    for (i = 0; i < jsonData.additionalSettings.length; i++)\r",
+							"    {\r",
+							"        if(jsonData.additionalSettings[i].keyName == \"autodiscoverurl\")\r",
+							"        {\r",
+							"            for(j = 0; j < jsonData.additionalSettings[i].enityRegKeyInfo.length; j++)\r",
+							"            {\r",
+							"                keyValue = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.value;\r",
+							"                keyName = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.keyName;\r",
+							"                clientID = jsonData.additionalSettings[i].enityRegKeyInfo[j].entityInfo.clientId;\r",
+							"                //console.log(tests[\"keyValue value is\"] = jsonData.additionalSettings[i].enityRegKeyInfo[0].registryKey.value); \r",
+							"                if(keyValue == 'https://testurl.com/test_test/#/%%^&$/test' && keyName == 'autodiscoverurl' && clientID == cid)\r",
+							"                {\r",
+							"                    passed = true;\r",
+							"                    break;\r",
+							"                }\r",
+							"            }   \r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key 'autodiscoverurl' has been added with value 'https://testurl.com/test_test/#/%%^&$/test' on the given entity\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Edit Entity Settings - String- Client level",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"additionalSettings\": [\r\n        {\r\n            \"restartService\": false,\r\n            \"registryKeys\": [\r\n                {\r\n                    \"deleted\": 0,\r\n                    \"relativepath\": \"MSExchangeMBAgent\",\r\n                    \"keyName\": \"autodiscoverurl\",\r\n                    \"type\": \"STRING\",\r\n                    \"value\": \"https://testurl.com/test_test/#/%%^&$/test_edited\",\r\n                    \"enabled\": 1\r\n                }\r\n            ],\r\n            \"entityInfo\": {\r\n                \"clientId\": {{ClientID}},\r\n                \"_type_\": 3\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Entity Settings - check edit of autodiscoverurl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('additionalSettings'))\r",
+							"{\r",
+							"    cid = JSON.parse(postman.getEnvironmentVariable(\"ClientID\"));\r",
+							"    for (i = 0; i < jsonData.additionalSettings.length; i++)\r",
+							"    {\r",
+							"        if(jsonData.additionalSettings[i].keyName == \"autodiscoverurl\")\r",
+							"        {\r",
+							"            for(j = 0; j < jsonData.additionalSettings[i].enityRegKeyInfo.length; j++)\r",
+							"            {\r",
+							"                keyValue = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.value;\r",
+							"                keyName = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.keyName;\r",
+							"                clientID = jsonData.additionalSettings[i].enityRegKeyInfo[j].entityInfo.clientId;\r",
+							"                //console.log(tests[\"keyValue value is\"] = jsonData.additionalSettings[i].enityRegKeyInfo[0].registryKey.value); \r",
+							"                if(keyValue == 'https://testurl.com/test_test/#/%%^&$/test_edited' && keyName == 'autodiscoverurl' && clientID == cid)\r",
+							"                {\r",
+							"                    passed = true;\r",
+							"                    break;\r",
+							"                }\r",
+							"            }   \r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key 'autodiscoverurl' has been added with value 'https://testurl.com/test_test/#/%%^&$/test_edited' on the given entity\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Delete Entity Settings - String - Client level",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"additionalSettings\": [\r\n        {\r\n            \"restartService\": false,\r\n            \"registryKeys\": [\r\n                {\r\n                    \"deleted\": 1,\r\n                    \"relativepath\": \"MSExchangeMBAgent\",\r\n                    \"keyName\": \"autodiscoverurl\",\r\n                    \"type\": \"STRING\",\r\n                    \"value\": \"https://testurl.com/test_test/#/%%^&$/test_edited\",\r\n                    \"enabled\": 1\r\n                }\r\n            ],\r\n            \"entityInfo\": {\r\n                \"clientId\": {{ClientID}},\r\n                \"_type_\": 3\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Entity Settings - check deletion of autodiscoverurl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"passed = true;\r",
+							"if(jsonData.hasOwnProperty('additionalSettings'))\r",
+							"{   \r",
+							"    cid = JSON.parse(postman.getEnvironmentVariable(\"ClientID\"));\r",
+							"    for (i = 0; i < jsonData.additionalSettings.length; i++)\r",
+							"    {\r",
+							"        var temp = JSON.stringify(jsonData.additionalSettings[i]);\r",
+							"        if(temp != \"{\\\"keyName\\\":\\\"Country\\\"}\" && (JSON.stringify(jsonData.additionalSettings[i]) == \"{\\\"keyName\\\": \\\"autodiscoverurl\\\"}\" )) // For key 'Country', enityRegKeyInfo wont be present. So skip the key\r",
+							"        {\r",
+							"            if(jsonData.additionalSettings[i].enityRegKeyInfo[0].registryKey.keyName == \"autodiscoverurl\")\r",
+							"            {\r",
+							"                for(j = 0; j < jsonData.additionalSettings[i].enityRegKeyInfo.length; j++)\r",
+							"                {\r",
+							"                    if(jsonData.additionalSettings[i].enityRegKeyInfo[j].entityInfo.clientId == cid)\r",
+							"                    {\r",
+							"                        passed = false; //skipCoreSetup should not be present for given client ID after deletion\r",
+							"                        break;\r",
+							"                    }\r",
+							"                }\r",
+							"            } \r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"else\r",
+							"{\r",
+							"    passed = true; //If 'additionalSettings' is not present also pass the testcase\r",
+							"}\r",
+							"if(tests[\"The key 'autodiscoverurl' has been set deleted\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Add Entity Settings - Integer - Client level",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"additionalSettings\": [\r\n        {\r\n            \"restartService\": false,\r\n            \"registryKeys\": [\r\n                {\r\n                    \"deleted\": 0,\r\n                    \"relativepath\": \"iDataAgent\",\r\n                    \"keyName\": \"3PAR_SNAP_NO_PARALLEL\",\r\n                    \"type\": \"INTEGER\",\r\n                    \"value\": \"1\",\r\n                    \"enabled\": 1\r\n                }\r\n            ],\r\n            \"entityInfo\": {\r\n                \"clientId\": {{ClientID}},\r\n                \"_type_\": 3\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Entity Settings - check addition of 3PAR_SNAP_NO_PARALLEL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('additionalSettings'))\r",
+							"{\r",
+							"    cid = JSON.parse(postman.getEnvironmentVariable(\"ClientID\"));\r",
+							"    for (i = 0; i < jsonData.additionalSettings.length; i++)\r",
+							"    {\r",
+							"        if(jsonData.additionalSettings[i].keyName == \"3PAR_SNAP_NO_PARALLEL\")\r",
+							"        {\r",
+							"            for(j = 0; j < jsonData.additionalSettings[i].enityRegKeyInfo.length; j++)\r",
+							"            {\r",
+							"                keyValue = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.value;\r",
+							"                keyName = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.keyName;\r",
+							"                clientID = jsonData.additionalSettings[i].enityRegKeyInfo[j].entityInfo.clientId;\r",
+							"                //console.log(tests[\"keyValue value is\"] = jsonData.additionalSettings[i].enityRegKeyInfo[0].registryKey.value); \r",
+							"                if(keyValue == '1' && keyName == '3PAR_SNAP_NO_PARALLEL' && clientID == cid)\r",
+							"                {\r",
+							"                    passed = true;\r",
+							"                    break;\r",
+							"                }\r",
+							"            }   \r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key '3PAR_SNAP_NO_PARALLEL' has been added with value '1' on the given entity\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Edit Entity Settings - Integer - Client level",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"additionalSettings\": [\r\n        {\r\n            \"restartService\": false,\r\n            \"registryKeys\": [\r\n                {\r\n                    \"deleted\": 0,\r\n                    \"relativepath\": \"iDataAgent\",\r\n                    \"keyName\": \"3PAR_SNAP_NO_PARALLEL\",\r\n                    \"type\": \"INTEGER\",\r\n                    \"value\": \"0\",\r\n                    \"enabled\": 1\r\n                }\r\n            ],\r\n            \"entityInfo\": {\r\n                \"clientId\": {{ClientID}},\r\n                \"_type_\": 3\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Entity Settings - check edit of 3PAR_SNAP_NO_PARALLEL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('additionalSettings'))\r",
+							"{\r",
+							"    cid = JSON.parse(postman.getEnvironmentVariable(\"ClientID\"));\r",
+							"    for (i = 0; i < jsonData.additionalSettings.length; i++)\r",
+							"    {\r",
+							"        if(jsonData.additionalSettings[i].keyName == \"3PAR_SNAP_NO_PARALLEL\")\r",
+							"        {\r",
+							"            for(j = 0; j < jsonData.additionalSettings[i].enityRegKeyInfo.length; j++)\r",
+							"            {\r",
+							"                keyValue = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.value;\r",
+							"                keyName = jsonData.additionalSettings[i].enityRegKeyInfo[j].registryKey.keyName;\r",
+							"                clientID = jsonData.additionalSettings[i].enityRegKeyInfo[j].entityInfo.clientId;\r",
+							"                //console.log(tests[\"keyValue value is\"] = jsonData.additionalSettings[i].enityRegKeyInfo[0].registryKey.value); \r",
+							"                if(keyValue == '0' && keyName == '3PAR_SNAP_NO_PARALLEL' && clientID == cid)\r",
+							"                {\r",
+							"                    passed = true;\r",
+							"                    break;\r",
+							"                }\r",
+							"            }   \r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key '3PAR_SNAP_NO_PARALLEL' has been added with value '0' on the given entity\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Delete Entity Settings - Integer - Client level",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"additionalSettings\": [\r\n        {\r\n            \"restartService\": false,\r\n            \"registryKeys\": [\r\n                {\r\n                    \"deleted\": 1,\r\n                    \"relativepath\": \"iDataAgent\",\r\n                    \"keyName\": \"3PAR_SNAP_NO_PARALLEL\",\r\n                    \"type\": \"INTEGER\",\r\n                    \"value\": \"0\",\r\n                    \"enabled\": 1\r\n                }\r\n            ],\r\n            \"entityInfo\": {\r\n                \"clientId\": {{ClientID}},\r\n                \"_type_\": 3\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Entity Settings - check deletion of 3PAR_SNAP_NO_PARALLEL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"passed = true;\r",
+							"if(jsonData.hasOwnProperty('additionalSettings'))\r",
+							"{   \r",
+							"    cid = JSON.parse(postman.getEnvironmentVariable(\"ClientID\"));\r",
+							"    for (i = 0; i < jsonData.additionalSettings.length; i++)\r",
+							"    {\r",
+							"        var temp = JSON.stringify(jsonData.additionalSettings[i]);\r",
+							"        if(temp != \"{\\\"keyName\\\":\\\"Country\\\"}\" && (JSON.stringify(jsonData.additionalSettings[i]) == \"{\\\"keyName\\\": \\\"3PAR_SNAP_NO_PARALLEL\\\"}\" )) // For key 'Country', enityRegKeyInfo wont be present. So skip the key\r",
+							"        {\r",
+							"            if(jsonData.additionalSettings[i].enityRegKeyInfo[0].registryKey.keyName == \"3PAR_SNAP_NO_PARALLEL\")\r",
+							"            {\r",
+							"                for(j = 0; j < jsonData.additionalSettings[i].enityRegKeyInfo.length; j++)\r",
+							"                {\r",
+							"                    if(jsonData.additionalSettings[i].enityRegKeyInfo[j].entityInfo.clientId == cid)\r",
+							"                    {\r",
+							"                        passed = false; //3PAR_SNAP_NO_PARALLEL should not be present for given client ID after deletion\r",
+							"                        break;\r",
+							"                    }\r",
+							"                }\r",
+							"            } \r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"else\r",
+							"{\r",
+							"    passed = true; //If 'additionalSettings' is not present also pass the testcase\r",
+							"}\r",
+							"if(tests[\"The key '3PAR_SNAP_NO_PARALLEL' has been set deleted\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdditionalSettings"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Agent?clientId=2",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Logout",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Logout",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Logout"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "15",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 00:49:22 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "User logged out"
+				}
+			]
+		}
+	]
+}

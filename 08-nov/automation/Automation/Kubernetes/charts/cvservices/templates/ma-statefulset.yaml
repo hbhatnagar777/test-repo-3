@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cvruntimeconfig-{{ include "mychart.name" . }}
+  labels:
+    {{- include "ma_chart.commvault-labels" . | nindent 4 }}
+data:
+  CV_CLIENT_ROLE: media_agent
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: commvault-ma-set-{{ include "mychart.name" . }}
+spec:
+  serviceName: commvault-ma-{{ include "mychart.name" . }}
+  replicas: {{ .Values.mediaAgentReplicaCount }}
+  selector:
+    matchLabels:
+      {{- include "ma_chart.commvault-labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "ma_chart.commvault-labels" . | nindent 8 }}
+    spec:
+      imagePullSecrets:
+      - name: commvault-registry-creds-{{ include "mychart.name" . }}  
+      volumes:
+      - name: commvault-runtime-config-{{ include "mychart.name" . }}
+        configMap:
+          name: cvruntimeconfig-{{ include "mychart.name" . }}
+      - name: commvault-env-store-{{ include "mychart.name" . }}
+        configMap:
+          name: cvconfigmap-{{ include "mychart.name" . }}
+      - name: commvault-data-store-{{ include "mychart.name" . }}
+        persistentVolumeClaim:
+          claimName: commvault-data-pvc-{{ include "mychart.name" . }}
+      containers:
+      - name: commvault-ma-pod-{{ include "mychart.name" . }}
+{{- if .Values.imageCredentials.registry }}
+        image: {{ .Values.imageCredentials.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+{{- else }}
+        image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+{{- end }}
+        command: ['/sbin/init']
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c" , "cp /opt/commvault/Base/FwConfig* /etc/CommVaultRegistry/Galaxy/FwConfig/"]
+        envFrom:
+        - configMapRef:
+            name: cvconfigmap-{{ include "mychart.name" . }}
+        volumeMounts:
+        - name: commvault-env-store-{{ include "mychart.name" . }}
+          mountPath: /opt/cvdocker_env
+          readOnly: true
+        - name: commvault-runtime-config-{{ include "mychart.name" . }}
+          mountPath: /opt/cvruntime_config
+          readOnly: true
+        - name: commvault-config-store-{{ include "mychart.name" . }}
+          mountPath: /etc/CommVaultRegistry
+          subPath: Registry
+        - name: commvault-config-store-{{ include "mychart.name" . }}
+          mountPath: /var/log/commvault/Log_Files
+          subPath: Log_Files
+        - name: commvault-config-store-{{ include "mychart.name" . }}
+          mountPath: /opt/commvault/MediaAgent/IndexCache
+          subPath: IndexCache
+        - name: commvault-config-store-{{ include "mychart.name" . }}
+          mountPath: /opt/commvault/iDataAgent/jobResults
+          subPath: jobResults
+        - name: commvault-config-store-{{ include "mychart.name" . }}
+          mountPath: /opt/commvault/Base/certificates
+          subPath: certificates
+        - name: commvault-data-store-{{ include "mychart.name" . }}
+          mountPath: /opt/libraryPath
+        - name: commvault-ddb-store-{{ include "mychart.name" . }}
+          mountPath: /opt/ddbPath
+        ports:
+        - name: cvdport
+          containerPort: 8400
+  volumeClaimTemplates:
+  - metadata:
+      name: commvault-ddb-store-{{ include "mychart.name" . }}
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+{{- if .Values.storage.ddb.storageClassName }}
+      storageClassName: {{ .Values.storage.ddb.storageClassName }}
+{{ else }}
+      storageClassName: {{ .Values.storage.data.storageClassName }}
+{{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.storage.ddb.sizeInGB }}Gi
+  - metadata:
+      name: commvault-config-store-{{ include "mychart.name" . }}
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+{{- if .Values.storage.config.storageClassName }}
+      storageClassName: {{ .Values.storage.config.storageClassName }}
+{{- else }}
+      storageClassName: {{ .Values.storage.data.storageClassName }}
+{{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.storage.config.sizeInGB }}Gi
+
+#  - metadata:
+#      name: commvault-data-store-{{ include "mychart.name" . }}
+#    spec:
+#      accessModes: [ "ReadWriteOnce" ]
+#{{- if  .Values.storage.data.storageClassName }}
+#      storageClassName: {{ .Values.storage.data.storageClassName }}
+#{{ else }}
+#  {{ required "Storage class for data must be provided for installation." .Values.storage.data.storageClassName }}
+#{{- end }}
+#      resources:
+#        requests:
+#          storage:  {{ .Values.storage.data.sizeInGB }}Gi

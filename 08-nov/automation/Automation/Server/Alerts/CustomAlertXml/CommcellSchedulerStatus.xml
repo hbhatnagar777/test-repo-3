@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<App_SetCustomRuleRequest>
+    <queryDetail doesQuerySupportOutputFilter="1" frequency="86400"
+        isDisabled="0" isOverwriteAssociationAtAlertAllowed="0"
+        isPrimaryKeyPresent="1" isQueryModifyEnabled="1"
+        isSystemCreated="0"
+        queryCriteriaName="Commcell Scheduler Status"
+        queryDescription=""
+        sqlQuery="SET NOCOUNT ON&#xa;&#xa;SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED&#xa;--declare @i_SchedulerDisabledAlertTriggerTime int = 0 -- in hrs&#xa;declare @triggerTimeInSec int = @i_SchedulerDisabledAlertTriggerTime *60* 60&#xa;declare @schedulerDisabledEvent int = 318767759&#xa;declare @schedulerDisabledTime int = 0&#xa;declare @currentTime int = dbo .GetUnixTime( GETUTCDATE())&#xa;declare @enableTime int = -1&#xa;declare @isSchedulerDisabledWithoutEnableTime int = 0&#xa;&#xa;select top (1) @schedulerDisabledTime = timeSource from evMsg where messageid = @schedulerDisabledEvent order by timeSource desc&#xa;&#xa;select @enableTime = enableTime from jmjobaction where clientid= 1 and optype=28 and action =1&#xa;&#xa;if (@enableTime = 0)&#xa;&#x9;if((@currentTime - @schedulerDisabledTime) > @triggerTimeInSec)&#xa;&#x9;&#x9;select 'Scheduler is disabled  since  '+ cast(dbo.UTCToCellLocalTime(dbo.GetDateTime(@schedulerDisabledTime),2) as varchar(32)) as message&#xa;&#xa;SET NOCOUNT OFF&#xa;"
+        taskInfoXml="&lt;?xml version='1.0' encoding='UTF-8'?>&lt;TMMsg_TaskInfo>&lt;task GUID=&quot;fc758db1-bfcc-4844-94f2-c93797c3b24c&quot; description=&quot;&quot; ownerId=&quot;1&quot; runUserId=&quot;1&quot; taskType=&quot;2&quot; ownerName=&quot;Administrator&quot; policyType=&quot;10&quot; associatedObjects=&quot;0&quot; taskName=&quot;&quot; alertId=&quot;0&quot; taskId=&quot;0&quot;>&lt;securityAssociations>&lt;ownerAssociations />&lt;/securityAssociations>&lt;taskFlags isEdgeDrive=&quot;0&quot; isEZOperation=&quot;0&quot; forDDB=&quot;0&quot; uninstalled=&quot;0&quot; isSystem=&quot;0&quot; disabled=&quot;0&quot; />&lt;originalCC commCellId=&quot;2&quot; />&lt;taskSecurity>&lt;associatedUserGroups userGroupId=&quot;1&quot; _type_=&quot;15&quot; userGroupName=&quot;master&quot; />&lt;associatedUserGroups userGroupId=&quot;3&quot; _type_=&quot;15&quot; userGroupName=&quot;View All&quot; />&lt;ownerCapabilities />&lt;/taskSecurity>&lt;task taskName=&quot;&quot; taskId=&quot;50&quot; />&lt;/task>&lt;appGroup />&lt;subTasks>&lt;subTask subTaskOrder=&quot;0&quot; subTaskName=&quot;&quot; subTaskType=&quot;1&quot; flags=&quot;0&quot; operationType=&quot;5014&quot; subTaskId=&quot;0&quot;>&lt;subTask subtaskId=&quot;51&quot; subtaskName=&quot;&quot; />&lt;/subTask>&lt;pattern active_end_occurence=&quot;0&quot; freq_subday_interval=&quot;900&quot; freq_type=&quot;2048&quot; patternId=&quot;25&quot; flags=&quot;0&quot; description=&quot;Every week on Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday at 0:00   and repeats every 0 hr(s) 15 min(s) until 23:59 &quot; active_end_time=&quot;86340&quot; active_end_date=&quot;0&quot; skipOccurence=&quot;0&quot; skipDayNumber=&quot;0&quot; active_start_time=&quot;0&quot; freq_restart_interval=&quot;0&quot; active_start_date=&quot;1486684800&quot; freq_interval=&quot;127&quot; freq_relative_interval=&quot;0&quot; name=&quot;&quot; freq_recurrence_factor=&quot;1&quot;>&lt;daysToRun week=&quot;0&quot; Monday=&quot;1&quot; Thursday=&quot;1&quot; Friday=&quot;1&quot; Sunday=&quot;1&quot; Wednesday=&quot;1&quot; Tuesday=&quot;1&quot; day=&quot;0&quot; Saturday=&quot;1&quot; />&lt;calendar calendarName=&quot;Standard&quot; calendarId=&quot;1&quot; />&lt;timeZone TimeZoneID=&quot;42&quot; />&lt;/pattern>&lt;options>&lt;backupOpts>&lt;dataOpt autoCopy=&quot;0&quot; />&lt;/backupOpts>&lt;/options>&lt;/subTasks>&lt;/TMMsg_TaskInfo>" visibility="0">
+        <creator userId="1" userName="admin"/>
+        <securityAssociations>
+            <ownerAssociations/>
+        </securityAssociations>
+        <commcellAssociation>
+            <entity _type_="124" commCellId="2" srmReportSet="0"
+                srmReportType="0" type="0"/>
+        </commcellAssociation>
+        <additionalQueryDetails alertCriteria="0" alertType="0"
+            isHealthParam="0" querySeverity="3">
+            <scriptDescription description=""
+                guid="B0A11B80-36A4-4E6F-A6FB-CC9642413BEC"
+                reportName="Commcell Scheduler Status" revision="$Revision: 1.1.2.4 $"/>
+        </additionalQueryDetails>
+        <queryEntity queryId="0" queryName="Commcell Scheduler Status"/>
+        <queryParamsList>
+            <queryParamsList attribute="0" className="java.lang.Integer"
+                controlHidden="0" controlType="10" defaultValue="0"
+                displayName="Alert when scheduler is disabled for (hrs)"
+                documentation="hours" hidden="0"
+                inputName="i_SchedulerDisabledAlertTriggerTime"
+                inputType="java.lang.Integer" listType="0"
+                maximumValue="" minimumValue="0"
+                name="i_SchedulerDisabledAlertTriggerTime" readOnly="0"
+                required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}integer">
+                <defaultValues val="0"/>
+            </queryParamsList>
+        </queryParamsList>
+        <queryOutputColumns columnFriendlyName="Scheduler Status"
+            columnName="message" isColumnFilterable="0" isPrimaryKey="1" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1"/>
+        </queryOutputColumns>
+    </queryDetail>
+</App_SetCustomRuleRequest>

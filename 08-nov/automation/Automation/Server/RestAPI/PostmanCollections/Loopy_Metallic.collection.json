@@ -1,0 +1,3246 @@
+{
+	"info": {
+		"_postman_id": "5c5d3abc-82ae-459d-a5df-de72612b6322",
+		"name": "Loopy_Metallic",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "0 - Create company on metallic",
+			"item": [
+				{
+					"name": "Login to metallic",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set('OnPremPasswordB64', btoa(pm.environment.get('OnPremPassword')));\r",
+									"pm.environment.set('CloudPasswordB64', btoa(pm.environment.get('CloudPassword')));\r",
+									"pm.environment.set(\"NewPassword\", \"Cv_{{$randomPassword}}!12\");\r",
+									"pm.environment.set('NewPassword', btoa(pm.environment.get('NewPassword')));\r",
+									"\r",
+									"console.log(\"Encrypted Password for on-prem CS: \" , pm.environment.get('OnPremPasswordB64'));\r",
+									"console.log(\"Encrypted Password for new user: \" , pm.environment.get('NewPassword'));\r",
+									"console.log(\"Encrypted Password for cloud CS: \" , pm.environment.get('CloudPasswordB64'));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"TokenM\", jsonData.token);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"domain\": \"\",\r\n    \"username\": \"{{CloudUser}}\",\r\n    \"password\": \"{{CloudPasswordB64}}\",\r\n    \"commserver\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/Login",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login to metallic",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "content-type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n    \r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+								},
+								"url": {
+									"raw": "{{ServerURL}}/Login",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"Login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "private"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/8.5"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-AspNet-Version",
+									"value": "4.0.30319"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 06 Jul 2020 11:53:34 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"aliasName\": \"33328\",\n    \"userGUID\": \"830D5B78-DAD9-475F-B118-1FB52CA62B13\",\n    \"loginAttempts\": 0,\n    \"remainingLockTime\": 0,\n    \"smtpAddress\": \"####\",\n    \"userName\": \"####\\\\####\",\n    \"providerType\": 5,\n    \"ccn\": 0,\n    \"token\": \"QSDK ....\",\n    \"capability\": 4328650366975,\n    \"forcePasswordChange\": false,\n    \"isAccountLocked\": false,\n    \"ownerOrganization\": {\n        \"GUID\": \"95189d4e-4a7f-4cb3-969f-80d5871ac13f\",\n        \"providerId\": 0,\n        \"providerDomainName\": \"Commcell\"\n    },\n    \"additionalResp\": {\n        \"nameValues\": [\n            {\n                \"name\": \"USERNAME\",\n                \"value\": \"####\"\n            }\n        ]\n    },\n    \"providerOrganization\": {\n        \"GUID\": \"1baedc70-c2fa-4acc-af83-0822840db01f\",\n        \"providerId\": 4555,\n        \"providerDomainName\": \"####\"\n    },\n    \"errList\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Organization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"GUID\", jsonData.response.entity.GUID);\r",
+									"pm.environment.set(\"providerDomainName\", jsonData.response.entity.providerDomainName);\r",
+									"\r",
+									"pm.environment.set(\"providerId\", jsonData.response.entity.providerId);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authtoken",
+								"value": "{{TokenM}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"organizationInfo\": {\r\n        \"organization\": {\r\n            \"shortName\": {\r\n                \"domainName\": \"Loopy_{{$timestamp}}\"\r\n            },\r\n            \"connectName\": \"Loopy_{{$timestamp}}\",\r\n            \"emailDomainNames\": [\r\n                \"cv.com\"\r\n            ]\r\n        },\r\n        \"organizationProperties\": {\r\n            \"primaryDomain\": \"\",\r\n            \"primaryContacts\": [\r\n                {\r\n                    \"fullName\": \"Loopy_{{$timestamp}}\",\r\n                    \"email\": \"Loopy_{{$timestamp}}@cv.com\"\r\n                }\r\n            ],\r\n            \"enableAutoDiscovery\": false\r\n        }\r\n    },\r\n    \"sendEmail\": false\r\n}"
+						},
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/Organization",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Organization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "company user details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"userId\", jsonData.users[0].userEntity.userId);\r",
+									"pm.environment.set(\"email\", jsonData.users[0].email);\r",
+									"pm.environment.set(\"fullName\", jsonData.users[0].fullName);\r",
+									"pm.environment.set(\"newName\", jsonData.users[0].userEntity.userName);\r",
+									"pm.environment.set(\"userGUID\", jsonData.users[0].userEntity.userGUID);\r",
+									"pm.environment.set(\"CCuserName\", jsonData.users[0].userEntity.userName);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authtoken",
+								"value": "{{TokenM}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/User/byName(userName='{{providerDomainName}}/{{providerDomainName}}')",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"User",
+								"byName(userName='{{providerDomainName}}",
+								"{{providerDomainName}}')"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authtoken",
+								"value": "{{TokenM}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"users\": [\r\n        {\r\n            \"password\": \"{{NewPassword}}\",\r\n            \"enableUser\": true,\r\n            \"email\": \"{{email}}\",\r\n            \"systemGeneratePassword\": false,\r\n            \"fullName\": \"{{fullName}}\",\r\n            \"userEntity\": {\r\n                \"_type_\": 13,\r\n                \"newName\": \"{{providerDomainName}}\\\\{{providerDomainName}}\",\r\n                \"userGUID\": \"{{userGUID}}\",\r\n                \"userName\": \"{{providerDomainName}}\\\\{{providerDomainName}}\"\r\n            },\r\n            \"associatedExternalUserGroups\": [],\r\n            \"validationParameters\": {\r\n                \"password\": \"{{CloudPasswordB64}}\",\r\n                \"passwordOperationType\": 2\r\n            }\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/User/{{userId}}",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"User",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login as metallic company user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"TokenMC\", jsonData.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"domain\": \"\",\r\n    \"username\": \"{{email}}\",\r\n    \"password\": \"{{NewPassword}}\",\r\n    \"commserver\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/Login",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login to metallic",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "content-type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n    \r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+								},
+								"url": {
+									"raw": "{{ServerURL}}/Login",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"Login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "private"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/8.5"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-AspNet-Version",
+									"value": "4.0.30319"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 06 Jul 2020 11:53:34 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"aliasName\": \"33328\",\n    \"userGUID\": \"830D5B78-DAD9-475F-B118-1FB52CA62B13\",\n    \"loginAttempts\": 0,\n    \"remainingLockTime\": 0,\n    \"smtpAddress\": \"###\",\n    \"userName\": \"#####\",\n    \"providerType\": 5,\n    \"ccn\": 0,\n    \"token\": \"QSDK ####\",\n    \"capability\": 4328650366975,\n    \"forcePasswordChange\": false,\n    \"isAccountLocked\": false,\n    \"ownerOrganization\": {\n        \"GUID\": \"95189d4e-4a7f-4cb3-969f-80d5871ac13f\",\n        \"providerId\": 0,\n        \"providerDomainName\": \"Commcell\"\n    },\n    \"additionalResp\": {\n        \"nameValues\": [\n            {\n                \"name\": \"USERNAME\",\n                \"value\": \"###\\\\###\"\n            }\n        ]\n    },\n    \"providerOrganization\": {\n        \"GUID\": \"1baedc70-c2fa-4acc-af83-0822840db01f\",\n        \"providerId\": 4555,\n        \"providerDomainName\": \"####\"\n    },\n    \"errList\": []\n}"
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "1 - Linking  metallic services",
+			"item": [
+				{
+					"name": "Login to  on-prem",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"TokenO\", jsonData.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"domain\": \"\",\r\n    \"username\": \"{{OnPremUser}}\",\r\n    \"password\": \"{{OnPremPasswordB64}}\",\r\n    \"commserver\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/Login",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Commcell MetaData for on-prem CS",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"commservName\", jsonData.commservName);\r",
+									"pm.environment.set(\"commservGuid\", jsonData.commservGuid);\r",
+									"pm.environment.set(\"commcellid\", jsonData.commcellid);\r",
+									"pm.environment.set(\"redirectUrl\", jsonData.redirectUrl);\r",
+									"pm.environment.set(\"certificate\", jsonData.certificate);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TokenO}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/Commcell/MetaData",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Commcell",
+								"MetaData"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Commcell/MetaData for on-prem CS",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authtoken",
+										"value": "{{TokenO}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{ServerURL}}/Commcell/MetaData",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"Commcell",
+										"MetaData"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "private"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/8.5"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-AspNet-Version",
+									"value": "4.0.30319"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 06 Jul 2020 11:53:04 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"commservName\": \"loopycs2\",\n    \"commservGuid\": \"688A8E7D-73E6-4D50-96C7-84C94D9CA7A5\",\n    \"commcellid\": 228370341,\n    \"redirectUrl\": \"#####:80/webconsole\",\n    \"certificate\": \"#######\",\n    \"flags\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "CloudService Routing Details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/CloudService/Routing?username={{CloudUser}}",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"CloudService",
+								"Routing"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{CloudUser}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "/CloudService/Routing",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{ServerURL}}/CloudService/Routing?username=cvmetallic\\testuser1",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"CloudService",
+										"Routing"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "cvmetallic\\testuser1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "private"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/xml; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/8.5"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-AspNet-Version",
+									"value": "4.0.30319"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 06 Jul 2020 11:53:26 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "<App_CloudServiceRoutingResponse />"
+						}
+					]
+				},
+				{
+					"name": "Login as metallic company user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"TokenMC\", jsonData.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"domain\": \"\",\r\n    \"username\": \"{{email}}\",\r\n    \"password\": \"{{NewPassword}}\",\r\n    \"commserver\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/Login",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login to metallic",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "content-type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n    \r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+								},
+								"url": {
+									"raw": "{{ServerURL}}/Login",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"Login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "private"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/8.5"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-AspNet-Version",
+									"value": "4.0.30319"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 06 Jul 2020 11:53:34 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"aliasName\": \"33328\",\n    \"userGUID\": \"830D5B78-DAD9-475F-B118-1FB52CA62B13\",\n    \"loginAttempts\": 0,\n    \"remainingLockTime\": 0,\n    \"smtpAddress\": \"#####\",\n    \"userName\": \"####\\\\####\",\n    \"providerType\": 5,\n    \"ccn\": 0,\n    \"token\": \"QSDK ####\",\n    \"capability\": 4328650366975,\n    \"forcePasswordChange\": false,\n    \"isAccountLocked\": false,\n    \"ownerOrganization\": {\n        \"GUID\": \"95189d4e-4a7f-4cb3-969f-80d5871ac13f\",\n        \"providerId\": 0,\n        \"providerDomainName\": \"Commcell\"\n    },\n    \"additionalResp\": {\n        \"nameValues\": [\n            {\n                \"name\": \"USERNAME\",\n                \"value\": \"###\\\\###\"\n            }\n        ]\n    },\n    \"providerOrganization\": {\n        \"GUID\": \"1baedc70-c2fa-4acc-af83-0822840db01f\",\n        \"providerId\": 4555,\n        \"providerDomainName\": \"###\"\n    },\n    \"errList\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "CloudService Subscription  on metallic",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"cloudServiceDetails\", JSON.stringify(jsonData.cloudServiceDetails));\r",
+									"\r",
+									"pm.environment.set(\"companyName\", jsonData.cloudServiceDetails.associatedCompany.companyName);\r",
+									"\r",
+									"pm.environment.set(\"commCellName\", jsonData.cloudServiceDetails.commcellInfo.commCell.commCellName);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TokenMC}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"thirdpartyAppReq\": {\r\n        \"opType\": 1,\r\n        \"clientThirdPartyApps\": [\r\n            {\r\n                \"isCloudApp\": false,\r\n                \"appName\": \"{{commservGuid}}\",\r\n                \"appDisplayName\": \"{{commservName}}\",\r\n                \"flags\": 0,\r\n                \"isCloudServiceSubscription\": true,\r\n                \"appType\": 3,\r\n                \"isEnabled\": true,\r\n                \"props\": {\r\n                    \"nameValues\": [\r\n                        {\r\n                            \"name\": \"RedirectUrl\",\r\n                            \"value\": \"{{redirectUrl}}\"\r\n                        },\r\n                        {\r\n                            \"name\": \"SP Certificate Data\",\r\n                            \"value\": \"{{certificate}}\"\r\n                        },\r\n                        {\r\n                            \"name\": \"CommcellId\",\r\n                            \"value\": \"{{commcellid}}\"\r\n                        },\r\n                        {\r\n                            \"name\": \"Enable Sso Redirect\",\r\n                            \"value\": \"1\"\r\n                        }\r\n                    ]\r\n                }\r\n            }\r\n        ]\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/CloudService/Subscription",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"CloudService",
+								"Subscription"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "CloudService/Subscription --- on metallic",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authtoken",
+										"value": "{{TokenM}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/xml",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "<App_CloudServiceSubscriptionRequest>\r\n   <thirdpartyAppReq opType=\"1\">\r\n      <clientThirdPartyApps isCloudApp=\"0\" appName=\"688A8E7D-73E6-4D50-96C7-84C94D9CA7A5\" appDisplayName=\"loopycs2\" flags=\"0\" isCloudServiceSubscription=\"1\" appType=\"3\" isEnabled=\"1\">\r\n         <props>\r\n            <nameValues name=\"RedirectUrl\" value=\"http://ab@xyz.com:80/webconsole\" />\r\n            <nameValues name=\"SP Certificate Data\" value=\"MIIEbTCCA1WgAwIBAgIBATANBgkqhkiG9w0BAQUFADCBjTEUMBIGA1UEAxMLbG9vcHljczIgQ0ExCjAIBgNVBAUTATExLTArBgNVBAQTJDY4OEE4RTdELTczRTYtNEQ1MC05NkM3LTg0Qzk0RDlDQTdBNTEgMB4GA1UEChMXQ29tbVZhdWx0IFN5c3RlbXMsIEluYy4xCzAJBgNVBAgTAk5KMQswCQYDVQQGEwJVUzAeFw0yMDA0MTAxMTIyNTJaFw0zNjA5MjAxMTIyNTJaMIG+MRYwFAYDVQQDEw1NVUxUSUNPTU1DRUxMMQowCAYDVQQFEwExMS0wKwYDVQQqEyQ2ODhBOEU3RC03M0U2LTRENTAtOTZDNy04NEM5NEQ5Q0E3QTUxLTArBgNVBAQTJDY4OEE4RTdELTczRTYtNEQ1MC05NkM3LTg0Qzk0RDlDQTdBNTEgMB4GA1UEChMXQ29tbVZhdWx0IFN5c3RlbXMsIEluYy4xCzAJBgNVBAgTAk5KMQswCQYDVQQGEwJVUzCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA6H1nDzgx1KHW6+1TAA+3lkjmeYx/Jri7/m4TGc+RquWVaVVGYtBAw72a4O2kYAhSENi+MJwB5mekrrR3ILAiim5BgJpgq6EL3TlWEcryCPw6TvhL9Ren8cNN36u/mFO8ZExemCCTCJ5ssXzJq6TM25nus6MoAEsKTot+os1C+cUCAwEAAaOCAScwggEjMB0GA1UdDgQWBBR39VhyfCQOZ3v1IJlmEBWy7mWZIjCBugYDVR0jBIGyMIGvgBSbwlpPna8/7w7g8c2lY+zBCfGwnqGBk6SBkDCBjTEUMBIGA1UEAxMLbG9vcHljczIgQ0ExCjAIBgNVBAUTATExLTArBgNVBAQTJDY4OEE4RTdELTczRTYtNEQ1MC05NkM3LTg0Qzk0RDlDQTdBNTEgMB4GA1UEChMXQ29tbVZhdWx0IFN5c3RlbXMsIEluYy4xCzAJBgNVBAgTAk5KMQswCQYDVQQGEwJVU4IBATAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwJgYDVR0RBB8wHYIbTVVMVElDT01NQ0VMTC5jb21tdmF1bHQuY29tMA0GCSqGSIb3DQEBBQUAA4IBAQCn7qJXErg/uTqA8+kedWWFkmp1mm3o/c5MHTmp95VGhpowPbO+qqf/LMnhFyXIm7Dy7VPO48s343d6/U2GRgsQQZsRT69ZcYn6vI2BKs6etK+WVjQ6PIkYXpTozn0O1CmuXjPrQ+n9WGxeNCUCw5zUF+0P6kdYKyjtjE7jLbe+VdB/mjddEAaP21PQat+IHg7iybpiWi5c1sLgNRiMBQEDIegPvdl0Ny+0pEa+Q49WYedMgV+NmRr8aB2F/dmOS+UUO5HbDAfmZBRDIlGv/n/JPIO0F0kcdvU8PJYobhCzsn1KnQiZdNXteqGgU2B3VaGanCHQ+2Dv0XXV4+/580I6\" />\r\n            <nameValues name=\"CommcellId\" value=\"228370341\" />\r\n            <nameValues name=\"Enable Sso Redirect\" value=\"1\" />\r\n         </props>\r\n      </clientThirdPartyApps>\r\n   </thirdpartyAppReq>\r\n</App_CloudServiceSubscriptionRequest>"
+								},
+								"url": {
+									"raw": "{{ServerURL}}/CloudService/Subscription",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"CloudService",
+										"Subscription"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "private"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/xml; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/8.5"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-AspNet-Version",
+									"value": "4.0.30319"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 06 Jul 2020 11:54:04 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "<App_CloudServiceSubscriptionResponse>\n    <cloudServiceDetails>\n        <commcellInfo passWord=\"\" encNumber=\"###\" flags=\"0\" userName=\"###\" number=\"129803156\" TimeZone=\"1:300:(UTC-05:00) Eastern Time (US &amp; Canada)\" smtpServer=\"mail.commvault.com\" IPAddress=\"1.1.1.1\" drIpAddress=\"1.1.1.1\" ccOpMode=\"1002\">\n            <commCell commCellName=\"CVMetallic\" csGUID=\"4B0AB4D9-29C3-4C88-988C-9EECB7BCA394\" />\n        </commcellInfo>\n        <csClient>\n            <clientProps specialClientFlags=\"0\" />\n            <client ClockSkewInSeconds=\"-1\" clientDescription=\"&lt;p style=&quot;margin-top: 0&quot;&gt;&#xD;&#xA;  &#xD;&#xA;&lt;/p&gt;\" clientPassword=\"###\" Status=\"0\" spaceCheckFlags=\"0\" evmgrcPort=\"0\" offlineTimeStamp=\"0\" cvdPort=\"8400\" offlineEntity=\"0\">\n                <jobResulsDir path=\"C:\\Program Files\\Commvault\\ContentStore\\iDataAgent\\JobResults\" />\n                <osInfo osId=\"210\" />\n                <clientEntity hostName=\"#####\" clientName=\"###\" displayName=\"###\" commCellName=\"###\" clientGUID=\"4B0AB4D9-29C3-4C88-988C-9EECB7BCA394\" />\n                <versionInfo version=\"16\" />\n            </client>\n        </csClient>\n        <associatedCompany companyAlias=\"####\" companyId=\"4555\" companyName=\"####\" GUID=\"1BAEDC70-C2FA-4ACC-AF83-0822840DB01F\" />\n        <cloudService redirectUrl=\"#####:80/webconsole\" commcellName=\"CVMetallic\" />\n    </cloudServiceDetails>\n    <error errorString=\"\" errorCode=\"0\" />\n</App_CloudServiceSubscriptionResponse>"
+						}
+					]
+				},
+				{
+					"name": "CloudService Subscription Details for on-prem",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TokenO}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"opType\": 3,\r\n    \"cloudServiceDetails\": {{cloudServiceDetails}}\r\n}"
+						},
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/CloudService/Subscription/Details",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"CloudService",
+								"Subscription",
+								"Details"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "CloudService/Subscription/Details --- on-prem",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authtoken",
+										"value": "{{TokenO}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/xml",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/xml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "<App_SetCloudServiceDetailsReq opType=\"3\">\r\n   <cloudServiceDetails>\r\n      <commcellInfo passWord=\"\" encNumber=\"####\" flags=\"0\" userName=\"sagsfng01usea2vir\" number=\"129803156\" TimeZone=\"1:300:(UTC-05:00) Eastern Time (US &amp; Canada)\" smtpServer=\"######\" IPAddress=\"1.1.1.1\" drIpAddress=\"1.1.1.1\" ccOpMode=\"1002\">\r\n         <commCell commCellName=\"#####\" csGUID=\"4B0AB4D9-29C3-4C88-988C-9EECB7BCA394\" />\r\n      </commcellInfo>\r\n      <csClient>\r\n         <clientProps specialClientFlags=\"0\" />\r\n         <client clientDescription=\"&lt;p style=&quot;margin-top: 0&quot;&gt;&#xD;&#xA;  &#xD;&#xA;&lt;/p&gt;\" clientPassword=\"####\" Status=\"0\" spaceCheckFlags=\"0\" evmgrcPort=\"0\" offlineTimeStamp=\"0\" cvdPort=\"8400\" offlineEntity=\"0\">\r\n            <jobResulsDir path=\"C:\\Program Files\\Commvault\\ContentStore\\iDataAgent\\JobResults\" />\r\n            <clientEntity hostName=\"####\" clientName=\"####\" displayName=\"####\" commCellName=\"####\" clientGUID=\"4B0AB4D9-29C3-4C88-988C-9EECB7BCA394\" />\r\n         </client>\r\n      </csClient>\r\n      <associatedCompany companyAlias=\"cvmetallic\" companyId=\"4555\" companyName=\"cvmetallic\" GUID=\"1BAEDC70-C2FA-4ACC-AF83-0822840DB01F\" />\r\n      <cloudService redirectUrl=\"http://#####:80/webconsole\" commcellName=\"CVMetallic\" />\r\n   </cloudServiceDetails>\r\n</App_SetCloudServiceDetailsReq>"
+								},
+								"url": {
+									"raw": "{{ServerURL}}/CloudService/Subscription/Details",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"CloudService",
+										"Subscription",
+										"Details"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "private"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/xml; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/8.5"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-AspNet-Version",
+									"value": "4.0.30319"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 06 Jul 2020 11:54:23 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "<App_SetCloudServiceDetailsResp />"
+						}
+					]
+				},
+				{
+					"name": "Completed setups ",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TokenO}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/CloudService/CompletedSetups",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"CloudService",
+								"CompletedSetups"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Completed setups ",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authtoken",
+										"value": "{{TokenM}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{ServerURL}}/CloudService/CompletedSetups",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"CloudService",
+										"CompletedSetups"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "private"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/8.5"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-AspNet-Version",
+									"value": "4.0.30319"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 29 Jul 2020 10:31:07 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"completedSetupsDetails\": [\n        {\n            \"completedSetups\": \"{\\\"OFFICE365\\\":true,\\\"CORE_SETUP\\\":true,\\\"ADMIN_CONSOLE\\\":true,\\\"ENDPOINT\\\":true}\",\n            \"cloudServiceDetails\": {}\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "2 - User Redirection to metallic",
+			"item": [
+				{
+					"name": "SamlToken",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"SAMLToken\", jsonData.token);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"type": "text",
+								"value": "{{TokenO}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/Commcell/SamlToken",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Commcell",
+								"SamlToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserMappings",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{SAMLToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/GetUserMappings",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"GetUserMappings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Plans",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check JSON Response body is empty\", function () {\r",
+									"\r",
+									"pm.expect(jsonData.length).to.eql(undefined);\r",
+									"});\r",
+									"console.log(jsonData.length)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{SAMLToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/v2/plan",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"v2",
+								"plan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company Details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate connect name\", function () {\r",
+									"    \r",
+									"    pm.expect(jsonData.providers[0].connectName).to.eql(pm.environment.get(\"providerDomainName\"));\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{SAMLToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/Organization",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Organization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Commcell Details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate commcell name\", function () {\r",
+									"    \r",
+									"    pm.expect(jsonData.commcell.commCellName).to.eql(pm.environment.get(\"commCellName\"));\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{SAMLToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/commserv",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"commserv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate company name\", function () {\r",
+									"    \r",
+									"    pm.expect(jsonData.users[0].userEntity.entityInfo.companyName).to.eql(pm.environment.get(\"providerDomainName\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate company id\", function () {\r",
+									"    \r",
+									"    pm.expect(jsonData.users[0].userEntity.entityInfo.companyId).to.eql(pm.environment.get(\"providerId\"));\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{SAMLToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/user",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "3 - Unlinking metallic services",
+			"item": [
+				{
+					"name": "Login to on-prem",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"TokenO\", jsonData.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "content-type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"domain\": \"\",\r\n    \"username\": \"{{OnPremUser}}\",\r\n    \"password\": \"{{OnPremPasswordB64}}\",\r\n    \"commserver\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/Login",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registered CloudServices for on-prem",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"redirectUrl\", jsonData.cloudServices[0].cloudService.redirectUrl);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"type": "text",
+								"value": "{{TokenO}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/CloudServices/Registered",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"CloudServices",
+								"Registered"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SamlToken",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"SAMLToken\", jsonData.token);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"type": "text",
+								"value": "{{TokenO}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/Commcell/SamlToken",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Commcell",
+								"SamlToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Commcell MetaData for on-prem",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"commservGuid\", jsonData.commservGuid);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"type": "text",
+								"value": "{{TokenO}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/Commcell/MetaData",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Commcell",
+								"MetaData"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unlink metallic - delete third party app on cloud",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate commserv guid\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.cloudServiceDetails.cloudService.appName).to.eql(pm.environment.get(\"commservGuid\"));\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate redirect url\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.cloudServiceDetails.cloudService.redirectUrl).to.eql(pm.environment.get(\"redirectUrl\"));\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"type": "text",
+								"value": "{{SAMLToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cloudServiceDetails\": {\r\n        \"cloudService\": {\r\n            \"redirectUrl\": \"{{redirectUrl}}\",\r\n            \"appName\": \"{{commservGuid}}\"\r\n        }\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/CloudService/Unsubscribe",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"CloudService",
+								"Unsubscribe"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Unlink metallic - delete third party app",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/xml"
+									},
+									{
+										"key": "Authtoken",
+										"type": "text",
+										"value": "SAML PHNhbWxwOlJlc3BvbnNlIHhtbG5zOnNhbWxwPSJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6cHJvdG9jb2wiIElEPSJfODM1NjJjNzU0Y2E1OTljZDVhYjkwOWY5YjZkNTQ2YzUiIElzc3VlSW5zdGFudD0iMjAyMC0wNy0wNlQxMTozMjo1OFoiIFZlcnNpb249IjIuMCI+PHNhbWw6SXNzdWVyIHhtbG5zOnNhbWw9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphc3NlcnRpb24iIE5hbWVRdWFsaWZpZXI9IjY4OEE4RTdELTczRTYtNEQ1MC05NkM3LTg0Qzk0RDlDQTdBNSI+bG9vcHljczIudGVzdGxhYi5jb21tdmF1bHQuY29tPC9zYW1sOklzc3Vlcj48ZHM6U2lnbmF0dXJlIHhtbG5zOmRzPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwLzA5L3htbGRzaWcjIj4KPGRzOlNpZ25lZEluZm8+CjxkczpDYW5vbmljYWxpemF0aW9uTWV0aG9kIEFsZ29yaXRobT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS8xMC94bWwtZXhjLWMxNG4jIi8+CjxkczpTaWduYXR1cmVNZXRob2QgQWxnb3JpdGhtPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwLzA5L3htbGRzaWcjcnNhLXNoYTEiLz4KPGRzOlJlZmVyZW5jZSBVUkk9IiNfODM1NjJjNzU0Y2E1OTljZDVhYjkwOWY5YjZkNTQ2YzUiPgo8ZHM6VHJhbnNmb3Jtcz4KPGRzOlRyYW5zZm9ybSBBbGdvcml0aG09Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1sZHNpZyNlbnZlbG9wZWQtc2lnbmF0dXJlIi8+CjxkczpUcmFuc2Zvcm0gQWxnb3JpdGhtPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzEwL3htbC1leGMtYzE0biMiLz4KPC9kczpUcmFuc2Zvcm1zPgo8ZHM6RGlnZXN0TWV0aG9kIEFsZ29yaXRobT0iaHR0cDovL3d3dy53My5vcmcvMjAwMC8wOS94bWxkc2lnI3NoYTEiLz4KPGRzOkRpZ2VzdFZhbHVlPkk2eVlEVU51WGpGNndEU0VDdUloK2cyUmxoND08L2RzOkRpZ2VzdFZhbHVlPgo8L2RzOlJlZmVyZW5jZT4KPC9kczpTaWduZWRJbmZvPgo8ZHM6U2lnbmF0dXJlVmFsdWU+ekhKQ0xYYk1tR3Y1eXJJaVZpeXBUdmtmQlVncWdtdUhLNmJqRzZuallRN1g0MEFHQUR2d1ZCdWF6ZExldUFJMQpaZjZGaHgvWlg4Y2lEa3lnaU4wREJtZzkzZjlyWFpiNmFtQkFhUkM1dFhtVFl2b0k4aXFqKzJWZnR3NzVibCtwCjU4V0dSRTJYd1p1ZXRYaVlxYjB4RFpkV0UyZmRCMzA4NHczcXFVYWxIRVE9PC9kczpTaWduYXR1cmVWYWx1ZT4KPC9kczpTaWduYXR1cmU+PHNhbWw6QXNzZXJ0aW9uIHhtbG5zOnNhbWw9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphc3NlcnRpb24iIElEPSJfMGVlYTM4M2QxNDM0OGM1NmZhMTdhODlkYThmZmUzNzkiIElzc3VlSW5zdGFudD0iMjAyMC0wNy0wNlQxMTozMjo1OFoiIFZlcnNpb249IjIuMCI+PHNhbWw6U3ViamVjdD48c2FtbDpOYW1lSUQ+YWRtaW48L3NhbWw6TmFtZUlEPjxzYW1sOlN1YmplY3RDb25maXJtYXRpb24+PHNhbWw6U3ViamVjdENvbmZpcm1hdGlvbkRhdGEgTm90T25PckFmdGVyPSIyMDIwLTA3LTA2VDExOjM3OjU4WiIvPjwvc2FtbDpTdWJqZWN0Q29uZmlybWF0aW9uPjwvc2FtbDpTdWJqZWN0PjxzYW1sOkF0dHJpYnV0ZVN0YXRlbWVudD48c2FtbDpBdHRyaWJ1dGUgTmFtZT0iSW1wZXJzb25hdGVkQnkiPjxzYW1sOkF0dHJpYnV0ZVZhbHVlPmFkbWluPC9zYW1sOkF0dHJpYnV0ZVZhbHVlPjwvc2FtbDpBdHRyaWJ1dGU+PHNhbWw6QXR0cmlidXRlIE5hbWU9IlNoU2VzSWQiPjxzYW1sOkF0dHJpYnV0ZVZhbHVlPmRiM2FmODg1LTk1NzktNGZjOS04OWI0LWNiODE5OGJlNWUxZjwvc2FtbDpBdHRyaWJ1dGVWYWx1ZT48L3NhbWw6QXR0cmlidXRlPjxzYW1sOkF0dHJpYnV0ZSBOYW1lPSJmZWF0dXJlIj48c2FtbDpBdHRyaWJ1dGVWYWx1ZT4wLjAwMDAwMDwvc2FtbDpBdHRyaWJ1dGVWYWx1ZT48L3NhbWw6QXR0cmlidXRlPjxzYW1sOkF0dHJpYnV0ZSBOYW1lPSJ1c2VyR1VJRCI+PHNhbWw6QXR0cmlidXRlVmFsdWU+QjVDMTQ1QTYtNEY0NS00M0RELUFENzAtRDZGMUNDMDgzN0I2PC9zYW1sOkF0dHJpYnV0ZVZhbHVlPjwvc2FtbDpBdHRyaWJ1dGU+PHNhbWw6QXR0cmlidXRlIE5hbWU9ImVtYWlsIj48c2FtbDpBdHRyaWJ1dGVWYWx1ZT5zbmFzaW1AY29tbXZhdWx0LmNvbTwvc2FtbDpBdHRyaWJ1dGVWYWx1ZT48L3NhbWw6QXR0cmlidXRlPjxzYW1sOkF0dHJpYnV0ZSBOYW1lPSJyb2xlcyI+PHNhbWw6QXR0cmlidXRlVmFsdWU+ZUFHRmtFdHZnekFRaFArSzVRc25Kd2JNUzhKSndVQVVLZTBoRWVmS0JUZTFoREhDSm1yL2ZYbW9VbTY5CnphNDB1ek5mZXZ4V0hYaUkwVWpkVThmZFlRZUl2dEd0N08vVW1ld25paDF3UEtUWk1MeWZPdjNCTzNhegorcUtiUmRSR2pGZGhCdDBiY1VpbmVRSkNjZGxSYUhwdXBIcHB0RklQUG5WMk55c0lwTGxscjVmNkprWUsKTWR3Y1pXK2wvUUdMK2R4UzZNSlZ2bkVsS09TdGt2MjJPTlhuZ3NJOFlDNEpzaENSaWdTSStFV0JzaUxDCnFBZ3JsekVjKzFFZXd2MGg1Y2JvUm5JcjJ0cUk4VFRxYVREcjNWVSsvVm5uN1puaXhvb1JndnNrV3dvRApyOEp1NEJXSWVNeEhoRlV1aXYwa1FqZ1BmVnpoTW5KeENjSGNTaldpNjdaMEpNZFpUb29FZWNucWlXT1UKeERGRFNWbXlQTXBaNWljRS9oRmFZdTZuT2QyRzRTcnZYOWJNaExLbDg4Smhyckgvbi9vdnlOR05MZz09PC9zYW1sOkF0dHJpYnV0ZVZhbHVlPjwvc2FtbDpBdHRyaWJ1dGU+PHNhbWw6QXR0cmlidXRlIE5hbWU9ImNvbXBhbnlHVUlEIj48c2FtbDpBdHRyaWJ1dGVWYWx1ZS8+PC9zYW1sOkF0dHJpYnV0ZT48L3NhbWw6QXR0cmlidXRlU3RhdGVtZW50Pjwvc2FtbDpBc3NlcnRpb24+PC9zYW1scDpSZXNwb25zZT4="
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/xml"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "<App_CloudServiceUnsubscriptionReq><cloudServiceDetails>\r\n<cloudService redirectUrl=\"http://ab@xyz.com:80/webconsole\" appName=\"688A8E7D-73E6-4D50-96C7-84C94D9CA7A5\" />\r\n</cloudServiceDetails>\r\n</App_CloudServiceUnsubscriptionReq>"
+								},
+								"url": {
+									"raw": "{{ServerURL}}/CloudService/Unsubscribe",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"CloudService",
+										"Unsubscribe"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "private"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/xml; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/8.5"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-AspNet-Version",
+									"value": "4.0.30319"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 06 Jul 2020 11:34:29 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "<App_CloudServiceUnsubscriptionResponse>\n    <cloudServiceDetails>\n        <cloudService redirectUrl=\"http://#####:80/webconsole\" appName=\"688A8E7D-73E6-4D50-96C7-84C94D9CA7A5\" />\n    </cloudServiceDetails>\n    <error />\n</App_CloudServiceUnsubscriptionResponse>"
+						}
+					]
+				},
+				{
+					"name": "Remove cloud service details in on-prem",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"type": "text",
+								"value": "{{TokenO}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"opType\": 4,\r\n    \"cloudServiceDetails\": {\r\n        \"cloudService\": {\r\n            \"redirectUrl\": \"{{redirectUrl}}\"\r\n        }\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/CloudService/Subscription/Details",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"CloudService",
+								"Subscription",
+								"Details"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "remove cloud service details in on-prem",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authtoken",
+										"type": "text",
+										"value": "{{TokenO}}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/xml"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/xml"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "<App_SetCloudServiceDetailsReq opType=\"4\">\r\n<cloudServiceDetails>\r\n<cloudService redirectUrl=\"http://hostname:80/webconsole\" />\r\n</cloudServiceDetails>\r\n</App_SetCloudServiceDetailsReq>"
+								},
+								"url": {
+									"raw": "{{ServerURL}}/CloudService/Subscription/Details",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"CloudService",
+										"Subscription",
+										"Details"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "xml",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "private"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/xml; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/8.5"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-AspNet-Version",
+									"value": "4.0.30319"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 06 Jul 2020 11:34:47 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "<App_SetCloudServiceDetailsResp />"
+						}
+					]
+				},
+				{
+					"name": "Registered CloudServices for on-prem",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check JSON Response body is empty\", function () {\r",
+									"\r",
+									"pm.expect(jsonData.length).to.eql(undefined);\r",
+									"});\r",
+									"console.log(jsonData.length)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"type": "text",
+								"value": "{{TokenO}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/CloudServices/Registered",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"CloudServices",
+								"Registered"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SamlToken",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"SAMLToken\", jsonData.token);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"type": "text",
+								"value": "{{TokenO}}"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/Commcell/SamlToken",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Commcell",
+								"SamlToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserMappings",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{SAMLToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/GetUserMappings",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"GetUserMappings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Plans",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{SAMLToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/v2/plan",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"v2",
+								"plan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company Details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{SAMLToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/Organization",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Organization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Commcell Details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{SAMLToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/commserv",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"commserv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{SAMLToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/user",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "4 - Company clean-up on metallic",
+			"item": [
+				{
+					"name": "Login to metallic",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"TokenM\", jsonData.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"domain\": \"\",\r\n    \"username\": \"{{CloudUser}}\",\r\n    \"password\": \"{{CloudPasswordB64}}\",\r\n    \"commserver\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/Login",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login to metallic",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "content-type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n    \r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+								},
+								"url": {
+									"raw": "{{ServerURL}}/Login",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"Login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Cache-Control",
+									"value": "private"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/8.5"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "X-AspNet-Version",
+									"value": "4.0.30319"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 06 Jul 2020 11:53:34 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"aliasName\": \"33328\",\n    \"userGUID\": \"830D5B78-DAD9-475F-B118-1FB52CA62B13\",\n    \"loginAttempts\": 0,\n    \"remainingLockTime\": 0,\n    \"smtpAddress\": \"###\",\n    \"userName\": \"###\\\\##\",\n    \"providerType\": 5,\n    \"ccn\": 0,\n    \"token\": \"QSDK ####2\",\n    \"capability\": 4328650366975,\n    \"forcePasswordChange\": false,\n    \"isAccountLocked\": false,\n    \"ownerOrganization\": {\n        \"GUID\": \"95189d4e-4a7f-4cb3-969f-80d5871ac13f\",\n        \"providerId\": 0,\n        \"providerDomainName\": \"Commcell\"\n    },\n    \"additionalResp\": {\n        \"nameValues\": [\n            {\n                \"name\": \"USERNAME\",\n                \"value\": \"###\\\\###\"\n            }\n        ]\n    },\n    \"providerOrganization\": {\n        \"GUID\": \"1baedc70-c2fa-4acc-af83-0822840db01f\",\n        \"providerId\": 4555,\n        \"providerDomainName\": \"####\"\n    },\n    \"errList\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "deactivate company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate company id\", function () {\r",
+									"    \r",
+									"    pm.expect(jsonData.response.entity.providerId).to.eql(pm.environment.get(\"providerId\"));\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate company name\", function () {\r",
+									"    \r",
+									"    pm.expect(jsonData.response.entity.providerDomainName).to.eql(pm.environment.get(\"providerDomainName\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authtoken",
+								"value": "{{TokenM}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"deactivateOptions\": {\r\n        \"disableBackup\": true,\r\n        \"disableRestore\": true,\r\n        \"disableLogin\": true\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/Organization/{{providerId}}/action/deactivate",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Organization",
+								"{{providerId}}",
+								"action",
+								"deactivate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"console.log(\"Response received: \" ,responseBody);\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate error code\", function () {\r",
+									"    \r",
+									"    pm.expect(jsonData.errorCode).to.eql(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authtoken",
+								"value": "{{TokenM}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/organization/{{providerId}}",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"organization",
+								"{{providerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout on-prem",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Response received: \" ,responseBody);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"User logged out\");",
+									"});",
+									"",
+									"pm.test(\"Status code name has string\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"//pm.environment.unset(\"OnPremPassword\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TokenO}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{OnPremHostname}}/webconsole/api/Logout",
+							"protocol": "http",
+							"host": [
+								"{{OnPremHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout metallic",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Response received: \" ,responseBody);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"User logged out\");",
+									"});",
+									"",
+									"pm.test(\"Status code name has string\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"",
+									"//pm.environment.unset(\"CloudPassword\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TokenM}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{CloudHostname}}/webconsole/api/Logout",
+							"protocol": "http",
+							"host": [
+								"{{CloudHostname}}"
+							],
+							"path": [
+								"webconsole",
+								"api",
+								"Logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

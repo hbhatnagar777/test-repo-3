@@ -1,0 +1,58 @@
+# Default values for commvault-ma-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+mediaAgentReplicaCount: 2	#Number of replicas in media agent StatefulSet
+
+image:
+  name: commvault		# Image name to deploy
+  tag: latest			# Image tag to use
+  pullPolicy: IfNotPresent
+
+commcell:
+  csclientname:  		# CommServer Client Name
+  cshostname:    		# CommServer Network Host Name
+  csipaddress:   		# CommServer IP Address,  optional if CS name is resolvable from the pods in cluster
+#if user and password are sent as secret, please include base64 encoded values here.
+  user: 		 		# CommCell user name
+  password: 	 		# CommCell password
+  authtoken: ""  		# CommCell authentication token, if auth token is passed then user name password will be ignored.
+
+storage:
+  config:
+    storageClassName:   #Storage class name to use for storing config and other information for running pods, 
+					    # If not specified, data storage class will be used.
+	sizeInGB: 5   		#Allocated for each pod
+  data:
+    storageClassName:  	#Storage class name to use for data backups
+    sizeInGB: 20 		#Total space allocated for backups
+  ddb:    
+    storageClassName:   #Storage class name to use for Deduplication database, SSD storage is recommended
+    sizeInGB: 5  		#Allocated for each pod
+    
+ 
+imageCredentials:
+  registry: 			# Specify name and port if using a local registry 
+  username: 			# User name for registry server		
+  password: 			# Password for registry server
+
+nameOverride: ""		# This name will be appended to all objects created in the cluster, By default a random name will be used for each deployment
+fullnameOverride: ""
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

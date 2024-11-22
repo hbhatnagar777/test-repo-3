@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />" description="" executeOnWeb="0" inputs="&lt;inputs />" interactive="0" isHtmlDescription="0" manualPercentageComplete="0" name="WF_CONDITIONALTRANSITION" outputs="&lt;outputs />" revision="$Revision: 1.2 $" tags="" uniqueGuid="ea8b3aa5-a849-4002-a194-6b8736da46bb" variables="&lt;variables />" webHidden="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables className="" name="variables" type=""/>
+        <inputs attribute="0" className="" name="inputs" type=""/>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start breakpoint="0" commented="0" continueOnFailure="0" created="0" description="" displayName="Start" height="36" interactive="0" jobMode="0" name="Start" originalStyle="" skipAttempt="0" style="image;image=/images/jgraphx/house.png" uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="UserInput_1" commented="0" originalStyle="" points="" sourceX="72" sourceY="59" status="0" style="defaultEdge" targetX="302" targetY="57" transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1575907953859" description="" displayName="UserInput" height="34" interactive="1" jobMode="0" name="UserInput" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.WebFormActivity" uniqueName="UserInput_1" waitSetting="0" width="100" x="252" y="40">
+        <inputs val="&lt;inputs>&lt;interactionUsers class=&quot;commvault.msgs.CvEntities.UserEntity&quot;>&lt;userName>admin&lt;/userName>&lt;userId>1&lt;/userId>&lt;/interactionUsers>&lt;inputs>&lt;test1 class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>value1&lt;/test1>&lt;test2 class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>value2&lt;/test2>&lt;/inputs>&lt;subject>condition1&lt;/subject>&lt;sendEmail>true&lt;/sendEmail>&lt;approvalEnabled>false&lt;/approvalEnabled>&lt;email>&lt;from />&lt;to />&lt;cc />&lt;bcc />&lt;subject />&lt;attachments />&lt;repeatInterval />&lt;body />&lt;html>true&lt;/html>&lt;/email>&lt;formProperties />&lt;/inputs>"/>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0" name="outputs" type="">
+                <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" name="test1" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" name="test2" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children className="commvault.msgs.CvEntities.UserEntity" inputType="commvault.msgs.CvEntities.UserEntity" name="completedBy" type="{commvault.msgs.CvEntities}UserEntity">
+                    <children className="java.lang.String" inputType="java.lang.String" name="userName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    <children className="java.lang.Integer" inputType="java.lang.Integer" name="userId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                </children>
+                <children className="java.lang.String" inputType="java.lang.String" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs className="" defaultValue="" listType="0" name="inputs" type="">
+                <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" name="test1" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" name="test2" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+        <transition activity="PopupInput_2" commented="0" originalStyle="" points="" sourceX="302" sourceY="57" status="0" style="defaultEdge" targetX="534" targetY="58" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="if (((xpath:{/workflow/UserInput_1/completedBy/userId}) == '1') &amp;&amp; ((xpath:{/workflow/UserInput_1/completedBy/userName}).equals(&quot;admin&quot;)));&#xa;&#xa;&#xa;&#xa;/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1575908033843" description="popups an input form for the user to fill out" displayName="PopupInput" height="34" interactive="0" jobMode="0" name="PopupInput" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.InteractiveInputActivity" uniqueName="PopupInput_2" waitSetting="0" width="100" x="484" y="41">
+        <inputs val="&lt;inputs>&lt;inputs>&lt;test3 class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>value3&lt;/test3>&lt;/inputs>&lt;subject>condition2&lt;/subject>&lt;formProperties />&lt;/inputs>"/>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0" name="outputs" type="">
+                <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" name="test3" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children className="java.lang.Boolean" inputType="java.lang.Boolean" name="okClicked" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children className="java.lang.String" inputType="java.lang.String" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs className="" defaultValue="" listType="0" name="inputs" type="">
+                <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" name="test3" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+        <transition activity="Script_1" commented="0" originalStyle="" points="" sourceX="534" sourceY="58" status="0" style="defaultEdge" targetX="709" targetY="52" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="if ((xpath:{/workflow/PopupInput_2/okClicked}) &amp;&amp; (xpath:{/workflow/PopupInput_2/actionSelected}.equals(&quot;value3&quot;)));"/>
+        </transition>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1575908523353" description="Ends the workflow" displayName="WorkflowEnd" height="34" interactive="0" jobMode="0" name="WorkflowEnd" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.EndActivity" uniqueName="WorkflowEnd_1" waitSetting="0" width="106" x="959" y="44">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot; />&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"/>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1575911582753" description="activity to execute code snippets in the selected language" displayName="Script" height="34" interactive="0" jobMode="0" name="Script" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.ScriptActivity" timeout="1" uniqueName="Script_1" waitSetting="0" width="100" x="705" y="47">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;java&quot; />&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_1" commented="0" originalStyle="" points="" sourceX="755" sourceY="64" status="0" style="defaultEdge" targetX="967" targetY="63" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="if (xpath:{/workflow/Script_1/system/timedOut});"/>
+        </transition>
+    </Activity>
+</Workflow_WorkflowDefinition>

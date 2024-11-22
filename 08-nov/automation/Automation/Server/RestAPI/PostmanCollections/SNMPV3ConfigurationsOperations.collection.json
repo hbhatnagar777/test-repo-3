@@ -1,0 +1,956 @@
+{
+	"info": {
+		"_postman_id": "c3b8a1db-5830-43fe-b1ff-66637b199b3e",
+		"name": "SNMPV3ConfigurationsOperations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4331195"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							"",
+							"",
+							"tests[\"Response time is less than 3000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\") ;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":4,\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "{{ServerURL}}/Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"mode\":4,\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 17 Dec 2018 11:07:47 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1022"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"aliasName\": \"1\",\n    \"userGUID\": \"80ECA8AB-E88E-4B71-A5BE-233932068CC2\",\n    \"loginAttempts\": 0,\n    \"remainingLockTime\": 0,\n    \"smtpAddress\": \"####\",\n    \"userName\": \"admin\",\n    \"providerType\": 1,\n    \"ccn\": 0,\n    \"token\": \"QSDK ...\",\n    \"capability\": 4328650366975,\n    \"forcePasswordChange\": false,\n    \"isAccountLocked\": false,\n    \"ownerOrganization\": {\n        \"providerId\": 0,\n        \"providerDomainName\": \"Qinetix Commcell\"\n    },\n    \"providerOrganization\": {\n        \"providerId\": 0,\n        \"providerDomainName\": \"Qinetix Commcell\"\n    },\n    \"errList\": []\n}"
+				}
+			]
+		},
+		{
+			"name": "SNMPV3Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"/**if((tests[\"Validating snmv3InfoList tag\"] = responseBody.has(\"snmv3InfoList\")))      //validate snmv3InfoList tag",
+							"        console.log(\"snmv3InfoList tag is present\");**/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"SNMPV3Configuration"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "SNMPV3Configuration",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"SNMPV3Configuration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 17 Dec 2018 11:07:55 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "4"
+						}
+					],
+					"cookie": [],
+					"body": "{}"
+				}
+			]
+		},
+		{
+			"name": "Add SNMPV3Configuration",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"hostName\", \"Test\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"    ",
+							"if((tests[\"Validating host name\"] = jsonData.host.name == postman.getEnvironmentVariable(\"hostName\")))",
+							"    console.log(\"Host name validated\");",
+							"    ",
+							"postman.setEnvironmentVariable(\"hostid\", jsonData.host.id);",
+							"    ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"snmv3ConfigOperationType\": 1,\n    \"snmv3Info\": {\n        \"hostName\": \"{{hostName}}\",\n        \"privacyCredentials\": false,\n        \"privacyAlgorithm\": 0,\n        \"encryptAlgorithm\": 0,\n        \"userAccount\": {\n            \"password\": \"{{Password}}\",\n            \"userName\": \"{{UserName}}\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"SNMPV3Configuration"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Add SNMPV3Configuration",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"snmv3ConfigOperationType\": 1,\n    \"snmv3Info\": {\n        \"hostName\": \"{{hostName}}\",\n        \"privacyCredentials\": false,\n        \"privacyAlgorithm\": 0,\n        \"encryptAlgorithm\": 0,\n        \"userAccount\": {\n            \"password\": \"###\",\n            \"userName\": \"###\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"SNMPV3Configuration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 17 Dec 2018 10:29:20 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "117"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"processinginstructioninfo\": {\n        \"attributes\": [\n            {\n                \"name\": \"exitval\",\n                \"value\": \"0\"\n            }\n        ]\n    },\n    \"host\": {\n        \"name\": \"Test\",\n        \"id\": 6\n    }\n}"
+				},
+				{
+					"name": "Add SNMPV3Configuration",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"snmv3ConfigOperationType\": 1,\n    \"snmv3Info\": {\n        \"hostName\": \"{{hostName}}\",\n        \"privacyCredentials\": false,\n        \"privacyAlgorithm\": 0,\n        \"encryptAlgorithm\": 0,\n        \"userAccount\": {\n            \"password\": \"###\",\n            \"userName\": \"###\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"SNMPV3Configuration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 17 Dec 2018 11:08:01 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "117"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"processinginstructioninfo\": {\n        \"attributes\": [\n            {\n                \"name\": \"exitval\",\n                \"value\": \"0\"\n            }\n        ]\n    },\n    \"host\": {\n        \"name\": \"Test\",\n        \"id\": 9\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Created SNMPV3Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating snmv3InfoList tag\"] = responseBody.has(\"snmv3InfoList\")))      ",
+							"        console.log(\"snmv3InfoList tag is present\");",
+							"        ",
+							"if((tests[\"Validating hostName tag\"] = responseBody.has(\"hostName\")))      ",
+							"        console.log(\"hostName tag is present\");",
+							"        ",
+							"if((tests[\"Validating privacyAlgorithm tag\"] = responseBody.has(\"privacyAlgorithm\")))      ",
+							"        console.log(\"privacyAlgorithm tag is present\");",
+							"        ",
+							"if((tests[\"Validating encryptAlgorithm tag\"] = responseBody.has(\"encryptAlgorithm\")))      ",
+							"        console.log(\"encryptAlgorithm tag is present\");",
+							"        ",
+							"if((tests[\"Validating userAccount tag\"] = responseBody.has(\"userAccount\")))      ",
+							"        console.log(\"userAccount tag is present\");",
+							"        ",
+							"        ",
+							"if((tests[\"Validating hostname\"] = responseBody.has(\"Test\")))      ",
+							"        console.log(\"Hostname is present\");",
+							"        ",
+							"",
+							"        ",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"SNMPV3Configuration"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Created SNMPV3Configuration",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"SNMPV3Configuration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 17 Dec 2018 11:08:10 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "131"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"snmv3InfoList\": [\n        {\n            \"hostName\": \"Test\",\n            \"privacyAlgorithm\": 0,\n            \"id\": 9,\n            \"encryptAlgorithm\": 0,\n            \"userAccount\": {\n                \"userName\": \"admin\"\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Update SNMPV3Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"    ",
+							"",
+							"if((tests[\"Validating attributes tag\"] = responseBody.has(\"attributes\")))      ",
+							"        console.log(\"attributes tag is present\");",
+							"        ",
+							"if((tests[\"Validating name tag\"] = responseBody.has(\"name\")))      ",
+							"        console.log(\"name tag is present\");",
+							"        ",
+							"if((tests[\"Validating value tag\"] = responseBody.has(\"value\")))      ",
+							"        console.log(\"value tag is present\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"snmv3ConfigOperationType\": 3,\n    \"snmv3Info\": {\n        \"hostName\": \"Modified\",\n        \"id\" : {{hostid}},\n        \"privacyCredentials\": false,\n        \"privacyAlgorithm\": 2,\n        \"encryptAlgorithm\": 0,\n        \"userAccount\": {\n            \"password\": \"{{Password}}\",\n            \"userName\": \"{{UserName}}\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"SNMPV3Configuration"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Update SNMPV3Configuration",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"snmv3ConfigOperationType\": 3,\n    \"snmv3Info\": {\n        \"hostName\": \"Modified\",\n        \"id\" : {{hostid}},\n        \"privacyCredentials\": false,\n        \"privacyAlgorithm\": 2,\n        \"encryptAlgorithm\": 0,\n        \"userAccount\": {\n            \"password\": \"####\",\n            \"userName\": \"####\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"SNMPV3Configuration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 17 Dec 2018 11:08:18 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "85"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"processinginstructioninfo\": {\n        \"attributes\": [\n            {\n                \"name\": \"exitval\",\n                \"value\": \"0\"\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Modified SNMPV3Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating snmv3InfoList tag\"] = responseBody.has(\"snmv3InfoList\")))      ",
+							"        console.log(\"snmv3InfoList tag is present\");",
+							"        ",
+							"if((tests[\"Validating hostName tag\"] = responseBody.has(\"hostName\")))      ",
+							"        console.log(\"hostName tag is present\");",
+							"        ",
+							"if((tests[\"Validating privacyAlgorithm tag\"] = responseBody.has(\"privacyAlgorithm\")))      ",
+							"        console.log(\"privacyAlgorithm tag is present\");",
+							"        ",
+							"if((tests[\"Validating encryptAlgorithm tag\"] = responseBody.has(\"encryptAlgorithm\")))      ",
+							"        console.log(\"encryptAlgorithm tag is present\");",
+							"        ",
+							"if((tests[\"Validating userAccount tag\"] = responseBody.has(\"userAccount\")))      ",
+							"        console.log(\"userAccount tag is present\");",
+							"        ",
+							"        ",
+							"if((tests[\"Validating hostname\"] = responseBody.has(\"Modified\")))      ",
+							"        console.log(\"Hostname is present\");",
+							"        ",
+							"",
+							"        ",
+							"postman.setEnvironmentVariable(\"hostName\", jsonData.snmv3InfoList[0].hostName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"SNMPV3Configuration"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Modified SNMPV3Configuration",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"SNMPV3Configuration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 17 Dec 2018 11:08:27 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "135"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"snmv3InfoList\": [\n        {\n            \"hostName\": \"Modified\",\n            \"privacyAlgorithm\": 2,\n            \"id\": 9,\n            \"encryptAlgorithm\": 0,\n            \"userAccount\": {\n                \"userName\": \"admin\"\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete SNMPV3Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"    ",
+							"",
+							"if((tests[\"Validating attributes tag\"] = responseBody.has(\"attributes\")))      ",
+							"        console.log(\"attributes tag is present\");",
+							"        ",
+							"if((tests[\"Validating name tag\"] = responseBody.has(\"name\")))      ",
+							"        console.log(\"name tag is present\");",
+							"        ",
+							"if((tests[\"Validating value tag\"] = responseBody.has(\"value\")))      ",
+							"        console.log(\"value tag is present\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"snmv3ConfigOperationType\": 2,\n    \"snmv3Info\": {\n        \"hostName\": \"{{hostName}}\",\n        \n        \n        \"userAccount\": {\n            \n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"SNMPV3Configuration"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Delete SNMPV3Configuration",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"snmv3ConfigOperationType\": 2,\n    \"snmv3Info\": {\n        \"hostName\": \"{{hostName}}\",\n        \n        \n        \"userAccount\": {\n            \n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"SNMPV3Configuration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 17 Dec 2018 11:08:35 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "85"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"processinginstructioninfo\": {\n        \"attributes\": [\n            {\n                \"name\": \"exitval\",\n                \"value\": \"0\"\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

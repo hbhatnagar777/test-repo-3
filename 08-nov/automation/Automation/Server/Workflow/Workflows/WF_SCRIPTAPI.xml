@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration/>"
+    description="" executeOnWeb="0"
+    inputs="&lt;inputs>&#xa;  &lt;input1 class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>value1&lt;/input1>&#xa;&lt;/inputs>"
+    interactive="0" isHtmlDescription="0" manualPercentageComplete="0"
+    name="WF_SCRIPTAPI"
+    outputs="&lt;outputs>&#xa;  &lt;errorCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;/>&#xa;&lt;/outputs>"
+    revision="$Revision: 1.2 $" tags=""
+    uniqueGuid="04dde6af-15c4-4783-b86a-bf5e613f5a1c"
+    variables="&lt;variables>&#xa;  &lt;variable class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;/>&#xa;  &lt;localvar class=&quot;java.lang.String&quot; _list_=&quot;false&quot;/>&#xa;&lt;/variables>"
+    webHidden="1" workflowId="0">
+    <schema>
+        <outputs className="" name="outputs" type="">
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.Integer" listType="0"
+                name="errorCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+        </outputs>
+        <variables className="" name="variables" type="">
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                name="variable" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="localvar" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </variables>
+        <inputs className="" name="inputs" type="">
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="input1" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </inputs>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start breakpoint="0" commented="0" continueOnFailure="0"
+        created="0" description="" displayName="Start" height="36"
+        interactive="0" jobMode="0" name="Start"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+        <inputs val="&lt;inputs/>"/>
+        <transition activity="Script_2" commented="0" originalStyle=""
+            status="0" style="defaultEdge" transitionIndex="0"
+            value="ANY" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0"
+        created="1577121675824"
+        description="activity to execute code snippets in the selected language"
+        displayName="Script" height="34" interactive="0" jobMode="0"
+        name="Script" namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ScriptActivity"
+        uniqueName="Script_2" waitSetting="0" width="100" x="161" y="40">
+        <inputs val="&lt;inputs>&#xa;  &lt;script language=&quot;1&quot; script=&quot;if (workflow.getInput(&amp;quot;input1&amp;quot;).equals(&amp;quot;value1&amp;quot;)) {&amp;#xD;&amp;#xA;    workflow.setInput(&amp;quot;input1&amp;quot;, &amp;quot;value2&amp;quot;);&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;variable1&amp;quot;,true);&amp;#xD;&amp;#xA;    if (workflow.getVariable(&amp;quot;variable1&amp;quot;) == true)&amp;#xD;&amp;#xA;        return true;&amp;#xD;&amp;#xA;    else&amp;#xD;&amp;#xA;        return false;&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA; }&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA; &quot;/>&#xa;&lt;/inputs>"/>
+        <transition activity="ProcessBlock_1" commented="0"
+            originalStyle="" status="0" style="defaultEdge"
+            transitionIndex="0" value="ANY" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0"
+        created="1577125307498"
+        description="creates a super process group"
+        displayName="ProcessBlock" height="197" interactive="0"
+        jobMode="0" name="ProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="swimlane"
+        uniqueName="ProcessBlock_1" waitSetting="0" width="160" x="328" y="40">
+        <inputs val="&lt;inputs>&#xa;  &lt;inputs/>&#xa;&lt;/inputs>"/>
+        <superProcess>
+            <Start breakpoint="0" commented="0" continueOnFailure="0"
+                created="1577125307498" description=""
+                displayName="Start" height="30" interactive="0"
+                jobMode="0" name="Start"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;fillColor=#FFFF33;gradientColor=#FFFF00"
+                uniqueName="Start_2" waitSetting="0" width="120" x="18" y="30">
+                <inputs val="&lt;inputs/>"/>
+                <transition activity="Script_3" commented="0"
+                    originalStyle="" status="0" style="defaultEdge"
+                    transitionIndex="0" value="ANY" x="0" y="0">
+                    <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Start>
+            <Activity breakpoint="0" commented="0" continueOnFailure="0"
+                created="1577125316446"
+                description="activity to execute code snippets in the selected language"
+                displayName="Script" height="34" interactive="0"
+                jobMode="0" name="Script"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.ScriptActivity"
+                uniqueName="Script_3" waitSetting="0" width="100" x="29" y="111">
+                <inputs val="&lt;inputs>&#xa;  &lt;script language=&quot;1&quot; script=&quot;workflow.setLocalVariable(&amp;quot;localvar&amp;quot;,&amp;quot;var2&amp;quot;);&amp;#xA;if (workflow.getLocalVariable(&amp;quot;localvar&amp;quot;).equals(&amp;quot;var2&amp;quot;))&amp;#xA;    return true;&amp;#xA;else&amp;#xA;    return false;&amp;#xA;workflow.setOutput('errorCode',0);&quot;/>&#xa;&lt;/inputs>"/>
+            </Activity>
+        </superProcess>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0"
+                name="outputs" type=""/>
+            <inputs className="" defaultValue="" listType="0" name="" type=""/>
+        </activitySchema>
+    </Activity>
+    <onComplete language="1" script="if (workflow.getOutput('errorcode') == 0)&#xa;return true;&#xa;else&#xa;return false;&#xa;"/>
+</Workflow_WorkflowDefinition>

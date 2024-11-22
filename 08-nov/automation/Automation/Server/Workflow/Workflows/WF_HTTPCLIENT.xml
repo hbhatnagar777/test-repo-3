@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />" description="" executeOnWeb="0" inputs="&lt;inputs />" interactive="0" isHtmlDescription="0" manualPercentageComplete="0" name="WF_HTTPCLIENT" outputs="&lt;outputs />" revision="$Revision: 1.2 $" tags="" uniqueGuid="d16085ce-0a91-450b-88b2-f8040d9ebad8" variables="&lt;variables />" webHidden="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables className="" name="variables" type=""/>
+        <inputs className="" name="inputs" type=""/>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start breakpoint="0" commented="0" continueOnFailure="0" created="0" description="" displayName="Start" height="36" interactive="0" jobMode="0" name="Start" originalStyle="" skipAttempt="0" style="image;image=/images/jgraphx/house.png" uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="HttpClient_1" commented="0" originalStyle="" points="" sourceX="72" sourceY="59" status="0" style="defaultEdge" targetX="397" targetY="88" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1576093451005" description="performs http operations" displayName="HttpClient" height="34" interactive="0" jobMode="0" name="HttpClient" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.HttpClientActivity" uniqueName="HttpClient_1" waitSetting="0" width="100" x="375" y="64">
+        <inputs val="&lt;inputs>&lt;request>&lt;url>/SearchSvc/CVWebService.svc/&lt;/url>&lt;method>GET&lt;/method>&lt;postType>Raw&lt;/postType>&lt;postContent>&lt;/postContent>&lt;postContentType>application/xml; charset=UTF-8&lt;/postContentType>&lt;headers>&lt;name>Authtoken&lt;/name>&lt;value>QSDKONLY xpath:{/workflow/system/token}&lt;/value>&lt;/headers>&lt;headers>&lt;name>Accept&lt;/name>&lt;value>application/json&lt;/value>&lt;/headers>&lt;/request>&lt;/inputs>"/>
+    </Activity>
+</Workflow_WorkflowDefinition>

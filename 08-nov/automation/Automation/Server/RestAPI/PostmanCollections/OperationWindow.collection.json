@@ -1,0 +1,1580 @@
+{
+	"info": {
+		"_postman_id": "52e956c0-92c2-46bc-aeef-4a816b4dda4f",
+		"name": "Operation Window",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4331195"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"",
+							"if(tests[\"Validate clientProperties tag\"] = responseBody.has(\"clientProperties\") === true);      //validate clientProperties tag",
+							"        console.log(\"clientProperties tag is present\");",
+							"",
+							"postman.setEnvironmentVariable(\"clientId\", jsonData.clientProperties[0].client.clientEntity.clientId);",
+							"postman.setEnvironmentVariable(\"clientId1\", jsonData.clientProperties[1].client.clientEntity.clientId);",
+							"",
+							"postman.setEnvironmentVariable(\"clientName\", jsonData.clientProperties[0].client.clientEntity.clientName);",
+							"postman.setEnvironmentVariable(\"clientName1\", jsonData.clientProperties[1].client.clientEntity.clientName);",
+							"",
+							"postman.setEnvironmentVariable(\"hostName\", jsonData.clientProperties[0].client.clientEntity.hostName);",
+							"postman.setEnvironmentVariable(\"hostName1\", jsonData.clientProperties[1].client.clientEntity.hostName);",
+							"",
+							"console.log(\"value of clientId set to:\", postman.getEnvironmentVariable(\"clientId\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Instance using clientId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"); ",
+							"if ((responseCode.code===200) && responseBody.has(\"instanceProperties\"))",
+							"{",
+							"    tests[\"The client has instances\"] = responseBody.has(\"instanceProperties\") ;",
+							"    tests[\"instanceActivityControl is present\"] = responseBody.has(\"instanceActivityControl\") ;",
+							"    tests[\"activityControlOptions is present\"] = responseBody.has(\"activityControlOptions\") ;",
+							"    postman.setEnvironmentVariable(\"appId\",jsonData.instanceProperties[0].instance.applicationId);",
+							"    postman.setEnvironmentVariable(\"instanceId\",jsonData.instanceProperties[0].instance.instanceId);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientId = postman.getEnvironmentVariable(\"clientId\");",
+							"postman.setEnvironmentVariable(\"clientId\", clientId);",
+							"var clientName = postman.getEnvironmentVariable(\"clientName\");",
+							"postman.setEnvironmentVariable(\"clientName\", clientName);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/instance?clientId={{clientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"instance"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{clientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient by clientId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"postman.setEnvironmentVariable(\"subclientId\",jsonData.subClientProperties[0].subClientEntity.subclientId);",
+							"postman.setEnvironmentVariable(\"backupsetId\",jsonData.subClientProperties[0].subClientEntity.backupsetId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient?clientId={{clientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{clientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enable ignore higher-level operation window rules feature",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"errorCode is 0\"] = jsonData.error.errorCode == 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/IgnoreHigherLevelRules/Action/Enable?clientId={{clientId}}&appTypeId={{appId}}&instanceId={{instanceId}}&backupsetId={{backupsetId}}&subclientId={{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"IgnoreHigherLevelRules",
+						"Action",
+						"Enable"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{clientId}}"
+						},
+						{
+							"key": "appTypeId",
+							"value": "{{appId}}"
+						},
+						{
+							"key": "instanceId",
+							"value": "{{instanceId}}"
+						},
+						{
+							"key": "backupsetId",
+							"value": "{{backupsetId}}"
+						},
+						{
+							"key": "subclientId",
+							"value": "{{subclientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Disable ignore higher-level operation window rules feature",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"errorCode is 0\"] = jsonData.error.errorCode == 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/IgnoreHigherLevelRules/Action/Disable?clientId={{clientId}}&appTypeId={{appId}}&instanceId={{instanceId}}&backupsetId={{backupsetId}}&subclientId={{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"IgnoreHigherLevelRules",
+						"Action",
+						"Disable"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{clientId}}"
+						},
+						{
+							"key": "appTypeId",
+							"value": "{{appId}}"
+						},
+						{
+							"key": "instanceId",
+							"value": "{{instanceId}}"
+						},
+						{
+							"key": "backupsetId",
+							"value": "{{backupsetId}}"
+						},
+						{
+							"key": "subclientId",
+							"value": "{{subclientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enable ignore higher-level operation window rules for clientId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"errorCode is 0\"] = jsonData.error.errorCode == 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/IgnoreHigherLevelRules/Action/Enable?clientId={{clientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"IgnoreHigherLevelRules",
+						"Action",
+						"Enable"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{clientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Disable ignore higher-level operation window rules for clientId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"errorCode is 0\"] = jsonData.error.errorCode == 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/IgnoreHigherLevelRules/Action/Disable?clientId={{clientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"IgnoreHigherLevelRules",
+						"Action",
+						"Disable"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{clientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enable ignore higher-level operation window rules for applicationId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"errorCode is 0\"] = jsonData.error.errorCode == 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/IgnoreHigherLevelRules/Action/Enable?clientId={{clientId}}&appTypeId={{appId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"IgnoreHigherLevelRules",
+						"Action",
+						"Enable"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{clientId}}"
+						},
+						{
+							"key": "appTypeId",
+							"value": "{{appId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Disable ignore higher-level operation window rules for applicationId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"errorCode is 0\"] = jsonData.error.errorCode == 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/IgnoreHigherLevelRules/Action/Disable?clientId={{clientId}}&appTypeId={{appId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"IgnoreHigherLevelRules",
+						"Action",
+						"Disable"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{clientId}}"
+						},
+						{
+							"key": "appTypeId",
+							"value": "{{appId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enable ignore higher-level operation window rules for backupsetId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"errorCode is 0\"] = jsonData.error.errorCode == 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/IgnoreHigherLevelRules/Action/Enable?backupsetId={{backupsetId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"IgnoreHigherLevelRules",
+						"Action",
+						"Enable"
+					],
+					"query": [
+						{
+							"key": "backupsetId",
+							"value": "{{backupsetId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Disable ignore higher-level operation window rules for backupsetId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"errorCode is 0\"] = jsonData.error.errorCode == 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/IgnoreHigherLevelRules/Action/Disable?backupsetId={{backupsetId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"IgnoreHigherLevelRules",
+						"Action",
+						"Disable"
+					],
+					"query": [
+						{
+							"key": "backupsetId",
+							"value": "{{backupsetId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enable ignore higher-level operation window rules for subclientId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"errorCode is 0\"] = jsonData.error.errorCode == 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/IgnoreHigherLevelRules/Action/Enable?subclientId={{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"IgnoreHigherLevelRules",
+						"Action",
+						"Enable"
+					],
+					"query": [
+						{
+							"key": "subclientId",
+							"value": "{{subclientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Disable ignore higher-level operation window rules for subclientId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"errorCode is 0\"] = jsonData.error.errorCode == 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/IgnoreHigherLevelRules/Action/Disable?subclientId={{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"IgnoreHigherLevelRules",
+						"Action",
+						"Disable"
+					],
+					"query": [
+						{
+							"key": "subclientId",
+							"value": "{{subclientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OperationWindow",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"",
+							"if(\"ruleId\" in jsonData.operationWindow) {",
+							"    postman.setEnvironmentVariable(\"ruleId\", jsonData.operationWindow.ruleId);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"operationWindow\": {\r\n        \"name\": \"newBlackoutWindow\",\r\n        \"ruleId\": 0,\r\n        \"operations\": [\r\n            \"OPERATION_FULL_DATA_PROTECTION\",\r\n            \"OPERATION_NON_FULL_DATA_PROTECTION\",\r\n            \"OPERATION_SYNTHETIC_FULL\",\r\n            \"OPERATION_TRANSACTION_LOG_BACKUP\"\r\n        ],\r\n        \"dayTime\": [\r\n            {\r\n                \"dayOfWeek\": [\r\n                    \"MONDAY\",\r\n                    \"TUESDAY\",\r\n                    \"WEDNESDAY\",\r\n                    \"THURSDAY\",\r\n                    \"FRIDAY\"\r\n                ],\r\n                \"startTime\": 28800,\r\n                \"endTime\": 64800,\r\n                \"weekOfTheMonth\": [\r\n                    \"ALL\"\r\n                ]\r\n            }\r\n        ],\r\n        \"startDate\": 1738281600,\r\n        \"endDate\": 2181945600,\r\n        \"ruleEnabled\": true,\r\n        \"company\": {\r\n            \"providerId\": 0\r\n        },\r\n        \"doNotSubmitJob\": false\r\n    },\r\n    \"entity\": {\r\n        \"clientId\": 2\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OperationWindow",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<Api_AddOperationWindowReq>\r\n<entity clientId=\"3\" clientGroupId=\"\"/>\r\n<operationWindow startDate=\"1445832000\" endDate=\"1445918400\" name=\"testXML\">\r\n<dayOfWeek val=\"3\"/>\r\n<dayOfWeek val=\"5\"/>\r\n<endTime val=\"\"/>\r\n<startTime val=\"\"/>\r\n<operations val=\"\"/>\r\n<operations val=\"\"/>\r\n<operations val=\"\"/>\r\n</operationWindow>\r\n</Api_AddOperationWindowReq>"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/OperationWindow",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"OperationWindow"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "374",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Nov 2017 09:53:20 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<Api_SetOperationWindowResp>\r\n\t<error>\r\n\t\t<errorCode>0</errorCode>\r\n\t</error>\r\n\t<operationWindow>\r\n\t\t<endDate>1445918400</endDate>\r\n\t\t<name>testXML</name>\r\n\t\t<ruleId>4</ruleId>\r\n\t\t<startDate>1445832000</startDate>\r\n\t\t<dayOfWeek>\r\n\t\t\t<val>WEDNESDAY</val>\r\n\t\t</dayOfWeek>\r\n\t\t<dayOfWeek>\r\n\t\t\t<val>FRIDAY</val>\r\n\t\t</dayOfWeek>\r\n\t</operationWindow>\r\n</Api_SetOperationWindowResp>"
+				},
+				{
+					"name": "OperationWindow",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<Api_AddOperationWindowReq>\r\n<entity clientId=\"3\" clientGroupId=\"0\"/>\r\n<operationWindow startDate=\"1445918400\" endDate=\"1445832000\" name=\"testXML\">\r\n<dayOfWeek val=\"4\"/>\r\n<dayOfWeek val=\"2\"/>\r\n<endTime val=\"\"/>\r\n<startTime val=\"0\"/>\r\n<operations val=\"\"/>\r\n<operations val=\"\"/>\r\n<operations val=\"\"/>\r\n</operationWindow>\r\n</Api_AddOperationWindowReq>"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/OperationWindow",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"OperationWindow"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "422",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Nov 2017 09:58:31 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<Api_SetOperationWindowResp>\r\n\t<error>\r\n\t\t<errorCode>0</errorCode>\r\n\t</error>\r\n\t<operationWindow>\r\n\t\t<endDate>1445832000</endDate>\r\n\t\t<name>testXML</name>\r\n\t\t<ruleId>4</ruleId>\r\n\t\t<startDate>1445918400</startDate>\r\n\t\t<dayOfWeek>\r\n\t\t\t<val>THURSDAY</val>\r\n\t\t</dayOfWeek>\r\n\t\t<dayOfWeek>\r\n\t\t\t<val>TUESDAY</val>\r\n\t\t</dayOfWeek>\r\n\t\t<startTime>\r\n\t\t\t<val>0</val>\r\n\t\t</startTime>\r\n\t</operationWindow>\r\n</Api_SetOperationWindowResp>"
+				}
+			]
+		},
+		{
+			"name": "Operation Window Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"errorCode is 0\"] = jsonData.error.errorCode == 0 ;",
+							"tests[\"Response Body has operationWindow tag\"] = responseBody.has(\"operationWindow\") === true ;",
+							"tests[\"Response Body has ruleEnabled tag\"] = responseBody.has(\"ruleEnabled\") === true ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/{{ruleId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"{{ruleId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OperationWindow",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"",
+							"tests[\"Response Body contains operations\"] = responseBody.has(\"operations\");",
+							"",
+							"tests[\"Response Body contains operationWindow\"] = responseBody.has(\"operationWindow\");",
+							"",
+							"tests[\"Response Body contains ruleId\"] = responseBody.has(\"ruleId\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/OpWindowList?clientId=2",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"OpWindowList"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OperationWindow----json",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/OperationWindow/OpWindowList?commcellId=2&clientId=3",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"OperationWindow",
+								"OpWindowList"
+							],
+							"query": [
+								{
+									"key": "commcellId",
+									"value": "2"
+								},
+								{
+									"key": "clientId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "392",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Nov 2017 09:15:02 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"error\":{\r\"errorCode\":0\r},\"operationWindow\":[\r{\r\"ruleEnabled\":true,\"endDate\":1509692400,\"level\":0,\"name\":\"test\",\"ruleId\":1,\"startDate\":1509606000,\"operations\":[\r\r],\"dayOfWeek\":[\r\r],\"startTime\":[\r\r],\"endTime\":[\r\r]\r},{\r\"ruleEnabled\":true,\"endDate\":1510128000,\"level\":2,\"name\":\"IDCMAOW\",\"ruleId\":2,\"startDate\":1509606000,\"operations\":[\r\r],\"dayOfWeek\":[\r\r],\"startTime\":[\r\r],\"endTime\":[\r\r]\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "OperationWindow",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"",
+							"if(\"ruleId\" in jsonData.operationWindow) {",
+							"    postman.setEnvironmentVariable(\"ruleId\", jsonData.operationWindow.ruleId);",
+							"}",
+							"",
+							"",
+							"tests[\"Modification success\"] = jsonData.operationWindow.dayTime[0].dayOfWeek[0] == 4;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"operationWindow\": {\r\n    \"endDate\": 1521691200,\r\n    \"ruleId\": {{ruleId}},\r\n    \"startDate\": 1520485200,\r\n    \"operations\": [\r\n      1,\r\n      2\r\n    ],\r\n    \"dayTime\": [{\r\n      \"startTime\": 46800,\r\n      \"endTime\": 50400,\r\n      \"dayOfWeek\": [\r\n        4\r\n      ]\r\n    }]\r\n  },\r\n  \"entity\": {\r\n    \"clientGroupId\": 0,\r\n    \"clientId\": 2\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OperationWindow",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<Api_UpdateOperationWindowReq>\r\n<entity clientId=\"3\" clientGroupId=\"\"/>\r\n<operationWindow ruleEnabled=\"4\" name=\"changeName\"/>\r\n</Api_UpdateOperationWindowReq>"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/OperationWindow",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"OperationWindow"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "211",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Nov 2017 10:00:44 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<Api_SetOperationWindowResp>\r\n\t<error>\r\n\t\t<errorCode>0</errorCode>\r\n\t</error>\r\n\t<operationWindow>\r\n\t\t<ruleEnabled>true</ruleEnabled>\r\n\t\t<name>changeName</name>\r\n\t</operationWindow>\r\n</Api_SetOperationWindowResp>"
+				}
+			]
+		},
+		{
+			"name": "Delete Blackout Window",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating error code\"] = jsonData.error.errorCode === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/{{ruleId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"{{ruleId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OperationWindow",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerURL}}/OperationWindow/4",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"OperationWindow",
+								"4"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "108",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 02 Nov 2017 09:51:05 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<Api_SetOperationWindowResp>\r\n\t<error>\r\n\t\t<errorCode>0</errorCode>\r\n\t</error>\r\n</Api_SetOperationWindowResp>"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

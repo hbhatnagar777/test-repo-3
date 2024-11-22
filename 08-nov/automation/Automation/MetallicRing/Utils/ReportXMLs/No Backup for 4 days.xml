@@ -1,0 +1,2337 @@
+<CustomReport>
+  <report>
+    <customReportName>No Backup for 4 days</customReportName>
+  </report>
+  <pages>
+    <Page>
+      <pageName>Page0</pageName>
+      <isDefault>true</isDefault>
+      <pageTitle>
+        <text>Page0</text>
+      </pageTitle>
+      <dataSets>
+        <dataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>Device</dataSetName>
+              <dataSetGuid>d6cf27b8-f0db-421a-b334-b7e3e8bfba3a</dataSetGuid>
+            </dataSet>
+            <endpoint>DATABASE</endpoint>
+            <shared>false</shared>
+            <dataSources>
+              <DataSource>
+                <connectionType>COMMCELL</connectionType>
+                <commCell>
+                  <commCellName>$LocalCommCell$</commCellName>
+                </commCell>
+              </DataSource>
+            </dataSources>
+            <allColumns>false</allColumns>
+            <fields>
+              <Column>
+                <name>sys_rowid</name>
+                <dataField>$row_number$</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Data Source</name>
+                <dataField>Data Source</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Domain</name>
+                <dataField>Domain</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Owner</name>
+                <dataField>Owner</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>ClientID</name>
+                <dataField>ClientID</dataField>
+                <type>Integer</type>
+              </Column>
+              <Column>
+                <name>ClientName</name>
+                <dataField>ClientName</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>ClientDisplayName</name>
+                <dataField>ClientDisplayName</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>ClientStatus</name>
+                <dataField>ClientStatus</dataField>
+                <type>Integer</type>
+              </Column>
+              <Column>
+                <name>LastOnlineTime</name>
+                <dataField>LastOnlineTime</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>NextBackup Time</name>
+                <dataField>NextBackup Time</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>LastSuccessBackupTime</name>
+                <dataField>LastSuccessBackupTime</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>LastFailedBackupTime</name>
+                <dataField>LastFailedBackupTime</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>FailedBackupsin30days</name>
+                <dataField>FailedBackupsin30days</dataField>
+                <type>Integer</type>
+              </Column>
+              <Column>
+                <name>LastBackupTime</name>
+                <dataField>LastBackupTime</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>TotalBackupSize</name>
+                <dataField>TotalBackupSize</dataField>
+                <type>Long</type>
+              </Column>
+              <Column>
+                <name>BackupSchedule</name>
+                <dataField>BackupSchedule</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Lost</name>
+                <dataField>Lost</dataField>
+                <type>Integer</type>
+              </Column>
+              <Column>
+                <name>Version</name>
+                <dataField>Version</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Owner Email</name>
+                <dataField>Owner Email</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Backup Size</name>
+                <dataField>Backup Size</dataField>
+                <type>Long</type>
+              </Column>
+              <Column>
+                <name>Hostname</name>
+                <dataField>Hostname</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>OS</name>
+                <dataField>OS</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Install Date</name>
+                <dataField>Install Date</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Updates Status</name>
+                <dataField>Updates Status</dataField>
+                <type>String</type>
+              </Column>
+            </fields>
+            <GetOperation>
+              <parameters>
+                <Parameter>
+                  <name>reportSchedules</name>
+                  <dataType>String</dataType>
+                  <values>
+                    <string>=input.ShowScheds</string>
+                  </values>
+                </Parameter>
+              </parameters>
+              <sqlText>---------------------------------
+---  Computers (Device).sql   ---
+---------------------------------
+
+--12/13/2017  SK	Delete Content.  Move Schedule fetch out of properties.
+
+DECLARE @DEBUGLEVEL INT = 0
+DECLARE @startTime	INT = dbo.GetUnixTime (GetUTCdate())
+DECLARE @debugUserId	INT
+/* 
+   ------------------------------------------
+--  STANDALONE TESTING
+	DECLARE @sys_userId			INT = 1 
+	DECLARE @debugUserId		INT = 1					--5765  --7533 --217
+	DECLARE @reportSchedules	INT = 1					-- 1:Disabled 2:Enabled
+
+	SET @DEBUGLEVEL = 0
+    ------------------------------------------
+*/
+SET NOCOUNT ON
+
+----------------------------------------------
+-- VARIOUS FLAGS TO HELP DETERMINE WHERE	--
+-- CODE IS GETTING BOGGED DOWN				--
+----------------------------------------------
+DECLARE @SHOW_NEXTBACKUPTIME	INT = 1
+DECLARE @POPULATE_JOBINFO		INT = 1
+DECLARE @DO_SIMPLE_RETURN		INT = 0	   -- 0:Expected Result, 1:Simple Table dump
+DECLARE @SKIP_EXECSQL			INT = 0
+DECLARE @SKIP_CAPABILITIES		INT = 1    -- Seems to be major culprit, SO ALWAYS SKIP THIS!!!!!  SK 20171215
+----------------------------------------------
+
+
+DECLARE @errorCode            AS integer              = 0
+DECLARE @errorString    AS varchar(2048)              = ''
+DECLARE @dateTime       AS DATETIME                         = getDate()
+DECLARE @ATTR_NAME            AS nvarchar(80)               = N'Associated subclient Policy'
+--DECLARE @DECOUPLE_SCP_CONTENT_ATTR_NAME   AS Nvarchar(80)   = N'Decouple SCP Content'
+--DECLARE @ATTR_USE_SCP_FILTERS             AS nvarchar(80)   = N'use SCP filters'
+--DECLARE @ATTR_CLIENT_GEO_LOCATION         AS nvarchar(80)   = N'Client Geo Location'
+--DECLARE @ATTR_GEO_LOCATION_DISPLAY_MODE   AS nvarchar(80)   = N'Geo Location Display Mode'
+DECLARE @excludeStatusMask int = (cast(0x00010 as int) | cast(0x00020 as int))
+DECLARE @excludeStatusMaskForSync int = (cast(0x00002 as int) | cast(0x00004 as int) | cast(0x00010 as int) | cast(0x00020 as int))
+DECLARE @ATTR_USE_CS_SETTING_FOR_GF             AS NVARCHAR(80)   = N'use cs setting for global filters'
+DECLARE @ATTR_USE_GLOBAL_FILTERS                AS NVARCHAR(80)   = N'use global filters'
+DECLARE @ATTR_USE_QNET_GLOBAL_FILTERS           AS NVARCHAR(80)   = N'Use QNET Global Filters'
+DECLARE @ATTR_USE_GLOBAL_FILTERS_FOR_SC         AS NVARCHAR(80)   = N'Use Global Filters for all Subclients'
+DECLARE @QNET_GLOBAL_FILTER_PREFIX              AS NVARCHAR(80)   = N'CN_'
+DECLARE @ATTR_UNIX_FS_EXCLUDE_FILTERS           AS NVARCHAR(80)   = N'Unix FS Exclude Filters'
+DECLARE @ATTR_WIN_FS_EXCLUDE_FILTERS            AS NVARCHAR(80)   = N'Windows FS Exclude Filters'
+
+
+
+DECLARE @EPOCH_DATE DATETIME	= '01/01/1970 00:00:00 AM'          -- This is when UNIX time starts
+DECLARE @TZ_OFFSET	INT			= DateDiff(s, getDate(), getUTCDate())    -- !ADD! this value to localTime to 
+DECLARE @unixtime	INT			= Datediff(second, @EPOCH_DATE, GETUTCDATE())
+DECLARE @30days		INT			= @unixTime - (30*24*60*60)
+DECLARE @NoTime		VARCHAR(16) = 'Not Available'								-- Displayed for no time value columns
+DECLARE @ReleaseId	varchar(4)	= ISNULL((select releaseId from APP_Client where id=2), 16)
+DECLARE @HighestSP	varchar(4)	= ISNULL((select  SPLevel=max(highestSP) from simInstalledPackages where ClientId = 2),0)
+DECLARE @ReleaseSP	INT			= @ReleaseId+ RIGHT('0000' + @HighestSP, 4)
+
+--IF @DEBUGLEVEL &gt; 0
+--	SELECT ReleaseIdSP=@ReleaseSP
+
+IF object_id('tempdb.dbo.#clientList') IS NOT NULL
+      DROP TABLE #clientList
+
+CREATE TABLE  #clientList (
+		cId							int not null,
+		releaseId					int not null,
+		clientName					nvarchar(255)	DEFAULT '',
+		clientDisplayName			nvarchar(255)	DEFAULT '',
+		hostName					nvarchar(255)	DEFAULT '',
+		appId						int				DEFAULT 0,
+		instId						int				DEFAULT 0,
+		bSet						int				DEFAULT 0,
+		subId						int				DEFAULT 0,
+		assocBset					int				DEFAULT 0,
+		assocSubC					int				DEFAULT 0,
+		useSCPfilters				int				DEFAULT 0,
+		lastbkupTime				int				DEFAULT 0,
+		lastSuccessBkupTime			int				DEFAULT 0,
+		lastFailBkupTime			int				DEFAULT 0,
+		Failbkpsin30days			int				DEFAULT 0,
+		nextBkupTime				int				DEFAULT 0,
+		backupSize					bigint			DEFAULT 0,
+		capabilities				bigint			DEFAULT 0,
+		totalbackupsize				bigint			DEFAULT 0,
+		isOwner						int				DEFAULT 1,
+		vCid						int				DEFAULT 0,
+		isArchived					int				DEFAULT 0,
+		flag						int				DEFAULT 0,
+		isDRalertEnabled			int				DEFAULT NULL,
+		isDPalertEnabled			int				DEFAULT NULL,
+		decoupleSCPcontent			int				DEFAULT 0, --Being used for not returning schedule for non-backup VM
+		lastOnlineTime				int				DEFAULT 0,
+		lastOfflineTime				int				DEFAULT 0,
+--		lastGeoLocation				xml				DEFAULT NULL,
+		vmJobId						int				DEFAULT -1,
+		contentIndexingEnabled		int				DEFAULT NULL,
+		dlpStolen					int				DEFAULT NULL,
+		useGlobalFilter				int				DEFAULT 0,
+		lastGeoLocationTime			int				DEFAULT NULL,
+		geoLocationDisplayMode		int				DEFAULT NULL,
+		isSyncAllowed               int				DEFAULT 0,
+		isSyncUserProfilePresent	int				DEFAULT 0,
+		clientStatus				int				DEFAULT 0,
+		isLockedClient				int				DEFAULT 0,
+		cloudId						int				DEFAULT 0,
+		isFLA						int				DEFAULT 0,
+		isIndexingV2				int				DEFAULT 0,
+		owners						nvarchar(MAX),
+		email						nvarchar(MAX),
+		Domain						nvarchar(max),
+		BKPSchedule					nvarchar(max),
+		Version						nvarchar(255)	DEFAULT NULL,
+		simOperatingSystemId		int,
+		installDate					int,
+		simOSName					nvarchar(256),
+		updateStatus				nvarchar(40)
+)
+CREATE CLUSTERED INDEX ClientList_cId_IDX on #clientList(cId);
+
+
+--DECLARE @defaultGeoLocatoinDisplayMode  INT = 2
+IF object_id('tempdb.dbo.#taskInfo') IS NOT NULL
+      DROP TABLE #taskInfo
+CREATE table #taskInfo 
+(
+      taskId int,
+      taskName nvarchar(1024),
+      subTaskId int,
+      subTaskName nvarchar(1024),
+      clientId int,
+	  apptypeId				integer				,
+	  instanceId				integer				,
+	backupsetId				integer				,
+      patternId int,
+      patternInfo nvarchar(1024),
+      ownerId int,
+      ownerName nvarchar(1024),
+      subtaskType int
+)
+
+
+--DECLARE @assocSubClient table   -- SK 20171214   Table not used!
+--(
+--      assocSubClientId int,
+--      clientId      int,
+--      applicationId  int,
+--      backupsetId int,
+--      instanceId int,
+--      subclientId int
+--)
+--DECLARE @content table		-- SK 20171214   Table not used!
+--(
+--      subId  int,
+--      created      int,
+--      modified  int,
+--      fileName nvarchar(1024),
+--      type int
+--)
+
+
+
+IF object_id('tempdb.dbo.#jobInfo') IS NOT NULL
+      DROP TABLE #jobInfo
+CREATE TABLE  #jobInfo (
+            cId                           int not null,
+                  backupSetId                    int not null,
+            subclientId                   int not null,
+            subLastbkupTime            int default 0,
+            subLastSuccessBkupTime     int default 0,
+			lastFailBkupTime        int DEFAULT 0,
+			Failbkpsin30days		int DEFAULT 0,
+            subLastBkpLevel			int default 0,
+            subLastFullcycleNumber int default 0,
+            suBackupSize              bigint default 0,
+
+            subTotalbackupsize         bigint default 0,
+            subLastDiffJobEndTimeInCycle int default 0
+            )
+CREATE  INDEX jobInfo_IDX1 on #jobInfo(cId, backupSetId, subclientId);           ---SK 20141214
+CREATE  INDEX jobInfo_IDX2 on #jobInfo(backupSetId); 
+
+BEGIN TRY
+
+DECLARE @userId                           integer = 0
+DECLARE @clientId                   integer = 0
+DECLARE @scope                              integer = 2
+DECLARE @localeId                   integer = 0
+DECLARE @subClientId                integer = 0
+DECLARE @userGUID                     VARCHAR(255)
+
+--DECLARE     @clientName                   NVARCHAR(1024)	-- SK 20171214  Not Used
+DECLARE           @isUserAdmin            integer =0
+--DECLARE     @getContent                 integer = 0		-- SK 20171214  Not Used
+
+
+DECLARE @getAllProperties integer = 0
+DECLARE @getEndUserClient integer = 0
+DECLARE @defaultCommcellId integer = 2
+
+      SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+      SET @userId =  @sys_userId;
+      
+      IF @debugUserId != 0	SET @userId = @debugUserId         --- FOR DEBUG ONLY!
+      
+      
+      
+      SET @getAllProperties = 0      -- WAS 1
+--      SET @getContent = 0			-- WAS 0
+      
+      --DECLARE @getFsLikeClients int
+      --SET @getFsLikeClients = 1		-- WAS 1   -- HARD CODE THIS!  SK 20171214
+
+
+      SET @getEndUserClient = 0
+      DECLARE @enableBackupSetOwnership int = 0
+      SELECT @enableBackupSetOwnership=value FROM GXGlobalParam WHERE name='enableBackupSetOwnership' AND modified=0
+
+      IF object_id('tempdb.dbo.#tempLaptopSecurityObjects') IS NOT Null DROP TABLE #tempLaptopSecurityObjects
+            create table  #tempLaptopSecurityObjects ( [capabilities]  bigint NOT null, [flag]              int NOT null default 0, [commCellId]    int   NOT null default 2, [clientGroupId] int     NOT null default 0, [clientId]      int   NOT null default 0, [appTypeId]     int     NOT null default 0, [instanceId]    int   NOT null default 0, [backupsetId]   int     NOT null default 0, [subClientId]   int   NOT null default 0, [mediaAgentId]  int     NOT null default 0, [libraryId]     int   NOT null default 0, [archGroupId]   int     NOT null default 0, [vtContainerId] int   NOT null default 0, [vtPolicyId]    int     NOT null default 0, [vtShelfId]     int   NOT null default 0, [reviewSetId]   int     NOT null default 0, [querySetId]      int NOT null default 0, [downloadSetId] int     NOT null default 0, [ermId]           int NOT null default 0, [legalHoldId]   int     NOT null default 0, [tagId]           int NOT null default 0, [cdPolicyId]    int     NOT null default 0, [complianceReportId]   int  NOT null default 0, [taskId]        int     NOT null default 0, [workflowId]    int   NOT null default 0, [logMonitoringPolicyId] int   NOT null default 0, [arrayId]       int   NOT null default 0, [cloudId]       int     NOT null default 0, [userGroupId]   int   NOT null default 0, [providerId]    int     NOT null default 0, [entityId1]     int   NOT null default 0, [entityId2]     int     NOT null default 0, [entityId3]     int   NOT null default 0, [entityId4]     int     NOT null default 0, [entityId5]     int   NOT null default 0, [entityId6]     int     NOT null default 0, [entityId7]     int   NOT null default 0, [entityId8]     int     NOT null default 0, [entityId9]     int   NOT null default 0  )
+            EXEC sec_getUserObjects @userId, 2009, 0, '#tempLaptopSecurityObjects'
+            DECLARE @edgeSubclientId INT = 0
+
+      IF object_id('tempdb.dbo.#edgeClientsWithCapabilities') IS NOT NULL
+            DROP TABLE #edgeClientsWithCapabilities
+      CREATE TABLE #edgeClientsWithCapabilities (
+            clientId INT PRIMARY KEY,
+            clientStatus INT,
+            capabilities BIGINT,
+            userAssociationType INT   -- ADDED FOR BACKWARD COMPATIBILITY????
+      )
+        SET @edgeSubclientId = ISNULL((SELECT TOP 1 AAP.id FROM APP_BackupSetProp ABP INNER JOIN App_Application AAP ON ABP.componentNameId = AAP.backupset WHERE ABP.attrName = 'Edge Drive User Id' AND ABP.attrVal = CAST(@userId AS NVARCHAR(256)) AND ABP.modified =0) ,0)
+
+      IF object_id('tempdb.dbo.#appType35Table') IS NOT NULL
+            DROP TABLE #appType35Table
+      CREATE TABLE #appType35Table (
+            appTypeId         INT PRIMARY KEY
+      )
+
+      IF object_id('tempdb.dbo.#Ownert') IS NOT NULL
+            DROP TABLE #Ownert
+       CREATE TABLE  #Ownert(clientid INT, username NVARCHAR(255), email NVARCHAR(255),Domain nvarchar(max))
+
+      
+      INSERT INTO #appType35Table                           -- Converted from a table variable
+        SELECT DISTINCT appTypeId
+            FROM GetAppTypesForAppGroup(35,0)
+	  DELETE #appType35Table where appTypeId = 13   -- Don't know why, but this was an additional test everywhere!  20171214 SK
+
+
+     BEGIN                 
+                  IF OBJECT_ID('tempdb.dbo.#HPClientList') IS NOT NULL DROP TABLE #HPClientList
+                  CREATE TABLE #HPClientList
+                  (
+                        clientId INT, t_appTypeId INT, t_instanceId INT, t_backupsetId INT, t_subclientId INT
+                  )
+                  EXEC sec_getIdaObjectsForUser @userId, 3  /*CLIENT_ENTITY */ , 0 /*View*/, 0, '#HPClientList'
+
+                  INSERT #clientList
+                  SELECT CL.clientId,0,'', '','',ida.appTypeId, 0, 0, 0, 0, 0, 0,0, 0, 0, 0,0, 0, 0, 0, 1, 0, 0, 0, null, null, 0, 0, 0, -1, null, 0, null,null,
+                       null, 0, 0,0,0, 0,0,0,N'',N'',N'',N'',N'',
+                        0, 0, '', ''    -- This line added for defect 194423 
+                  FROM #HPClientList CL 
+                     JOIN APP_IDAName ida
+                      ON CL.clientId = ida.clientId
+					INNER JOIN #appType35Table AS A35
+					   ON ida.appTypeId = A35.appTypeId
+                  --AND ( ida.appTypeId in (SELECT appTypeId FROM #appType35Table)
+                  --AND ida.appTypeId &lt;&gt; 13 )
+
+ 
+                   INSERT INTO #Ownert
+                   SELECT CL.cid, US.name, US.email, ISNULL(UMDS.domainName,'')  FROM
+                   sec_getClientOwnersExpandUG OC INNER JOIN #clientList CL ON OC.clientId = CL.cId INNER JOIN UMUsers US ON OC.userId = US.id
+				   LEFT OUTER JOIN UMDSProviders UMDS ON UMDS.id = US.umDSproviderId AND UMDS.id&gt;0
+
+				   
+                   UPDATE #clientList
+                   SET owners = ot.username, email = ot.email, Domain =OT.Domain
+                   FROM 
+                                 (SELECT  t.clientid, 
+                                                username = STUFF( (SELECT ', '+ c.username FROM #Ownert c WHERE C.clientid = T.clientid FOR XML PATH('')),1,2,''),
+                                               email = STUFF( (SELECT ', '+ c.email FROM #Ownert c WHERE C.clientid = T.clientid FOR XML PATH('')),1,2,''),
+											   Domain = STUFF( (SELECT ', '+ c.Domain FROM #Ownert c WHERE C.clientid = T.clientid FOR XML PATH('')),1,2,'')
+                                 FROM           #Ownert t
+                                 GROUP BY t.clientId) ot
+                   WHERE ot.clientid = #clientList.cId
+                  --
+                  -- Insert Edge Client
+                  IF EXISTS(SELECT * FROM #clientList CL INNER JOIN APP_CLIENT C WITH (NOLOCK)  ON CL.cId = C.id and C.status &amp; 0x10000000 &gt; 0)
+                  BEGIN
+                        DELETE FROM #clientList
+                        WHERE EXISTS (SELECT * FROM APP_CLIENT C WITH (NOLOCK) WHERE  C.id = cId and C.status &amp; 0x10000000 &gt; 0)
+                  END
+                  IF @edgeSubclientId &lt;&gt; 0
+                  BEGIN
+                        INSERT #clientList
+                        SELECT SC.clientId,0,'','','',SC.apptypeId, 0, 0, 0, 0, 0, 0,0, 0, 0,0, 0, 0, 0, 0, 1, 0, 0, 0, null, null, 0, 0, 0,
+                          -1, null, 0, null,null,  null, 0, 0,0,0, 0,0,0,N'',N'',N'',N'',N'',
+                          0, 0, '', ''    -- This line added for defect 194423 
+                        FROM APP_Application SC
+                        INNER JOIN #appType35Table A35
+                          ON A35.appTypeId = SC.appTypeId   --20171214  SK
+                        WHERE id = @edgeSubclientId
+                  END
+                  ELSE
+                  BEGIN
+                        EXEC AppGetEdgeCapabilties @userId, '#edgeClientsWithCapabilities'
+                        INSERT #clientList
+                        SELECT TOP 1 EC.clientId,0,'','','',SC.apptypeId, 0, 0, 0,0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, null, null, 0, 0, 0, -1,
+                            null, 0, null,null,  null, 0, 0,0,0, 0, 0,0,N'',N'',N'',N'',N''
+                            ,0, 0, '', ''    -- This line added for defect 194423 
+                        FROM #edgeClientsWithCapabilities EC
+                        INNER JOIN APP_Application SC ON EC.clientId = SC.clientId
+                        INNER JOIN App_EdgeDriveAssociation EDA ON EDA.clientId = EC.clientId AND EDA.entityType = 11 AND EDA.entityId &gt; 1
+                        INNER JOIN #appType35Table A35  ON A35.appTypeId = SC.appTypeId   -- 20171214 SK
+                          
+                        WHERE  EC.capabilities &amp; 4112  = 4112 -- Clients with upload and browse capability
+                        AND EC.clientStatus &amp; 0x40000000 = 0 -- Dont send system drives.
+                  END
+                 -- Add other client rows if using laptop classic security
+                  IF EXISTS(SELECT 1 FROM GXGlobalParam WITH(READUNCOMMITTED) WHERE name = N'AllowLaptopClassicSecurity' AND value = '1')
+                  BEGIN
+                        IF OBJECT_ID('tempdb.dbo.#WSSecClients2') IS NOT NULL
+                              DROP TABLE #WSSecClients2
+                        CREATE TABLE #WSSecClients2 (
+                              clientId          INT,
+                              appTypeId         INT,
+                              caps              BIGINT,
+                              PRIMARY KEY (clientId, appTypeId, caps)
+                        )
+                        INSERT #WSSecClients2
+                              SELECT
+                                    t.clientId, ida.appTypeId,t.capabilities
+                              FROM #tempLaptopSecurityObjects t
+                                    INNER JOIN APP_IDAName ida ON
+                                          ida.clientId = t.clientId
+                                          INNER JOIN #appType35Table AS A35
+                                            ON A35.appTypeId = ida.appTypeId
+                                          --AND (
+                                          --      --@getFsLikeClients = 1 AND
+                                          --       ida.appTypeId IN (SELECT appTypeId FROM #appType35Table)
+                                          --      AND ida.appTypeId &lt;&gt; 13
+                                          --)
+                              WHERE
+                                    t.clientId &lt;&gt; 0
+                      
+                              IF (@@ROWCOUNT &gt; 0)
+                              BEGIN
+                                    -- merge the additional rows into the clientlist
+                                    MERGE #clientList cl
+                                    USING #WSSecClients2 fs ON (
+                                                fs.clientId = cl.cId
+                                                AND fs.appTypeId = cl.appId
+                                          )
+                                    WHEN NOT MATCHED BY TARGET THEN           -- not found insert row
+                                          INSERT VALUES(fs.clientId, '','',fs.appTypeId, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, fs.caps, 0, 1,
+                                                            CASE fs.appTypeId
+                                                                  WHEN 106 THEN fs.clientId
+                                                                  ELSE 0
+                                                            END,
+                                                            0, 0, null, null, 0, 0, 0, null,-1, null, 0, null, null, 0, 0,0,0,0, 0,0
+                                                      )
+                                    WHEN MATCHED THEN       -- if found update capabilities
+                                          UPDATE
+                                                SET cl.capabilities = (cl.capabilities | fs.caps);
+                              END
+                              IF OBJECT_ID('tempdb.dbo.#WSSecClients2') IS NOT NULL
+                                    DROP TABLE #WSSecClients2
+                  END
+--
+      END
+        
+--SKSKSKSKSKS
+--DELETE #clientList where appId NOT in (SELECT appTypeId FROM GetAppTypesForAppGroup(35,0))    --#appType35Table
+--DELETE #clientList where appId NOT in (SELECT appTypeId FROM #appType35Table)    --#appType35Table
+IF @DEBUGLEVEL &gt;0
+	SELECT tbl='Raw #clientList', * from #clientList
+
+UPDATE #clientList
+      set clientName = c.name, releaseId= C.releaseId, clientDisplayName =c.displayName, hostname = c.net_hostName, clientStatus=status, 
+      simOperatingSystemId=c.simOperatingSystemId, installDate=refTime
+       from #clientList cl INNER JOIN APP_Client c ON c.Id = cId    
+
+UPDATE #clientList
+    SET simOSName = SOS.Name  + ' (' + SOS.SubType + ')'
+    FROM  simOperatingSystem AS SOS
+    WHERE simOperatingSystemId = SOS.id  AND simOperatingSystemId &lt;&gt; 0
+    
+DELETE #clientList where simOsName not like 'Darwin%' and simOsName not like 'Windows%'  -- Excludes UNIX! Only want "laptop-like" clients
+
+
+
+UPDATE #ClientList
+    SET installDate = (select MIN(created) FROM APP_ClientProp where componentNameId = cId)
+    --SET installDate = (select top 1 (created) FROM APP_ClientProp where componentNameId = cId)   -- IS THIS FASTER?
+    WHERE installDate = 0 
+    
+     
+UPDATE #clientList
+        SET bSet = bs.id, flag=a.subclientStatus
+        from  #clientList cl
+        INNER JOIN APP_Application a on a.appTypeId = cl.appId and a.clientId = cl.cId
+        INNER JOIN APP_BackupSetName bs on a.backupSet = bs.id
+        where bs.status &amp; 0x00008 = 0x00008 and cl.appId &lt;&gt; 106  AND bSet=0
+            AND cl.clientStatus &amp; 0x10000000 = 0 -- Not for edge clients
+DELETE #clientList where bSet = 0   -- Shouldn't catch anything here
+
+
+UPDATE #clientList
+        SET bSet = ISNULL(bs.backupSetId, -1), flag= ISNULL(bs.subclientStatus, 0), subId = ISNULL(bs.subclientId, -1)
+        FROM  #clientList cl
+        LEFT OUTER JOIN ( SELECT componentNameId AS backupSetId, a.id AS subclientId, a.clientId, a.subclientStatus FROM APP_BackupSetProp bs
+                                    INNER JOIN APP_Application a ON bs.componentNameId = a.backupSet
+                                    WHERE  bs.attrName = 'Edge Drive User Id' AND bs.modified = 0 AND bs.attrVal = @userId
+                                    )bs ON bs.clientId = cl.cId
+            WHERE cl.clientStatus &amp; 0x10000000 &lt;&gt; 0 -- Only for edge clients
+UPDATE #clientList
+            set subId = ISNULL((Select id FROM APP_Application where clientId = cId and backupset=bset and subclientStatus&amp;@excludeStatusMask = 0
+             and (subClientStatus &amp; 0x00008 = 0x00008 )), 0) where appId &lt;&gt; 106 AND clientStatus &amp; 0x10000000 = 0 -- Not for edge clients
+      UPDATE #clientList
+            set instId = ISNULL((Select instance FROM APP_Application where id = subId), 0) where appId &lt;&gt; 106
+IF @getEndUserClient != 1
+      DELETE #clientList WHERE subId = 0
+      
+UPDATE #clientList
+    SET cId = ISNULL((Select clientId FROM APP_Application where id = subId), 0)
+      WHERE clientStatus &amp; 0x10000000 = 0 -- Not for edge clients
+
+  
+
+IF @POPULATE_JOBINFO &gt; 0
+BEGIN 
+    --Get backup information at backupset level
+    ---1) Get all the subclients for a given backupset
+    INSERT INTO #jobInfo (cid,backupSetId,subclientId)
+    (SELECT cid, bset, app_application.id FROM #clientList
+    INNER JOIN app_application on app_application.backupSet=bSet WHERE appId &lt;&gt; 106 AND subclientStatus&amp;@excludeStatusMask = 0 AND clientStatus &amp; 0x10000000 = 0 )-- Not for edge clients
+    --2)Get information about each subclient
+
+    UPDATE #jobInfo
+          SET subLastSuccessBkupTime = ISNULL((select max(servEndDate)
+           from JMBkpStats WITH (NOLOCK)
+                  where status in (1, 3, 14) -- JMSUCCESS, PARTIALSUCCESS, JMSUCCESSWITHWARNINGS
+                  AND JMBkpStats.appId = subclientId --AND commCellId = @defaultCommcellId
+                  AND opType &lt;&gt; 14  -- Dont show synthetic full
+				AND totalUncompBytes &gt; 0
+                          --AND datastatus = 0 -- DATA_STATUS_VALID
+                          ), 0)
+                          
+    UPDATE #jobInfo
+          SET lastFailBkupTime = ISNULL((select max(servEndDate)
+			 from JMBkpStats WITH (NOLOCK)
+                  where status in (2) -- Failed
+                  AND JMBkpStats.appId = subclientId --AND commCellId = @defaultCommcellId
+                  AND opType &lt;&gt; 14  -- Dont show synthetic full
+					AND totalUncompBytes &gt; 0
+                  --AND datastatus = 0 -- DATA_STATUS_VALID
+                  ), 0)
+	UPDATE #jobInfo
+           SET Failbkpsin30days = ISNULL((select count(jobId)
+            from JMBkpStats WITH (NOLOCK)
+                  where status in (2) -- Failed
+                  AND JMBkpStats.appId = subclientId --AND commCellId = @defaultCommcellId
+                  AND opType &lt;&gt; 14  -- Dont show synthetic full
+				  and servEndDate &gt;=@30days
+				AND totalUncompBytes &gt; 0
+                  --AND datastatus = 0 -- DATA_STATUS_VALID
+                  ), 0)
+                                                                              --where appId &lt;&gt; 106
+    UPDATE #jobInfo
+                  SET subLastbkupTime = ISNULL((select max(servEndDate) from JMBkpStats WITH (NOLOCK)
+                                                                  where JMBkpStats.appId  =  subclientId -- AND commCellId = @defaultCommcellId
+                                                                  AND opType &lt;&gt; 14), 0) -- Dont show synthetic full
+                                                                  -- where appId &lt;&gt; 106
+    UPDATE #jobInfo
+              SET suBackupSize = ISNULL((select SUM(totalUncompBytes) from JMBkpStats WITH (NOLOCK)
+                                                            where
+                                                            -- commCellId = @defaultCommcellId AND
+                                                              servEndDate = subLastSuccessBkupTime
+                                                            and JMBkpStats.appid  = subclientId), 0)
+                                                            -- where appId &lt;&gt; 106 AND clientStatus &amp; 0x10000000 = 0 -- Not for edge clients
+   UPDATE #jobInfo
+                        SET subLastBkpLevel = ISNULL((SELECT TOP 1 bkpLevel from JMBkpStats WITH (NOLOCK)
+                                                              WHERE --commCellId = @defaultCommcellId  AND
+                                                              servEndDate = subLastSuccessBkupTime
+                                                              AND status in (1, 3, 14)
+                                                                                                         AND totalUncompBytes &gt; 0
+                                                              AND JMBkpStats.appid  = subclientId
+
+                                                              ORDER BY servEndDate DESC), 0)
+                  --WHERE clientStatus &amp; 0x10000000 = 0 -- Not for edge clients
+   UPDATE #jobInfo
+                        SET subLastFullcycleNumber = ISNULL((SELECT fullCycleNum from JMBkpStats WITH (NOLOCK)
+                                                                          WHERE --commCellId = @defaultCommcellId AND
+                                                                          servEndDate = subLastSuccessBkupTime
+                                                                          AND JMBkpStats.appid  = subclientId), 0)
+                                                                              --WHERE clientStatus &amp; 0x10000000 = 0 -- Not for edge clients
+                  -- This gived the end time of the recent differential job in current cycle if any.
+   UPDATE #jobInfo
+                        SET subLastDiffJobEndTimeInCycle = ISNULL((SELECT top 1 servEndDate from JMBkpStats WITH (NOLOCK)
+                                                                                    WHERE -- commCellId = @defaultCommcellId AND
+                                                                                    JMBkpStats.appid = subclientId
+                                                                                    AND bkpLevel = 4 -- DIFFERENTIAL
+                                                                                    AND status IN (1, 3, 14) -- JMSUCCESS, PARTIALSUCCESS, JMSUCCESSWITHWARNINGS
+                                                                                                                                                AND totalUncompBytes &gt; 0
+                                                                                    AND fullCycleNum = subLastFullcycleNumber
+                                                                                    ORDER BY servEndDate desc), 0)
+   UPDATE #jobInfo
+                        SET subTotalbackupsize = CASE
+                                                      -- when last backup is synth full, simple take jobs uncompressed bytes.
+                                                      WHEN (subLastBkpLevel = 64 OR subLastBkpLevel = 128) THEN ISNULL((SELECT TOP 1 totalUncompBytes from JMBkpStats
+                                                                                    WHERE --commCellId = @defaultCommcellId  AND
+                                                                                      servEndDate = subLastSuccessBkupTime
+                                                                                      AND status in (1, 3, 14)
+                                                                                      AND JMBkpStats.appid  = subclientId
+                                                                                                                                                  AND totalUncompBytes &gt; 0
+                                                                                      --AND dataStatus = 0
+                                                                                      ORDER BY servEndDate DESC),0)
+                                                      -- When last backup is Differential, take last backup size plus the FULL job's size in the cycle
+                                                      WHEN subLastBkpLevel = 4 THEN suBackupSize + ISNULL((SELECT TOP 1 totalUncompBytes
+                                                                                                      FROM JMBkpStats
+                                                                                                      WHERE JMBkpStats.appId  = subclientId  --AND commCellId = @defaultCommcellId
+                                                                                                      AND bkpLevel IN (1, 64, 128) -- FULL, SYNTHETIC_FULL, SYNTHETIC_FULL_AND_INCR
+                                                                                                      AND status IN (1, 3, 14) -- JMSUCCESS, PARTIALSUCCESS, JMSUCCESSWITHWARNINGS
+                                                                                                                                                                              AND totalUncompBytes &gt; 0
+                                                                                                      --AND dataStatus = 0
+                                                                                                      AND fullCycleNum = subLastFullcycleNumber), 0)
+                                                      -- When last backup is incremental
+                                                      WHEN subLastBkpLevel = 2 THEN
+                                                            CASE subLastDiffJobEndTimeInCycle
+                                                            -- If we dont have a differential job in cycle, simply sum up size of all succeeded jobs in cycle to get total backup size.
+                                                            WHEN 0 THEN ISNULL( (SELECT SUM(totalUncompBytes)
+                                                                                          FROM JMBkpStats
+                                                                                          WHERE JMBkpStats.appId  = subclientId  --AND commCellId = @defaultCommcellId
+                                                                                          AND bkpLevel IN(1, 2, 64, 128) -- FULL, INCR, SYNTHETIC_FULL, SYNTHETIC_FULL_AND_INCR
+                                                                                          AND status IN (1, 3, 14)  -- JMSUCCESS, PARTIALSUCCESS, JMSUCCESSWITHWARNINGS
+                                                                                                                                                         AND totalUncompBytes &gt; 0
+                                                                                          --AND dataStatus = 0
+                                                                                          AND fullCycleNum = subLastFullcycleNumber), 0)
+                                                            -- If we have a differential job, then add Full job's Size with last diff job's size and all jobs after it.
+                                                            ELSE        ISNULL( (SELECT TOP 1 totalUncompBytes
+                                                                                            FROM JMBkpStats
+                                                                                            WHERE JMBkpStats.appId  = subclientId  --AND commCellId = @defaultCommcellId --AND commCellId = @defaultCommcellId
+                                                                                            AND bkpLevel IN(1, 64, 128) -- FULL, SYNTHETIC_FULL, SYNTHETIC_FULL_AND_INCR
+                                                                                            AND status IN (1, 3 ,14)  -- JMSUCCESS, PARTIALSUCCESS, JMSUCCESSWITHWARNINGS
+                                                                                                                                                              AND totalUncompBytes &gt; 0
+                                                                                            --AND dataStatus = 0
+                                                                                            AND fullCycleNum = subLastFullcycleNumber) , 0)
+                                                                              +ISNULL( (SELECT SUM(totalUncompBytes)
+                                                                                            FROM JMBkpStats
+                                                                                            WHERE JMBkpStats.appId  = subclientId -- AND commCellId = @defaultCommcellId
+                                                                                            AND bkpLevel IN(2, 4) -- INCR, DIFFERENTIAL
+                                                                                            AND status IN (1, 3 ,14)  -- JMSUCCESS, PARTIALSUCCESS, JMSUCCESSWITHWARNINGS
+                                                                                                                                                              AND totalUncompBytes &gt; 0
+                                                                                            --AND dataStatus = 0
+                                                                                            AND fullCycleNum = subLastFullcycleNumber
+                                                                                            AND servEndDate &gt;= subLastDiffJobEndTimeInCycle), 0)
+                                                            END
+                                                      -- When last backup is FULL, use current backup size because it is start of cycle
+                                                      ELSE suBackupSize
+
+                                                      END
+
+    UPDATE #clientList
+		SET lastSuccessBkupTime = ISNULL((SELECT max(subLastSuccessBkupTime) FROM #jobinfo WHERE bset = backupsetId),0)
+		 WHERE appId &lt;&gt; 106
+	UPDATE #clientList
+		SET lastFailBkupTime = ISNULL((SELECT max(lastFailBkupTime) FROM #jobinfo WHERE bset = backupsetId),0) WHERE appId &lt;&gt; 106
+	UPDATE #clientList
+		SET Failbkpsin30days = ISNULL((SELECT max(Failbkpsin30days) FROM #jobinfo WHERE bset = backupsetId),0)
+		 WHERE appId &lt;&gt; 106
+		  
+    UPDATE #clientList
+		SET lastbkupTime = ISNULL((SELECT max(subLastbkupTime) FROM #jobinfo WHERE bset = backupsetId),0)  WHERE appId &lt;&gt; 106
+    UPDATE #clientList
+		SET lastOnlineTime = ISNULL((SELECT top 1 lastOnlineTime FROM CCRClientToClient WHERE FromClientId = 2 and ToClientId = cId), 0)
+    UPDATE #clientList
+		SET lastOfflineTime = ISNULL((SELECT top 1 lastOfflineTime FROM CCRClientToClient WHERE FromClientId = 2 and ToClientId = cId), 0)
+    UPDATE #clientList
+		SET backupSize = ISNULL((SELECT SUM(suBackupSize) from #jobinfo WHERE bset = backupsetId),0)
+		   WHERE appId &lt;&gt; 106
+    UPDATE #clientList
+		SET totalbackupsize =  ISNULL((SELECT SUM(subtotalbackupsize) from #jobinfo WHERE bset = backupsetId),0)  WHERE appId &lt;&gt; 106
+
+
+    END    -- @POPULATE_JOBINFO
+            --3) Update the jobinfo at client level
+
+IF @SHOW_NEXTBACKUPTIME &lt;&gt; 0
+  UPDATE cl
+            SET nextBkupTime = ISNULL(u.nextBkupTime, cl.nextBkupTime)
+      FROM #clientList AS cl
+            INNER JOIN
+                  (SELECT --DISTINCT
+                        cl.subId AS subId, MIN(rt.nextTime) AS nextBkupTime
+                  FROM #clientList cl
+                        INNER JOIN TM_AssocEntity ae ON
+                              --CHECK USER HAVING ASSOCIATION FOR THE ENTITY
+                              (ae.subclientId = cl.subId)
+                              OR (ae.backupsetId = cl.bSet AND ae.subclientId = 0)
+                              OR (ae.instanceId = cl.instId AND ae.backupsetId = 0 AND ae.subclientId = 0)
+                              OR (ae.apptypeId = cl.appId AND ae.instanceId = 0 AND ae.backupsetId = 0 AND ae.subclientId = 0)
+                              OR (ae.clientId = cl.cId AND ae.apptypeId = 0 AND ae.instanceId = 0 AND ae.backupsetId = 0 AND ae.subclientId = 0)
+                              OR (ae.clientGroupId in (select clientGroupId FROM APP_ClientGroupAssoc WHERE clientId = cl.cId) and ae.clientId = 0 AND ae.apptypeId = 0 AND ae.instanceId = 0 AND ae.backupsetId = 0 AND ae.subclientId = 0)
+                        INNER JOIN TM_SubTask st WITH (NOLOCK) ON
+                              ae.taskId = st.taskId
+                        INNER JOIN TM_SubTaskOptions sto ON
+                              sto.subTaskId = st.subTaskId
+                              AND sto.optionId = 458405394
+                              AND sto.value IN (1, 2)
+                        INNER JOIN TM_PatternAssoc pa ON
+                              pa.subTaskId = st.subTaskId
+                        INNER JOIN TM_RunTime rt ON
+                              rt.patternId = pa.patternId
+                              AND rt.processed = 0
+                        GROUP BY
+                              cl.subId) AS u ON
+                  u.subId = cl.subId
+
+IF @SHOW_NEXTBACKUPTIME &lt;&gt; 0
+      UPDATE #clientList
+            SET nextBkupTime = ISNULL((SELECT CAST(attrVal AS INT) FROM APP_ClientProp
+                                                      WHERE componentNameId=cId AND attrName='Next Run Time In'
+                                                      AND (CAST(attrVal AS INT)&lt;nextBkupTime OR nextBkupTime=0) AND modified=0 AND CAST(attrVal AS INT)&gt;0
+                                                      ), nextBkupTime)
+            -- Consider only clients which are laptops and not deleted
+            UPDATE #clientList
+            SET isSyncAllowed = ISNULL((SELECT TOP 1 1 FROM APP_Client WITH (NOLOCK) WHERE id = cId AND (status &amp; 4096 = 4096) AND (status &amp; @excludeStatusMaskForSync = 0 ) ),0)
+            UPDATE #clientList
+            SET isSyncUserProfilePresent = ISNULL((SELECT TOP 1 1 FROM UMClientUserMap WHERE clientId = cId AND umUserId = @userId),0)
+            UPDATE #clientList
+            SET isLockedClient = ISNULL((SELECT attrVal FROM APP_ClientProp WITH (NOLOCK) WHERE componentNameId = cId AND modified=0 AND attrName='Enable Data Security'  ),0)
+            UPDATE #clientList
+            SET isIndexingV2 = ISNULL((SELECT TOP 1 attrVal FROM APP_ClientProp WITH (NOLOCK) WHERE componentNameId = cId AND modified=0 AND attrName='IndexingV2'),0)
+--
+            UPDATE #clientList
+            SET cloudId = ISNULL((SELECT     CASE WHEN CHARINDEX('SOLR',cp.stringVal) = 0
+                                                                    THEN -1
+                                                                    ELSE ISNULL(archContentIndexingRules.cloudId, 0)
+                                                              END
+                                            FROM         APP_Application WITH (NOLOCK)
+                                            INNER JOIN    archContentIndexingRules  WITH (NOLOCK) ON archContentIndexingRules.archGroupId = APP_Application.dataArchGrpID
+                                                                  AND APP_Application.clientId = cId AND APP_Application.subclientStatus &amp; 0x00008 &gt; 0 AND APP_Application.appTypeId = appId AND APP_Application.instance = instId
+                                            INNER JOIN      APP_BackupSetName WITH (NOLOCK) ON APP_BackupSetName.id = APP_Application.backupset AND APP_BackupSetName.status &amp; 0x00008 &gt; 0
+                                            INNER JOIN APP_ComponentProp cp WITH (NOLOCK) ON  cp.componentId = archContentIndexingRules.cloudId AND cp.modified = 0 AND propertyTypeId = 1014 -- CV_COMPONENT_CI_ENGINE_VERSION_PROP
+                      ),0)
+            WHERE clientStatus &amp; 0x10000000 = 0
+--
+
+IF @SKIP_EXECSQL = 0
+BEGIN
+DECLARE @executeStr nvarchar (1024)
+			IF @ReleaseSP &lt; 160008
+				SET @executeStr = 'UPDATE #clientList
+				SET cloudId = ISNULL((SELECT DM.CloudId
+												FROM DM2SearchServerCoreInfo DM
+												INNER JOIN DM2Cloud C ON DM.CloudId = C.cloudId
+												INNER JOIN DM2CloudCoreRole R ON DM.CoreId = R.coreId
+												INNER JOIN DM2CloudRoleMaster RM ON RM.roleType = R.roleId AND RM.roleTypeName = ''EDGE Drive''
+												WHERE DM.ClientId IN (SELECT entityId
+																				  FROM App_EdgeDriveAssociation AE
+																				  WHERE AE.clientId = cId AND AE.entityType = 11
+																				  ) -- MediaAgent
+												),0)
+				WHERE clientStatus &amp; 0x10000000 &gt; 0'
+
+			ELSE
+				SET @executeStr = 'UPDATE #clientList
+				SET cloudId = ISNULL((SELECT DM.CloudId
+												FROM DM2SearchServerCoreInfo DM
+												INNER JOIN DM2Cloud C ON DM.CloudId = C.cloudId
+												INNER JOIN DM2CloudCoreRole R ON DM.CloudId = R.CloudId
+												INNER JOIN DM2CloudRoleMaster RM ON RM.roleType = R.roleId AND RM.roleTypeName = ''EDGE Drive''
+												WHERE DM.ClientId IN (SELECT entityId
+																				  FROM App_EdgeDriveAssociation AE
+																				  WHERE AE.clientId = cId AND AE.entityType = 11
+																				  ) -- MediaAgent
+												),0)
+				WHERE clientStatus &amp; 0x10000000 &gt; 0'
+----
+				IF @DEBUGLEVEL &gt; 1
+				   select @executeStr
+				   
+				exec sp_executeSQL @executeStr
+END   -- @SKIP_EXECSQL
+--SELECT step='Updated 1'																		--- @#!@#!@#!@!@
+--return
+
+      UPDATE #clientList
+            SET vCid = cId
+            FROM #clientList
+            WHERE vCid = 0
+            
+IF @SKIP_CAPABILITIES = 0
+      UPDATE #clientList
+            SET capabilities = ISNULL((
+                  SELECT dbo.BitwiseOR(capabilities)
+                  from #tempLaptopSecurityObjects AS sec
+                  where((sec.clientId=cId and (appId &lt;&gt; 106 OR @scope=5))OR ( sec.clientId=vCid and appId = 106)) OR sec.clientGroupId IN (select AG.clientGroupId from APP_ClientGroupAssoc AG where (appId &lt;&gt; 106 and AG.clientId=cId ) or ((appId &lt;&gt; 106 OR @scope=5) and AG.clientId=vCid ))OR
+                  (sec.commCellId &lt;&gt; 0 AND sec.clientGroupId=0 AND sec.clientId=0 AND sec.appTypeId=0 AND sec.backupsetId=0
+                  AND sec.subClientId=0 AND sec.archGroupId=0 AND sec.complianceReportId=0 AND sec.complianceReportId=0
+                  AND sec.archGroupId=0 AND sec.cdPolicyId=0 AND sec.downloadSetId=0 AND sec.ermId=0
+                  AND sec.instanceId=0 AND sec.legalHoldId=0 AND sec.libraryId=0 AND sec.mediaAgentId=0
+                  AND sec.querySetId=0 AND sec.reviewSetId=0 AND sec.tagId=0
+                  AND sec.vtContainerId=0 AND sec.vtPolicyId=0 AND sec.vtShelfId=0)), capabilities)
+            WHERE clientStatus &amp; 0x10000000 = 0
+
+--SELECT step='Updated 1'																		--- @#!@#!@#!@!@
+--return
+      IF OBJECT_ID('tempdb.dbo.#APPGetLaptopClientList_userObject') IS NOT null
+            DROP TABLE #APPGetLaptopClientList_userObject
+create table  #APPGetLaptopClientList_userObject ( [capabilities]  bigint     NOT null, [flag]              int NOT null default 0, [commCellId]    int   NOT null default 2, [clientGroupId] int     NOT null default 0, [clientId]      int   NOT null default 0, [appTypeId]     int     NOT null default 0, [instanceId]    int   NOT null default 0, [backupsetId]   int     NOT null default 0, [subClientId]   int   NOT null default 0, [mediaAgentId]  int     NOT null default 0, [libraryId]     int   NOT null default 0, [archGroupId]   int     NOT null default 0, [vtContainerId] int   NOT null default 0, [vtPolicyId]    int     NOT null default 0, [vtShelfId]     int   NOT null default 0, [reviewSetId]   int     NOT null default 0, [querySetId]      int NOT null default 0, [downloadSetId] int     NOT null default 0, [ermId]           int NOT null default 0, [legalHoldId]   int     NOT null default 0, [tagId]           int NOT null default 0, [cdPolicyId]    int     NOT null default 0, [complianceReportId]   int  NOT null default 0, [taskId]        int     NOT null default 0, [workflowId]    int   NOT null default 0, [logMonitoringPolicyId] int   NOT null default 0, [arrayId]       int   NOT null default 0, [cloudId]       int     NOT null default 0, [userGroupId]   int   NOT null default 0, [providerId]    int     NOT null default 0, [entityId1]     int   NOT null default 0, [entityId2]     int     NOT null default 0, [entityId3]     int   NOT null default 0, [entityId4]     int     NOT null default 0, [entityId5]     int   NOT null default 0, [entityId6]     int     NOT null default 0, [entityId7]     int   NOT null default 0, [entityId8]     int     NOT null default 0, [entityId9]     int   NOT null default 0  )
+      EXEC sec_getUserObjects @userId, 2013, 0, '#APPGetLaptopClientList_userObject'
+      UPDATE #clientList
+        SET capabilities = ISNULL((SELECT capabilities FROM #APPGetLaptopClientList_userObject WHERE subClientId = subId), 0)
+        WHERE clientStatus &amp; 0x10000000 &lt;&gt; 0
+      IF OBJECT_ID('tempdb.dbo.#APPGetLaptopClientList_userObject') IS NOT null
+            DROP TABLE #APPGetLaptopClientList_userObject
+
+      -------------------------
+      --          Get Details
+      -------------------------
+    if(@getAllProperties = 1)
+    BEGIN
+            UPDATE #clientList
+                  SET isArchived = ISNULL((SELECT CAST(attrVal as int) FROM App_ClientProp
+                            WHERE modified = 0 AND attrName = 'Is Client Archived'
+                                AND componentNameId = vCid), 0)            FROM #clientList
+        WHERE  vCid &lt;&gt; 0
+            
+----------------------------------------------------------GlobalFilter----------------------------------------------------------------------
+      DECLARE @useGlobalFilterForAllSubClients INT = 0
+      SET @useGlobalFilterForAllSubClients  = ISNULL((SELECT value FROM GXGlobalParam WHERE name = @ATTR_USE_GLOBAL_FILTERS_FOR_SC AND modified = 0), 0)
+      DECLARE @useQNetGlobalFilters INT = 0
+      SET @useQNetGlobalFilters  = ISNULL((SELECT value FROM GXGlobalParam WHERE name = @ATTR_USE_QNET_GLOBAL_FILTERS AND modified = 0), 0)
+      DECLARE @WindowsGlobalExcludeFilters TABLE
+      (
+            value NVARCHAR(MAX)
+      )
+      DECLARE @UnixGlobalExcludeFilters TABLE
+      (
+            value NVARCHAR(MAX)
+      )
+      DECLARE @strWindowsGlobalExcludeFilters NVARCHAR(MAX) = N''
+      DECLARE @strUnixGlobalExcludeFilters NVARCHAR(MAX) = N''
+      SET @strWindowsGlobalExcludeFilters = ISNULL((select value from GXGlobalParam where modified = 0 and name = @ATTR_WIN_FS_EXCLUDE_FILTERS), N'')
+      SET @strUnixGlobalExcludeFilters = ISNULL((select value from GXGlobalParam where modified = 0 and name = @ATTR_UNIX_FS_EXCLUDE_FILTERS), N'')
+      INSERT @WindowsGlobalExcludeFilters
+            SELECT Data FROM SplitString(@strWindowsGlobalExcludeFilters, N' ')  where Data != N''
+      INSERT @UnixGlobalExcludeFilters
+            SELECT Data FROM SplitString(@strUnixGlobalExcludeFilters, N' ')  where Data != N''
+      DECLARE @strQNetWindowsGlobalExcludeFilters NVARCHAR(MAX) = N''
+      DECLARE @strQNetUnixGlobalExcludeFilters NVARCHAR(MAX) = N''
+      IF (@useQNetGlobalFilters = 1)
+      BEGIN
+            SET @strQNetWindowsGlobalExcludeFilters = ISNULL((select value from GXGlobalParam where modified = 0 and name = @QNET_GLOBAL_FILTER_PREFIX + @ATTR_WIN_FS_EXCLUDE_FILTERS), N'')
+            SET @strQNetUnixGlobalExcludeFilters = ISNULL((select value from GXGlobalParam where modified = 0 and name = @QNET_GLOBAL_FILTER_PREFIX + @ATTR_UNIX_FS_EXCLUDE_FILTERS), N'')
+            INSERT @WindowsGlobalExcludeFilters
+                  SELECT Data FROM SplitString(@strQNetWindowsGlobalExcludeFilters, N' ')  where Data != N''
+            INSERT @UnixGlobalExcludeFilters
+                  SELECT Data FROM SplitString(@strQNetUnixGlobalExcludeFilters, N' ')  where Data != N''
+      END
+      UPDATE #clientList
+            SET useGlobalFilter = ISNULL((SELECT attrVal
+                                                      FROM app_subClientProp
+                                                      WHERE ((assocSubC = 0 AND componentNameId = subId) OR (assocSubC &lt;&gt; 0 AND componentNameId = assocSubC))
+                                                        AND attrName = @ATTR_USE_CS_SETTING_FOR_GF
+                                                        AND modified = 0
+                                                        AND cs_attrName = checksum(@ATTR_USE_CS_SETTING_FOR_GF)), 1)
+      UPDATE #clientList
+            SET useGlobalFilter = @useGlobalFilterForAllSubClients
+                  where useGlobalFilter = 1
+      UPDATE #clientList
+            SET useGlobalFilter = ISNULL((SELECT attrVal
+                                                      FROM app_subClientProp
+                                                      WHERE ((assocSubC = 0 AND componentNameId = subId) OR (assocSubC &lt;&gt; 0 AND componentNameId = assocSubC))
+                                                        AND attrName = @ATTR_USE_GLOBAL_FILTERS
+                                                        AND modified = 0
+                                                        AND cs_attrName = checksum(@ATTR_USE_GLOBAL_FILTERS)), @useGlobalFilterForAllSubClients)
+                  where useGlobalFilter = 0
+
+      DROP TABLE #tempLaptopSecurityObjects
+      --INSERT INTO @assocSubClient						-- SK 20171214 -- TABLE NOT USED?
+      --SELECT a.id, clientId,  a.appTypeId , instId , assocBset , subId
+      --FROM APP_Application a
+      --INNER JOIN #clientList cl on cl.assocSubC = a.id
+      UPDATE #clientList
+      SET contentIndexingEnabled =
+      ISNULL((select top 1 CAST(attrVal AS INT) From APP_ClientProp where attrName = 'Content Indexing Enabled' and modified = 0 and componentNameId = cId),0)
+	  Update #clientList 
+	  set dlpStolen = ISNULL((select top 1 CAST(attrVal AS INT) From APP_ClientProp where attrName = 'dlpStolen' and modified = 0 and componentNameId = cId),0)
+		Update #clientList 
+	  set dlpStolen = ISNULL((select top 1 CAST(attrVal AS INT) From APP_ClientProp where attrName = 'dlpStolen' and modified = 0 and componentNameId = cId),0)
+   -- select debug='Tbld clientList', * from #clientList
+      --IF (@getSchedules = 1)
+      --BEGIN
+      --      INSERT INTO #taskInfo
+      --      SELECT DISTINCT ST.taskId, TK.taskName, ST.subTaskId, ST.subTaskName, CL.cId,CL.instId,CL.bSet,CL.subId, PT.patternId, '', US.id, US.login,taskType
+      --      FROM #clientList AS CL
+      --      INNER JOIN TM_AssocEntity TA ON TA.subclientId = CL.subId OR TA.clientId = 0 OR (TA.clientId=CL.cId AND TA.subclientId=0)
+      --      LEFT OUTER JOIN APP_ClientGroupAssoc CA			ON CA.clientId = CL.cId
+      --      INNER JOIN TM_Task TK WITH (NOLOCK)				ON TK.taskId = TA.taskId
+      --      INNER JOIN TM_SubTask ST WITH (NOLOCK)			ON ST.taskId = TA.taskId
+      --      INNER JOIN TM_PatternAssoc PA WITH (NOLOCK)		ON PA.subTaskId = ST.subTaskId
+      --      INNER JOIN TM_SubTaskOptions STP WITH (NOLOCK)	ON PA.subTaskId = STP.subTaskId AND optionId = 458405394 AND STP.value IN (1, 2)
+      --      INNER JOIN TM_Pattern PT WITH (NOLOCK) ON PT.patternId = PA.patternId
+      --      INNER JOIN UMUsers US WITH (NOLOCK) ON US.id = TK.ownerId
+      --      WHERE (TA.clientId = CL.cId OR (TA.clientId = 0 AND TA.clientGroupId = CA.clientGroupId))
+      --      AND ST.subTaskType = 2        --ONLY BACKUP SCHEDULES
+      --            AND TK.disabled = 0 AND TK.deleted = 0 AND TK.uninstalled = 0 -- Only Valid enabled Schedules
+      --            AND TK.taskType in (4, 2)
+      --      AND (PT.freq_type&amp;4=4 OR PT.freq_type&amp;8=8 OR PT.freq_type&amp;1024=1024)    --ONLY RETURN DAILY, WEEKLY AND AUTOMATIC SCHEDULES
+      --      AND (CL.flag &amp; 1) = 0 and CL.cId &lt;&gt; 0 --VM CLIENT THAT ARE NOT PART OF ANY SUBCLIENT
+      --      DECLARE @patternId int
+      --      DECLARE @patternInfo TABLE (Info nvarchar(1024))
+      --      DECLARE updatePatternCur CURSOR FOR
+      --            SELECT patternId FROM #taskInfo
+      --      OPEN updatePatternCur
+      --      FETCH NEXT FROM updatePatternCur INTO @patternId
+      --      WHILE @@FETCH_STATUS = 0
+      --      BEGIN
+      --            DELETE @patternInfo
+      --            INSERT INTO @patternInfo
+      --            EXEC GetSchedulePattern @patternId, @localeId, 1
+      --            UPDATE #taskInfo SET patternInfo = (SELECT TOP 1 Info FROM @patternInfo)
+      --            WHERE patternId = @patternId
+      --            FETCH NEXT FROM updatePatternCur INTO @patternId
+      --      END
+      --      CLOSE updatePatternCur
+      --      DEALLOCATE updatePatternCur
+      --END
+      --IF(@getContent=1)
+      --BEGIN
+      --      INSERT INTO @content
+      --      SELECT subId,sff.created,modified,fileName,
+      --      CASE WHEN (assocSubC &lt;&gt; 0 AND type = 1) THEN 18
+      --              WHEN (assocSubC &lt;&gt; 0 AND type = 3) THEN 20   -- ADDED TO SUPPORT EXCLUDE FILTERS
+      --              ELSE  type END as '@valueType'
+      --      FROM APP_ScFilterFile sff
+      --      INNER JOIN #clientList cl on sff.componentNameId = cl.subId AND modified = 0
+      --              -- Conditionally return filters (09May2011)
+      --END
+      --  ------------------------------------DLPProperties------------------------------------------------------------------------------------------------------
+      --Need to check for DLP flags.
+      DECLARE @IsWebconsoleDisableDLP int = 0
+      DECLARE @IsWebconsoleDisableSecureErase int = 0
+      SET @IsWebconsoleDisableDLP  = ISNULL((SELECT top 1 value FROM GXGlobalParam WHERE name = 'WebconsoleDisableDLP' AND modified = 0), 0)
+      SET @IsWebconsoleDisableSecureErase  = ISNULL((SELECT top 1 value FROM GXGlobalParam WHERE name = 'WebconsoleDisableSecureErase' AND modified = 0), 0)
+      
+
+      END
+         IF (@reportSchedules = 2)
+      BEGIN
+            INSERT INTO #taskInfo
+            SELECT DISTINCT ST.taskId, TK.taskName, ST.subTaskId, ST.subTaskName, CL.cId,CL.instId,CL.bSet,CL.subId, PT.patternId, '', US.id, US.login,taskType
+            FROM #clientList AS CL
+            INNER JOIN TM_AssocEntity TA ON TA.subclientId = CL.subId OR TA.clientId = 0 OR (TA.clientId=CL.cId AND TA.subclientId=0)
+            LEFT OUTER JOIN APP_ClientGroupAssoc CA			ON CA.clientId = CL.cId
+            INNER JOIN TM_Task TK WITH (NOLOCK)				ON TK.taskId = TA.taskId
+            INNER JOIN TM_SubTask ST WITH (NOLOCK)			ON ST.taskId = TA.taskId
+            INNER JOIN TM_PatternAssoc PA WITH (NOLOCK)		ON PA.subTaskId = ST.subTaskId
+            INNER JOIN TM_SubTaskOptions STP WITH (NOLOCK)	ON PA.subTaskId = STP.subTaskId AND optionId = 458405394 AND STP.value IN (1, 2)
+            INNER JOIN TM_Pattern PT WITH (NOLOCK) ON PT.patternId = PA.patternId
+            INNER JOIN UMUsers US WITH (NOLOCK) ON US.id = TK.ownerId
+            WHERE (TA.clientId = CL.cId OR (TA.clientId = 0 AND TA.clientGroupId = CA.clientGroupId))
+            AND ST.subTaskType = 2        --ONLY BACKUP SCHEDULES
+                  AND TK.disabled = 0 AND TK.deleted = 0 AND TK.uninstalled = 0 -- Only Valid enabled Schedules
+                  AND TK.taskType in (4, 2)
+            AND (PT.freq_type&amp;4=4 OR PT.freq_type&amp;8=8 OR PT.freq_type&amp;1024=1024)    --ONLY RETURN DAILY, WEEKLY AND AUTOMATIC SCHEDULES
+            AND (CL.flag &amp; 1) = 0 and CL.cId &lt;&gt; 0 --VM CLIENT THAT ARE NOT PART OF ANY SUBCLIENT
+            DECLARE @patternId int
+            DECLARE @patternInfo TABLE (Info nvarchar(1024))
+            DECLARE updatePatternCur CURSOR FOR
+                  SELECT patternId FROM #taskInfo
+            OPEN updatePatternCur
+            FETCH NEXT FROM updatePatternCur INTO @patternId
+            WHILE @@FETCH_STATUS = 0
+            BEGIN
+                  DELETE @patternInfo
+                  INSERT INTO @patternInfo
+                  EXEC GetSchedulePattern @patternId, @localeId, 1
+                  UPDATE #taskInfo SET patternInfo = (SELECT TOP 1 Info FROM @patternInfo)
+                  WHERE patternId = @patternId
+                  FETCH NEXT FROM updatePatternCur INTO @patternId
+            END
+            CLOSE updatePatternCur
+            DEALLOCATE updatePatternCur
+      END
+    UPDATE #clientList
+    SET BKPSchedule = ot.BKPSchedule
+    FROM 
+                    (SELECT  t.clientid, 
+                                
+								BKPSchedule = STUFF( (SELECT ', '+ c.subTaskName FROM #taskInfo c WHERE C.clientid = T.clientid FOR XML PATH('')),1,2,'')
+                    FROM           #taskInfo t
+                    GROUP BY t.clientId) ot
+    WHERE ot.clientid = #clientList.cId
+UPDATE  C SET Version = CASE ReleaseId 
+                                        
+                                        WHEN 14 THEN '9' + ISNULL((CASE HighestSP WHEN 0 THEN ''
+                                                                          ELSE ' SP'+ CAST(HighestSP AS varchar(10)) + (CASE SpMinorVersion 
+                                                                                        WHEN 0 THEN '' 
+                                                                                        WHEN 1 THEN 'a'
+                                                                                        WHEN 2 THEN 'b'                                                                                 
+                                                                                      END)
+                                                            END), '' )
+                                        WHEN 15 THEN '10'  + ISNULL((CASE HighestSP WHEN 0 THEN ''
+                                                                          ELSE ' SP'+ CAST(HighestSP AS varchar(10)) + (CASE SpMinorVersion 
+                                                                                        WHEN 0 THEN '' 
+                                                                                        WHEN 1 THEN 'a'
+                                                                                        WHEN 2 THEN 'b'                                                                                 
+                                                                                      END)
+                                                            END), '' )
+										WHEN 16 THEN '11'  + ISNULL((CASE HighestSP WHEN 0 THEN ''
+                                                                          ELSE ' SP'+ CAST(HighestSP AS varchar(10)) + (CASE SpMinorVersion 
+                                                                                        WHEN 0 THEN '' 
+                                                                                        WHEN 1 THEN 'a'
+                                                                                        WHEN 2 THEN 'b'                                                                                 
+                                                                                      END)
+                                                            END), '' )
+                                    END
+        FROM #clientList C LEFT JOIN simInstalledPackages S ON C.cId = S.ClientId AND simPackageID = 1 -- Base Client Package	  
+
+UPDATE C
+SET updateStatus = 'Up to Date'
+FROM #clientList C
+ INNER JOIN simInstalledPackages S
+   ON S.ClientId = C.Cid AND Baseline=1
+   
+-- Following Code intentially can overwrite previous update
+UPDATE C
+SET updateStatus = 'Ahead of Cache'
+FROM #clientList C
+ INNER JOIN simInstalledPackages S
+   ON S.ClientId = C.Cid  AND Baseline=4   
+
+-- Following Code intentially can overwrite previous 2 updates
+UPDATE C
+SET updateStatus = 'Behind Cache'
+FROM #clientList C
+ INNER JOIN simInstalledPackages S
+   ON S.ClientId = C.Cid  AND Baseline=2
+
+UPDATE #clientList
+SET updateStatus = 'Not Available'
+WHERE updateStatus=''
+------------------------------------------------------
+-----				RETURN RESULTS             -------
+------------------------------------------------------
+	IF @DO_SIMPLE_RETURN &gt; 0
+	    SELECT * FROM #clientList 
+			ORDER BY clientName, owners
+	ELSE
+            SELECT      Domain				as 'Domain',
+						owners				as 'Owner',
+                        cId					AS 'ClientID',
+                        clientName			as 'ClientName',
+                        clientDisplayName	as 'ClientDisplayName',
+                        clientStatus		AS 'ClientStatus',
+                        case lastOnlineTime
+                        WHEN 0 THEN @NoTime
+                        ELSE CONVERT(varchar, DATEADD(ss, lastOnlineTime - @TZ_OFFSET, @EPOCH_DATE), 100)
+                        END                  		AS 'LastOnlineTime',      
+                        CASE nextBkupTime
+                          WHEN 0 THEN @NoTime
+                          ELSE CONVERT(varchar, DATEADD(ss, nextBkupTime - @TZ_OFFSET, @EPOCH_DATE), 100)
+                        END                  		AS 'NextBackup Time',      			
+                        CASE lastSuccessBkupTime
+                          WHEN 0 THEN @NoTime
+                          ELSE CONVERT(varchar, DATEADD(ss, lastSuccessBkupTime - @TZ_OFFSET, @EPOCH_DATE), 100)
+                        END					AS 'LastSuccessBackupTime',
+                          CASE lastFailBkupTime
+                          WHEN 0 THEN @NoTime
+                        ELSE CONVERT(varchar, DATEADD(ss, lastFailBkupTime - @TZ_OFFSET, @EPOCH_DATE), 100)
+                        END					AS 'LastFailedBackupTime',    
+  						Failbkpsin30days	AS 'FailedBackupsin30days',                    		
+                        CASE lastbkupTime
+                          WHEN 0 THEN @NoTime
+                          ELSE CONVERT(varchar, DATEADD(ss, lastbkupTime - @TZ_OFFSET, @EPOCH_DATE), 100)
+                        END	AS 'LastBackupTime',
+                        totalbackupsize		as 'TotalBackupSize',
+						BKPSchedule			as 'BackupSchedule',
+						dlpStolen			as 'Lost',
+						Version				AS 'Version',
+						email				AS 'Owner Email',
+						backupSize			AS 'Backup Size',       -- Added for defect 194423
+						hostName			AS 'Hostname',			-- Added for defect 194423
+						 isnull(dbo.GetClientOSName(cId, NULL), 'N/A')            AS 'OS',				-- Added for defect 194423	
+                        CASE installDate							-- Added for defect 194423
+                          WHEN 0 THEN @NoTime
+                          ELSE CONVERT(varchar, DATEADD(ss, installDate - @TZ_OFFSET, @EPOCH_DATE), 107)  -- Just Date, no Time
+                        END	AS 'Install Date',
+                        updateStatus		AS 'Updates Status'		-- Added for defect 194423
+ 
+            FROM #clientList cl
+            WHERE bSet &lt;&gt; 0 and cl.appId in (SELECT appTypeId FROM #appType35Table)   -- WAS!!!! GetAppTypesForAppGroup(35,0))
+            AND clientStatus &amp; 0x10000000 = 0 -- filter edge clients
+			AND clientStatus &amp; 2 &lt;= 0 -- filter deconfigured clients
+			AND (lastOnlineTime &lt; (DATEDIFF(s, '1970-01-01 00:00:00', GETUTCDATE())-4*24*60*60)
+				OR lastSuccessBkupTime &lt; (DATEDIFF(s, '1970-01-01 00:00:00', GETUTCDATE())-30*24*60*60))
+            ORDER BY clientName, owners
+--select tbl='Final #clientList', * from #clientList
+END TRY
+----=====================================================================
+----==============  COME HERE IF THERE WAS A PROBLEM!     ===============
+----=====================================================================
+BEGIN CATCH
+
+      PRINT  'INSIDE CATCH BLOCK WITH FOLLOWING ERROR:
+      ERROR CODE: ' + CAST(ERROR_NUMBER() AS VARCHAR) + '
+      PROC NAME: ' + ISNULL(ERROR_PROCEDURE(), '???') + '
+      ERROR LINE NO: ' + CAST(ERROR_LINE() AS VARCHAR)  + '
+      ERROR MESSAGE: ' + ERROR_MESSAGE() + '
+      ERROR SEVERITY: ' + CAST(ERROR_SEVERITY() AS VARCHAR) +  '
+      ERROR STATE: ' + CAST(ERROR_STATE() AS VARCHAR)
+
+    SET @errorCode    = ERROR_NUMBER()
+    SET @errorString  = 'Procedure [' + ERROR_PROCEDURE() + '] Error Line [' +Convert(varchar(5), ERROR_LINE()) +']. ' +ERROR_MESSAGE()
+         --Close cursor
+    IF ( CURSOR_STATUS('global', 'DLPCur') &gt;= 0  /* cursor is open */
+        OR CURSOR_STATUS('local', 'DLPCur') &gt;= 0 )
+    CLOSE DLPCur
+    IF ( CURSOR_STATUS('global','DLPCur') = -1  /* cursor is closed */
+        OR CURSOR_STATUS('local','DLPCur') = -1 )
+    DEALLOCATE DLPCur
+      IF ( CURSOR_STATUS('global', 'updatePatternCur') &gt;= 0  /* cursor is open */
+        OR CURSOR_STATUS('local', 'updatePatternCur') &gt;= 0 )
+    CLOSE updatePatternCur
+    IF ( CURSOR_STATUS('global','updatePatternCur') = -1  /* cursor is closed */
+        OR CURSOR_STATUS('local','updatePatternCur') = -1 )
+    DEALLOCATE updatePatternCur
+     
+END CATCH
+
+-- drop temp table
+IF object_id('tempdb.dbo.#edgeClientsWithCapabilities') IS NOT NULL
+      DROP TABLE #edgeClientsWithCapabilities
+IF object_id('tempdb.dbo.#clientList') IS NOT NULL
+      DROP TABLE #clientList
+IF object_id('tempdb.dbo.#jobInfo') IS NOT NULL
+      DROP TABLE #jobInfo
+IF object_id('tempdb.dbo.#Ownert') IS NOT NULL
+    DROP TABLE #Ownert
+SET NOCOUNT OFF
+
+
+
+--exec sp_helptext AppGetEdgeCapabilties
+
+            --and cl.appId in (SELECT appTypeId FROM GetAppTypesForAppGroup(35,0))
+            --AND clientStatus &amp; 0x10000000 = 0 -- filter edge clients</sqlText>
+              <timeout>5</timeout>
+              <postQueryFilter>true</postQueryFilter>
+            </GetOperation>
+            <description>Administrative view to manage user laptops.</description>
+            <databaseName>CommServ</databaseName>
+            <queryPlan>
+              <offline>false</offline>
+              <collectionType>HTTP</collectionType>
+              <retentionDays>7</retentionDays>
+              <versions>
+                <CommCellVersion>ALL</CommCellVersion>
+              </versions>
+            </queryPlan>
+            <version>2</version>
+            <guid>dc851c0a-0f5a-4e79-a326-a51c85be3e06</guid>
+            <hidden>true</hidden>
+            <revision />
+          </DataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>User Capacity</dataSetName>
+              <dataSetGuid>31f52f95-de9b-492f-a9e6-93cb7e9bc50e</dataSetGuid>
+            </dataSet>
+            <endpoint>DATABASE</endpoint>
+            <shared>false</shared>
+            <dataSources>
+              <DataSource>
+                <connectionType>COMMCELL</connectionType>
+                <commCell>
+                  <commCellName>$LocalCommCell$</commCellName>
+                </commCell>
+              </DataSource>
+            </dataSources>
+            <allColumns>false</allColumns>
+            <fields>
+              <Column>
+                <name>sys_rowid</name>
+                <dataField>$row_number$</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Data Source</name>
+                <dataField>Data Source</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>No Column Name1</name>
+                <dataField>No Column Name1</dataField>
+                <type>Integer</type>
+              </Column>
+            </fields>
+            <GetOperation>
+              <parameters />
+              <sqlText>SELECT 0                          -- PLACEKEEPER UNTIL THIS DATA SET CAN BE FIXED!!!
+RETURN                            -- SK 20171215
+
+DECLARE @DEBUGLEVEL INT = 0
+
+/*
+DECLARE @sys_userId int = 1
+SET @DEBUGLEVEL = 1
+
+
+*/
+
+IF object_id('tempdb.dbo.#CapacityUsage') IS NOT NULL
+      DROP TABLE #CapacityUsage
+IF object_id('tempdb.dbo.#UserCapacityUsage') IS NOT NULL
+      DROP TABLE #UserCapacityUsage
+ IF object_id('tempdb.dbo.#UserVisibleClients') IS NOT NULL
+      DROP TABLE #UserVisibleClients
+      
+      
+DECLARE @userId  INT = @sys_userId
+DECLARE @quotaTB FLOAT = 1000.0
+
+CREATE TABLE #UserVisibleClients (clientId INT, appTypeId INT, instanceId INT, backupsetId INT, appId INT)
+
+CREATE TABLE #UserCapacityUsage (ClientId INT, AppTypeId INT, AppId INT, JobID INT, FrontEndSize BIGINT,
+	ClientName NVARCHAR(255), AppTypeName VARCHAR(255), BackupSetName NVARCHAR(128), InstanceName NVARCHAR(512), SubclientName NVARCHAR(128))
+
+
+CREATE TABLE #CapacityUsage (
+                EnterpriseBackupSize BIGINT, CoreBackupSize BIGINT, EnterpriseArchiveSize BIGINT, CoreArchiveSize BIGINT, 
+                SnapshotSize BIGINT, ReplicationSize BIGINT, nJobType INT, 
+                appId INT, jobID INT, ClientName NVARCHAR(255), ClientId INT, AppTypeId INT, AppTypeName VARCHAR(255), 
+                BackupSetName NVARCHAR(128), InstanceName NVARCHAR(512), SubclientName NVARCHAR(128), 
+                SPId INT, SPName NVARCHAR(144), UncompBytes BIGINT, DedupEnabled INT, SecondaryEncryption INT, bEnterprise INT
+)
+
+
+DECLARE @revision varchar(40) =  (Select revision  FROM GxDBVersions WITH(NOLOCK) where name = 'QS_CommCellUsageReport')
+
+DECLARE @n INT = 1, @p INT = 1, @q INT = 1
+DECLARE @r VARCHAR(20) = '', @s VARCHAR(20) = ''
+DECLARE @SpRevision nvarchar(56)
+DECLARE @SpVersion BIGINT = 0
+DECLARE   @SpRevisionOri  varchar(56) = (select revision FROM GxDBVersions WITH(NOLOCK) where name = 'QS_CommCellUsageReport')
+SET   @SpRevision = @SpRevisionOri
+IF @SpRevision LIKE 'v%'
+ BEGIN
+     SET @SpRevision = @SpRevision+'.'
+     SET @q = CHARINDEX('.', @SpRevision, @p+1)
+     WHILE @q &gt; 0
+     BEGIN
+         SET @s = SUBSTRING(@SpRevision, @p+1, @q-@p-1)
+         IF  @n &lt;= 4
+             SET @r += (CASE @q-@p-1 WHEN 1 THEN '000' WHEN 2 THEN '00' WHEN 3 THEN '0' ELSE '' END + @s)
+         ELSE
+             SET @r += (CASE @q-@p-1 WHEN 1 THEN '0' ELSE '' END + @s)
+
+         SET @n += 1
+         SET @p = @q
+         SET @q = CHARINDEX('.', @SpRevision, @p+1)
+     END
+     SET @SpRevision = @r
+ END  
+  
+IF @DEBUGLEVEL &gt; 0
+   SELECT SpRevision=@SpRevision, * FROM GxDBVersions WITH(NOLOCK) where name = 'QS_CommCellUsageReport'
+   
+IF EXISTS (SELECT * FROM APP_Client WITH(NOLOCK) WHERE id = 2 AND releaseId &lt; 15)
+BEGIN
+                ALTER TABLE #CapacityUsage DROP COLUMN SnapshotSize
+                ALTER TABLE #CapacityUsage DROP COLUMN ReplicationSize
+                ALTER TABLE #CapacityUsage DROP COLUMN InstanceName
+END
+ELSE
+IF Cast(@SPRevision as BIGINT) &lt;= 10031000800050000 --10.0 SP4 and Below
+BEGIN
+                ALTER TABLE #CapacityUsage DROP COLUMN SnapshotSize
+                ALTER TABLE #CapacityUsage DROP COLUMN ReplicationSize
+END
+
+
+
+EXEC sec_getIdaObjectsForUser @userId, 3 /*CLIENT_ENTITY*/, 0 /*View*/, 0, '#UserVisibleClients'
+
+INSERT INTO #CapacityUsage
+EXEC QS_CommCellUsageReport '', 0, 1
+
+INSERT	INTO #UserCapacityUsage
+SELECT	T.ClientId, T.AppTypeId, T.appId, T.jobID, T.UncompBytes, 
+		T.ClientName, T.AppTypeName, T.InstanceName, T.BackupSetName, T.SubclientName
+FROM	#CapacityUsage T 
+		INNER JOIN #UserVisibleClients VC ON T.ClientId = VC.clientId
+WHERE	T.AppTypeId &lt;&gt; 106
+
+
+DECLARE @csTimeZoneName NVARCHAR(255) = (SELECT	timeZone FROM APP_CommCell WITH (NOLOCK) WHERE id = 2)
+SELECT  @csTimeZoneName = TimeZoneStdName 
+FROM    SchedTimeZone WITH (NOLOCK)
+WHERE   TimeZoneName = SUBSTRING(@csTimeZoneName, CHARINDEX(':', @csTimeZoneName, CHARINDEX(':', @csTimeZoneName, 0) + 1) + 1, 255)
+
+
+SELECT	'Available Quota' AS Category ,CAST(@quotaTB AS DECIMAL(20, 2)) AS [Size (TB)] FROM	#UserCapacityUsage
+ UNION
+SELECT 	'Used Quota' AS Category , CAST(SUM(FrontEndSize)/1024.0/1024.0/1024.0/1024.0 AS DECIMAL(20, 3)) AS [Size (TB)] FROM	#UserCapacityUsage
+		
+
+
+                 
+DROP TABLE #CapacityUsage
+DROP TABLE #UserCapacityUsage
+DROP TABLE #UserVisibleClients</sqlText>
+              <timeout>10</timeout>
+              <postQueryFilter>true</postQueryFilter>
+            </GetOperation>
+            <description>Administrative view to manage user laptops.</description>
+            <databaseName>CommServ</databaseName>
+            <queryPlan>
+              <offline>false</offline>
+              <collectionType>HTTP</collectionType>
+              <retentionDays>7</retentionDays>
+              <versions>
+                <CommCellVersion>ALL</CommCellVersion>
+              </versions>
+            </queryPlan>
+            <version>2</version>
+            <guid>7280d2e2-f447-4df8-af56-1e6f831a4023</guid>
+            <hidden>true</hidden>
+            <revision />
+          </DataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>Growth</dataSetName>
+              <dataSetGuid>0cfe57ad-23c3-44b2-a885-68ed05e96ffa</dataSetGuid>
+            </dataSet>
+            <endpoint>DATABASE</endpoint>
+            <shared>false</shared>
+            <dataSources>
+              <DataSource>
+                <connectionType>COMMCELL</connectionType>
+                <commCell>
+                  <commCellName>$LocalCommCell$</commCellName>
+                </commCell>
+              </DataSource>
+            </dataSources>
+            <allColumns>false</allColumns>
+            <fields>
+              <Column>
+                <name>sys_rowid</name>
+                <dataField>$row_number$</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Data Source</name>
+                <dataField>Data Source</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>EndTime</name>
+                <dataField>EndTime</dataField>
+                <type>Date</type>
+              </Column>
+              <Column>
+                <name>Client Count</name>
+                <dataField>Client Count</dataField>
+                <type>Integer</type>
+              </Column>
+              <Column>
+                <name>Backup Size</name>
+                <dataField>Backup Size</dataField>
+                <type>Long</type>
+              </Column>
+              <Column>
+                <name>WindowsDevices</name>
+                <dataField>WindowsDevices</dataField>
+                <type>Integer</type>
+              </Column>
+              <Column>
+                <name>MacDevices</name>
+                <dataField>MacDevices</dataField>
+                <type>Integer</type>
+              </Column>
+              <Column>
+                <name>TotalDevices</name>
+                <dataField>TotalDevices</dataField>
+                <type>Integer</type>
+              </Column>
+            </fields>
+            <GetOperation>
+              <parameters>
+                <Parameter>
+                  <name>alt_userId</name>
+                  <dataType>Integer</dataType>
+                  <values>
+                    <string>5765</string>
+                  </values>
+                </Parameter>
+                <Parameter>
+                  <name>reportPeriod</name>
+                  <dataType>Integer</dataType>
+                  <values>
+                    <string>=input.reportPeriod</string>
+                  </values>
+                  <required>true</required>
+                </Parameter>
+                <Parameter>
+                  <name>debugUserId</name>
+                  <dataType>Integer</dataType>
+                  <values>
+                    <string>=input.debugUserId</string>
+                  </values>
+                  <required>true</required>
+                </Parameter>
+              </parameters>
+              <sqlText>-------------------------------
+---  Computers_Growth.sql   ---
+-------------------------------
+
+DECLARE @DEBUGLEVEL INT = 0
+/*   STANDALONE TESTING
+
+       DECLARE @sys_userId		INT =	1 --5765  --7533 --5765   --217 --217
+	   DECLARE @reportPeriod	INT =	2 -- 1 Daily 2:Monthly 3:Weekly
+	   DECLARE @debugUserId		INT =	1
+       SET @DEBUGLEVEL = 1
+*/
+SET NOCOUNT ON
+
+DECLARE @errorCode      AS integer            = 0
+DECLARE @errorString    AS varchar(2048)      = ''
+
+DECLARE @EPOCH_DATE		DATETIME	= '01/01/1970 00:00:00 AM'          -- This is when UNIX time starts
+DECLARE @TZ_OFFSET		INT			= DateDiff(s, getDate(), getUTCDate())    -- !ADD! this value to localTime to 
+
+
+IF object_id('tempdb.dbo.#ClientRange') IS NOT NULL   DROP TABLE #ClientRange
+CREATE TABLE #ClientRange (
+	clientId	int,
+	EndTime		int,
+	startDT		DATETIME,			-- From "RptCapacityUsage" table
+	TotalSize	BigINT
+	)
+CREATE  INDEX ClientRange_clientId_IDX on #ClientRange(clientId);
+
+
+-- FOR Effeciency, this table had been reduced considerably from the
+-- .. code it was copied from.
+IF object_id('tempdb.dbo.#clientList') IS NOT NULL
+      DROP TABLE #clientList
+CREATE TABLE  #clientList (
+		cId                     int not null,
+		releaseId               int not null,
+
+		isIndexingV2			int DEFAULT 0,
+		installDate				int		DEFAULT 0,			-- Added for defect 194423
+		simOperatingSystemId	int  DEFAULT 0,
+		simOSName				nvarchar(256)		-- Added for defect 194423
+		)
+CREATE CLUSTERED INDEX ClientList_cId_IDX on #clientList(cId);
+
+
+
+
+BEGIN TRY
+
+DECLARE @userId                 integer = 0
+--DECLARE @getFsLikeClients		int = 1
+
+      SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+      SET @userId =  @sys_userId;
+      IF @debugUserId != 0	SET @userId = @debugUserId
+
+      IF object_id('tempdb.dbo.#tempLaptopSecurityObjects') IS NOT Null DROP TABLE #tempLaptopSecurityObjects
+            create table  #tempLaptopSecurityObjects ( [capabilities]  bigint NOT null, [flag]              int NOT null default 0, [commCellId]    int   NOT null default 2, [clientGroupId] int     NOT null default 0, [clientId]      int   NOT null default 0, [appTypeId]     int     NOT null default 0, [instanceId]    int   NOT null default 0, [backupsetId]   int     NOT null default 0, [subClientId]   int   NOT null default 0, [mediaAgentId]  int     NOT null default 0, [libraryId]     int   NOT null default 0, [archGroupId]   int     NOT null default 0, [vtContainerId] int   NOT null default 0, [vtPolicyId]    int     NOT null default 0, [vtShelfId]     int   NOT null default 0, [reviewSetId]   int     NOT null default 0, [querySetId]      int NOT null default 0, [downloadSetId] int     NOT null default 0, [ermId]           int NOT null default 0, [legalHoldId]   int     NOT null default 0, [tagId]           int NOT null default 0, [cdPolicyId]    int     NOT null default 0, [complianceReportId]   int  NOT null default 0, [taskId]        int     NOT null default 0, [workflowId]    int   NOT null default 0, [logMonitoringPolicyId] int   NOT null default 0, [arrayId]       int   NOT null default 0, [cloudId]       int     NOT null default 0, [userGroupId]   int   NOT null default 0, [providerId]    int     NOT null default 0, [entityId1]     int   NOT null default 0, [entityId2]     int     NOT null default 0, [entityId3]     int   NOT null default 0, [entityId4]     int     NOT null default 0, [entityId5]     int   NOT null default 0, [entityId6]     int     NOT null default 0, [entityId7]     int   NOT null default 0, [entityId8]     int     NOT null default 0, [entityId9]     int   NOT null default 0  )
+            EXEC sec_getUserObjects @userId, 2009, 0, '#tempLaptopSecurityObjects'
+            DECLARE @edgeSubclientId INT = 0
+
+
+      IF object_id('tempdb.dbo.#edgeClientsWithCapabilities') IS NOT NULL
+            DROP TABLE #edgeClientsWithCapabilities
+      CREATE TABLE #edgeClientsWithCapabilities (
+            clientId INT PRIMARY KEY,
+            clientStatus INT,
+            capabilities BIGINT,
+            userAssociationType INT   -- ADDED FOR BACKWARD COMPATIBILITY????
+      )
+        SET @edgeSubclientId = ISNULL((SELECT TOP 1 AAP.id FROM APP_BackupSetProp ABP INNER JOIN App_Application AAP ON ABP.componentNameId = AAP.backupset WHERE ABP.attrName = 'Edge Drive User Id' AND ABP.attrVal = CAST(@userId AS NVARCHAR(256)) AND ABP.modified =0) ,0)
+        
+      DECLARE @appType35Table TABLE (  appTypeId         INT PRIMARY KEY  )
+      
+      INSERT INTO @appType35Table
+            SELECT DISTINCT appTypeId
+            FROM GetAppTypesForAppGroup(35,0)
+      DELETE @appType35Table WHERE appTypeId = 13   -- 20171214 SK .. Always ignore Type 13?
+--            WHERE @getFsLikeClients = 1
+      --DECLARE @appType55Table TABLE (			-- 20171214  - Not Used!
+      --      appTypeId         INT PRIMARY KEY
+      --)
+
+     BEGIN
+              IF OBJECT_ID('tempdb.dbo.#HPClientList') IS NOT NULL DROP TABLE #HPClientList
+              CREATE TABLE #HPClientList
+              (
+                    clientId INT, t_appTypeId INT, t_instanceId INT, t_backupsetId INT, t_subclientId INT
+              )
+              EXEC sec_getIdaObjectsForUser @userId, 3  /*CLIENT_ENTITY */ , 0 /*View*/, 0, '#HPClientList'
+
+              INSERT #clientList
+              SELECT CL.clientId,0, 0, 0, 0, N''
+              FROM #HPClientList CL JOIN APP_IDAName ida ON CL.clientId = ida.clientId
+                INNER JOIN @appType35Table A35
+                  ON A35.appTypeId = ida.appTypeId
+              --AND ( ida.appTypeId in (SELECT appTypeId FROM @appType35Table)
+              --AND ida.appTypeId &lt;&gt; 13 )
+              IF @debugLevel &gt; 2
+                 select 'RAW clientList Count'=count(*) from #clientList
+
+
+              -- INSERT EDGE CLIENT
+              IF EXISTS(SELECT * FROM #clientList CL INNER JOIN APP_CLIENT C WITH (NOLOCK)  ON CL.cId = C.id and C.status &amp; 0x10000000 &gt; 0)
+              BEGIN
+                    DELETE FROM #clientList
+                    WHERE EXISTS (SELECT * FROM APP_CLIENT C WITH (NOLOCK) WHERE  C.id = cId and C.status &amp; 0x10000000 &gt; 0)
+              END
+              IF @edgeSubclientId &lt;&gt; 0
+              BEGIN
+                    INSERT #clientList
+                    SELECT SC.clientId,0, 0, 0, 0, ''
+                    FROM APP_Application SC
+                    WHERE id = @edgeSubclientId
+              END
+              ELSE
+              BEGIN
+                    EXEC AppGetEdgeCapabilties @userId, '#edgeClientsWithCapabilities'
+                    INSERT #clientList
+                    SELECT TOP 1 EC.clientId,0,      0, 0, 0, ''
+                    FROM #edgeClientsWithCapabilities EC
+                    INNER JOIN APP_Application SC ON EC.clientId = SC.clientId
+                    INNER JOIN App_EdgeDriveAssociation EDA ON EDA.clientId = EC.clientId AND EDA.entityType = 11 AND EDA.entityId &gt; 1
+                    WHERE  EC.capabilities &amp; 4112  = 4112 -- Clients with upload and browse capability
+                    AND EC.clientStatus &amp; 0x40000000 = 0 -- Dont send system drives.
+              END
+             -- Add other client rows if using laptop classic security
+              IF EXISTS(SELECT 1 FROM GXGlobalParam WITH(READUNCOMMITTED) WHERE name = N'AllowLaptopClassicSecurity' AND value = '1')
+              BEGIN
+                    IF OBJECT_ID('tempdb.dbo.#WSSecClients2') IS NOT NULL
+                          DROP TABLE #WSSecClients2
+                    CREATE TABLE #WSSecClients2 (
+                          clientId          INT,
+                          appTypeId         INT,
+                          caps              BIGINT,
+                          PRIMARY KEY (clientId, appTypeId, caps)
+                    )
+                    INSERT #WSSecClients2
+                          SELECT
+                                t.clientId, ida.appTypeId,t.capabilities
+                          FROM #tempLaptopSecurityObjects t
+                                INNER JOIN APP_IDAName ida ON
+                                      ida.clientId = t.clientId
+                                      INNER JOIN @appType35Table A35
+                                        ON A35.appTypeId = ida.appTypeId
+                                      --AND (
+                                      --      ida.appTypeId IN (SELECT appTypeId FROM @appType35Table)
+                                      --      AND ida.appTypeId &lt;&gt; 13
+                                      --)
+                          WHERE
+                                t.clientId &lt;&gt; 0
+                          
+                          IF (@@ROWCOUNT &gt; 0)
+                          BEGIN
+                                -- merge the additional rows into the clientlist
+                                MERGE #clientList cl
+                                USING #WSSecClients2 fs ON (
+                                            fs.clientId = cl.cId
+                                            AND fs.appTypeId = cl.appId
+                                      )
+                                WHEN NOT MATCHED BY TARGET THEN           -- not found insert row
+                                      INSERT VALUES(fs.clientId, '','',fs.appTypeId, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, fs.caps, 0, 1,
+                                                        CASE fs.appTypeId
+                                                              WHEN 106 THEN fs.clientId
+                                                              ELSE 0
+                                                        END,
+                                                        0, 0, null, null, 0, 0, 0, null,-1, null, 0, null, null, 0, 0,0,0,0, 0,0
+                                                  )
+                                WHEN MATCHED THEN       -- if found update capabilities
+                                      UPDATE
+                                            SET cl.capabilities = (cl.capabilities | fs.caps);
+                          END
+                          IF OBJECT_ID('tempdb.dbo.#WSSecClients2') IS NOT NULL
+                                DROP TABLE #WSSecClients2
+              END
+--
+      END
+        
+       
+
+UPDATE #clientList
+	SET releaseId= C.releaseId,
+		installDate=refTime, simOperatingSystemId=c.simOperatingSystemId
+	FROM #clientList cl INNER JOIN APP_Client c ON c.Id = cId
+
+
+UPDATE #clientList
+    SET simOSName = SOS.name  --+ ' (' + SOS.SubType + ')'
+    FROM  simOperatingSystem AS SOS
+    WHERE simOperatingSystemId = SOS.id  AND simOperatingSystemId &lt;&gt; 0
+
+
+IF @DEBUGLEVEL &gt; 2 
+	select cId, simOperatingSystemId, simosName from #clientList  order by cId   --where simosName &lt;&gt; 'Windows' 
+	
+DELETE #clientList where simOsName not in ('Darwin', 'Windows')  -- Excludes UNIX! Only want "laptop-like" clients
+
+UPDATE #ClientList
+	SET installDate = (select MIN(created) FROM APP_ClientProp where componentNameId = cId)
+	WHERE installDate = 0
+
+
+
+------------------------------------------------------
+-----				RETURN RESULTS             -------
+------------------------------------------------------
+
+
+DECLARE @InceptDate INT = (Select MIN(installDate) from #clientList)
+
+   
+
+--  STORE ITERMEDIATE RESULTS HERE:
+	INSERT #ClientRange
+		SELECT 
+		 C.cId,
+		 0,				-- EndTime
+		 L.startDT,
+		 0
+		 FROM #clientList C
+		   CROSS JOIN ( select distinct startDT from RptCapacityUsage  where type = @reportPeriod) AS L;
+
+	UPDATE #ClientRange
+	   SET EndTime = DATEDIFF(s, @EPOCH_DATE, startDT) + @TZ_OFFSET
+	   
+	DELETE CR
+	 FROM #ClientRange CR
+	INNER JOIN  #clientList C
+	ON CR.clientId = C.cId AND C.installDate &gt; CR.EndTime
+
+
+
+
+DECLARE @WindowsCount int	= ISNULL((select Count(*) from #clientList where simOsName = 'Windows'), 0)
+DECLARE @MacCount int		= ISNULL((select Count(*) from #clientList where simOsName = 'Darwin'), 0)
+
+
+UPDATE #ClientRange 
+SET TotalSize = SUB.Size
+FROM 
+(SELECT sum(frontendSize) Size, CL.id, startDT
+FROM RptCapacityUsage U
+       INNER JOIN APP_Application APP ON U.appId = APP.id AND U.type = @reportPeriod
+       INNER JOIN APP_Client CL ON APP.clientId = CL.id
+       GROUP By CL.id, startDT
+       ) SUB INNER JOIn #ClientRange CR ON SUB.id = CR.clientId AND SUB.startDT = CR.startDT
+
+
+-- TABLE FOR RESULT SET (IT WILL BE SMALL!)
+DECLARE @Results TABLE  (
+   EndTime  DATE,
+   ClientCount	INT,
+   TSize		BIGINT,
+   wDevices		int,
+   mDevices		INT,
+   tDevices		INT
+   )
+   
+-- FETCH AGGREGATES FOR CLIENTS/TIME PERIODS CHOSEN:
+INSERT @Results
+	SELECT 
+		startDT as Endtime,
+		count(clientId) as 'Client Count', 
+		sum(TotalSize) as 'Backup Size',
+		@WindowsCount AS WindowsDevices,
+		@MacCount AS MacDevices,
+		@WindowsCount+@MacCount AS TotalDevices  
+		FROM  #ClientRange
+	GROUP BY startDT
+
+
+
+--  NEED TO ADD ONE MORE "PSEUDO" ROW TO ACCOUNT FOR NOW NOT BEING &gt;&gt; THAN LAST COLLECTION DAY
+	DECLARE @LastDay	DATETIME = (select top 1 startDT from RptCapacityUsage where type = 1 order by startDT desc)
+	DECLARE @LastTotal	BIGINT	 = 0
+	
+--  WILL USE THE LAST "DAILY" TOTAL COLLECTED IN [RptCapacityUsage] FOR COLLECTING TOTALS 
+	IF @reportPeriod != 1
+	BEGIN
+		SET @LastTotal = (SELECT SUM(frontendSize)
+		   FROM #clientList CR
+		   INNER JOIN APP_APPLICATION AS APP
+				 ON APP.clientId = CR.cId
+		   INNER JOIN RptCapacityUsage AS RCU
+				 ON APP.id       = RCU.appId  and RCU.startDT = @LastDay AND RCU.type = 1)   --type == 1 for last Daily
+
+		-- ADD A ROW FOR "CURRENT" CLIENT COUNT (Clients added since last period Ended):
+		INSERT @results VALUES (@LastDay, @WindowsCount+@MacCount,	 @LastTotal,@WindowsCount,	@MacCount,	@WindowsCount+@MacCount)
+	END
+--	------------------------------------------------------------------
+--  WANT TO MAKE SURE WE ALWAYS HAVE THE SAME NUMBER OF DATAPOINTS,	--
+--  .. DEPENDING ON WHAT THE REPORTING INTERVAL (Day/Week/Month)	--
+--	.. IS.  BASED ON "RETENTION" OF EACH TYPE IN [RptCapacityUsage]	--
+--	.. TABLE.														--
+----------------------------------------------------------------------
+	DECLARE @ResultsCount	INT = (select COUNT(*) from @Results)
+	DECLARE @ExpectedCount	INT	= CASE @reportPeriod  WHEN 1 THEN 30 WHEN 2 THEN 12	WHEN 3 THEN	12 ELSE 1 END
+
+	IF @ResultsCount &lt; @ExpectedCount
+	BEGIN
+		DECLARE @FirstDate  DATE = (Select TOP 1 EndTime from @Results Order by EndTime)
+		DECLARE @FakeDate   DATE = @FirstDate
+		
+		IF @DEBUGLEVEL &gt; 0 SELECT ExpectedCount=@ExpectedCount, ResultsCount=@ResultsCount, firstDate=@FirstDate, FakeDate=@FakeDate
+		
+		WHILE @ResultsCount &lt; @ExpectedCount
+		BEGIN
+			SET @FakeDate = CASE @reportPeriod
+				WHEN 1 THEN	 DATEADD(day, -1, @FakeDate)
+				WHEN 2 THEN	 DATEADD(month, -1, @FakeDate)
+				WHEN 3 THEN	 DATEADD(WEEK, -1, @FakeDate)
+			END
+			INSERT @results VALUES(@FakeDate,0,	0,@WindowsCount,@MacCount, @WindowsCount+@MacCount)
+			SET @ResultsCount = @ResultsCount +1
+		END
+	END
+
+-- FINALLY, RETURN RESULT SET HERE!
+	select  EndTime,
+		   clientCount as 'Client Count',
+		   TSize as 'Backup Size',
+		   wDevices as WindowsDevices,
+		   mDevices as MacDevices,
+		   @WindowsCount+@MacCount AS TotalDevices
+			from @Results
+		order by EndTime 
+
+
+	
+	
+	
+END TRY
+----=====================================================================
+----==============  COME HERE IF THERE WAS A PROBLEM!     ===============
+----=====================================================================
+BEGIN CATCH
+      PRINT  'INSIDE CATCH BLOCK WITH FOLLOWING ERROR:
+      ERROR CODE: ' + CAST(ERROR_NUMBER() AS VARCHAR) + '
+      PROC NAME: ' + ISNULL(ERROR_PROCEDURE(), '???') + '
+      ERROR LINE NO: ' + CAST(ERROR_LINE() AS VARCHAR)  + '
+      ERROR MESSAGE: ' + ERROR_MESSAGE() + '
+      ERROR SEVERITY: ' + CAST(ERROR_SEVERITY() AS VARCHAR) +  '
+      ERROR STATE: ' + CAST(ERROR_STATE() AS VARCHAR)
+
+    SET @errorCode    = ERROR_NUMBER()
+    SET @errorString  = 'Procedure [' + ERROR_PROCEDURE() + '] Error Line [' +Convert(varchar(5), ERROR_LINE()) +']. ' +ERROR_MESSAGE()   
+END CATCH
+
+-- drop temp table
+IF object_id('tempdb.dbo.#edgeClientsWithCapabilities') IS NOT NULL
+      DROP TABLE #edgeClientsWithCapabilities
+IF object_id('tempdb.dbo.#clientList') IS NOT NULL
+      DROP TABLE #clientList
+IF object_id('tempdb.dbo.#ClientRange') IS NOT NULL
+      DROP TABLE #ClientRange
+      
+SET NOCOUNT OFF</sqlText>
+              <timeout>5</timeout>
+              <postQueryFilter>true</postQueryFilter>
+            </GetOperation>
+            <description>Administrative view to manage user laptops.</description>
+            <databaseName>CommServ</databaseName>
+            <queryPlan>
+              <offline>false</offline>
+              <collectionType>HTTP</collectionType>
+              <retentionDays>1</retentionDays>
+              <versions>
+                <CommCellVersion>ALL</CommCellVersion>
+              </versions>
+              <dynamicCollection>false</dynamicCollection>
+              <frequency>60</frequency>
+            </queryPlan>
+            <version>2</version>
+            <guid>8791c30d-0168-460e-b318-e172e05cbd3d</guid>
+            <hidden>false</hidden>
+            <revision />
+          </DataSet>
+        </dataSet>
+      </dataSets>
+      <inputs />
+      <body>{
+    "reportComponents": [
+        {
+            "type": "TABLE",
+            "dataSet": {
+                "dataSetId": 20,
+                "dataSetName": "Device",
+                "dataSetGuid": "d6cf27b8-f0db-421a-b334-b7e3e8bfba3a",
+                "originalDataSetName": "Device"
+            },
+            "title": {
+                "text": "Computers"
+            },
+            "id": "DeviceDetails",
+            "pageSize": 20,
+            "columns": [
+                {
+                    "dataField": "ClientDisplayName",
+                    "displayName": "Computer",
+                    "id": "ClientDisplayName",
+                    "type": "String",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false,
+                    "cellExpression": "= '&lt;a href=\"../browse/fsBrowse.do?adminMode=true&amp;clientName=' + row['ClientName'] + '&amp;clientId=' + row['ClientID'] + '&amp;showDeletedItems=false\"&gt;' + cellData + '&lt;/a&gt;'",
+                    "additionalProperties": false
+                },
+                {
+                    "dataField": "Domain",
+                    "displayName": "Domain",
+                    "id": "Domain",
+                    "type": "String",
+                    "origType": "",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false
+                },
+                {
+                    "dataField": "OS",
+                    "displayName": "OS",
+                    "id": "OS",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false
+                },
+                {
+                    "dataField": "Version",
+                    "displayName": "Version",
+                    "id": "Version1",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false
+                },
+                {
+                    "dataField": "Updates Status",
+                    "displayName": "Updates Status",
+                    "id": "UpdatesStatus",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false
+                },
+                {
+                    "dataField": "Install Date",
+                    "displayName": "Install Date",
+                    "id": "InstallDate",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false
+                },
+                {
+                    "dataField": "Owner Email",
+                    "displayName": "Owner Email",
+                    "id": "OwnerEmail",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false
+                },
+                {
+                    "dataField": "Owner",
+                    "displayName": "Owner",
+                    "id": "Owner",
+                    "type": "String",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": true,
+                    "cellExpression": ""
+                },
+                {
+                    "dataField": "ClientID",
+                    "displayName": "Protection Status",
+                    "id": "ProtectionStatus",
+                    "type": "Integer",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false,
+                    "cellExpression": ":=\n\nif ((Math.floor(Date.now() / 1000) - row['LastSuccessBackupTime']) &lt;= 7 * 86400)\n{\n\treturn '&lt;span class=\"sprite icon-dot-green\" alt=\"Protected\" title=\"Your data was backed up within the last 7 days\"&gt;&lt;/span&gt;';\n}\nelse if ((Math.floor(Date.now() / 1000) - row['LastSuccessBackupTime']) &lt;= 14 * 86400)\n{\n\treturn '&lt;span class=\"sprite icon-dot-yellow\" alt=\"Semi Protected\" title=\"Your data was backed up more than a week ago\"&gt;&lt;/span&gt;';\n}else if ((row['ClientStatus'] &amp; 2) !== 0) {\nreturn '&lt;span class=\"sprite icon-dot-gray\"  alt=\"Disabled\" title=\"Client is disabled\"&gt;&lt;/span&gt;';\n}\nelse\n{\n\treturn '&lt;span class=\"sprite icon-dot-red\" alt=\"Not Protected\" title=\"Your data has not been backed up for more than 2 weeks\"&gt;&lt;/span&gt;';\n}",
+                    "cellAttributes": {
+                        "style": "padding-left: 20px"
+                    }
+                },
+                {
+                    "dataField": "LastOnlineTime",
+                    "displayName": "Last Sync Time",
+                    "id": "LastOnlineTime",
+                    "type": "String",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false,
+                    "cellExpression": {
+                        "type": "none",
+                        "booleanType": "number",
+                        "source": "bytes",
+                        "target": "relative",
+                        "fmt": "comma",
+                        "customformat": ":=\nif(cellData == 0)\n{\n\treturn 'Not Available';\n}\nelse\n{\n\treturn moment.unix(cellData).format('MMM DD, YYYY hh:mm A');\n}",
+                        "tofixed": 2,
+                        "customDateFormat": "",
+                        "targetWindow": "_blank"
+                    },
+                    "cellAttributes": {
+                        "style": ""
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "dataField": "LastSuccessBackupTime",
+                    "displayName": "Last Backup Time",
+                    "id": "LastSuccessBackupTime",
+                    "type": "String",
+                    "origType": "",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false,
+                    "cellExpression": {
+                        "type": "none",
+                        "booleanType": "number",
+                        "source": "bytes",
+                        "target": "relative",
+                        "fmt": "comma",
+                        "customformat": ":=\nif(cellData == 0)\n{\n\treturn 'Not Available';\n}\nelse\n{\n\treturn moment.unix(cellData).format('MMM DD, YYYY hh:mm A');\n}",
+                        "tofixed": 2,
+                        "customDateFormat": "",
+                        "targetWindow": "_blank"
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "dataField": "ClientID",
+                    "displayName": "ClientID",
+                    "id": "ClientID",
+                    "type": "Integer",
+                    "origType": "",
+                    "visible": false,
+                    "hidden": true,
+                    "aggrType": "None",
+                    "isSelected": true
+                },
+                {
+                    "dataField": "ClientName",
+                    "displayName": "ClientName",
+                    "id": "ClientName",
+                    "type": "String",
+                    "origType": "",
+                    "visible": false,
+                    "hidden": true,
+                    "aggrType": "None"
+                },
+                {
+                    "dataField": "ClientStatus",
+                    "displayName": "ClientStatus",
+                    "id": "ClientStatus",
+                    "type": "Integer",
+                    "visible": false,
+                    "hidden": true,
+                    "aggrType": "None",
+                    "isSelected": false
+                },
+                {
+                    "dataField": "LastBackupTime",
+                    "displayName": "LastBackupTime",
+                    "id": "LastBackupTime",
+                    "type": "String",
+                    "origType": "",
+                    "visible": false,
+                    "hidden": true,
+                    "aggrType": "None",
+                    "isSelected": false,
+                    "cellExpression": ":=\nif(cellData == 0)\n{\n\treturn rpt.translate('Not Available');\n}\nelse\n{\n\treturn moment.unix(cellData).format('MMM DD, YYYY hh:mm A');\n}"
+                },
+                {
+                    "dataField": "BackupSchedule",
+                    "displayName": "Backup Schedule",
+                    "id": "BackupSchedule",
+                    "type": "String",
+                    "origType": "",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false
+                },
+                {
+                    "dataField": "NextBackup Time",
+                    "displayName": "Next Backup Time",
+                    "id": "NextBackupTime",
+                    "type": "String",
+                    "origType": "",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false,
+                    "cellExpression": {
+                        "type": "none",
+                        "booleanType": "number",
+                        "source": "bytes",
+                        "target": "relative",
+                        "fmt": "comma",
+                        "customformat": ":=\nif(cellData == 0)\n{\n\treturn 'Not Available';\n}\nelse\n{\n\treturn moment.unix(cellData).format('MMM DD, YYYY hh:mm A');\n}",
+                        "tofixed": 2,
+                        "customDateFormat": "",
+                        "targetWindow": "_blank"
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "dataField": "FailedBackupsin30days",
+                    "displayName": "Failed Backups(30days)",
+                    "id": "FailedBackupsin30days",
+                    "type": "Integer",
+                    "origType": "",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false
+                },
+                {
+                    "dataField": "Lost",
+                    "displayName": "Lost",
+                    "id": "Lost",
+                    "type": "Integer",
+                    "origType": "",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false
+                },
+                {
+                    "dataField": "LastFailedBackupTime",
+                    "displayName": "Last Failed Backup Time",
+                    "id": "LastFailedBackupTime",
+                    "type": "String",
+                    "origType": "",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": true,
+                    "cellExpression": {
+                        "type": "none",
+                        "booleanType": "number",
+                        "source": "bytes",
+                        "target": "relative",
+                        "fmt": "comma",
+                        "customformat": ":=\nif(cellData == 0)\n{\n\treturn 'Not Available';\n}\nelse\n{\n\treturn moment.unix(cellData).format('MMM DD, YYYY hh:mm A');\n}",
+                        "tofixed": 2,
+                        "customDateFormat": "",
+                        "targetWindow": "_blank"
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "dataField": "Backup Size",
+                    "displayName": "Backup Size",
+                    "id": "BackupSize",
+                    "type": "Long",
+                    "origType": "Long",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false,
+                    "additionalProperties": false,
+                    "cellExpression": {
+                        "type": "size",
+                        "booleanType": "number",
+                        "source": "bytes",
+                        "target": "relative",
+                        "fmt": "comma",
+                        "customformat": "",
+                        "tofixed": 2,
+                        "customDateFormat": "",
+                        "targetWindow": "_blank"
+                    }
+                },
+                {
+                    "dataField": "TotalBackupSize",
+                    "displayName": "TotalBackupSize",
+                    "id": "TotalBackupSize2",
+                    "type": "Long",
+                    "origType": "Long",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": true,
+                    "additionalProperties": false,
+                    "cellExpression": {
+                        "type": "size",
+                        "booleanType": "number",
+                        "source": "bytes",
+                        "target": "relative",
+                        "fmt": "comma",
+                        "customformat": "",
+                        "tofixed": 2,
+                        "customDateFormat": "",
+                        "targetWindow": "_blank"
+                    }
+                },
+                {
+                    "dataField": "ClientName",
+                    "displayName": "Actions",
+                    "id": "Actions",
+                    "type": "String",
+                    "visible": false,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "isSelected": false,
+                    "cellExpression": ":=\n\nvar ActionHtml = '&lt;a href=\"../clientDetails/fsDetails.do?adminMode=true&amp;clientName=' + row['ClientName'] + '&amp;clientId=' + row['ClientID'] + '\"&gt;Show Details&lt;/a&gt; | ';\n\nif ((row['ClientStatus'] &amp; 2) === 0) {\n    ActionHtml += '&lt;a href=\"javascript:void(0);\" onclick=\"deconfigureClient(\\'' + row['ClientName'] + '\\')\"&gt;Disable&lt;/a&gt;';\n\n} else {\n    ActionHtml += '&lt;a href=\"javascript:void(0);\" onclick=\"reconfigureClient(\\'' + row['ClientName'] + '\\')\"&gt;Enable&lt;/a&gt; | ';\n    ActionHtml += '&lt;a href=\"javascript:void(0);\" onclick=\"deleteClient(\\'' + row['ClientName'] + '\\')\"&gt;Delete&lt;/a&gt;';\n}\n\nreturn ActionHtml;",
+                    "width": "200"
+                }
+            ],
+            "allColumns": false,
+            "dataSetName": "",
+            "styles": {
+                "chartPlotOptions": {
+                    "isShowGridlines": true,
+                    "isSmoothLines": false,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": true
+                }
+            },
+            "showFilterByDefault": false,
+            "internalId": "DeviceDetails",
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "orientation": "vertical",
+            "sorting": [
+                {
+                    "columnId": "ClientDisplayName",
+                    "direction": "Asc"
+                }
+            ],
+            "autoHeight": "On",
+            "showSearchBar": true
+        }
+    ],
+    "customJsCode": "var onClientOperationSuccess = function(successMessage, errorMessage, getErrorCode, getErrorMessage) {\n    return function(response) {\n        if (getErrorCode(response) === '0') {\n            // Show success-message and reload the page.\n            cvUtil.toast(successMessage);\n            setTimeout(function() { location.reload(); }, 2000); \n        } else {\n            cvUtil.errorToast(errorMessage + ' ' + getErrorMessage(response));\n        }\n    }\n};\n\nvar onClientOperationError = function(errorMessage) {\n    return function() {\n        cvUtil.errorToast(errorMessage);\n    }\n};\n\nvar processClientOperation = function(requestXml, confirmMessage, successMessage, errorMessage, getErrorCode, getErrorMessage) {\n    if (confirm(confirmMessage) === true) {\n        cvUtil.loadPage(cvUtil.CONTEXT_PATH + '/api/QCommand/qoperation execute', requestXml,\n            onClientOperationSuccess(successMessage, errorMessage, getErrorCode, getErrorMessage), onClientOperationError(errorMessage),\n            { addCsrf: false, contentType:'application/xml; charset=UTF-8' });\n    }  \n};\n\nvar deconfigureClient = function(clientName) {\n    var\n        requestXml = '&lt;TMMsg_ReleaseLicenseReq isClientLevelOperation=\"1\"&gt;'\n            + '&lt;clientEntity _type=\"3\" clientName=\"' + clientName + '\" hostName=\"\"/&gt;'\n            + '&lt;licenseTypes appType=\"0\" licenseName=\"\" licenseType=\"0\"/&gt;'\n            + '&lt;/TMMsg_ReleaseLicenseReq&gt;',\n            \n        confirmMessage = 'Do you want to disable client \\'' + clientName + '\\'?',\n        successMessage = 'Client \\'' + clientName + '\\' is disabled.',\n        errorMessage = 'Error occurred while disabling client \\'' + clientName + '\\'.',\n        getErrorCode = function(response) { return response.documentElement.getAttribute('errorCode'); },\n        getErrorMessage = function(response) { return response.documentElement.getAttribute('errorMessage') || ''; };\n        \n    processClientOperation(requestXml, confirmMessage, successMessage, errorMessage, getErrorCode, getErrorMessage);\n};\n\nvar reconfigureClient = function(clientName) {\n    var\n        requestXml = '&lt;TMMsg_ClientReconfigurationReq&gt;'\n            + '&lt;clientInfo clientName=\"' + clientName + '\"/&gt;'\n            + '&lt;/TMMsg_ClientReconfigurationReq&gt;',\n            \n        confirmMessage = 'Do you want to enable client \\'' + clientName + '\\'?',\n        successMessage = 'Client \\'' + clientName + '\\' is enabled.',\n        errorMessage = 'Error occurred while enabling client \\'' + clientName + '\\'.',\n        getErrorCode = function(response) { return response.documentElement.getAttribute('errorCode'); },\n        getErrorMessage = function(response) { return response.documentElement.getAttribute('errorMessage') || ''; };\n        \n    processClientOperation(requestXml, confirmMessage, successMessage, errorMessage, getErrorCode, getErrorMessage);\n};\n\n\nvar deleteClient = function(clientName) {\n    var\n        requestXml = '&lt;App_DeleteClientRequest&gt;&lt;association&gt;'\n            + '&lt;entity _type_=\"0\" clientName=\"' + clientName + '\" clientSidePackage=\"1\" consumeLicense=\"1\" srmReportSet=\"0\" srmReportType=\"0\" type=\"0\"/&gt;'\n            + '&lt;/association&gt;&lt;/App_DeleteClientRequest&gt;',\n            \n        confirmMessage = 'Do you want to delete client \\'' + clientName + '\\'?',\n        successMessage = 'Client \\'' + clientName + '\\' is deleted.',\n        errorMessage = 'Error occurred while deleting client \\'' + clientName + '\\'.',\n        getErrorCode = function(response) { return response.documentElement.getElementsByTagName('response')[0].getAttribute('errorCode'); },\n        getErrorMessage = function(response) { return response.documentElement.getElementsByTagName('response')[0].getAttribute('errorMessage') || ''; };\n        \n    processClientOperation(requestXml, confirmMessage, successMessage, errorMessage, getErrorCode, getErrorMessage);\n};\n//Console functions override\nconsole = {}\nconsole.log = function(a) {\n};\nconsole.debug = function(a) {\n};\n\nconsole.error = function(a) {\n};",
+    "customStyle": ".chartColumns{\ndisplay:none;\n}",
+    "autoRefreshTime": 10,
+    "reportLayout": {
+        "gridsterOpts": {
+            "columns": 12
+        },
+        "DeviceDetails": {
+            "mobile": {
+                "size": {
+                    "x": 12,
+                    "y": 8
+                },
+                "position": [
+                    16,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 12,
+                    "y": 8
+                },
+                "position": [
+                    16,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 7
+                },
+                "position": [
+                    0,
+                    0
+                ]
+            }
+        }
+    },
+    "filters": {
+        "builder": {},
+        "viewer": {
+            "Growth": {
+                "EndTime": {
+                    "include": [],
+                    "exclude": [],
+                    "advancedFilters": []
+                }
+            }
+        }
+    }
+}</body>
+    </Page>
+  </pages>
+  <reportVersion>2</reportVersion>
+  <deployedVersion>1</deployedVersion>
+  <reportDescription>Administrative view to manage user laptops.</reportDescription>
+  <guid>9731b50c-cad9-4897-947e-f67f548174af</guid>
+  <revision>$Revision: 1.1.2.1 $</revision>
+  <icon>data-table.png</icon>
+  <hidden>false</hidden>
+  <visibleAll>true</visibleAll>
+  <readOnly>false</readOnly>
+  <engineVersion>1</engineVersion>
+  <builderVersion>2</builderVersion>
+  <translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_TITLE</localeKey>
+      <localeValue>No Backup for 4 days</localeValue>
+    </Translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_DESCRIPTION</localeKey>
+      <localeValue>Administrative view to manage user laptops.</localeValue>
+    </Translations>
+  </translations>
+  <cvTranslations />
+  <minCommCellVersion>
+    <releaseID>16</releaseID>
+    <servicePack>0</servicePack>
+    <spMinorVersion>0</spMinorVersion>
+  </minCommCellVersion>
+  <maxCommCellVersion>
+    <releaseID>100</releaseID>
+    <servicePack>99</servicePack>
+  </maxCommCellVersion>
+  <userReportId>No Backup for 4 days</userReportId>
+  <importScript>false</importScript>
+  <uiTags>
+    <string>Jobs</string>
+  </uiTags>
+  <type>STANDARD</type>
+  <canEdit>true</canEdit>
+</CustomReport>

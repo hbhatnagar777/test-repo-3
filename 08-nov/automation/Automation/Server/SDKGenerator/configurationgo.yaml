@@ -1,0 +1,143 @@
+directive:
+    - from: swagger-document
+      where: >-
+          $.servers[0].url
+      set: >-
+        http://WebserverUrl.Commvault.com/webconsole/api/
+      
+    - from : swagger-document
+      where: >-
+        $.paths..content
+      transform: >-
+        const json_obj = {};
+        for(var each in $)
+        {
+          if(each != "application/xml")
+          {
+              json_obj[each] = $[each];
+          }
+        }
+        return json_obj
+        
+    - from: swagger-document
+      where: >-
+        $.paths
+      transform: >-   
+        for (var each in $)
+        {
+            var json_key = Object.keys($[each])[0];
+            var json_get = $[each][json_key];
+            var tags = json_get.tags[0];
+            var verb = json_key;
+            var braces_regex = /\{([^}]+)\}/gi;
+            var alpha_regex = /[^{}A-Za-z/]/gi;
+            var final_regex = /[^\A-Za-z\/]/gi;
+            var last_part_brace = false;
+            var last_phrase = each.substring(each.lastIndexOf("/") + 1, each.length);
+            var path_removed_v2 = each.replace(/v2/i, '');
+            var path_removed_v3 = path_removed_v2.replace(/v3/i, '');
+            switch(json_key) { 
+              case "get":
+                verb = "Access";
+                break
+              case "post":
+                  var braces_present = braces_regex.test(path_removed_v3)
+                  if(braces_present)
+                  {
+                     var brace_index = path_removed_v3.lastIndexOf("}");
+                    if(brace_index == path_removed_v3.length -1)
+                      {
+                         verb = "Patch";
+                         last_part_brace = true;
+                      }
+                      else
+                      {
+                        verb = "Invoke";
+                      }
+                  }
+                  else
+                  {
+                      verb = "Apply";
+                  }
+                  break;
+              case "put" : 
+                  verb = "Replace";
+                  break;
+            }
+            var noun = path_removed_v3;
+            if(last_part_brace)
+            {
+            var last_part = last_phrase.replace(/id/gi, '');
+            last_part = last_part+"property";
+            path_removed_v3 = path_removed_v3.substr(0, path_removed_v3.lastIndexOf(last_phrase));
+            noun = path_removed_v3 + last_part;
+            }
+            else{
+              var matched_words = path_removed_v3.match(braces_regex);
+              if(matched_words)
+              {
+                for(index = 0; index < matched_words.length; index++)
+                {
+                    var word = matched_words[index];
+                    var temp_word = word.replace(/id/gi,'').replace(/name/gi,'').replace(/type/gi,'');
+                    noun = noun.replace(word, temp_word);
+                }
+              }
+            }
+            noun = noun.replace(alpha_regex, '');
+            noun = noun.replace(final_regex, '');  
+            var words_list = noun.split("/");
+            var noun_final = ""
+            var contains_words = [];
+            for (index =0; index < words_list.length; index++)
+            {
+              eachword = words_list[index].toLowerCase();
+              if(eachword != "")
+              {
+                if (noun_final == "")
+                {
+                  noun_final = noun_final+eachword;
+                  contains_words.push(eachword);
+                }
+                else
+                {
+                  for(arindex =0; arindex < contains_words.length; arindex++)
+                  {  
+                    containword = contains_words[arindex].toLowerCase();
+                    if(containword.length >= eachword.length)
+                    {
+                      if (!(containword.includes(eachword)))
+                      {
+                            contains_words.push(eachword);
+                            noun_final = noun_final+eachword;
+                            break;
+                      }
+                      else{
+                        break;
+                      }
+                    }
+                    else
+                    {
+                      if (eachword.includes(containword))
+                      {
+                        noun_final = noun_final.replace(containword, eachword);
+                        contains_words.splice(arindex,1);
+                        contains_words.push(eachword);
+                        break;
+                      }
+                      else{
+                        if (contains_words.indexOf(eachword) == -1)
+                        {
+                          contains_words.push(eachword);
+                          noun_final = noun_final+eachword;
+                          break;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }    
+        const id = tags+"_"+noun_final;
+        $[each][json_key].operationId = id
+        }

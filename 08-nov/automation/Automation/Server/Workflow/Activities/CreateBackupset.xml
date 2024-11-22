@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_SetActivityRequest>
+    <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+    <activity cellClass=""
+        className="commvault.cte.workflow.activities.CustomRemoteCommandActivity"
+        definition="&lt;?xml version='1.0' encoding='UTF-8'?>&lt;Workflow_CustomRemoteCommandDefinition password=&quot;&quot; startUpPath=&quot;&quot; inputs=&quot;&amp;lt;inputs>&amp;lt;client class=&amp;quot;commvault.msgs.CvEntities.ClientEntity&amp;quot; _list_=&amp;quot;false&amp;quot;>&amp;lt;clientName class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;clientId class=&amp;quot;java.lang.Integer&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;/client>&amp;lt;dataagenttype class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;backupsetName class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;storagepolicy class=&amp;quot;commvault.msgs.CvEntities.StoragePolicyEntity&amp;quot; _list_=&amp;quot;false&amp;quot;>&amp;lt;storagePolicyName class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;storagePolicyId class=&amp;quot;java.lang.Integer&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;/storagepolicy>&amp;lt;/inputs>&quot; host=&quot;&quot; arguments=&quot;&quot; user=&quot;&quot; command=&quot;qcreate backupset -c java:{activity.getInput(&amp;quot;client&amp;quot;)}:java -a java:{activity.getInput(&amp;quot;dataagenttype&amp;quot;)}:java -n java:{activity.getInput(&amp;quot;backupsetName&amp;quot;)}:java -sp java:{activity.getInput(&amp;quot;storagepolicy&amp;quot;)}:java -tk xpath:{/workflow/system/token}&quot; />"
+        description="Creates backupset " displayName="" flags="0"
+        icon="" inbound="1" outbound="1" schema="">
+        <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+        <activity activityId="0" activityName="CreateBackupset"
+            schemaId="0" schemaNamespace="commvault.cte.workflow.activities"/>
+        <activityLocation locationType="0">
+            <location schemaLocationId="1" schemaLocationUrl="workflow_activities.jar"/>
+        </activityLocation>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0" name="" type=""/>
+            <inputs className="" defaultValue="" listType="0" name="" type="">
+                <children attribute="0"
+                    className="commvault.msgs.CvEntities.ClientEntity"
+                    controlType="2" defaultValue="" displayName=""
+                    hidden="0"
+                    inputType="commvault.msgs.CvEntities.ClientEntity"
+                    listType="0" name="client" type="{commvault.msgs.CvEntities}ClientEntity">
+                    <children attribute="0" className="java.lang.String"
+                        defaultValue="" hidden="0"
+                        inputType="java.lang.String" listType="0"
+                        name="clientName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    <children attribute="0"
+                        className="java.lang.Integer" defaultValue=""
+                        hidden="0" inputType="java.lang.Integer"
+                        listType="0" name="clientId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="dataagenttype" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    name="backupsetName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0"
+                    className="commvault.msgs.CvEntities.StoragePolicyEntity"
+                    controlType="2" defaultValue="" hidden="0"
+                    inputType="commvault.msgs.CvEntities.StoragePolicyEntity"
+                    listType="0" name="storagepolicy" type="{commvault.msgs.CvEntities}StoragePolicyEntity">
+                    <children attribute="0" className="java.lang.String"
+                        defaultValue="" hidden="0"
+                        inputType="java.lang.String" listType="0"
+                        name="storagePolicyName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    <children attribute="0"
+                        className="java.lang.Integer" defaultValue=""
+                        hidden="0" inputType="java.lang.Integer"
+                        listType="0" name="storagePolicyId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                </children>
+            </inputs>
+        </activitySchema>
+    </activity>
+</Workflow_SetActivityRequest>

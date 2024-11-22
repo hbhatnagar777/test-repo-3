@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<App_SetCustomRuleRequest>
+    <queryDetail doesQuerySupportOutputFilter="1" frequency="86400"
+        isDisabled="1" isOverwriteAssociationAtAlertAllowed="0"
+        isPrimaryKeyPresent="0" isQueryModifyEnabled="1"
+        isRuleAssociatedWithAlert="1" isSystemCreated="0"
+        queryCriteriaName="HyperScale-HardwareAlerts"
+        queryDescription="Rule to notify hardware components that are offline on commvault hyperscale appliances"
+        sqlQuery="create table #tbl_HWDetailForAlert(&#xa;&#x9;NodeId&#x9;&#x9;int,&#xa;&#x9;NodeName&#x9;&#x9;nvarchar(510),&#xa;&#x9;EntityType&#x9;&#x9;int,&#xa;&#x9;EntityId&#x9;&#x9;int,&#xa;&#x9;EntityName&#x9;&#x9;varchar(256),&#xa;&#x9;EntityInfo&#x9;&#x9;varchar(256),&#xa;&#x9;EntityStatus&#x9;                              int,&#xa;&#x9;EntityStatusStr&#x9;                              varchar(16)&#xa;)&#xa;&#xa;insert into #tbl_HWDetailForAlert&#xa;exec MMGetScaleOutHwInfoForHwEntity 1,31,1&#xa;&#xa;select NodeName, EntityName, EntityStatusStr from #tbl_HWDetailForAlert&#xa;where EntityStatus = 0 &#xa;&#xa;drop table #tbl_HWDetailForAlert"
+        taskInfoXml="&lt;?xml version='1.0' encoding='UTF-8'?>&lt;TMMsg_TaskInfo>&lt;task description=&quot;&quot; ownerId=&quot;10&quot; runUserId=&quot;3&quot; taskType=&quot;2&quot; ownerName=&quot;Thiagarajan Karthikeyan&quot; alertId=&quot;0&quot; GUID=&quot;c6de7cfa-bd3c-49c7-b494-885efa09b93e&quot; policyType=&quot;10&quot; associatedObjects=&quot;0&quot; taskName=&quot;&quot; taskId=&quot;0&quot;>&lt;securityAssociations>&lt;ownerAssociations>&lt;inheritedOwners>&lt;permission permissionId=&quot;1&quot; _type_=&quot;122&quot; permissionName=&quot;Administrative Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;2&quot; _type_=&quot;122&quot; permissionName=&quot;Agent Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;3&quot; _type_=&quot;122&quot; permissionName=&quot;Agent Scheduling&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;4&quot; _type_=&quot;122&quot; permissionName=&quot;Operations on Storage Policy\Copy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;5&quot; _type_=&quot;122&quot; permissionName=&quot;Upload&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;6&quot; _type_=&quot;122&quot; permissionName=&quot;Download&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;7&quot; _type_=&quot;122&quot; permissionName=&quot;Install Package/Update &quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;8&quot; _type_=&quot;122&quot; permissionName=&quot;Library Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;9&quot; _type_=&quot;122&quot; permissionName=&quot;License Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;10&quot; _type_=&quot;122&quot; permissionName=&quot;MediaAgent Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;11&quot; _type_=&quot;122&quot; permissionName=&quot;Library Administration&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;12&quot; _type_=&quot;122&quot; permissionName=&quot;Data Protection Operations&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;13&quot; _type_=&quot;122&quot; permissionName=&quot;Browse&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;15&quot; _type_=&quot;122&quot; permissionName=&quot;Report Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;16&quot; _type_=&quot;122&quot; permissionName=&quot;Job Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;18&quot; _type_=&quot;122&quot; permissionName=&quot;Alert Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;20&quot; _type_=&quot;122&quot; permissionName=&quot;In Place Recover&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;22&quot; _type_=&quot;122&quot; permissionName=&quot;Out of Place Recover&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;24&quot; _type_=&quot;122&quot; permissionName=&quot;EndUser Access&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;25&quot; _type_=&quot;122&quot; permissionName=&quot;Compliance Search&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;26&quot; _type_=&quot;122&quot; permissionName=&quot;VaultTracker Operations&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;27&quot; _type_=&quot;122&quot; permissionName=&quot;Tag Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;29&quot; _type_=&quot;122&quot; permissionName=&quot;Legal Hold Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;31&quot; _type_=&quot;122&quot; permissionName=&quot;View&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;32&quot; _type_=&quot;122&quot; permissionName=&quot;Annotation Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;33&quot; _type_=&quot;122&quot; permissionName=&quot;Execute&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;34&quot; _type_=&quot;122&quot; permissionName=&quot;Add/Append&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;35&quot; _type_=&quot;122&quot; permissionName=&quot;Delete&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;36&quot; _type_=&quot;122&quot; permissionName=&quot;Recover and Download&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;38&quot; _type_=&quot;122&quot; permissionName=&quot;Live Browse&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;39&quot; _type_=&quot;122&quot; permissionName=&quot;Full Machine Recovery&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;40&quot; _type_=&quot;122&quot; permissionName=&quot;Sharing&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;41&quot; _type_=&quot;122&quot; permissionName=&quot;Download Center Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;42&quot; _type_=&quot;122&quot; permissionName=&quot;Out of Place Full Machine Recovery&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;65&quot; _type_=&quot;122&quot; permissionName=&quot;Install client&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;101&quot; _type_=&quot;122&quot; permissionName=&quot;Add, delete and modify a user&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;102&quot; _type_=&quot;122&quot; permissionName=&quot;Add, delete and modify a user group&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;107&quot; _type_=&quot;122&quot; permissionName=&quot;Change security settings&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;109&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Monitoring Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;110&quot; _type_=&quot;122&quot; permissionName=&quot;Execute Monitoring Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;111&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Monitoring Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;112&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Workflow&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;113&quot; _type_=&quot;122&quot; permissionName=&quot;Execute Workflow&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;114&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Workflow&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;115&quot; _type_=&quot;122&quot; permissionName=&quot;Create Schedule Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;116&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Schedule Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;117&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Schedule Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;118&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Schedule Policy Associations&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;119&quot; _type_=&quot;122&quot; permissionName=&quot;Overwrite on Restore&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;121&quot; _type_=&quot;122&quot; permissionName=&quot;Add Datasource&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;122&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Datasource&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;123&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Datasource&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;124&quot; _type_=&quot;122&quot; permissionName=&quot;Query Datasource&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;129&quot; _type_=&quot;122&quot; permissionName=&quot;Add Report&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;130&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Report&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;131&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Report&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;132&quot; _type_=&quot;122&quot; permissionName=&quot;Execute Report&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;133&quot; _type_=&quot;122&quot; permissionName=&quot;Create Workflow&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;134&quot; _type_=&quot;122&quot; permissionName=&quot;File Analytics&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;135&quot; _type_=&quot;122&quot; permissionName=&quot;Email Analytics&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;136&quot; _type_=&quot;122&quot; permissionName=&quot;Web Analytics&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;137&quot; _type_=&quot;122&quot; permissionName=&quot;Data Connectors&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;138&quot; _type_=&quot;122&quot; permissionName=&quot;Events Organizer&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;139&quot; _type_=&quot;122&quot; permissionName=&quot;Add, delete and modify folders&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;140&quot; _type_=&quot;122&quot; permissionName=&quot;Add, delete and modify content for DLP&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;142&quot; _type_=&quot;122&quot; permissionName=&quot;Allow privacy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;143&quot; _type_=&quot;122&quot; permissionName=&quot;Allow change of client names&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;145&quot; _type_=&quot;122&quot; permissionName=&quot;Laptop&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;146&quot; _type_=&quot;122&quot; permissionName=&quot;Edge Drive&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;147&quot; _type_=&quot;122&quot; permissionName=&quot;eGovernance&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;148&quot; _type_=&quot;122&quot; permissionName=&quot;DLP&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;149&quot; _type_=&quot;122&quot; permissionName=&quot;eDiscovery&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;150&quot; _type_=&quot;122&quot; permissionName=&quot;Mobile Backup&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;151&quot; _type_=&quot;122&quot; permissionName=&quot;Create Alert&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;152&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Alert&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;153&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Alert&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;154&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Alert Associations&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;155&quot; _type_=&quot;122&quot; permissionName=&quot;Add/Remove Recipients&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;156&quot; _type_=&quot;122&quot; permissionName=&quot;Create Plan&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;157&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Plan&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;158&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Plan&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;159&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Plan Associations&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;160&quot; _type_=&quot;122&quot; permissionName=&quot;Create VM Snapshot&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;161&quot; _type_=&quot;122&quot; permissionName=&quot;Delete VM Snapshot&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;162&quot; _type_=&quot;122&quot; permissionName=&quot;Revert VM Snapshot&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;163&quot; _type_=&quot;122&quot; permissionName=&quot;Edit VM&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;164&quot; _type_=&quot;122&quot; permissionName=&quot;Delete VM&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;165&quot; _type_=&quot;122&quot; permissionName=&quot;Renew VM&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;166&quot; _type_=&quot;122&quot; permissionName=&quot;Clone VM&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;167&quot; _type_=&quot;122&quot; permissionName=&quot;Power ON VM&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;168&quot; _type_=&quot;122&quot; permissionName=&quot;Power OFF VM&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;169&quot; _type_=&quot;122&quot; permissionName=&quot;Refresh VM&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;170&quot; _type_=&quot;122&quot; permissionName=&quot;Run Command with System Account&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;171&quot; _type_=&quot;122&quot; permissionName=&quot;Run Command with User Account&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;172&quot; _type_=&quot;122&quot; permissionName=&quot;Administration&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;173&quot; _type_=&quot;122&quot; permissionName=&quot;Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;174&quot; _type_=&quot;122&quot; permissionName=&quot;Create Subclient Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;175&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Subclient Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;176&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Subclient Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;177&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Subclient Policy Associations&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;178&quot; _type_=&quot;122&quot; permissionName=&quot;VPN Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;179&quot; _type_=&quot;122&quot; permissionName=&quot;Create Client Group&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;180&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Client Group&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;181&quot; _type_=&quot;122&quot; permissionName=&quot;Change Client Associations&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;182&quot; _type_=&quot;122&quot; permissionName=&quot;View Royalty Report&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;206&quot; _type_=&quot;122&quot; permissionName=&quot;Storage Provisioning Administrator&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;207&quot; _type_=&quot;122&quot; permissionName=&quot;Storage Provisioning User&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;208&quot; _type_=&quot;122&quot; permissionName=&quot;Create Custom Property&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;209&quot; _type_=&quot;122&quot; permissionName=&quot;Update Custom Property&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;210&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Custom Property&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;211&quot; _type_=&quot;122&quot; permissionName=&quot;Create Mobile Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;212&quot; _type_=&quot;122&quot; permissionName=&quot;Update Mobile Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;213&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Mobile Policy&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;214&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Mobile Policy Associations&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;215&quot; _type_=&quot;122&quot; permissionName=&quot;Archiving&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;216&quot; _type_=&quot;122&quot; permissionName=&quot;Search Share&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;217&quot; _type_=&quot;122&quot; permissionName=&quot;Healthcare Administrative Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;218&quot; _type_=&quot;122&quot; permissionName=&quot;Credential Policy View&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;219&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Data&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;221&quot; _type_=&quot;122&quot; permissionName=&quot;Create EDiscovery Task&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;222&quot; _type_=&quot;122&quot; permissionName=&quot;Edit EDiscovery Task&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;223&quot; _type_=&quot;122&quot; permissionName=&quot;View EDiscovery Task&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;224&quot; _type_=&quot;122&quot; permissionName=&quot;Delete EDiscovery Task&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;234&quot; _type_=&quot;122&quot; permissionName=&quot;Create Table&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;235&quot; _type_=&quot;122&quot; permissionName=&quot;Change Table Schema&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;236&quot; _type_=&quot;122&quot; permissionName=&quot;Access Records&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;237&quot; _type_=&quot;122&quot; permissionName=&quot;Create Application&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;238&quot; _type_=&quot;122&quot; permissionName=&quot;Change Application Schema&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;239&quot; _type_=&quot;122&quot; permissionName=&quot;Access Application&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;240&quot; _type_=&quot;122&quot; permissionName=&quot;Select VM Restore Destination Host&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;241&quot; _type_=&quot;122&quot; permissionName=&quot;Create Role&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;242&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Role&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;243&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Role&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;244&quot; _type_=&quot;122&quot; permissionName=&quot;Array Management&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;245&quot; _type_=&quot;122&quot; permissionName=&quot;Array Administration&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;246&quot; _type_=&quot;122&quot; permissionName=&quot;Create Region&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;247&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Region&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;248&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Region&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;249&quot; _type_=&quot;122&quot; permissionName=&quot;Add Domain&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;250&quot; _type_=&quot;122&quot; permissionName=&quot;Edit Domain&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;inheritedOwners>&lt;permission permissionId=&quot;251&quot; _type_=&quot;122&quot; permissionName=&quot;Delete Domain&quot; />&lt;parents commCellName=&quot;murloc&quot; commCellId=&quot;2&quot; _type_=&quot;1&quot; />&lt;/inheritedOwners>&lt;/ownerAssociations>&lt;/securityAssociations>&lt;originalCC commCellId=&quot;2&quot; />&lt;taskSecurity>&lt;associatedUserGroups userGroupId=&quot;1&quot; _type_=&quot;15&quot; userGroupName=&quot;master&quot; />&lt;associatedUserGroups userGroupId=&quot;3&quot; _type_=&quot;15&quot; userGroupName=&quot;View All&quot; />&lt;ownerCapabilities />&lt;/taskSecurity>&lt;createAs>&lt;user>&lt;user userName=&quot;commvault-nj\drabenda(Deleted,3)&quot; userId=&quot;3&quot; />&lt;/user>&lt;/createAs>&lt;taskFlags isEdgeDrive=&quot;0&quot; isEZOperation=&quot;0&quot; forDDB=&quot;0&quot; uninstalled=&quot;0&quot; isSystem=&quot;0&quot; disabled=&quot;1&quot; />&lt;task taskName=&quot;&quot; taskId=&quot;1898645&quot; />&lt;/task>&lt;appGroup />&lt;subTasks>&lt;subTask subTaskOrder=&quot;0&quot; subTaskName=&quot;&quot; subTaskType=&quot;1&quot; flags=&quot;0&quot; operationType=&quot;5014&quot; subTaskId=&quot;0&quot;>&lt;subTask subtaskId=&quot;1899837&quot; subtaskName=&quot;&quot; />&lt;/subTask>&lt;pattern active_end_occurence=&quot;0&quot; freq_subday_interval=&quot;1800&quot; freq_type=&quot;2048&quot; patternId=&quot;8963&quot; flags=&quot;0&quot; description=&quot;Every week on Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday at 12:00 AM  and repeats every 0 hr(s) 30 min(s) until 11:59 PM&quot; active_end_time=&quot;86340&quot; active_end_date=&quot;0&quot; skipOccurence=&quot;0&quot; skipDayNumber=&quot;0&quot; active_start_time=&quot;0&quot; freq_restart_interval=&quot;0&quot; active_start_date=&quot;1542067200&quot; freq_interval=&quot;127&quot; freq_relative_interval=&quot;0&quot; name=&quot;&quot; freq_recurrence_factor=&quot;1&quot;>&lt;daysToRun week=&quot;0&quot; Monday=&quot;1&quot; Thursday=&quot;1&quot; Friday=&quot;1&quot; Sunday=&quot;1&quot; Wednesday=&quot;1&quot; Tuesday=&quot;1&quot; day=&quot;0&quot; Saturday=&quot;1&quot; />&lt;calendar calendarName=&quot;Standard&quot; calendarId=&quot;1&quot; />&lt;timeZone TimeZoneID=&quot;31&quot; />&lt;/pattern>&lt;options>&lt;backupOpts backupLevel=&quot;2&quot;>&lt;dataOpt autoCopy=&quot;0&quot; />&lt;/backupOpts>&lt;/options>&lt;/subTasks>&lt;/TMMsg_TaskInfo>" visibility="0">
+        <creator userId="10" userName="commvault-nj\karthik"/>
+        <securityAssociations>
+            <ownerAssociations>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="1" permissionName="Administrative Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="2" permissionName="Agent Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="3" permissionName="Agent Scheduling"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="4" permissionName="Operations on Storage Policy\Copy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="5" permissionName="Upload"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="6" permissionName="Download"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="7" permissionName="Install Package/Update "/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="8" permissionName="Library Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="9" permissionName="License Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="10" permissionName="MediaAgent Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="11" permissionName="Library Administration"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="12" permissionName="Data Protection Operations"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="13" permissionName="Browse"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="15" permissionName="Report Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="16" permissionName="Job Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="18" permissionName="Alert Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="20" permissionName="In Place Recover"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="22" permissionName="Out of Place Recover"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="24" permissionName="EndUser Access"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="25" permissionName="Compliance Search"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="26" permissionName="VaultTracker Operations"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="27" permissionName="Tag Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="29" permissionName="Legal Hold Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="31" permissionName="View"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="32" permissionName="Annotation Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="33" permissionName="Execute"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="34" permissionName="Add/Append"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="35" permissionName="Delete"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="36" permissionName="Recover and Download"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="38" permissionName="Live Browse"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="39" permissionName="Full Machine Recovery"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="40" permissionName="Sharing"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="41" permissionName="Download Center Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="42" permissionName="Out of Place Full Machine Recovery"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="65" permissionName="Install client"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="101" permissionName="Add, delete and modify a user"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="102" permissionName="Add, delete and modify a user group"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="107" permissionName="Change security settings"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="109" permissionName="Edit Monitoring Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="110" permissionName="Execute Monitoring Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="111" permissionName="Delete Monitoring Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="112" permissionName="Edit Workflow"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="113" permissionName="Execute Workflow"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="114" permissionName="Delete Workflow"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="115" permissionName="Create Schedule Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="116" permissionName="Edit Schedule Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="117" permissionName="Delete Schedule Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="118" permissionName="Edit Schedule Policy Associations"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="119" permissionName="Overwrite on Restore"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="121" permissionName="Add Datasource"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="122" permissionName="Edit Datasource"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="123" permissionName="Delete Datasource"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="124" permissionName="Query Datasource"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="129" permissionName="Add Report"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="130" permissionName="Edit Report"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="131" permissionName="Delete Report"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="132" permissionName="Execute Report"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="133" permissionName="Create Workflow"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="134" permissionName="File Analytics"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="135" permissionName="Email Analytics"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="136" permissionName="Web Analytics"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="137" permissionName="Data Connectors"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="138" permissionName="Events Organizer"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="139" permissionName="Add, delete and modify folders"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="140" permissionName="Add, delete and modify content for DLP"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="142" permissionName="Allow privacy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="143" permissionName="Allow change of client names"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="145" permissionName="Laptop"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="146" permissionName="Edge Drive"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="147" permissionName="eGovernance"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="148" permissionName="DLP"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="149" permissionName="eDiscovery"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="150" permissionName="Mobile Backup"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="151" permissionName="Create Alert"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="152" permissionName="Edit Alert"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="153" permissionName="Delete Alert"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="154" permissionName="Edit Alert Associations"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="155" permissionName="Add/Remove Recipients"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="156" permissionName="Create Plan"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="157" permissionName="Edit Plan"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="158" permissionName="Delete Plan"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="159" permissionName="Edit Plan Associations"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="160" permissionName="Create VM Snapshot"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="161" permissionName="Delete VM Snapshot"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="162" permissionName="Revert VM Snapshot"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="163" permissionName="Edit VM"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="164" permissionName="Delete VM"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="165" permissionName="Renew VM"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="166" permissionName="Clone VM"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="167" permissionName="Power ON VM"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="168" permissionName="Power OFF VM"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="169" permissionName="Refresh VM"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="170" permissionName="Run Command with System Account"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="171" permissionName="Run Command with User Account"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="172" permissionName="Administration"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="173" permissionName="Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="174" permissionName="Create Subclient Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="175" permissionName="Edit Subclient Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="176" permissionName="Delete Subclient Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="177" permissionName="Edit Subclient Policy Associations"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="178" permissionName="VPN Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="179" permissionName="Create Client Group"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="180" permissionName="Delete Client Group"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="181" permissionName="Change Client Associations"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="182" permissionName="View Royalty Report"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="206" permissionName="Storage Provisioning Administrator"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="207" permissionName="Storage Provisioning User"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="208" permissionName="Create Custom Property"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="209" permissionName="Update Custom Property"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="210" permissionName="Delete Custom Property"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="211" permissionName="Create Mobile Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="212" permissionName="Update Mobile Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="213" permissionName="Delete Mobile Policy"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="214" permissionName="Edit Mobile Policy Associations"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="215" permissionName="Archiving"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="216" permissionName="Search Share"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="217" permissionName="Healthcare Administrative Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="218" permissionName="Credential Policy View"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="219" permissionName="Delete Data"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="221" permissionName="Create EDiscovery Task"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="222" permissionName="Edit EDiscovery Task"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="223" permissionName="View EDiscovery Task"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="224" permissionName="Delete EDiscovery Task"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="234" permissionName="Create Table"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="235" permissionName="Change Table Schema"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="236" permissionName="Access Records"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="237" permissionName="Create Application"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="238" permissionName="Change Application Schema"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="239" permissionName="Access Application"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="240" permissionName="Select VM Restore Destination Host"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="241" permissionName="Create Role"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="242" permissionName="Edit Role"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="243" permissionName="Delete Role"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="244" permissionName="Array Management"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="245" permissionName="Array Administration"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="246" permissionName="Create Region"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="247" permissionName="Edit Region"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="248" permissionName="Delete Region"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="249" permissionName="Add Domain"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="250" permissionName="Edit Domain"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+                <inheritedOwners>
+                    <permission _type_="122" permissionId="251" permissionName="Delete Domain"/>
+                    <parents _type_="1" commCellId="2" commCellName="murloc"/>
+                </inheritedOwners>
+            </ownerAssociations>
+        </securityAssociations>
+        <commcellAssociation>
+            <entity _type_="124" commCellId="2"/>
+        </commcellAssociation>
+        <additionalQueryDetails alertCriteria="0" alertType="0"
+            isHealthParam="0" querySeverity="3">
+            <scriptDescription
+                description="Rule to notify hardware components that are offline on commvault hyperscale appliances"
+                guid="482B4F23-1E3E-43D9-A806-7752446BA8C6"
+                reportName="HyperScale-HardwareAlerts" revision="$Revision: 1.2 $ M&lt;1551727924192>"/>
+        </additionalQueryDetails>
+        <queryEntity queryId="0" queryName="HyperScale-HardwareAlerts"/>
+        <queryOutputColumns columnFriendlyName="Node"
+            columnName="NodeName" isColumnFilterable="0"
+            isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Component"
+            columnName="EntityName" isColumnFilterable="1"
+            isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Status"
+            columnName="EntityStatusStr" isColumnFilterable="0"
+            isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+    </queryDetail>
+</App_SetCustomRuleRequest>

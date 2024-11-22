@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />"
+    description="" executeOnWeb="0"
+    inputs="&lt;inputs>&lt;regcommcell class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/regcommcell>&lt;regcommcelluser class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;regcommcellpass class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/regcommcellpass>&lt;/inputs>"
+    interactive="0" isHtmlDescription="0" manualPercentageComplete="0"
+    name="WF_TRANSFERTOKEN"
+    outputs="&lt;outputs />" revision="$Revision: M1.2 $" tags=""
+    uniqueGuid="2ccbc39c-a27f-4d42-ad8b-1f91affe3206"
+    variables="&lt;variables />" webHidden="0" workflowId="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables className="" name="variables" type=""/>
+        <inputs attribute="0" className="" name="inputs" type="">
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="regcommcell"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="regcommcelluser" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="regcommcellpass"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </inputs>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="ImpersonateLogin_1" commented="0"
+            description="" originalStyle="" points="" sourceX="72"
+            sourceY="59" status="0" style="defaultEdge" targetX="260"
+            targetY="58" transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a  boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1575486140486"
+        description="impersonates a user on the CommCell"
+        displayName="ImpersonateLogin" height="34" interactive="0"
+        jobMode="0" name="ImpersonateLogin"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ImpersonateLogin"
+        uniqueName="ImpersonateLogin_1" waitSetting="0" width="133"
+        x="194" y="41">
+        <inputs val="&lt;inputs>&lt;commCell class=&quot;commvault.msgs.CvEntities.CommCellEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/regcommcell}&lt;/commCell>&lt;userName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/regcommcelluser}&lt;/userName>&lt;password class=&quot;workflow.types.EncryptedString&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/regcommcellpass}&lt;/password>&lt;/inputs>"/>
+        <transition activity="TransferToken_1" commented="0"
+            description="" originalStyle="" points="" sourceX="260"
+            sourceY="58" status="0" style="defaultEdge" targetX="419"
+            targetY="62" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1575486194302"
+        description="transfers your logged in session to a registered commcell"
+        displayName="TransferToken" height="34" interactive="0"
+        jobMode="0" name="TransferToken"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ImpersonateCommCell"
+        uniqueName="TransferToken_1" waitSetting="0" width="114" x="412" y="36">
+        <inputs val="&lt;inputs>&lt;commCell class=&quot;commvault.msgs.CvEntities.CommCellEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/regcommcell}&lt;/commCell>&lt;/inputs>"/>
+    </Activity>
+    <formProperties css="" formVersion="0" javaScript="" pageMode="0">
+        <rules/>
+    </formProperties>
+    <minCommCellVersion releaseID="16" servicePack="0"/>
+</Workflow_WorkflowDefinition>

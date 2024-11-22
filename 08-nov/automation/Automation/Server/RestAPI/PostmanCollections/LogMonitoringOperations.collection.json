@@ -1,0 +1,379 @@
+{
+	"info": {
+		"_postman_id": "ceee80fe-2d4b-4174-a858-fb4991790c58",
+		"name": "LogMonitoringOperations",
+		"description": "This collection is for Log Monitoring Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"postman.setEnvironmentVariable(\"UserName\", jsonData.userName);",
+							"",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Validating logged in username\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							"",
+							"",
+							"//tests[\"Validating if response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\") ;   //validate response time",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            ",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "CreateMP No IndexServer",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"MonitoringPolicyName\", \"NewMP\" + new Date().getTime());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"console.log(\"Verifying the errorCode for failure case\");    ",
+							"",
+							"var errorcodeaftercreate = jsonData.errorCode",
+							"",
+							"if((tests[\"proper error code for policy creation\"] = errorcodeaftercreate === 587205314))     ",
+							"            console.log(\"Monitoring policy is not created successfully\");",
+							"            ",
+							"console.log(\"Verifying the errorMessage for failure case\");   ",
+							"            ",
+							"if((tests[\"proper error message for policy creation\"] = jsonData.errorMessage === \"Please configure analytical engine.\"))     ",
+							"            console.log(\"Monitoring policy is not created successfully and errormessage is correct\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<LogMonitoring_MonitoringPolicyOperationReq op=\"1\">\r\n    <processinginstructioninfo>\r\n        <user userName=\"{{UserName}}\" />\r\n    </processinginstructioninfo>\r\n    <policy indexAllLines=\"1\" monitoringPolicyName=\"{{MonitoringPolicyName}}\" monitoringPolicyid=\"0\">\r\n        <monitoringTypes val=\"0\" />\r\n        <LMTemplates templateId=\"1\" templateName=\"Commvault Logs\" />\r\n        <associations _type_=\"3\" clientId=\"2\"></associations>\r\n        <dataCapturingOptions cloudId=\"\" cloudName=\"\" ageCIDataAfterDays=\"15\" ></dataCapturingOptions>\r\n    </policy>\r\n</LogMonitoring_MonitoringPolicyOperationReq>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/logmonitoring/Policy/Operations",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"logmonitoring",
+						"Policy",
+						"Operations"
+					]
+				},
+				"description": "Creates a Monitoring policy"
+			},
+			"response": []
+		},
+		{
+			"name": "Get cloudid and name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"console.log(\"Verifying the IndexServer Info\");   ",
+							"if((tests[\"Validating IndexServer Info\"] = responseBody.has(\"listOfCIServer\")))      ",
+							"            console.log(\"IndexServer Info is present\");",
+							"console.log(\"Verifying the InternalCloud Info\");   ",
+							"if((tests[\"Validating CloudName Info\"] = responseBody.has(\"internalCloudName\")))      ",
+							"            console.log(\"CloudName Info is present\");",
+							"console.log(\"Verifying the CloudID Info\"); ",
+							"if((tests[\"Validating CloudID Info\"] = responseBody.has(\"cloudID\")))      ",
+							"            console.log(\"CloudID Info is present\");",
+							"",
+							"console.log(\"Setting the CloudID Info\"); ",
+							"postman.setEnvironmentVariable(\"CloudID\", jsonData.listOfCIServer[0].cloudID);",
+							"console.log(\"Setting the CloudName Info\"); ",
+							"postman.setEnvironmentVariable(\"CloudName\", jsonData.listOfCIServer[0].internalCloudName);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/AnalyticsServers",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AnalyticsServers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateMP",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"var errorCodeaftercreate = jsonData.errorCode;",
+							"",
+							"if((tests[\"validating monitoring policy creation\"] = errorCodeaftercreate === 0))     ",
+							"            console.log(\"Monitoring policy is created successfully\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/xml"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<LogMonitoring_MonitoringPolicyOperationReq op=\"1\">\r\n    <processinginstructioninfo>\r\n        <user userName=\"{{UserName}}\" />\r\n    </processinginstructioninfo>\r\n    <policy indexAllLines=\"1\" monitoringPolicyName=\"{{MonitoringPolicyName}}\" monitoringPolicyid=\"0\">\r\n        <monitoringTypes val=\"0\" />\r\n        <LMTemplates templateId=\"1\" templateName=\"Commvault Logs\" />\r\n        <content></content>\r\n        <associations _type_=\"3\" clientId=\"2\" ></associations>\r\n        <dataCapturingOptions cloudId=\"{{CloudID}}\" cloudName=\"{{CloudName}}\" ageCIDataAfterDays=\"15\" ></dataCapturingOptions>\r\n    </policy>\r\n</LogMonitoring_MonitoringPolicyOperationReq>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/logmonitoring/Policy/Operations",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"logmonitoring",
+						"Policy",
+						"Operations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateMP SameName",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"console.log(\"Verifying the errorCode for failure case\");    ",
+							"",
+							"var errorcodeaftercreate = jsonData.errorCode",
+							"",
+							"if((tests[\"proper error code for policy creation\"] = errorcodeaftercreate === -1))     ",
+							"            console.log(\"Monitoring policy is not created successfully because policy with same name already exists\");",
+							"            ",
+							"console.log(\"Verifying the errorMessage for failure case\");   ",
+							"            ",
+							"if((tests[\"proper error message for policy creation\"] = jsonData.errorMessage === \"Policy Name in Use please use diffrent name\"))     ",
+							"            console.log(\"Monitoring policy is not created successfully because policy with same name already exists\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/xml"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<LogMonitoring_MonitoringPolicyOperationReq op=\"2\">\r\n    <processinginstructioninfo>\r\n        <user userName=\"{{UserName}}\" />\r\n    </processinginstructioninfo>\r\n    <policy indexAllLines=\"1\" monitoringPolicyName=\"{{MonitoringPolicyName}}\" monitoringPolicyid=\"0\">\r\n        <monitoringTypes val=\"0\" />\r\n        <LMTemplates templateId=\"1\" templateName=\"Commvault Logs\"/>\r\n        <content></content>\r\n        <associations _type_=\"3\" clientId=\"2\" ></associations>\r\n        <dataCapturingOptions cloudId=\"{{CloudID}}\" cloudName=\"{{CloudName}}\" ageCIDataAfterDays=\"15\" ></dataCapturingOptions>\r\n    </policy>\r\n</LogMonitoring_MonitoringPolicyOperationReq>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/logmonitoring/Policy/Operations",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"logmonitoring",
+						"Policy",
+						"Operations"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

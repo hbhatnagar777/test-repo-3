@@ -1,0 +1,831 @@
+<CustomReport>
+  <report>
+    <customReportName>AkamaiDownloadStatus</customReportName>
+  </report>
+  <pages>
+    <Page>
+      <pageName>Page0</pageName>
+      <isDefault>true</isDefault>
+      <pageTitle>
+        <text>Page0</text>
+      </pageTitle>
+      <dataSets>
+        <dataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>AkamaiDownloadStatus</dataSetName>
+              <dataSetGuid>90c69e60-5e45-4930-b7c0-4133068fa326</dataSetGuid>
+            </dataSet>
+            <endpoint>DATABASE</endpoint>
+            <shared>false</shared>
+            <dataSources>
+              <DataSource>
+                <connectionType>COMMCELL</connectionType>
+                <commCell>
+                  <commCellName>$LocalCommCell$</commCellName>
+                </commCell>
+              </DataSource>
+            </dataSources>
+            <allColumns>false</allColumns>
+            <fields>
+              <Column>
+                <name>sys_rowid</name>
+                <dataField>$row_number$</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Data Source</name>
+                <dataField>Data Source</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Feature Release</name>
+                <dataField>Feature Release</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>CU</name>
+                <dataField>CU</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>CUonCloud</name>
+                <dataField>CUonCloud</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>CUStatus</name>
+                <dataField>CUStatus</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>DownloadStatus</name>
+                <dataField>DownloadStatus</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Date</name>
+                <dataField>Date</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>TimeTaken</name>
+                <dataField>TimeTaken</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>PayLoadSize</name>
+                <dataField>PayLoadSize</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Logs</name>
+                <dataField>Logs</dataField>
+                <type>String</type>
+              </Column>
+            </fields>
+            <GetOperation>
+              <parameters/>
+              <sqlText>SELECT * FROM dbo.AkamaiDownloadStatus order by Date DESC</sqlText>
+              <timeout>5</timeout>
+              <postQueryFilter>true</postQueryFilter>
+              <rDataSetQuery></rDataSetQuery>
+              <rPlotQuery></rPlotQuery>
+            </GetOperation>
+            <description></description>
+            <databaseName>CommServ</databaseName>
+            <queryPlan>
+              <offline>false</offline>
+              <collectionType>HTTP</collectionType>
+              <retentionDays>1</retentionDays>
+              <versions>
+                <CommCellVersion>ALL</CommCellVersion>
+              </versions>
+              <dynamicCollection>false</dynamicCollection>
+              <frequency>60</frequency>
+              <direct>false</direct>
+            </queryPlan>
+            <version>18</version>
+            <guid>90c69e60-5e45-4930-b7c0-4133068fa326</guid>
+            <revision></revision>
+            <computedColumns>
+              <scriptName>R</scriptName>
+              <script></script>
+              <columnList/>
+            </computedColumns>
+          </DataSet>
+        </dataSet>
+      </dataSets>
+      <inputs/>
+      <body>{
+    &quot;reportComponents&quot;: [
+        {
+            &quot;type&quot;: &quot;TABLE&quot;,
+            &quot;dataSet&quot;: {
+                &quot;dataSetName&quot;: &quot;AkamaiDownloadStatus&quot;,
+                &quot;dataSetGuid&quot;: &quot;90c69e60-5e45-4930-b7c0-4133068fa326&quot;,
+                &quot;originalDataSetName&quot;: &quot;&quot;
+            },
+            &quot;title&quot;: {
+                &quot;text&quot;: &quot;&quot;
+            },
+            &quot;id&quot;: &quot;Table1590293591751&quot;,
+            &quot;pageSize&quot;: 20,
+            &quot;columns&quot;: [
+                {
+                    &quot;dataField&quot;: &quot;sys_rowid&quot;,
+                    &quot;displayName&quot;: &quot;sys_rowid&quot;,
+                    &quot;id&quot;: &quot;sys_rowid&quot;,
+                    &quot;type&quot;: &quot;Long&quot;,
+                    &quot;origType&quot;: &quot;&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: true,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    }
+                },
+                {
+                    &quot;dataField&quot;: &quot;Data Source&quot;,
+                    &quot;displayName&quot;: &quot;Data Source&quot;,
+                    &quot;id&quot;: &quot;DataSource&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;&quot;,
+                    &quot;visible&quot;: false,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    }
+                },
+                {
+                    &quot;dataField&quot;: &quot;Feature Release&quot;,
+                    &quot;displayName&quot;: &quot;Feature Release&quot;,
+                    &quot;id&quot;: &quot;FeatureRelease&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    },
+                    &quot;width&quot;: 131,
+                    &quot;isSelected&quot;: false,
+                    &quot;additionalProperties&quot;: false
+                },
+                {
+                    &quot;dataField&quot;: &quot;CU&quot;,
+                    &quot;displayName&quot;: &quot;CU&quot;,
+                    &quot;id&quot;: &quot;CU&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    },
+                    &quot;width&quot;: 78
+                },
+                {
+                    &quot;dataField&quot;: &quot;CUonCloud&quot;,
+                    &quot;displayName&quot;: &quot;CUonCloud&quot;,
+                    &quot;id&quot;: &quot;CUonCloud&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    }
+                },
+                {
+                    &quot;dataField&quot;: &quot;CUStatus&quot;,
+                    &quot;displayName&quot;: &quot;CUStatus&quot;,
+                    &quot;id&quot;: &quot;CUStatus&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    },
+                    &quot;isSelected&quot;: false,
+                    &quot;additionalProperties&quot;: false,
+                    &quot;cellExpression&quot;: &quot;:=\nif(cellData == &apos;Passed&apos;){\n\treturn &apos;&lt;span title=\&quot;Passed\&quot; style=\&quot;color:green\&quot;&gt;&apos;+cellData+&apos;&lt;/span&gt;&apos;;\n}else if(cellData == &apos;Failed&apos;){\n\treturn &apos;&lt;span title=\&quot;Failed\&quot; style=\&quot;color:red\&quot;&gt;&apos;+cellData+&apos;&lt;/span&gt;&apos;;\n}else{\n\treturn cellData;\n}&quot;
+                },
+                {
+                    &quot;dataField&quot;: &quot;DownloadStatus&quot;,
+                    &quot;displayName&quot;: &quot;DownloadStatus&quot;,
+                    &quot;id&quot;: &quot;DownloadStatus&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    },
+                    &quot;isSelected&quot;: false,
+                    &quot;additionalProperties&quot;: false,
+                    &quot;cellExpression&quot;: &quot;:=\nif(cellData == &apos;Completed&apos;){\n\treturn &apos;&lt;span title=\&quot;Completed\&quot; style=\&quot;color:green\&quot;&gt;&apos;+cellData+&apos;&lt;/span&gt;&apos;;\n}else {\n\treturn &apos;&lt;span title=\&quot;Failed\&quot; style=\&quot;color:red\&quot;&gt;&apos;+cellData+&apos;&lt;/span&gt;&apos;;\n}&quot;,
+                    &quot;width&quot;: 143
+                },
+                {
+                    &quot;dataField&quot;: &quot;Date&quot;,
+                    &quot;displayName&quot;: &quot;Date&quot;,
+                    &quot;id&quot;: &quot;Date&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    },
+                    &quot;width&quot;: 176
+                },
+                {
+                    &quot;dataField&quot;: &quot;TimeTaken&quot;,
+                    &quot;displayName&quot;: &quot;TimeTaken&quot;,
+                    &quot;id&quot;: &quot;TimeTaken&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    },
+                    &quot;width&quot;: 109
+                },
+                {
+                    &quot;dataField&quot;: &quot;PayLoadSize&quot;,
+                    &quot;displayName&quot;: &quot;PayLoadSize&quot;,
+                    &quot;id&quot;: &quot;PayLoadSize&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    },
+                    &quot;width&quot;: 111
+                },
+                {
+                    &quot;dataField&quot;: &quot;Logs&quot;,
+                    &quot;displayName&quot;: &quot;Logs&quot;,
+                    &quot;id&quot;: &quot;Logs&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    },
+                    &quot;isSelected&quot;: true,
+                    &quot;components&quot;: []
+                }
+            ],
+            &quot;allColumns&quot;: true,
+            &quot;dataSetName&quot;: &quot;&quot;,
+            &quot;styles&quot;: {
+                &quot;chartPlotOptions&quot;: {
+                    &quot;isShowGridlines&quot;: true,
+                    &quot;isSmoothLines&quot;: true,
+                    &quot;isShowLineMarkers&quot;: true,
+                    &quot;autoConvertYValues&quot;: true,
+                    &quot;isShowLabels&quot;: false,
+                    &quot;legendPosition&quot;: &quot;right&quot;
+                }
+            },
+            &quot;mobile&quot;: {
+                &quot;visible&quot;: &quot;On&quot;,
+                &quot;listItemClick&quot;: {},
+                &quot;customListLayout&quot;: null
+            },
+            &quot;filters&quot;: {
+                &quot;builder&quot;: {},
+                &quot;viewer&quot;: {}
+            },
+            &quot;showFilterByDefault&quot;: true,
+            &quot;enableHorizontalScroll&quot;: true,
+            &quot;orientation&quot;: &quot;vertical&quot;,
+            &quot;quickChart&quot;: {
+                &quot;isQuickAnalysis&quot;: true,
+                &quot;quickChartHeight&quot;: null,
+                &quot;type&quot;: &quot;CHART&quot;,
+                &quot;dataSet&quot;: {
+                    &quot;dataSetId&quot;: 2584,
+                    &quot;dataSetName&quot;: &quot;AkamaiDownloadStatus&quot;,
+                    &quot;dataSetGuid&quot;: &quot;90c69e60-5e45-4930-b7c0-4133068fa326&quot;
+                },
+                &quot;title&quot;: {
+                    &quot;text&quot;: &quot;&quot;
+                },
+                &quot;parentId&quot;: &quot;Table1590293591751&quot;,
+                &quot;id&quot;: &quot;Table1590293591751quickChart&quot;,
+                &quot;chartType&quot;: &quot;Pie&quot;,
+                &quot;isDateTime&quot;: false,
+                &quot;xAxisTitle&quot;: {
+                    &quot;text&quot;: &quot;&quot;
+                },
+                &quot;yAxisTitle&quot;: {
+                    &quot;text&quot;: &quot;&quot;
+                },
+                &quot;barWidthAutoOnly&quot;: false,
+                &quot;dataSeries&quot;: [],
+                &quot;isGrouped&quot;: false,
+                &quot;styles&quot;: {
+                    &quot;defaultChartHeight&quot;: 350,
+                    &quot;defaultChartWidth&quot;: 1000,
+                    &quot;height&quot;: 200,
+                    &quot;width&quot;: 600,
+                    &quot;barColor&quot;: &quot;#00cee6&quot;,
+                    &quot;chartPlotOptions&quot;: {
+                        &quot;isShowGridlines&quot;: true,
+                        &quot;isSmoothLines&quot;: false,
+                        &quot;isShowLineMarkers&quot;: true,
+                        &quot;autoConvertYValues&quot;: true,
+                        &quot;isShowLabels&quot;: false,
+                        &quot;legendPosition&quot;: &quot;right&quot;,
+                        &quot;isShowLegend&quot;: true,
+                        &quot;stackIn3d&quot;: false,
+                        &quot;alpha3D&quot;: 15,
+                        &quot;beta3D&quot;: 20,
+                        &quot;columnPadding3D&quot;: 30,
+                        &quot;depth3D&quot;: 40
+                    },
+                    &quot;barSizeAutoOnly&quot;: false
+                },
+                &quot;sorting&quot;: [
+                    {
+                        &quot;direction&quot;: &quot;Desc&quot;,
+                        &quot;sortAxis&quot;: &quot;YAxis&quot;
+                    }
+                ],
+                &quot;seriesFormatting&quot;: [],
+                &quot;mobile&quot;: {
+                    &quot;visible&quot;: &quot;On&quot;,
+                    &quot;listItemClick&quot;: {},
+                    &quot;customListLayout&quot;: null
+                },
+                &quot;filters&quot;: {
+                    &quot;builder&quot;: {},
+                    &quot;viewer&quot;: {}
+                },
+                &quot;orientation&quot;: &quot;vertical&quot;,
+                &quot;showSearchBar&quot;: true,
+                &quot;dimensionDataField&quot;: [
+                    {
+                        &quot;column&quot;: &quot;Feature Release&quot;,
+                        &quot;title&quot;: {
+                            &quot;text&quot;: &quot;Feature Release&quot;
+                        },
+                        &quot;sortOrder&quot;: &quot;NONE&quot;,
+                        &quot;isNumeric&quot;: false,
+                        &quot;customGroupsAvailable&quot;: false,
+                        &quot;numPointsToDisplay&quot;: {
+                            &quot;maxPoints&quot;: 10,
+                            &quot;includeAll&quot;: false
+                        },
+                        &quot;showMinCount&quot;: false,
+                        &quot;type&quot;: &quot;String&quot;
+                    }
+                ],
+                &quot;measureDataField&quot;: [
+                    {
+                        &quot;column&quot;: &quot;Feature Release&quot;,
+                        &quot;title&quot;: {
+                            &quot;text&quot;: &quot;Feature Release&quot;
+                        },
+                        &quot;aggrType&quot;: &quot;Count&quot;,
+                        &quot;sortOrder&quot;: &quot;DESC&quot;,
+                        &quot;showNumberOps&quot;: true,
+                        &quot;type&quot;: &quot;String&quot;
+                    }
+                ],
+                &quot;multiBars&quot;: false,
+                &quot;isGroupBy&quot;: true,
+                &quot;showOthers&quot;: true,
+                &quot;isComponentLoading&quot;: false,
+                &quot;currDataSeries&quot;: [
+                    {
+                        &quot;value&quot;: &quot;SP15&quot;,
+                        &quot;color&quot;: &quot;#6aa5e7&quot;
+                    },
+                    {
+                        &quot;value&quot;: &quot;SP17&quot;,
+                        &quot;color&quot;: &quot;#d53e4f&quot;
+                    },
+                    {
+                        &quot;value&quot;: &quot;SP19&quot;,
+                        &quot;color&quot;: &quot;#f46d43&quot;
+                    }
+                ],
+                &quot;isChartExist&quot;: true,
+                &quot;isTimeGrouping&quot;: false,
+                &quot;showCompare&quot;: false
+            },
+            &quot;autoHeight&quot;: &quot;On&quot;
+        },
+        {
+            &quot;type&quot;: &quot;CHART&quot;,
+            &quot;dataSet&quot;: {
+                &quot;dataSetId&quot;: 2584,
+                &quot;dataSetName&quot;: &quot;AkamaiDownloadStatus&quot;,
+                &quot;dataSetGuid&quot;: &quot;90c69e60-5e45-4930-b7c0-4133068fa326&quot;
+            },
+            &quot;title&quot;: {
+                &quot;text&quot;: &quot;&lt;b&gt;Success/Failure Percentage&lt;/b&gt;&quot;
+            },
+            &quot;id&quot;: &quot;Chart_1590887195913&quot;,
+            &quot;chartType&quot;: &quot;Donut&quot;,
+            &quot;isDateTime&quot;: false,
+            &quot;xAxisTitle&quot;: {
+                &quot;text&quot;: &quot;&quot;
+            },
+            &quot;yAxisTitle&quot;: {
+                &quot;text&quot;: &quot;&quot;
+            },
+            &quot;barWidthAutoOnly&quot;: false,
+            &quot;dataSeries&quot;: [],
+            &quot;isGrouped&quot;: false,
+            &quot;styles&quot;: {
+                &quot;defaultChartHeight&quot;: 350,
+                &quot;defaultChartWidth&quot;: 1000,
+                &quot;height&quot;: 350,
+                &quot;width&quot;: 1000,
+                &quot;barColor&quot;: &quot;#6aa5e7&quot;,
+                &quot;chartPlotOptions&quot;: {
+                    &quot;isShowGridlines&quot;: true,
+                    &quot;isSmoothLines&quot;: true,
+                    &quot;isShowLineMarkers&quot;: true,
+                    &quot;autoConvertYValues&quot;: true,
+                    &quot;isShowLabels&quot;: false,
+                    &quot;legendPosition&quot;: &quot;right&quot;,
+                    &quot;stackIn3d&quot;: false,
+                    &quot;alpha3D&quot;: 15,
+                    &quot;beta3D&quot;: 20,
+                    &quot;columnPadding3D&quot;: 30,
+                    &quot;depth3D&quot;: 40,
+                    &quot;isShowLegend&quot;: true
+                },
+                &quot;barSizeAutoOnly&quot;: false
+            },
+            &quot;sorting&quot;: [
+                {
+                    &quot;direction&quot;: &quot;Desc&quot;,
+                    &quot;sortAxis&quot;: &quot;YAxis&quot;
+                }
+            ],
+            &quot;seriesFormatting&quot;: [
+                {
+                    &quot;value&quot;: &quot;Completed&quot;,
+                    &quot;color&quot;: &quot;#00d200&quot;
+                },
+                {
+                    &quot;value&quot;: &quot;Failed&quot;,
+                    &quot;color&quot;: &quot;#f44900&quot;
+                }
+            ],
+            &quot;mobile&quot;: {
+                &quot;visible&quot;: &quot;On&quot;,
+                &quot;listItemClick&quot;: {},
+                &quot;customListLayout&quot;: null
+            },
+            &quot;filters&quot;: {
+                &quot;builder&quot;: {},
+                &quot;viewer&quot;: {}
+            },
+            &quot;showCompare&quot;: false,
+            &quot;dimensionDataField&quot;: [
+                {
+                    &quot;column&quot;: &quot;DownloadStatus&quot;,
+                    &quot;title&quot;: {
+                        &quot;text&quot;: &quot;DownloadStatus&quot;
+                    },
+                    &quot;sortOrder&quot;: &quot;NONE&quot;,
+                    &quot;isNumeric&quot;: false,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;customGroupsAvailable&quot;: false,
+                    &quot;numPointsToDisplay&quot;: {
+                        &quot;maxPoints&quot;: 15,
+                        &quot;includeAll&quot;: false
+                    },
+                    &quot;showMinCount&quot;: false
+                }
+            ],
+            &quot;measureDataField&quot;: [
+                {
+                    &quot;column&quot;: &quot;Feature Release&quot;,
+                    &quot;title&quot;: {
+                        &quot;text&quot;: &quot;Feature Release&quot;
+                    },
+                    &quot;aggrType&quot;: &quot;Count&quot;,
+                    &quot;sortOrder&quot;: &quot;DESC&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;showNumberOps&quot;: false
+                }
+            ],
+            &quot;multiBars&quot;: false,
+            &quot;isGroupBy&quot;: true,
+            &quot;orientation&quot;: &quot;vertical&quot;
+        },
+        {
+            &quot;type&quot;: &quot;CHART&quot;,
+            &quot;dataSet&quot;: {
+                &quot;dataSetId&quot;: 2584,
+                &quot;dataSetName&quot;: &quot;AkamaiDownloadStatus&quot;,
+                &quot;dataSetGuid&quot;: &quot;90c69e60-5e45-4930-b7c0-4133068fa326&quot;
+            },
+            &quot;title&quot;: {
+                &quot;text&quot;: &quot;&lt;b&gt;Feature Release&lt;/b&gt;&quot;
+            },
+            &quot;id&quot;: &quot;Chart_1590952789743&quot;,
+            &quot;chartType&quot;: &quot;Pie&quot;,
+            &quot;isDateTime&quot;: false,
+            &quot;xAxisTitle&quot;: {
+                &quot;text&quot;: &quot;&quot;
+            },
+            &quot;yAxisTitle&quot;: {
+                &quot;text&quot;: &quot;&quot;
+            },
+            &quot;barWidthAutoOnly&quot;: false,
+            &quot;dataSeries&quot;: [],
+            &quot;isGrouped&quot;: false,
+            &quot;styles&quot;: {
+                &quot;defaultChartHeight&quot;: 350,
+                &quot;defaultChartWidth&quot;: 1000,
+                &quot;height&quot;: 350,
+                &quot;width&quot;: 1000,
+                &quot;barColor&quot;: &quot;#6aa5e7&quot;,
+                &quot;chartPlotOptions&quot;: {
+                    &quot;isShowGridlines&quot;: true,
+                    &quot;isSmoothLines&quot;: true,
+                    &quot;isShowLineMarkers&quot;: true,
+                    &quot;autoConvertYValues&quot;: true,
+                    &quot;isShowLabels&quot;: false,
+                    &quot;legendPosition&quot;: &quot;right&quot;,
+                    &quot;stackIn3d&quot;: false,
+                    &quot;alpha3D&quot;: 15,
+                    &quot;beta3D&quot;: 20,
+                    &quot;columnPadding3D&quot;: 30,
+                    &quot;depth3D&quot;: 40,
+                    &quot;isShowLegend&quot;: true
+                },
+                &quot;barSizeAutoOnly&quot;: false
+            },
+            &quot;sorting&quot;: [
+                {
+                    &quot;direction&quot;: &quot;Desc&quot;,
+                    &quot;sortAxis&quot;: &quot;YAxis&quot;
+                }
+            ],
+            &quot;seriesFormatting&quot;: [],
+            &quot;mobile&quot;: {
+                &quot;visible&quot;: &quot;On&quot;,
+                &quot;listItemClick&quot;: {},
+                &quot;customListLayout&quot;: null
+            },
+            &quot;filters&quot;: {
+                &quot;builder&quot;: {},
+                &quot;viewer&quot;: {}
+            },
+            &quot;showCompare&quot;: false,
+            &quot;orientation&quot;: &quot;vertical&quot;,
+            &quot;dimensionDataField&quot;: [
+                {
+                    &quot;column&quot;: &quot;Feature Release&quot;,
+                    &quot;title&quot;: {
+                        &quot;text&quot;: &quot;Feature Release&quot;
+                    },
+                    &quot;sortOrder&quot;: &quot;NONE&quot;,
+                    &quot;isNumeric&quot;: false,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;customGroupsAvailable&quot;: false,
+                    &quot;numPointsToDisplay&quot;: {
+                        &quot;maxPoints&quot;: 15,
+                        &quot;includeAll&quot;: false
+                    },
+                    &quot;showMinCount&quot;: false
+                }
+            ],
+            &quot;measureDataField&quot;: [
+                {
+                    &quot;column&quot;: &quot;Feature Release&quot;,
+                    &quot;title&quot;: {
+                        &quot;text&quot;: &quot;Feature Release&quot;
+                    },
+                    &quot;aggrType&quot;: &quot;Count&quot;,
+                    &quot;sortOrder&quot;: &quot;DESC&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;showNumberOps&quot;: false
+                }
+            ],
+            &quot;multiBars&quot;: false,
+            &quot;isGroupBy&quot;: true,
+            &quot;filterField&quot;: {
+                &quot;name&quot;: &quot;Feature Release&quot;,
+                &quot;dataField&quot;: &quot;Feature Release&quot;,
+                &quot;type&quot;: &quot;String&quot;
+            }
+        }
+    ],
+    &quot;filters&quot;: {
+        &quot;builder&quot;: {},
+        &quot;viewer&quot;: {
+            &quot;AkamaiDownloadStatus&quot;: {
+                &quot;Feature Release&quot;: {
+                    &quot;include&quot;: [],
+                    &quot;exclude&quot;: [],
+                    &quot;advancedFilters&quot;: [],
+                    &quot;isChartInteractivityFilter&quot;: true
+                },
+                &quot;PayLoadSize&quot;: {
+                    &quot;include&quot;: [],
+                    &quot;exclude&quot;: [],
+                    &quot;advancedFilters&quot;: [],
+                    &quot;isChartInteractivityFilter&quot;: true
+                },
+                &quot;DownloadStatus&quot;: {
+                    &quot;include&quot;: [],
+                    &quot;exclude&quot;: [],
+                    &quot;advancedFilters&quot;: [],
+                    &quot;isChartInteractivityFilter&quot;: true
+                }
+            }
+        }
+    },
+    &quot;autoRefreshTime&quot;: 10,
+    &quot;reportLayout&quot;: {
+        &quot;gridsterOpts&quot;: {
+            &quot;columns&quot;: 12
+        },
+        &quot;Table1590293591751&quot;: {
+            &quot;mobile&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 4,
+                    &quot;y&quot;: 8
+                },
+                &quot;position&quot;: [
+                    0,
+                    0
+                ]
+            },
+            &quot;tablet&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 4,
+                    &quot;y&quot;: 8
+                },
+                &quot;position&quot;: [
+                    0,
+                    0
+                ]
+            },
+            &quot;desktop&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 12,
+                    &quot;y&quot;: 7
+                },
+                &quot;position&quot;: [
+                    0,
+                    0
+                ]
+            }
+        },
+        &quot;Chart_1590887195913&quot;: {
+            &quot;mobile&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 4,
+                    &quot;y&quot;: 8
+                },
+                &quot;position&quot;: [
+                    8,
+                    0
+                ]
+            },
+            &quot;tablet&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 4,
+                    &quot;y&quot;: 8
+                },
+                &quot;position&quot;: [
+                    8,
+                    0
+                ]
+            },
+            &quot;desktop&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 6,
+                    &quot;y&quot;: 7
+                },
+                &quot;position&quot;: [
+                    7,
+                    0
+                ]
+            }
+        },
+        &quot;Chart_1590952789743&quot;: {
+            &quot;mobile&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 4,
+                    &quot;y&quot;: 8
+                },
+                &quot;position&quot;: [
+                    7,
+                    6
+                ]
+            },
+            &quot;tablet&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 4,
+                    &quot;y&quot;: 8
+                },
+                &quot;position&quot;: [
+                    7,
+                    6
+                ]
+            },
+            &quot;desktop&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 6,
+                    &quot;y&quot;: 7
+                },
+                &quot;position&quot;: [
+                    7,
+                    6
+                ]
+            }
+        }
+    }
+}</body>
+    </Page>
+  </pages>
+  <reportVersion>18</reportVersion>
+  <deployedVersion>18</deployedVersion>
+  <reportDescription></reportDescription>
+  <guid>7f8cb474-4bf8-4e16-9f38-a86538ddd6f8</guid>
+  <revision>$Revision: 1.2 $</revision>
+  <icon>vertical-bar.png</icon>
+  <customIcon/>
+  <hidden>false</hidden>
+  <visibleAll>false</visibleAll>
+  <readOnly>false</readOnly>
+  <shareable>false</shareable>
+  <engineVersion>1</engineVersion>
+  <builderVersion>2</builderVersion>
+  <translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_TITLE</localeKey>
+      <localeValue>AkamaiDownloadStatus</localeValue>
+    </Translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_DESCRIPTION</localeKey>
+      <localeValue></localeValue>
+    </Translations>
+  </translations>
+  <cvTranslations/>
+  <minCommCellVersion>
+    <releaseID>16</releaseID>
+    <servicePack>0</servicePack>
+  </minCommCellVersion>
+  <maxCommCellVersion>
+    <releaseID>100</releaseID>
+    <servicePack>99</servicePack>
+  </maxCommCellVersion>
+  <userReportId>AkamaiDownloadStatus</userReportId>
+  <uiTags/>
+  <type>STANDARD</type>
+  <canEdit>true</canEdit>
+  <visibleToTenantAdmins>false</visibleToTenantAdmins>
+</CustomReport>

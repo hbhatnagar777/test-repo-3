@@ -1,0 +1,1242 @@
+{
+	"info": {
+		"_postman_id": "df73bf6a-05d1-4713-95bf-13681d5d280a",
+		"name": "APICallsWithDisplayNames",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							"",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{UserName}}\",\r\n    \"password\": \"{{Password}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clients",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"if(tests[\"Validate clientProperties tag\"] = responseBody.has(\"clientProperties\") == true);      //validate clientProperties tag",
+							"        console.log(\"clientProperties tag is present\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Dummy Client1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(postman.setEnvironmentVariable(\"clientId1\",jsonData.response.entity.clientId));",
+							"console.log(postman.setEnvironmentVariable(\"clientName1\",jsonData.response.entity.clientName));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\r\n<App_CreatePseudoClientRequest>\r\n    <clientInfo>\r\n        <clientType>WINDOWS</clientType>\r\n        <openVMSProperties>\r\n            <cvdPort>0</cvdPort>\r\n        </openVMSProperties>\r\n        <ibmiInstallOptions/>\r\n    </clientInfo>\r\n    <entity>\r\n        <clientName>postman_displayNametest1</clientName>\r\n        <hostName>localhost</hostName>\r\n    </entity>\r\n    <registerClient>false</registerClient>\r\n</App_CreatePseudoClientRequest>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/QCommand/qoperation execute",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"QCommand",
+						"qoperation execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Client1 Display Name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"var desc = postman.setEnvironmentVariable(\"description\");",
+							"",
+							"var d = new Date();",
+							"",
+							"postman.setEnvironmentVariable(\"description\", \"This description was editted at \" + d.getTime());",
+							"",
+							"postman.setEnvironmentVariable(\"ModifiedDisplayName\", \"ModifiedDisplayName\" + d.getTime());",
+							"",
+							"console.log(\"Going to modify client display name with value: \", postman.getEnvironmentVariable(\"ModifiedDisplayName\"));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientProperties\": {\r\n    \"client\": {\r\n      \"displayName\": \"{{ModifiedDisplayName}}\",\r\n      \"clientDescription\": \"{{description}}\"\r\n    }\r\n  },\r\n  \"association\": {\r\n    \"entity\": [\r\n      {\r\n        \"clientName\": \"{{clientName1}}\",\r\n        \"displayName\": \"{{clientName1}}\"\r\n      }\r\n    ]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/{{clientId1}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"{{clientId1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client1 displayName",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"if(tests[\"Validate clientProperties tag\"] = responseBody.has(\"clientProperties\") == true);      //validate clientProperties tag",
+							"        console.log(\"clientProperties tag is present\");",
+							"",
+							"if((tests[\"Validating display name modification\"] = jsonData.clientProperties[0].client.displayName == postman.getEnvironmentVariable(\"ModifiedDisplayName\")))  ",
+							"        console.log(\"Display Name modified\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/client/{{clientId1}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"client",
+						"{{clientId1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client1 Properties using display name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"",
+							"if((tests[\"Validate clientProperties tag\"] = responseBody.has(\"clientProperties\")));",
+							"        console.log(\"clientProperties tag is present\");",
+							"",
+							"if((tests[\"Validate cvdPort tag\"] = responseBody.has(\"cvdPort\")));",
+							"        console.log(\"cvdPort tag is present\");",
+							"",
+							"if((tests[\"Validate clientProps tag\"] = responseBody.has(\"clientProps\")));",
+							"        console.log(\"clientProps tag is present\");",
+							"",
+							"if((tests[\"Validate ClientInterface tag\"] = responseBody.has(\"ClientInterface\")));",
+							"        console.log(\"ClientInterface tag is present\");",
+							"        ",
+							"",
+							"if((tests[\"Validate networkThrottle tag\"] = responseBody.has(\"networkThrottle\")));",
+							"        console.log(\"networkThrottle tag is present\");",
+							"",
+							"if((tests[\"Validate securityAssociations tag\"] = responseBody.has(\"securityAssociations\")));",
+							"        console.log(\"securityAssociations tag is present\");",
+							"        ",
+							"if((tests[\"Validate clientSecurity tag\"] = responseBody.has(\"clientSecurity\")));",
+							"        console.log(\"clientSecurity tag is present\");",
+							"",
+							"if((tests[\"Validate clientDescription tag\"] = responseBody.has(\"clientDescription\")));",
+							"        console.log(\"clientDescription tag is present\");",
+							"        ",
+							"if((tests[\"Validate firewallConfiguration tag\"] = responseBody.has(\"firewallConfiguration\")));",
+							"        console.log(\"firewallConfiguration tag is present\");",
+							"        ",
+							"if((tests[\"Validate versionInfo tag\"] = responseBody.has(\"versionInfo\")));",
+							"        console.log(\"versionInfo tag is present\");",
+							"",
+							"",
+							"var clientName = postman.getEnvironmentVariable(\"clientName1\");",
+							"",
+							"console.log(tests[\"Client ID validated from JSON\"] = postman.getEnvironmentVariable(\"clientId1\") == jsonData.clientProperties[0].client.clientEntity.clientId);",
+							"",
+							"console.log(tests[\"Description edited successfully\"] = postman.getEnvironmentVariable(\"description\") === jsonData.clientProperties[0].client.clientDescription)",
+							"",
+							"console.log(tests[\"Verify client name and display name are different\"] = jsonData.clientProperties[0].client.clientEntity.clientName != jsonData.clientProperties[0].client.displayName)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Client/byName(clientName='{{ModifiedDisplayName}}')",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"byName(clientName='{{ModifiedDisplayName}}')"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client1 Properties using client name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"if((tests[\"Validate clientProperties tag\"] = responseBody.has(\"clientProperties\")));",
+							"        console.log(\"clientProperties tag is present\");",
+							"",
+							"if((tests[\"Validate cvdPort tag\"] = responseBody.has(\"cvdPort\")));",
+							"        console.log(\"cvdPort tag is present\");",
+							"",
+							"if((tests[\"Validate clientProps tag\"] = responseBody.has(\"clientProps\")));",
+							"        console.log(\"clientProps tag is present\");",
+							"",
+							"if((tests[\"Validate ClientInterface tag\"] = responseBody.has(\"ClientInterface\")));",
+							"        console.log(\"ClientInterface tag is present\");",
+							"        ",
+							"",
+							"if((tests[\"Validate networkThrottle tag\"] = responseBody.has(\"networkThrottle\")));",
+							"        console.log(\"networkThrottle tag is present\");",
+							"",
+							"if((tests[\"Validate securityAssociations tag\"] = responseBody.has(\"securityAssociations\")));",
+							"        console.log(\"securityAssociations tag is present\");",
+							"        ",
+							"if((tests[\"Validate clientSecurity tag\"] = responseBody.has(\"clientSecurity\")));",
+							"        console.log(\"clientSecurity tag is present\");",
+							"",
+							"if((tests[\"Validate clientDescription tag\"] = responseBody.has(\"clientDescription\")));",
+							"        console.log(\"clientDescription tag is present\");",
+							"        ",
+							"if((tests[\"Validate firewallConfiguration tag\"] = responseBody.has(\"firewallConfiguration\")));",
+							"        console.log(\"firewallConfiguration tag is present\");",
+							"        ",
+							"if((tests[\"Validate versionInfo tag\"] = responseBody.has(\"versionInfo\")));",
+							"        console.log(\"versionInfo tag is present\");",
+							"",
+							"",
+							"",
+							"",
+							"console.log(tests[\"Client ID validated from JSON\"] = postman.getEnvironmentVariable(\"clientId1\") == jsonData.clientProperties[0].client.clientEntity.clientId);",
+							"",
+							"console.log(tests[\"Description editted successfully\"] = postman.getEnvironmentVariable(\"description\") === jsonData.clientProperties[0].client.clientDescription)",
+							"",
+							"console.log(tests[\"Verify client name and display name are different\"] = jsonData.clientProperties[0].client.clientEntity.clientName != jsonData.clientProperties[0].client.displayName)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Client/byName(clientName='{{clientName1}}')",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"byName(clientName='{{clientName1}}')"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Dummy Client2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(postman.setEnvironmentVariable(\"clientId2\",jsonData.response.entity.clientId));",
+							"console.log(postman.setEnvironmentVariable(\"clientName2\",jsonData.response.entity.clientName));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\r\n<App_CreatePseudoClientRequest>\r\n    <clientInfo>\r\n        <clientType>WINDOWS</clientType>\r\n        <openVMSProperties>\r\n            <cvdPort>0</cvdPort>\r\n        </openVMSProperties>\r\n        <ibmiInstallOptions/>\r\n    </clientInfo>\r\n    <entity>\r\n        <clientName>postman_displayNametest2</clientName>\r\n        <hostName>localhost</hostName>\r\n    </entity>\r\n    <registerClient>false</registerClient>\r\n</App_CreatePseudoClientRequest>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/QCommand/qoperation execute",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"QCommand",
+						"qoperation execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Client2 Display Name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"var desc = postman.setEnvironmentVariable(\"description\");",
+							"",
+							"var d = new Date();",
+							"",
+							"postman.setEnvironmentVariable(\"description\", \"This description was editted at \" + d.getTime());",
+							"",
+							"console.log(\"Going to modify client display name with value: \", postman.getEnvironmentVariable(\"ModifiedDisplayName\"));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientProperties\": {\r\n    \"client\": {\r\n      \"displayName\": \"{{ModifiedDisplayName}}\",\r\n      \"clientDescription\": \"{{description}}\"\r\n    }\r\n  },\r\n  \"association\": {\r\n    \"entity\": [\r\n      {\r\n        \"clientName\": \"{{clientName2}}\",\r\n        \"displayName\": \"{{clientName2}}\"\r\n      }\r\n    ]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/{{clientId2}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"{{clientId2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client Properties using display name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							" ",
+							" console.log(tests[\"Status code is 404\"] = responseCode.code === 404);         //validate status code",
+							"",
+							"console.log(tests[\"Verify error message\"] = jsonData.errorMessage == \"Detected multiple clients with the given input.\")",
+							"",
+							"console.log(tests[\"Verify error code\"] = jsonData.errorCode == 4)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Client/byName(clientName='{{ModifiedDisplayName}}')",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"byName(clientName='{{ModifiedDisplayName}}')"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client Properties using random display name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							" ",
+							" console.log(tests[\"Status code is 404\"] = responseCode.code === 404);         //validate status code",
+							"",
+							"console.log(tests[\"Verify error message\"] = jsonData.errorMessage == \"Unable to find the client with the given input.\")",
+							"",
+							"console.log(tests[\"Verify error code\"] = jsonData.errorCode == 4)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Client/byName(clientName='RandomClient')",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"byName(clientName='RandomClient')"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Client1 Properties",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"",
+							"var desc = postman.setEnvironmentVariable(\"description\");",
+							"",
+							"var d = new Date();",
+							"",
+							"postman.setEnvironmentVariable(\"description\", \"This description was editted at \" + d.getTime());"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(tests[\"Status code is 500\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0);         "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientProperties\": {\r\n    \"client\": {\r\n      \"clientDescription\": \"{{description}}\"\r\n    }\r\n  },\r\n  \"association\": {\r\n    \"entity\": [\r\n      {\r\n        \"clientName\": \"{{ModifiedDisplayName}}\"\r\n      }\r\n    ]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/{{clientId1}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"{{clientId1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify client1 properties using display name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var desc = postman.setEnvironmentVariable(\"description\");\r",
+							"\r",
+							"var d = new Date();\r",
+							"\r",
+							"postman.setEnvironmentVariable(\"description\", \"This description was editted at \" + d.getTime());"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 500\"] = responseCode.code === 500);         //validate status code",
+							"",
+							"console.log(tests[\"Validating error message\"] = responseBody.has(\"Failed to process request due to invalid entity information.Invalid clientId for clientName\") == true);        ",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"App_SetClientPropertiesRequest\": {\r\n    \"clientProperties\": {\r\n      \"client\": {\r\n        \"clientDescription\": \"{{description}}\"\r\n      }\r\n    },\r\n    \"association\": {\r\n      \"entity\": [\r\n        {\r\n          \"clientName\": \"{{ModifiedDisplayName}}\"\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/QCommand/qoperation execute",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"QCommand",
+						"qoperation execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dummy Client2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"tests[\"Client deleted successfully\"] = jsonData.response[0].entity.clientId == postman.getEnvironmentVariable(\"clientId2\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Client/{{clientId2}}?forceDelete=1",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"{{clientId2}}"
+					],
+					"query": [
+						{
+							"key": "forceDelete",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client1 Properties after deletion of client2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"",
+							"var desc = postman.setEnvironmentVariable(\"description\");",
+							"",
+							"var d = new Date();",
+							"",
+							"postman.setEnvironmentVariable(\"description\", \"This description was editted at \" + d.getTime());"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0);         ",
+							"",
+							"tests[\"Validating client name\"] = jsonData.response[0].entity.clientName == postman.getEnvironmentVariable(\"clientName1\");      "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientProperties\": {\r\n    \"client\": {\r\n      \"clientDescription\": \"{{description}}\"\r\n    }\r\n  },\r\n  \"association\": {\r\n    \"entity\": [\r\n      {\r\n        \"clientName\": \"{{ModifiedDisplayName}}\"\r\n      }\r\n    ]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/{{clientId1}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"{{clientId1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client1 properties using display name after deletion of client2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var desc = postman.setEnvironmentVariable(\"description\");\r",
+							"\r",
+							"var d = new Date();\r",
+							"\r",
+							"postman.setEnvironmentVariable(\"description\", \"This description was editted at \" + d.getTime());"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"errorCode is 0\"] = jsonData.response[0].errorCode === 0);         ",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"tests[\"Validating client name\"] = jsonData.response[0].entity.clientName == postman.getEnvironmentVariable(\"clientName1\");  "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"App_SetClientPropertiesRequest\": {\r\n    \"clientProperties\": {\r\n      \"client\": {\r\n        \"clientDescription\": \"{{description}}\"\r\n      }\r\n    },\r\n    \"association\": {\r\n      \"entity\": [\r\n        {\r\n          \"clientName\": \"{{ModifiedDisplayName}}\"\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/QCommand/qoperation execute",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"QCommand",
+						"qoperation execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify client1 properties using client name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var desc = postman.setEnvironmentVariable(\"description\");\r",
+							"\r",
+							"var d = new Date();\r",
+							"\r",
+							"postman.setEnvironmentVariable(\"description\", \"This description was editted at \" + d.getTime());"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"errorCode is 0\"] = jsonData.response[0].errorCode === 0);         ",
+							"",
+							"tests[\"Validating client name\"] = jsonData.response[0].entity.clientName == postman.getEnvironmentVariable(\"clientName1\");  ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"App_SetClientPropertiesRequest\": {\r\n    \"clientProperties\": {\r\n      \"client\": {\r\n        \"clientDescription\": \"{{description}}\"\r\n      }\r\n    },\r\n    \"association\": {\r\n      \"entity\": [\r\n        {\r\n          \"clientName\": \"{{clientName1}}\"\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/QCommand/qoperation execute",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"QCommand",
+						"qoperation execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dummy Client1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"tests[\"Client deleted successfully\"] = jsonData.response[0].entity.clientId == postman.getEnvironmentVariable(\"clientId1\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Client/{{clientId1}}?forceDelete=1",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"{{clientId1}}"
+					],
+					"query": [
+						{
+							"key": "forceDelete",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,340 @@
+<CustomReport>
+  <report>
+    <customReportName>User login summary</customReportName>
+  </report>
+  <pages>
+    <Page>
+      <pageName>Page0</pageName>
+      <isDefault>true</isDefault>
+      <pageTitle>
+        <text>Page0</text>
+      </pageTitle>
+      <dataSets>
+        <dataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>User login summary</dataSetName>
+              <dataSetGuid>cfa27806-6f45-450c-d82d-110577c04ac0</dataSetGuid>
+            </dataSet>
+            <endpoint>DATABASE</endpoint>
+            <shared>false</shared>
+            <dataSources>
+              <DataSource>
+                <connectionType>COMMCELL</connectionType>
+                <commCell>
+                  <commCellName>$LocalCommCell$</commCellName>
+                </commCell>
+              </DataSource>
+            </dataSources>
+            <allColumns>false</allColumns>
+            <fields>
+              <Column>
+                <name>sys_rowid</name>
+                <dataField>$row_number$</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Data Source</name>
+                <dataField>Data Source</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>User Name</name>
+                <dataField>User Name</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Login</name>
+                <dataField>Login</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Company Name</name>
+                <dataField>Company Name</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Last login time</name>
+                <dataField>Last login time</dataField>
+                <type>String</type>
+              </Column>
+            </fields>
+            <GetOperation>
+              <parameters />
+              <sqlText>DECLARE @i_userId INT = 0
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED 
+
+SET @i_userId = (SELECT TOP 1 id from UMUSERS where login = @sys_username)
+
+IF OBJECT_ID('tempdb.dbo.#visibleUsers') IS NOT NULL
+	DROP TABLE #visibleUsers
+CREATE TABLE #visibleUsers
+(
+	id INT PRIMARY KEY 
+)
+IF OBJECT_ID('tempdb.dbo.#resultantTable') IS NOT NULL
+	DROP TABLE #resultantTable
+CREATE TABLE #resultantTable
+(
+	id INT PRIMARY KEY,
+	login NVARCHAR(MAX),
+	userName NVARCHAR(MAX),	
+	companyName NVARCHAR(MAX),
+	lastLoginTime DATETIME
+)
+
+
+EXEC sec_getUsersForThisUser '#visibleUsers', @i_userId
+
+INSERT INTO #resultantTable
+	SELECT DISTINCT 
+		U.id,
+		U.login,
+		U.name,		
+		CASE 
+			WHEN P.serviceType = 5 THEN P.domainName 
+			WHEN P.ownerCompany &lt;&gt; 0 THEN P1.domainName
+			WHEN P.id = 0 THEN 'Commcell'
+			WHEN P.ownerCompany = 0 THEN 'Commcell'
+		END,
+		CASE 
+			WHEN lastLoginTime &gt; 0 THEN dbo.UTCToCellLocalTime(dbo.getDateTime(lastLoginTime), 2) 			
+		END
+	FROM UMUsers U
+		INNER JOIN #visibleUsers Sec 
+			ON U.id = Sec.id 
+		INNER JOIN UMDSProviders P
+			ON (U.umdsProviderId = P.id)
+		LEFT JOIN UMDSProviders P1
+			ON (P.ownerCompany = P1.id)
+
+SELECT 
+	userName AS 'User Name',
+	login AS 'Login',
+	companyName AS 'Company Name',
+	ISNULL(CAST(lastLoginTime AS VARCHAR(1024)), 'Never logged in') AS 'Last login time'
+FROM #resultantTable
+ORDER BY userName</sqlText>
+              <timeout>5</timeout>
+              <postQueryFilter>true</postQueryFilter>
+              <rDataSetQuery />
+              <rPlotQuery />
+            </GetOperation>
+            <description>This report gives login time for all users.</description>
+            <databaseName>CommServ</databaseName>
+            <queryPlan>
+              <offline>false</offline>
+              <retentionDays>1</retentionDays>
+              <versions>
+                <CommCellVersion>ALL</CommCellVersion>
+              </versions>
+              <dynamicCollection>false</dynamicCollection>
+              <frequency>60</frequency>
+              <direct>false</direct>
+            </queryPlan>
+            <version>2</version>
+            <guid>cfa27806-6f45-450c-d82d-110577c04ac0</guid>
+            <revision />
+            <computedColumns>
+              <scriptName>R</scriptName>
+              <script />
+              <columnList />
+            </computedColumns>
+          </DataSet>
+        </dataSet>
+      </dataSets>
+      <inputs />
+      <body>{
+    "reportComponents": [
+        {
+            "type": "TABLE",
+            "dataSet": {
+                "dataSetId": 1467,
+                "dataSetName": "User login summary",
+                "dataSetGuid": "cfa27806-6f45-450c-d82d-110577c04ac0"
+            },
+            "title": {
+                "text": ""
+            },
+            "id": "Table1608718439136",
+            "pageSize": 20,
+            "columns": [
+                {
+                    "dataField": "User Name",
+                    "displayName": "User Name",
+                    "id": "UserName",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "mobileOptions": {
+                        "visible": true,
+                        "viewOnList": true,
+                        "viewOnDetail": true
+                    }
+                },
+                {
+                    "dataField": "Login",
+                    "displayName": "Login",
+                    "id": "Login",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "mobileOptions": {
+                        "visible": true,
+                        "viewOnList": true,
+                        "viewOnDetail": true
+                    }
+                },
+                {
+                    "dataField": "Last login time",
+                    "displayName": "Last login time",
+                    "id": "Lastlogintime",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "mobileOptions": {
+                        "visible": true,
+                        "viewOnList": true,
+                        "viewOnDetail": true
+                    }
+                },
+                {
+                    "dataField": "Company Name",
+                    "displayName": "Company Name",
+                    "id": "CompanyName",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "mobileOptions": {
+                        "visible": true,
+                        "viewOnList": true,
+                        "viewOnDetail": true
+                    }
+                }
+            ],
+            "allColumns": false,
+            "dataSetName": "",
+            "styles": {
+                "chartPlotOptions": {
+                    "isShowGridlines": true,
+                    "isSmoothLines": true,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": true,
+                    "isShowLabels": false,
+                    "legendPosition": "right"
+                }
+            },
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "hideComponent": false,
+            "blankComponent": false,
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "showFilterByDefault": false,
+            "enableHorizontalScroll": false,
+            "visible": {},
+            "orientation": "vertical"
+        }
+    ],
+    "filters": {
+        "builder": {},
+        "viewer": {}
+    },
+    "autoRefreshTime": 10,
+    "reportLayout": {
+        "gridsterOpts": {
+            "columns": 12
+        },
+        "Table1608718439136": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    0,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    0,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 16
+                },
+                "position": [
+                    0,
+                    0
+                ]
+            }
+        }
+    }
+}</body>
+    </Page>
+  </pages>
+  <reportVersion>2</reportVersion>
+  <deployedVersion>1</deployedVersion>
+  <reportDescription>This report gives login time for all users.</reportDescription>
+  <guid>050f272a-660d-436f-fb79-3a8a8ddb97a6</guid>
+  <revision>$Revision: 1.1.2.1 $</revision>
+  <icon>data-table.png</icon>
+  <customIcon />
+  <hidden>false</hidden>
+  <visibleAll>false</visibleAll>
+  <readOnly>false</readOnly>
+  <shareable>false</shareable>
+  <engineVersion>1</engineVersion>
+  <builderVersion>2</builderVersion>
+  <translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_TITLE</localeKey>
+      <localeValue>User login summary</localeValue>
+    </Translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_DESCRIPTION</localeKey>
+      <localeValue>This report gives login time for all users.</localeValue>
+    </Translations>
+  </translations>
+  <cvTranslations />
+  <minCommCellVersion>
+    <releaseID>16</releaseID>
+    <servicePack>0</servicePack>
+    <spMinorVersion>0</spMinorVersion>
+  </minCommCellVersion>
+  <maxCommCellVersion>
+    <releaseID>100</releaseID>
+    <servicePack>99</servicePack>
+  </maxCommCellVersion>
+  <userReportId>User login summary</userReportId>
+  <uiTags />
+  <type>STANDARD</type>
+  <canEdit>true</canEdit>
+  <visibleToTenantAdmins>true</visibleToTenantAdmins>
+  <builtIn>false</builtIn>
+  <systemReport>false</systemReport>
+</CustomReport>

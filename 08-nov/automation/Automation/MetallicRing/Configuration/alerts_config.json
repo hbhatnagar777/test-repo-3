@@ -1,0 +1,192 @@
+{
+  "is_alert_json": false,
+  "alerts": [
+    {
+      "alert_name": "Media Agent Status",
+      "category": "Configuration",
+      "type": "MediaAgents",
+      "alert_criteria": [
+        "DDB Store got corrupted",
+        "DDB disk space low",
+        "DDB went Offline",
+        "Disk Space Low",
+        "Disk Space low for Galaxy directory",
+        "MediaAgent went Offline"
+      ],
+      "notification_criteria": [
+        "Repeat Notificaion Every 15 Mins",
+        "Notify when the Condition Clears"
+      ],
+      "users": "<<LIST_OF_USERS>>",
+      "monitoring_nodes": "media_agents",
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    },
+    {
+      "alert_name": "Access Node Status",
+      "category": "Configuration",
+      "type": "Clients",
+      "alert_criteria": [
+        "Disk Space Low",
+        "Disk space low for Job results directory",
+        "Disk Space low for Galaxy directory"
+      ],
+      "monitoring_nodes": ["Infrastructure (All)*"],
+      "notification_criteria": [
+        "Notify only if Condition persists for 1 hr",
+        "Repeat notification every 4 hrs",
+        "Notification when condition clears"
+      ],
+      "users": "<<LIST_OF_USERS>>",
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    },
+    {
+      "alert_name": "Commserve Anomaly Alert",
+      "category": "Operation",
+      "type": "Admin Alert",
+      "alert_criteria": [
+        "Anomaly in number of pending jobs",
+        "Anomaly in number of failed jobs",
+        "Anomaly in number of succeeded jobs",
+        "May Miss SLA"
+      ],
+      "monitoring_nodes": "All",
+      "notification_criteria": [
+        "Immediate Notification",
+        "Notify only if Condition persists for 1 hr",
+        "Repeat notification every 24 hrs"
+      ],
+      "users": "<<LIST_OF_USERS>>",
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    }
+  ],
+  "complex_alerts": [
+    {
+      "alert_name": "License Consumption",
+      "category": "Configuration",
+      "type": "License",
+      "alert_criteria": [
+        "Alert CommServe License Expires Within 30 Days",
+        "Alert when Licenses Consumed reaches 80 Percent"
+      ],
+      "monitoring_nodes": "Automatic",
+      "notification_criteria": ["Immediate Notification"],
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    },
+    {
+      "alert_name": "Web end point - Offline",
+      "category": "Operation",
+      "type": "Event Viewer Events",
+      "alert_criteria": ["Event Code contains = 72:176"],
+      "monitoring_nodes": "Infrastructure (All)**",
+      "notification_criteria": ["Immediate Notification"],
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    },
+    {
+      "alert_name": "Disaster Recovery CommServer Alert",
+      "category": "Operation",
+      "type": "Event Viewer Events",
+      "alert_criteria": ["Event Code contains = 19:2008"],
+      "monitoring_nodes": "CS Client (Eg:- M1, 2 , 100 etc )",
+      "notification_criteria": ["Immediate Notification"],
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    },
+    {
+      "alert_name": "Disaster Recovery Job Failed",
+      "category": "Job Management",
+      "type": "Disaster Recovery Backup",
+      "alert_criteria": [
+        "Job Failed",
+        "Job Skipped",
+        "Delayed by 2 Hrs",
+        "Job Succeeded with Error"
+      ],
+      "monitoring_nodes": "Automatic (CS Client)",
+      "notification_criteria": ["Immediate Notification"],
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    }
+  ],
+  "live_sync_alerts": [
+    {
+      "alert_name": "Live Sync Node Status",
+      "category": "Operation",
+      "type": "CommServe LiveSync",
+      "alert_criteria": [
+        "Production Commserv is Not Running",
+        "Passive node is not reachable",
+        "Production CommServ is Not Reachable"
+      ],
+      "monitoring_nodes": "Automatic",
+      "notification_criteria": [],
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    },
+    {
+      "alert_name": "LiveSync Replication Status",
+      "category": "Job Management",
+      "type": "Data Recovery",
+      "alert_criteria": [
+        "Job Failed",
+        "Job Skipped",
+        "Job Succeeded With Errors"
+      ],
+      "monitoring_nodes": "Automatic",
+      "notification_criteria": [],
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    }
+  ],
+  "custom_rule_alerts": [
+    {
+      "alert_name": "Monitor Long Running TempDB Process",
+      "category": "Custom Rule",
+      "type": "Monitor Long Running TempDB Process",
+      "alert_criteria": ["Query Threshold (In Minutes) = 20"],
+      "monitoring_nodes": "CS Client (Eg:- M1, 2 , 100 etc )",
+      "notification_criteria": ["Immediate Notification"],
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    },
+    {
+      "alert_name": "LiveSync Health",
+      "category": "Custom Rule",
+      "type": "Failover Health Check",
+      "alert_criteria": ["Notifies When LiveSync has not run in \"20\" minutes ."],
+      "monitoring_nodes": "Automatic",
+      "notification_criteria": [
+        "Repeat Notificaion Every 15 Mins",
+        "Notify when the Condition Clears"
+      ],
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    },
+    {
+      "alert_name": "MediaAgents exceeding DDB count threshold",
+      "category": "Custom Rule",
+      "type": "MediaAgents exceeding DDB count threshold",
+      "alert_criteria": ["DDB Count Threshold = 600"],
+      "monitoring_nodes": "Automatic",
+      "notification_criteria": ["Immediate Notification"],
+      "sender_email": "<<<SENDER_EMAIL>>>",
+      "alert_status": "Enabled",
+      "subject": "** CRITICAL ALERT ** <COMMCELL NAME>: <ALERT NAME> "
+    }
+  ]
+}

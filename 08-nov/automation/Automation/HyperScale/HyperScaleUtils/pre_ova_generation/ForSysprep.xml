@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend">
+    <settings pass="generalize">
+        <component name="Microsoft-Windows-ServerManager-SvrMgrNc" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <DoNotOpenServerManagerAtLogon>true</DoNotOpenServerManagerAtLogon>
+        </component>
+    </settings>
+    <settings pass="specialize">
+        <component name="Microsoft-Windows-IE-InternetExplorer" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <FavoritesList>
+                <FavoriteItem wcm:action="add">
+                    <FavTitle>Commvault V11 Documentation</FavTitle>
+                    <FavURL>http://documentation.commvault.com/commvault/v11/article</FavURL>
+                    <FavID>Commvault V11 Documentation</FavID>
+                </FavoriteItem>
+                <FavoriteItem wcm:action="add">
+                    <FavTitle>Commvault Metrics Reports</FavTitle>
+                    <FavURL>https://cloud.commvault.com/webconsole/survey/reports/monitoringform.jsp</FavURL>
+                    <FavID>Commvault Metrics Reports</FavID>
+                </FavoriteItem>
+                <FavoriteItem wcm:action="add">
+                    <FavURL>https://ma.commvault.com</FavURL>
+                    <FavTitle>Commvault Maintenance Advantage</FavTitle>
+                    <FavID>Commvault Maintenance Advantage</FavID>
+                </FavoriteItem>
+            </FavoritesList>
+            <SearchScopes>
+                <Scope wcm:action="add">
+                    <ScopeDisplayName>Google</ScopeDisplayName>
+                    <ScopeKey>Google</ScopeKey>
+                    <ScopeUrl>https://www.google.com/search?q={searchTerms}</ScopeUrl>
+                </Scope>
+            </SearchScopes>
+            <StartPages>
+                <StartPage wcm:action="add">
+                    <StartPageUrl>http://documentation.commvault.com/commvault/v11/article</StartPageUrl>
+                    <StartPageKey>CommVault Books Online</StartPageKey>
+                </StartPage>
+            </StartPages>
+            <DisableAccelerators>true</DisableAccelerators>
+            <DisableFirstRunWizard>true</DisableFirstRunWizard>
+            <Home_Page>http://documentation.commvault.com/commvault/v11/article</Home_Page>
+            <TrustedSites>http://*.commvault.com; https://*.commvault.com; https://*.google.com; https://www.google.com; https://google.com; http://*.google.com; http://www.google.com; http://google.com; http://www.google-analytics.com; https://translate.googleapis.com; about:blank; https://ssl.google-analytics.com</TrustedSites>
+            <FavoritesDelete>true</FavoritesDelete>
+        </component>
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <ComputerName>*</ComputerName>
+            <OEMName>Commvault Systems Inc.</OEMName>
+            <TimeZone>Eastern Standard Time</TimeZone>
+        </component>
+        <component name="Microsoft-Windows-IE-InternetExplorer" processorArchitecture="wow64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <FavoritesList>
+                <FavoriteItem wcm:action="add">
+                    <FavTitle>Commvault V11 Documentation</FavTitle>
+                    <FavURL>http://documentation.commvault.com/commvault/v11/article</FavURL>
+                    <FavID>Commvault V11 Documentation</FavID>
+                </FavoriteItem>
+                <FavoriteItem wcm:action="add">
+                    <FavTitle>Commvault Metrics Reports</FavTitle>
+                    <FavURL>https://cloud.commvault.com/webconsole/survey/reports/monitoringform.jsp</FavURL>
+                    <FavID>Commvault Metrics Reports</FavID>
+                </FavoriteItem>
+                <FavoriteItem wcm:action="add">
+                    <FavID>Commvault Maintenance Advantage</FavID>
+                    <FavTitle>Commvault Maintenance Advantage</FavTitle>
+                    <FavURL>https://ma.commvault.com</FavURL>
+                </FavoriteItem>
+            </FavoritesList>
+            <SearchScopes>
+                <Scope wcm:action="add">
+                    <ScopeDefault>true</ScopeDefault>
+                    <ScopeDisplayName>Google</ScopeDisplayName>
+                    <ScopeKey>Google</ScopeKey>
+                    <ScopeUrl>https://www.google.com/search?q={searchTerms}</ScopeUrl>
+                </Scope>
+            </SearchScopes>
+            <StartPages>
+                <StartPage wcm:action="add">
+                    <StartPageUrl>http://documentation.commvault.com/commvault/v11/article</StartPageUrl>
+                    <StartPageKey>CommVault Books Online</StartPageKey>
+                </StartPage>
+            </StartPages>
+            <DisableAccelerators>true</DisableAccelerators>
+            <DisableFirstRunWizard>true</DisableFirstRunWizard>
+            <Home_Page>http://documentation.commvault.com/commvault/v11/article</Home_Page>
+            <TrustedSites>http://*.commvault.com; https://*.commvault.com; https://*.google.com; https://www.google.com; https://google.com; http://*.google.com; http://www.google.com; http://google.com; http://www.google-analytics.com; https://translate.googleapis.com; about:blank; https://ssl.google-analytics.com</TrustedSites>
+            <FavoritesDelete>true</FavoritesDelete>
+        </component>
+    </settings>
+    <settings pass="oobeSystem">
+        <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <InputLocale>en-US</InputLocale>
+            <SystemLocale>en-US</SystemLocale>
+            <UILanguage>en-US</UILanguage>
+            <UILanguageFallback>en-US</UILanguageFallback>
+            <UserLocale>en-US</UserLocale>
+        </component>
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <OEMInformation>
+                <Model>Commvault HyperScale Appliance</Model>
+                <Manufacturer>Commvault Systems Inc.</Manufacturer>
+                <SupportHours>24/7/365</SupportHours>
+                <SupportPhone>+1 877-780-3077</SupportPhone>
+                <SupportURL>https://ma.commvault.com</SupportURL>
+                <Logo>C:\Windows\System32\Sysprep\CMV_HS_APPL.bmp</Logo>
+            </OEMInformation>
+            <OOBE>
+                <HideEULAPage>true</HideEULAPage>
+                <ProtectYourPC>3</ProtectYourPC>
+                <NetworkLocation>Work</NetworkLocation>
+            </OOBE>
+            <UserAccounts>
+                <AdministratorPassword>
+                    <Value>YQBwAHAAbABpAGEAbgBjAGUAQABjAHYAMQBBAGQAbQBpAG4AaQBzAHQAcgBhAHQAbwByAFAAYQBzAHMAdwBvAHIAZAA=</Value>
+                    <PlainText>false</PlainText>
+                </AdministratorPassword>
+            </UserAccounts>
+        </component>
+    </settings>
+    <cpi:offlineImage cpi:source="wim:c:/users/sthiagarajan/documents/win2012r2-emb/sources/install.wim#Windows Server 2016 STANDARD" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
+</unattend>

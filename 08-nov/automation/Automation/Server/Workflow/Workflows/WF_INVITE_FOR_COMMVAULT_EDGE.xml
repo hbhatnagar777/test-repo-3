@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />"
+    description="Please enter the email with whom you would like to share contents of your Edge Drive"
+    inputs="&lt;inputs>&lt;InviteeEmail class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;ShareLink class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;RequestorUserId class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot; />&lt;/inputs>"
+    interactive="0" isHtmlDescription="0"
+    name="WF_INVITE_FOR_COMMVAULT_EDGE" outputs="&lt;outputs />"
+    revision="$Revision: 1.2 $"
+    uniqueGuid="6222ce50-6ab1-4187-ac7e-2a6513e22a3c"
+    variables="&lt;variables>&lt;userName class=&quot;java.lang.String&quot; />&lt;initials class=&quot;java.lang.String&quot; />&lt;fullName class=&quot;java.lang.String&quot; />&lt;password class=&quot;java.lang.String&quot; />&lt;encryptedPassword class=&quot;java.lang.String&quot; />&lt;email class=&quot;java.lang.String&quot; />&lt;counter class=&quot;java.lang.Integer&quot;>2&lt;/counter>&lt;emailUsername class=&quot;java.lang.String&quot; />&lt;newUsername class=&quot;java.lang.String&quot; />&lt;userGroup class=&quot;java.lang.String&quot;>EdgeDriveShares&lt;/userGroup>&lt;webconsole class=&quot;java.lang.String&quot; />&lt;RequestorUserId class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot; />&lt;/variables>" workflowId="0">
+    <schema>
+        <outputs attribute="0" className="" listType="0" name="outputs"
+            required="1" type=""/>
+        <variables attribute="0" className="" listType="0"
+            name="variables" required="1" type="">
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="userName" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="initials" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="fullName" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="password" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="encryptedPassword" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0" name="email"
+                required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.Integer" listType="0"
+                name="counter" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="emailUsername" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="newUsername" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="userGroup" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="webconsole" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.Integer" listType="0"
+                name="requestorId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+        </variables>
+        <inputs attribute="0" className="" listType="0" name="inputs"
+            required="1" type="">
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="InviteeEmail" required="1" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="1" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="ShareLink"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlHidden="1" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.Integer" listType="0"
+                name="RequestorUserId" readOnly="0" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+        </inputs>
+        <config className="" name="" type=""/>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="61" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="ImpersonateCreator_1" commented="0"
+            originalStyle="" points="138.0,59.0" sourceX="75"
+            sourceY="59" status="0" style="defaultEdge" targetX="178"
+            targetY="58" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1375378445252"
+        description="impersonates the user who created the workflow"
+        displayName="ImpersonateCreator" height="22" interactive="0"
+        jobMode="0" name="ImpersonateCreator"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=ImpersonateCreator"
+        uniqueName="ImpersonateCreator_1" waitSetting="0" width="164"
+        x="157" y="46">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="AcquireLock_1" commented="0"
+            originalStyle="" points="" sourceX="239" sourceY="57"
+            status="0" style="defaultEdge" targetX="235" targetY="108"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1375461631906" description="Ends the workflow"
+        displayName="WorkflowEnd" height="20" interactive="0"
+        jobMode="0" name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=WorkflowEnd;gradientColor=#CC0000;fillColor=#CC0000"
+        uniqueName="WorkflowEnd_3" waitSetting="0" width="119" x="184" y="347">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot;>COMPLETED&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot;>Friends and Family signup completed&lt;/failureMessage>&lt;/inputs>"/>
+        <onEnter language="1" script="workflow.setLoggingDisabled(false);"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1394653485084"
+        description="synchronizes a workflow per named parameter"
+        displayName="AcquireLock" height="22" interactive="0"
+        jobMode="0" name="AcquireLock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=AcquireLock"
+        uniqueName="AcquireLock_1" waitSetting="0" width="122" x="176" y="96">
+        <inputs val="&lt;inputs>&lt;name class=&quot;java.lang.String&quot;>xpath:{/workflow/system/workflow/workflowName}_xpath:{/workflow/inputs/InviteeEmail}&lt;/name>&lt;releaseLockOnCompletion class=&quot;java.lang.Boolean&quot;>true&lt;/releaseLockOnCompletion>&lt;timeout class=&quot;java.lang.Integer&quot; />&lt;/inputs>"/>
+        <transition activity="CommServDBQuery_1" commented="0"
+            originalStyle="" points="" sourceX="232" sourceY="217"
+            status="0" style="defaultEdge" targetX="230" targetY="267"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1421333758075"
+        description="executes queries against a commcell database"
+        displayName="Get Existing Account" height="21" interactive="0"
+        jobMode="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=CommServDBQuery;fillColor=#99FFFF;gradientColor=#99FFFF"
+        uniqueName="CommServDBQuery_1" waitSetting="0" width="180"
+        x="162" y="158">
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>select u.login, u.password, u.name&amp;#xD;&#xd;&#xa;from umusers u&amp;#xD;&#xd;&#xa;where u.enabled = 1&amp;#xD;&#xd;&#xa;and u.email = 'xpath:{/workflow/inputs/InviteeEmail}'&lt;/query>&lt;/inputs>"/>
+        <transition activity="Decision_1" commented="0" originalStyle=""
+            points="" sourceX="238" sourceY="278" status="0"
+            style="defaultEdge" targetX="222" targetY="325"
+            transitionIndex="0" x="-6" y="4">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1421333992856" description="if/else based decision"
+        displayName="Exists?" height="35" interactive="0" jobMode="0"
+        name="Decision" namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="rhombus;fontStyle=1"
+        uniqueName="Decision_1" waitSetting="0" width="100" x="191" y="214">
+        <onExit language="1" script="workflow.setVariable(&quot;userName&quot;, xpath:{/workflow/CommServDBQuery_1/resultSets[1]/row[1]/col[1]});"/>
+        <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot;>xpath:{/workflow/CommServDBQuery_1/resultSets[1]/rowCount}&amp;gt;0&lt;/expression>&lt;/inputs>"/>
+        <transition activity="Script_8" commented="0" displayName="NO"
+            originalStyle="" points="" sourceX="425" sourceY="278"
+            status="0" style="defaultEdge" targetX="592" targetY="275"
+            transitionIndex="0" value="false" x="196" y="-45">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="WorkflowEnd_3" commented="0"
+            displayName="YES" originalStyle="" points="" sourceX="241"
+            sourceY="231" status="0" style="defaultEdge" targetX="245"
+            targetY="356" transitionIndex="0" value="true" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1421334452687"
+        description="activity to execute code snippets in the selected language"
+        displayName="Set User Name" height="19" interactive="0"
+        jobMode="0" name="Script"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=Script"
+        uniqueName="Script_6" waitSetting="0" width="129" x="998" y="196">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;workflow.setVariable(&amp;quot;userName&amp;quot;,xpath:{/workflow/variables/newUsername});&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;String initials;&amp;#xD;&amp;#xA;if (xpath:{/workflow/variables/newUsername}.length() &amp;gt;= 2)&amp;#xD;&amp;#xA;    initials = xpath:{/workflow/variables/newUsername}.substring(0,2).toUpperCase();&amp;#xD;&amp;#xA;else&amp;#xD;&amp;#xA;    initials = xpath:{/workflow/variables/newUsername}.toUpperCase();&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;initials&amp;quot;, initials);&amp;#xD;&amp;#xA;&quot; />&lt;/inputs>"/>
+        <transition activity="CommServDBQuery_2" commented="0"
+            originalStyle="" points="946.0,206.0" sourceX="809"
+            sourceY="278" status="0" style="defaultEdge" targetX="964"
+            targetY="277" transitionIndex="0" x="196" y="-45">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1421334558433"
+        description="executes queries against a commcell database"
+        displayName="Generate Password" height="17" interactive="0"
+        jobMode="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=CommServDBQuery"
+        uniqueName="CommServDBQuery_2" waitSetting="0" width="162"
+        x="718" y="196">
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>declare @password nvarchar(25)&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;declare @alphaU varchar(100) = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'&amp;#xD;&#xd;&#xa;declare @alphaL varchar(100) = 'abcdefghijklmnopqrstuvwxyz'&amp;#xD;&#xd;&#xa;declare @specialChars NVARCHAR(100) = '!@#$%^&amp;amp;*()-_+=.,;:''&quot;`~&amp;lt;&amp;gt;?/'&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;SET @password = (SELECT RIGHT( LEFT(@alphaU,ABS(BINARY_CHECKSUM(NEWID())%35) + 1 ),1) + RIGHT( LEFT(@alphaU,ABS(BINARY_CHECKSUM(NEWID())%35) + 1 ),1) +&amp;#xD;&#xd;&#xa;RIGHT( LEFT(@alphaL,ABS(BINARY_CHECKSUM(NEWID())%35) + 1 ),1) + RIGHT( LEFT(@alphaL,ABS(BINARY_CHECKSUM(NEWID())%35) + 1 ),1) +&amp;#xD;&#xd;&#xa;RIGHT( LEFT(@specialChars,ABS(BINARY_CHECKSUM(NEWID())%35) + 1 ),1) + RIGHT( LEFT(@specialChars,ABS(BINARY_CHECKSUM(NEWID())%35) + 1 ),1) +&amp;#xD;&#xd;&#xa;CAST(FLOOR(RAND()*(10-1)+1) AS NVARCHAR(2)) + CAST(FLOOR(RAND()*(10-1)+1) AS NVARCHAR(2)))&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;select @password&lt;/query>&lt;/inputs>"/>
+        <transition activity="Script_7" commented="0" originalStyle=""
+            points="670.0,205.0" sourceX="1001" sourceY="275" status="0"
+            style="defaultEdge" targetX="995" targetY="330"
+            transitionIndex="0" x="196" y="-45">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <onEnter language="1" script="workflow.setLoggingDisabled(true);"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1421334630600"
+        description="activity to execute code snippets in the selected language"
+        displayName="Set Parameters" height="21" interactive="0"
+        jobMode="0" name="Script"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=Script"
+        uniqueName="Script_7" waitSetting="0" width="133" x="459" y="194">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;workflow.setVariable(&amp;quot;password&amp;quot;, xpath:{/workflow/CommServDBQuery_2/resultSets[1]/row[1]/col[1]});&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;encryptedPassword&amp;quot;, utils.encryptString(xpath:{/workflow/CommServDBQuery_2/resultSets[1]/row[1]/col[1]}));&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;//logger.info(&amp;quot;The login is &amp;quot; + workflow.getVariable(&amp;quot;userName&amp;quot;));&amp;#xD;&amp;#xA;//logger.info(&amp;quot;The password is &amp;quot; + workflow.getVariable(&amp;quot;password&amp;quot;));&amp;#xD;&amp;#xA;//logger.info(&amp;quot;The encrypted password is &amp;quot; + workflow.getVariable(&amp;quot;encryptedPassword&amp;quot;));&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;&quot; />&lt;/inputs>"/>
+        <transition activity="Execute_1" commented="0" originalStyle=""
+            points="" sourceX="1032" sourceY="230" status="0"
+            style="defaultEdge" targetX="1036" targetY="369"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1432664862451" description="" displayName="Create User"
+        height="21" interactive="0" jobMode="0" name="Execute"
+        namespaceUri="commvault.cte.workflow.activities.cmd.operation"
+        originalStyle="" skipAttempt="0" style="label;image=Execute"
+        uniqueName="Execute_1" waitSetting="0" width="160" x="441" y="257">
+        <inputs val="&lt;inputs>&lt;inputXml class=&quot;java.lang.String&quot;>&amp;lt;App_CreateUserRequest level=&quot;1&quot;&amp;gt;&amp;#xD;&#xd;&#xa;    &amp;lt;users enableUser=&quot;true&quot; enforcePasswordChange=&quot;true&quot;&amp;#xD;&#xd;&#xa;                password=&quot;xpath:{/workflow/variables/encryptedPassword}&quot; &amp;#xD;&#xd;&#xa;                fullName=&quot;xpath:{/workflow/variables/userName}&quot; &amp;#xD;&#xd;&#xa;                email=&quot;xpath:{/workflow/inputs/InviteeEmail}&quot;&amp;#xD;&#xd;&#xa;                description=&quot;Automatically Created for Edge Drive&quot;&amp;#xD;&#xd;&#xa;&amp;gt;&amp;#xD;&#xd;&#xa;      &amp;lt;userEntity userName=&quot;xpath:{/workflow/variables/userName}&quot;&amp;gt;&amp;lt;/userEntity&amp;gt;&amp;#xD;&#xd;&#xa;     &amp;lt;/users&amp;gt;&amp;#xD;&#xd;&#xa;  &amp;lt;/App_CreateUserRequest&amp;gt;&lt;/inputXml>&lt;commandArgs class=&quot;java.lang.String&quot; />&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; />&lt;token class=&quot;java.lang.String&quot; />&lt;/sessionOptions>&lt;escapeXml class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>false&lt;/escapeXml>&lt;/inputs>"/>
+        <transition activity="Execute_3" commented="0" originalStyle=""
+            points="" sourceX="1035" sourceY="357" status="0"
+            style="defaultEdge" targetX="822" targetY="356"
+            transitionIndex="0" x="-2" y="16">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1432669332909" description=""
+        displayName="Add User to Group" height="22" interactive="0"
+        jobMode="0" name="Execute"
+        namespaceUri="commvault.cte.workflow.activities.cmd.operation"
+        originalStyle="" skipAttempt="0" style="label;image=Execute"
+        uniqueName="Execute_2" waitSetting="0" width="159" x="732" y="338">
+        <inputs val="&lt;inputs>&lt;inputXml class=&quot;java.lang.String&quot;>&amp;lt;App_UpdateUserGroupPropertiesRequest&amp;gt;&amp;#xD;&#xd;&#xa;   &amp;lt;groups usersOperationType=&quot;ADD&quot;&amp;gt;&amp;#xD;&#xd;&#xa;     &amp;lt;userGroupEntity userGroupName=&quot;xpath:{/workflow/variables/userGroup}&quot; /&amp;gt;&amp;#xD;&#xd;&#xa;     &amp;lt;users userName=&quot;xpath:{/workflow/variables/userName}&quot;&amp;gt;&amp;lt;/users&amp;gt;&amp;#xD;&#xd;&#xa;   &amp;lt;/groups&amp;gt;&amp;#xD;&#xd;&#xa; &amp;lt;/App_UpdateUserGroupPropertiesRequest&amp;gt;&lt;/inputXml>&lt;commandArgs class=&quot;java.lang.String&quot; />&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; />&lt;token class=&quot;java.lang.String&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <transition activity="Email_2" commented="0" originalStyle=""
+            points="821.0,382.0" sourceX="824" sourceY="340" status="0"
+            style="defaultEdge" targetX="521" targetY="350"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1432744748906"
+        description="activity to execute code snippets in the selected language"
+        displayName="Get Email Username" height="19" interactive="0"
+        jobMode="0" name="Script"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=Script"
+        uniqueName="Script_8" waitSetting="0" width="164" x="467" y="124">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;String email = xpath:{/workflow/inputs/InviteeEmail};&amp;#xD;&amp;#xA;String[] parts =  email.split(&amp;quot;@&amp;quot;);&amp;#xD;&amp;#xA;Integer requestor = xpath:{/workflow/inputs/RequestorUserId};&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;emailUsername&amp;quot;, parts[0]);&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;newUsername&amp;quot;, parts[0]);&amp;#xD;&amp;#xA;if (requestor == null)&amp;#xD;&amp;#xA;{ workflow.setVariable(&amp;quot;requestorId&amp;quot;, xpath:{/workflow/system/executor/userId}); }&amp;#xD;&amp;#xA;else&amp;#xD;&amp;#xA;{ workflow.setVariable(&amp;quot;requestorId&amp;quot;, requestor); }&amp;#xD;&amp;#xA;logger.info(&amp;quot;Create Edge Drive Account - input requestorId is &amp;quot; + xpath:{/workflow/inputs/RequestorUserId});&amp;#xD;&amp;#xA;logger.info(&amp;quot;Create Edge Drive Account - requestorId is set to &amp;quot; + xpath:{/workflow/variables/requestorId});&amp;#xD;&amp;#xA;logger.info(&amp;quot;Create Edge Drive Account - emailUsername is &amp;quot; + parts[0]);&amp;#xD;&amp;#xA;logger.info(&amp;quot;Create Edge Drive Account - newUsername is &amp;quot; + parts[0]);&quot; />&lt;/inputs>"/>
+        <transition activity="CommServDBQuery_3" commented="0"
+            originalStyle="" points="" sourceX="549" sourceY="133"
+            status="0" style="defaultEdge" targetX="809" targetY="133"
+            transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1432744791900"
+        description="executes queries against the commserv database"
+        displayName="Check Username in DB" height="20" interactive="0"
+        jobMode="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=CommServDBQuery;fillColor=#99FFFF;gradientColor=#99FFFF"
+        uniqueName="CommServDBQuery_3" waitSetting="0" width="180"
+        x="719" y="123">
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>select login from umusers where login = 'xpath:{/workflow/variables/newUsername}'&lt;/query>&lt;/inputs>"/>
+        <transition activity="Decision_2" commented="0" originalStyle=""
+            points="" sourceX="809" sourceY="133" status="0"
+            style="defaultEdge" targetX="1053" targetY="133"
+            transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1432744869370" description="if/else based decision"
+        displayName="Does Username Exist?" height="40" interactive="0"
+        jobMode="0" name="Decision"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="rhombus;fontStyle=1"
+        uniqueName="Decision_2" waitSetting="0" width="184" x="961" y="113">
+        <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot;>xpath:{/workflow/CommServDBQuery_3/resultSets[1]/rowCount}==0&lt;/expression>&lt;/inputs>"/>
+        <transition activity="CommServDBQuery_4" commented="0"
+            displayName="NO" originalStyle="" points="" sourceX="1053"
+            sourceY="133" status="0" style="defaultEdge" targetX="1057"
+            targetY="194" transitionIndex="0" value="true" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="Script_9" commented="0" displayName="YES"
+            originalStyle="" points="" sourceX="1053" sourceY="133"
+            status="0" style="defaultEdge" targetX="1048" targetY="48"
+            transitionIndex="0" value="false" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1432745076586"
+        description="activity to execute code snippets in the selected language"
+        displayName="Get New Username" height="19" interactive="0"
+        jobMode="0" name="Script"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=Script"
+        uniqueName="Script_9" waitSetting="0" width="164" x="966" y="39">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;String newUsername = xpath:{/workflow/variables/emailUsername} + xpath:{/workflow/variables/counter};&amp;#xD;&amp;#xA;int newCounter = xpath:{/workflow/variables/counter} + 1;&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;counter&amp;quot;, newCounter);&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;newUsername&amp;quot;, newUsername);&amp;#xD;&amp;#xA;logger.info(&amp;quot;Create Edge Drive Account - newUsername is &amp;quot; + newUsername);&quot; />&lt;/inputs>"/>
+        <transition activity="CommServDBQuery_3" commented="0"
+            originalStyle="" points="800.0,75.0" sourceX="1048"
+            sourceY="48" status="0" style="defaultEdge" targetX="566"
+            targetY="129" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1432830064773" description=""
+        displayName="Get User Group Properties" height="23"
+        interactive="0" jobMode="0" maxRestarts="0" name="Execute"
+        namespaceUri="commvault.cte.workflow.activities.cmd.operation"
+        originalStyle="" skipAttempt="0" style="label;image=Execute"
+        uniqueName="Execute_3" waitSetting="0" width="179" x="712" y="255">
+        <inputs val="&lt;inputs>&lt;inputXml class=&quot;java.lang.String&quot;>&amp;lt;App_GetUserGroupPropertiesRequest level=&quot;1&quot;&amp;gt;    &amp;#xD;&#xd;&#xa;    &amp;lt;userGroup userGroupName=&quot;xpath:{/workflow/variables/userGroup}&quot; /&amp;gt;  &amp;#xD;&#xd;&#xa;&amp;lt;/App_GetUserGroupPropertiesRequest&amp;gt;&lt;/inputXml>&lt;commandArgs class=&quot;java.lang.String&quot; />&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; />&lt;token class=&quot;java.lang.String&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <transition activity="Decision_3" commented="0" originalStyle=""
+            points="943.0,237.0" sourceX="792" sourceY="266" status="0"
+            style="defaultEdge" targetX="1044" targetY="261"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1432830559686" description=""
+        displayName="Create User Group" height="24" interactive="0"
+        jobMode="0" name="Execute"
+        namespaceUri="commvault.cte.workflow.activities.cmd.operation"
+        originalStyle="" skipAttempt="0" style="label;image=Execute"
+        uniqueName="Execute_4" waitSetting="0" width="155" x="972" y="330">
+        <inputs val="&lt;inputs>&lt;inputXml class=&quot;java.lang.String&quot;>&amp;lt;App_CreateUserGroupRequest&amp;gt;    &amp;#xD;&#xd;&#xa;    &amp;lt;groups enabled=&quot;true&quot; allCapabilities=&quot;true&quot; allAssociations=&quot;false&quot; usersOperationType=&quot;ADD&quot;&amp;gt;     &amp;#xD;&#xd;&#xa;    &amp;lt;userGroupEntity userGroupName=&quot;xpath:{/workflow/variables/userGroup}&quot; /&amp;gt;      &amp;#xD;&#xd;&#xa;    &amp;lt;users userName=&quot;xpath:{/workflow/variables/userName}&quot;&amp;gt;&amp;lt;/users&amp;gt;          &amp;#xD;&#xd;&#xa;    &amp;lt;/groups&amp;gt;  &amp;#xD;&#xd;&#xa;&amp;lt;/App_CreateUserGroupRequest&amp;gt;&lt;/inputXml>&lt;commandArgs class=&quot;java.lang.String&quot; />&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; />&lt;token class=&quot;java.lang.String&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <transition activity="Email_2" commented="0" originalStyle=""
+            points="1045.0,450.0" sourceX="1049" sourceY="342"
+            status="0" style="defaultEdge" targetX="868" targetY="355"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1432833739111"
+        description="Sends an email to a list of users"
+        displayName="Send New Account Email" height="18" interactive="0"
+        jobMode="0" name="Email"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=Email;fillColor=#99FF99;gradientColor=#99FF99"
+        uniqueName="Email_1" waitSetting="0" width="193" x="355" y="348">
+        <inputs val="&lt;inputs>&lt;email class=&quot;workflow.types.Email&quot;>&lt;to class=&quot;java.lang.String&quot;>xpath:{/workflow/inputs/InviteeEmail}&lt;/to>&lt;cc class=&quot;java.lang.String&quot; />&lt;bcc class=&quot;java.lang.String&quot; />&lt;from class=&quot;java.lang.String&quot;>commvaultedge@commvault.com&lt;/from>&lt;subject class=&quot;java.lang.String&quot;>Welcome to Commvault Edge. Your credentials and next steps.&lt;/subject>&lt;body class=&quot;java.lang.String&quot;>&amp;lt;p&amp;gt;&#xd;&#xa;      Welcome,&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      xpath:{/workflow/CommServDBQuery_4/resultSets[2]/row[1]/col[1]} has &#xd;&#xa;      invited you to collaborate using Commvault Edge.&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      Below are your login credentials:&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      &amp;lt;b&amp;gt;User Name:&amp;lt;/b&amp;gt; xpath:{/workflow/inputs/InviteeEmail}&amp;lt;br&amp;gt;&amp;lt;b&amp;gt;Password:&amp;lt;/b&amp;gt; &#xd;&#xa;      xpath:{/workflow/variables/password}&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      Get started with &amp;lt;a href=&quot;xpath:{/workflow/variables/webconsole}&quot;&amp;gt;&amp;lt;span&amp;gt;Commvault &#xd;&#xa;      Edge&amp;lt;/span&amp;gt;&amp;lt;/a&amp;gt;. After you log on, we recommend changing your password. &#xd;&#xa;      To change the password, click username in the upper-right corner of the &#xd;&#xa;      window, and then click &amp;lt;b&amp;gt;Preferences&amp;lt;/b&amp;gt;.&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      To access files that are shared with you, from the &amp;lt;b&amp;gt;My Applications&amp;lt;/b&amp;gt; &#xd;&#xa;      page, click &amp;lt;b&amp;gt;My Data&amp;lt;/b&amp;gt;, and then navigate to Shares&amp;amp;gt;Shared WIth Me.&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      To know more about Commvault Edge, &amp;lt;a href=&quot;http://documentation.commvault.com/commvault/v11/article?p=features/edge/edge_overview.htm&quot;&amp;gt;&amp;lt;span&amp;gt;click &#xd;&#xa;      here&amp;lt;/span&amp;gt;&amp;lt;/a&amp;gt;.&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      Thank you,&amp;lt;br&amp;gt;xpath:{/workflow/CommServDBQuery_4/resultSets[2]/row[1]/col[2]}&#xd;&#xa;    &amp;lt;/p&amp;gt;&lt;/body>&lt;attachments class=&quot;java.lang.Object&quot; />&lt;html class=&quot;java.lang.Boolean&quot;>true&lt;/html>&lt;repeatInterval />&lt;/email>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_3" commented="0"
+            originalStyle="" points="" sourceX="615" sourceY="376"
+            status="0" style="defaultEdge" targetX="418" targetY="381"
+            transitionIndex="0" x="202" y="-49">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1432834082407"
+        description="executes queries against the commserv database"
+        displayName="Get Webconsole" height="21" interactive="0"
+        jobMode="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=CommServDBQuery;fillColor=#99FFFF;gradientColor=#99FFFF"
+        uniqueName="CommServDBQuery_4" waitSetting="0" width="148"
+        x="1234" y="121">
+        <onExit language="1" script="import org.apache.commons.lang3.StringUtils;&#xd;&#xa;String url = xpath:{/workflow/CommServDBQuery_4/resultSets[1]/row[1]/col[1]};&#xd;&#xa;String[] tokens = url.split(&quot;webconsole&quot;);&#xd;&#xa;String webconsole = tokens[0] + &quot;webconsole&quot;;&#xd;&#xa;&#xd;&#xa;if (!StringUtils.isBlank(xpath:{/workflow/inputs/ShareLink}))&#xd;&#xa;{&#xd;&#xa;    webconsole = xpath:{/workflow/inputs/ShareLink};&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;workflow.setVariable(&quot;webconsole&quot;, webconsole);&#xd;&#xa;logger.info(&quot;Webconsole url is &quot; + webconsole);"/>
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>select value &amp;#xD;&#xd;&#xa;from gxglobalparam&amp;#xD;&#xd;&#xa;where name = 'WebConsoleURL'&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;select email, name&amp;#xD;&#xd;&#xa;from umusers&amp;#xD;&#xd;&#xa;where id = xpath:{/workflow/variables/requestorId}&lt;/query>&lt;/inputs>"/>
+        <transition activity="Script_6" commented="0" originalStyle=""
+            points="1318.0,175.0" sourceX="1351" sourceY="130"
+            status="0" style="defaultEdge" targetX="1116" targetY="205"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1432837223300"
+        description="Sends an email to a list of users"
+        displayName="Send New Account Email" height="18" interactive="0"
+        jobMode="0" name="Email"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=Email;fillColor=#99FF99;gradientColor=#99FF99"
+        uniqueName="Email_2" waitSetting="0" width="193" x="359" y="407">
+        <inputs val="&lt;inputs>&lt;email class=&quot;workflow.types.Email&quot;>&lt;to class=&quot;java.lang.String&quot;>xpath:{/workflow/CommServDBQuery_4/resultSets[2]/row[1]/col[1]}&lt;/to>&lt;cc class=&quot;java.lang.String&quot; />&lt;bcc class=&quot;java.lang.String&quot; />&lt;from class=&quot;java.lang.String&quot;>commvaultedge@commvault.com&lt;/from>&lt;subject class=&quot;java.lang.String&quot;>xpath:{/workflow/inputs/InviteeEmail} has been invited to use Commvault Edge&lt;/subject>&lt;body class=&quot;java.lang.String&quot;>&amp;lt;p&amp;gt;&#xd;&#xa;      Hello xpath:{/workflow/CommServDBQuery_4/resultSets[2]/row[1]/col[2]},&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      xpath:{/workflow/inputs/InviteeEmail} has been invited to use Commvault Edge. A &#xd;&#xa;      separate email with login credentials to access Commvault Edge has been &#xd;&#xa;      sent to the user.&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      Thank you,&amp;lt;br&amp;gt;Commvault Edge Team&#xd;&#xa;    &amp;lt;/p&amp;gt;&lt;/body>&lt;attachments class=&quot;java.lang.Object&quot; />&lt;html class=&quot;java.lang.Boolean&quot;>true&lt;/html>&lt;repeatInterval />&lt;/email>&lt;/inputs>"/>
+        <transition activity="Email_1" commented="0" originalStyle=""
+            points="" sourceX="455" sourceY="416" status="0"
+            style="defaultEdge" targetX="445" targetY="358"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1438883743847" description="if/else based decision"
+        displayName="Check if Group Exists?" height="35" interactive="0"
+        jobMode="0" name="Decision"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="rhombus;fontStyle=1"
+        uniqueName="Decision_3" waitSetting="0" width="158" x="965" y="249">
+        <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/Execute_3/exitCode}==0&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+        <transition activity="Execute_2" commented="0" displayName="YES"
+            originalStyle="" points="" sourceX="1044" sourceY="266"
+            status="0" style="defaultEdge" targetX="865" targetY="343"
+            transitionIndex="0" value="true" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="Execute_4" commented="0" displayName="NO"
+            originalStyle="" points="" sourceX="1044" sourceY="266"
+            status="0" style="defaultEdge" targetX="1044" targetY="346"
+            transitionIndex="0" value="false" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <formProperties height="75" width="465"/>
+</Workflow_WorkflowDefinition>

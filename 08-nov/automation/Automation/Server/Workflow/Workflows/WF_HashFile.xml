@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0"
+    config="&lt;configuration>&lt;hackedFileHash class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;sharedUserName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>CVLegal&lt;/sharedUserName>&lt;sharedUserPassword class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>UGFzc3dvcmQhMTI=&lt;/sharedUserPassword>&lt;chunkSizeInMB class=&quot;java.lang.Double&quot; _list_=&quot;false&quot;>4.0&lt;/chunkSizeInMB>&lt;webServiceURL class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>http://######:81/SearchSvc/CVWebService.svc&lt;/webServiceURL>&lt;contentStoreAdmin class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>contentStoreCMSAdmin&lt;/contentStoreAdmin>&lt;contentStoreAdminPassword class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>UGFzc3dvcmQhMTI=&lt;/contentStoreAdminPassword>&lt;/configuration>"
+    description="Workflow to test file upload with hash"
+    executeOnWeb="0"
+    inputs="&lt;inputs>&lt;corruptFile class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;corruptFileHash class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;contentStoreFolderPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>\testHashFile&lt;/contentStoreFolderPath>&lt;shareId class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>832113&lt;/shareId>&lt;verifyIntegrity class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/verifyIntegrity>&lt;localFilePath class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>E:\\CMS\\temp\\yinghuochong.mp4&lt;/localFilePath>&lt;verifyIntegrityMode class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;shareType class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Private share&lt;/shareType>&lt;corruptChunk class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;corruptChunkHash class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;retryForFailure class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;/inputs>"
+    interactive="0" isHtmlDescription="0" name="WF_HashFile"
+    outputs="&lt;outputs />" revision="$Revision: 1.4 $" tags=""
+    uniqueGuid="b51997da-575b-423b-8638-fa174b0e1005"
+    variables="&lt;variables>&lt;authToken class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;contentStoreFileName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;contentStoreFileSize class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;contentStoreFileModTime class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;contentStoreParentPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;contentStoreFileObject class=&quot;workflow.types.File&quot; _list_=&quot;false&quot; />&lt;contentStoreFileGUID class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;filePartPathList class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;contentStoreRequestId class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;EOFpath class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;EOFflag class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>0&lt;/EOFflag>&lt;contentStoreFileChunk class=&quot;workflow.types.File&quot; _list_=&quot;false&quot; />&lt;fileChunkOutput class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;chunkHash class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;chunkHashList class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;requestURL class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;loginUserName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;loginUserPassword class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;FullFileHash class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;BlockLevelFileHash class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;counter class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>0&lt;/counter>&lt;chunkUploaded class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;errorCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot; />&lt;errorMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;originalBlockLevelFileHash class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;completionStatus class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>COMPLETED&lt;/completionStatus>&lt;/variables>"
+    webHidden="0" workflowId="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables attribute="0" className="" name="variables" type="">
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="authToken" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="contentStoreFileName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="contentStoreFileSize" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="contentStoreFileModTime" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="contentStoreParentPath" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="workflow.types.File"
+                controlType="7" defaultValue="" displayName=""
+                hidden="0" inputType="workflow.types.File" listType="0"
+                name="contentStoreFileObject" type="{workflow.types}File"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="contentStoreFileGUID" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="1"
+                name="filePartPathList" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="contentStoreRequestId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="EOFpath" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0"
+                inputType="java.lang.Integer" listType="0"
+                name="EOFflag" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="workflow.types.File"
+                controlType="7" defaultValue="" displayName=""
+                hidden="0" inputType="workflow.types.File" listType="0"
+                name="contentStoreFileChunk" type="{workflow.types}File"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="fileChunkOutput" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="chunkHash" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="1"
+                name="chunkHashList" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="requestURL" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="loginUserName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="loginUserPassword" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="FullFileHash" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="BlockLevelFileHash" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0"
+                inputType="java.lang.Integer" listType="0"
+                name="counter" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                name="chunkUploaded" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.Integer" listType="0"
+                name="errorCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="errorMessage" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="originalBlockLevelFileHash" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="completionStatus" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </variables>
+        <inputs attribute="0" className="" name="inputs" type="">
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Local file path to be uploaded:"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="localFilePath" readOnly="0" required="1"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Folder path to be uploaded in content store:"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="contentStoreFolderPath" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children alignment="1" attribute="0"
+                className="java.lang.String" controlHidden="0"
+                controlType="4" defaultValue=""
+                displayName="Share type:" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="shareType"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string">
+                <options val="Private share"/>
+                <options val="Public share"/>
+            </children>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Share ID:" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="shareId"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlHidden="0" controlType="5" defaultValue=""
+                displayName="Verify file integrity by hashing file in SHA256?"
+                documentation="" hidden="0"
+                inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue="" name="verifyIntegrity"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children alignment="1" attribute="0"
+                className="java.lang.String" controlHidden="0"
+                controlType="4" defaultValue=""
+                displayName="Test case to verify integrity:"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="verifyIntegrityMode" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string">
+                <labelsForOptions val="Full file upload with FullFileHash"/>
+                <labelsForOptions val="Chunked file upload with FullFileHash"/>
+                <labelsForOptions val="Chunked file upload with BlockLevelFileHash"/>
+                <labelsForOptions val="Chunked file upload with ChunkHash &amp; FullFileHash"/>
+                <labelsForOptions val="Chunked file upload with ChunkHash &amp; BlockLevelFileHash"/>
+                <options val="1"/>
+                <options val="2"/>
+                <options val="3"/>
+                <options val="4"/>
+                <options val="5"/>
+            </children>
+            <children attribute="0" className="java.lang.Boolean"
+                controlHidden="0" controlType="5" defaultValue=""
+                displayName="Corrupt the file?"
+                documentation="Purposely corrupt the file for testing"
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue="" name="corruptFile"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlHidden="0" controlType="5" defaultValue=""
+                displayName="Corrupt the file hash?"
+                documentation="Purposely corrupt the hash for testing"
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue="" name="corruptFileHash"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children alignment="1" attribute="0"
+                className="java.lang.Boolean" controlHidden="0"
+                controlType="5" defaultValue=""
+                displayName="Randomly corrupt the file chunk?"
+                documentation="" hidden="0"
+                inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue="" name="corruptChunk"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlHidden="0" controlType="5" defaultValue=""
+                displayName="Randomly corrupt the chunk hash?"
+                documentation="" hidden="0"
+                inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue="" name="corruptChunkHash"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlHidden="0" controlType="5" defaultValue=""
+                displayName="Retry 5 times when upload failed?"
+                documentation="" hidden="0"
+                inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue="" name="retryForFailure"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+        </inputs>
+        <config attribute="0" className="" name="configuration" type="">
+            <children alignment="1" attribute="0"
+                className="java.lang.Double" controlHidden="0"
+                controlType="0" defaultValue=""
+                displayName="Chunk size in MB:"
+                documentation="Type: double" hidden="0"
+                inputType="java.lang.Double" listType="0"
+                maximumValue="" minimumValue="" name="chunkSizeInMB"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}double"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="hackedFileHash"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="webServiceURL"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="User to be shared to upload file to contentstore"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="sharedUserName" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Password in Base64 of shared user"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="sharedUserPassword" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="contentStoreAdmin" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="contentStoreAdminPassword"
+                readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </config>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="58" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="Script_1" commented="0" originalStyle=""
+            points="" sourceX="74" sourceY="59" status="0"
+            style="defaultEdge" targetX="202" targetY="69"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="1"
+        created="1430343070160" description="performs http operations"
+        displayName="Add file to contentstore" height="22"
+        interactive="0" jobMode="0" maxRestarts="0" name="HttpClient"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=HttpClient"
+        uniqueName="HttpClient_2" waitSetting="0" width="200" x="337" y="148">
+        <onExit language="1" script="logger.info(&quot;Setting upload file output: [&quot; + xpath:{/workflow/HttpClient_2/output} + &quot;]&quot;);&#xd;&#xa;logger.info(&quot;Setting upload file statusCode: [&quot; + xpath:{/workflow/HttpClient_2/statusCode} + &quot;]&quot;);&#xd;&#xa;logger.info(&quot;Setting upload file statusText: [&quot; + xpath:{/workflow/HttpClient_2/statusText} + &quot;]&quot;);"/>
+        <inputs val="&lt;inputs>&lt;request>&lt;url>xpath:{/workflow/variables/requestURL}&lt;/url>&lt;method>POST&lt;/method>&lt;postType>Raw&lt;/postType>&lt;postContent>xpath:{/workflow/variables/contentStoreFileObject}&lt;/postContent>&lt;postContentType>charset=UTF-8&lt;/postContentType>&lt;parameters>&lt;name>uploadType&lt;/name>&lt;value>fullFile&lt;/value>&lt;/parameters>&lt;parameters>&lt;name>forceRestart&lt;/name>&lt;value>true&lt;/value>&lt;/parameters>&lt;headers>&lt;name>FileName&lt;/name>&lt;value>xpath:{/workflow/variables/contentStoreFileName}&lt;/value>&lt;/headers>&lt;headers>&lt;name>FileSize&lt;/name>&lt;value>xpath:{/workflow/variables/contentStoreFileSize}&lt;/value>&lt;/headers>&lt;headers>&lt;name>FileModifiedtime&lt;/name>&lt;value>xpath:{/workflow/variables/contentStoreFileModTime}&lt;/value>&lt;/headers>&lt;headers>&lt;name>ParentFolderPath&lt;/name>&lt;value>xpath:{/workflow/variables/contentStoreParentPath}&lt;/value>&lt;/headers>&lt;headers>&lt;name>Accept&lt;/name>&lt;value>application/xml&lt;/value>&lt;/headers>&lt;headers>&lt;name>Host&lt;/name>&lt;value>xpath:{/workflow/system/workflowEngine/clientName}&lt;/value>&lt;/headers>&lt;headers>&lt;name>FullFileHash&lt;/name>&lt;value>xpath:{/workflow/variables/FullFileHash}&lt;/value>&lt;/headers>&lt;headers>&lt;name>Authtoken&lt;/name>&lt;value>xpath:{/workflow/variables/authToken}&lt;/value>&lt;/headers>&lt;/request>&lt;/inputs>"/>
+        <transition activity="XPathQuery_2" commented="0"
+            originalStyle="" points="" sourceX="540" sourceY="258"
+            status="0" style="defaultEdge" targetX="545" targetY="320"
+            transitionIndex="0" x="153" y="23">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <onEnter language="1" script="/*&#xd;&#xa;import workflow.types.*;&#xd;&#xa;&#xd;&#xa;if (xpath:{/workflow/inputs/shareId} != null &amp;&amp; xpath:{/workflow/inputs/shareType}.equalsIgnoreCase(&quot;Private share&quot;) || xpath:{/workflow/inputs/shareId} == null || xpath:{/workflow/inputs/shareId}.equals(&quot;&quot;)) {&#xd;&#xa;    NameValue h1 = new NameValue();&#xd;&#xa;    h1.setName(&quot;Authtoken&quot;);&#xd;&#xa;    h1.setValue(xpath:{/workflow/variables/authToken});&#xd;&#xa;    activity.request.getHeaders().add(h1);&#xd;&#xa;}&#xd;&#xa;*/"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1437067382413"
+        description="activity to execute code snippets in the selected language"
+        displayName="set paths" height="23" interactive="0" jobMode="0"
+        maxRestarts="0" name="Script"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=Script"
+        uniqueName="Script_2" waitSetting="0" width="91" x="167" y="196">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;int path = 0;   // 0, upload full file; 1, upload chunk files&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;try {&amp;#xD;&amp;#xA;    File file = new File(xpath:{/workflow/inputs/localFilePath});&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;    if (file.exists()) {&amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;contentStoreFileObject&amp;quot;, file);&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting contentStoreFileObject: [&amp;quot; + workflow.getVariable(&amp;quot;contentStoreFileObject&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        String fileName = file.getName();&amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;contentStoreFileName&amp;quot;, commvault.cte.util.Base64.encode(fileName)); &amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting Base64 contentStoreFileName: [&amp;quot; + workflow.getVariable(&amp;quot;contentStoreFileName&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        double bytes = file.length();&amp;#xD;&amp;#xA;        double kilobytes = (bytes / 1024);&amp;#xD;&amp;#xA;        double megabytes = (kilobytes / 1024);&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;contentStoreFileSize&amp;quot;, file.length());&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting contentStoreFileSize: [&amp;quot; + workflow.getVariable(&amp;quot;contentStoreFileSize&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        String folder = xpath:{/workflow/inputs/contentStoreFolderPath};&amp;#xD;&amp;#xA;        String requestURL = &amp;quot;&amp;quot;;&amp;#xD;&amp;#xA;        if (xpath:{/workflow/inputs/shareId} != null &amp;amp;&amp;amp; !xpath:{/workflow/inputs/shareId}.equals(&amp;quot;&amp;quot;)) { //when upload file in share, folder path is relative to share path&amp;#xD;&amp;#xA;            //folder = &amp;quot;\\&amp;quot; + xpath:{/workflow/inputs/contentStoreFolderPath};&amp;#xD;&amp;#xA;            if (xpath:{/workflow/inputs/shareType} != null &amp;amp;&amp;amp; !xpath:{/workflow/inputs/shareType}.equals(&amp;quot;&amp;quot;) &amp;amp;&amp;amp; xpath:{/workflow/inputs/shareType}.equalsIgnoreCase(&amp;quot;Private share&amp;quot;)) {&amp;#xD;&amp;#xA;                requestURL = xpath:{/workflow/configuration/webServiceURL} + &amp;quot;/contentstore/share/&amp;quot; + xpath:{/workflow/inputs/shareId} + &amp;quot;/file/action/upload&amp;quot;;&amp;#xD;&amp;#xA;                &amp;#xD;&amp;#xA;            } else {    //default to public share if no value&amp;#xD;&amp;#xA;                requestURL = xpath:{/workflow/configuration/webServiceURL} + &amp;quot;/contentstore/publicshare/&amp;quot; + xpath:{/workflow/inputs/shareId} + &amp;quot;/file/action/upload&amp;quot;;       &amp;#xD;&amp;#xA;                //workflow.setVariable(&amp;quot;authToken&amp;quot;, &amp;quot;&amp;quot;);&amp;#xD;&amp;#xA;                //logger.info(&amp;quot;Empty authToken: [&amp;quot; + workflow.getVariable(&amp;quot;authToken&amp;quot;) + &amp;quot;] as it's not nedded in public share&amp;quot;);&amp;#xD;&amp;#xA;            }&amp;#xD;&amp;#xA;            &amp;#xD;&amp;#xA;        } else {    //upload file without share&amp;#xD;&amp;#xA;            requestURL = xpath:{/workflow/configuration/webServiceURL} + &amp;quot;/contentstore/file/action/upload&amp;quot;;&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;requestURL&amp;quot;, requestURL);&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting requestURL: [&amp;quot; + workflow.getVariable(&amp;quot;requestURL&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting folder path: [&amp;quot; + folder + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        if (megabytes &amp;gt; xpath:{/workflow/configuration/chunkSizeInMB}) {    //file size greater than 4M, chunk it. Default setting for regressions.&amp;#xD;&amp;#xA;            path = 1;&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Default to chunk file as file size is greater than [&amp;quot; + xpath:{/workflow/configuration/chunkSizeInMB} + &amp;quot;] MB&amp;quot;);&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        if (xpath:{/workflow/inputs/verifyIntegrity} == true) {&amp;#xD;&amp;#xA;            if (xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&amp;quot;1&amp;quot;) || xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&amp;quot;2&amp;quot;) || xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&amp;quot;4&amp;quot;)) {&amp;#xD;&amp;#xA;                logger.info(&amp;quot;Setting test case: [&amp;quot; + xpath:{/workflow/inputs/verifyIntegrityMode} + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;                path = 0;      &amp;#xD;&amp;#xA;            }&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;contentStoreParentPath&amp;quot;, commvault.cte.util.Base64.encode(folder));&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting Base64 contentStoreParentPath: [&amp;quot; + workflow.getVariable(&amp;quot;contentStoreParentPath&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;       &amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;contentStoreFileModTime&amp;quot;, file.lastModified()/1000);&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting contentStoreFileModTime: [&amp;quot; + workflow.getVariable(&amp;quot;contentStoreFileModTime&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;} catch (Exception e) {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;completionStatus&amp;quot;, &amp;quot;FAILED&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting completionStatus: [&amp;quot; + workflow.getVariable(&amp;quot;completionStatus&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;errorMessage&amp;quot;, &amp;quot;Exception: [&amp;quot; + e + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting errorMessage: [&amp;quot; + workflow.getVariable(&amp;quot;errorMessage&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;return path;&quot; />&lt;/inputs>"/>
+        <transition activity="Script_6" commented="0"
+            displayName="FullFileHash" originalStyle="" points=""
+            sourceX="212" sourceY="207" status="0" style="defaultEdge"
+            targetX="339" targetY="195" transitionIndex="0" x="1" y="-28">
+            <condition language="1" script="xpath:{/workflow/Script_2/output} == 0;"/>
+        </transition>
+        <transition activity="HttpClient_3" commented="0"
+            displayName="ChunkFiles" originalStyle="" points=""
+            sourceX="212" sourceY="207" status="0" style="defaultEdge"
+            targetX="207" targetY="272" transitionIndex="0" x="1" y="-28">
+            <condition language="1" script="xpath:{/workflow/Script_2/output} == 1;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1452527934060" description="performs http operations"
+        displayName="login restapi" height="22" interactive="0"
+        jobMode="0" maxRestarts="0" name="HttpClient"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=HttpClient"
+        uniqueName="HttpClient_1" waitSetting="0" width="106" x="159" y="100">
+        <onExit language="1" script="&#xd;&#xa;"/>
+        <inputs val="&lt;inputs>&lt;request>&lt;url>xpath:{/workflow/configuration/webServiceURL}/login&lt;/url>&lt;method>POST&lt;/method>&lt;postType>Raw&lt;/postType>&lt;postContent>&amp;lt;DM2ContentIndexing_CheckCredentialReq mode=&quot;Webconsole&quot; username=&quot;xpath:{/workflow/variables/loginUserName}&quot; password=&quot;xpath:{/workflow/variables/loginUserPassword}&quot; /&amp;gt;&lt;/postContent>&lt;postContentType>charset=UTF-8&lt;/postContentType>&lt;headers>&lt;name>Accept&lt;/name>&lt;value>application/xml&lt;/value>&lt;/headers>&lt;headers>&lt;name>Host&lt;/name>&lt;value>xpath:{/workflow/system/workflowEngine/clientName}&lt;/value>&lt;/headers>&lt;/request>&lt;/inputs>"/>
+        <transition activity="XPathQuery_1" commented="0"
+            originalStyle="" points="" sourceX="211" sourceY="115"
+            status="0" style="defaultEdge" targetX="217" targetY="160"
+            transitionIndex="0" x="1" y="-28"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1452528115076"
+        description="retrieves a list of values from xml"
+        displayName="XPathQuery" height="22" interactive="0" jobMode="0"
+        maxRestarts="0" name="XPathQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=XPathQuery"
+        uniqueName="XPathQuery_1" waitSetting="0" width="100" x="164" y="147">
+        <onExit language="1" script="workflow.setVariable(&quot;authToken&quot;, xpath:{/workflow/XPathQuery_1/result});&#xd;&#xa;logger.info(&quot;Setting authToken: [&quot; + workflow.getVariable(&quot;authToken&quot;) + &quot;]&quot;);"/>
+        <inputs val="&lt;inputs>&lt;xml class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/HttpClient_1/output}&lt;/xml>&lt;xpath class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>DM2ContentIndexing_CheckCredentialResp/@token&lt;/xpath>&lt;outputType class=&quot;workflow.types.SimpleType&quot; _list_=&quot;false&quot;>String&lt;/outputType>&lt;outputAsList class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>false&lt;/outputAsList>&lt;/inputs>"/>
+        <transition activity="Script_2" commented="0" originalStyle=""
+            points="" sourceX="211" sourceY="159" status="0"
+            style="defaultEdge" targetX="214" targetY="214"
+            transitionIndex="0" x="1" y="-28">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1437654574810"
+        description="retrieves a list of values from xml"
+        displayName="Get GUID" height="19" interactive="0" jobMode="0"
+        maxRestarts="0" name="XPathQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=XPathQuery"
+        uniqueName="XPathQuery_2" waitSetting="0" width="110" x="335" y="101">
+        <onExit language="1" script="if (xpath:{/workflow/XPathQuery_2/result} != null &amp;&amp; !xpath:{/workflow/XPathQuery_2/result}.equals(&quot;&quot;)){&#xd;&#xa;    workflow.setVariable(&quot;contentStoreFileGUID&quot;, xpath:{/workflow/XPathQuery_2/result});&#xd;&#xa;    logger.info(&quot;Setting contentStoreFileGUID: [&quot; + workflow.getVariable(&quot;contentStoreFileGUID&quot;) + &quot;]&quot;);    &#xd;&#xa;    workflow.setVariable(&quot;errorCode&quot;, 200);&#xd;&#xa;    logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);&#xd;&#xa;&#xd;&#xa;} else {&#xd;&#xa;    logger.info(&quot;ERROR contentStoreFileGUID is empty!&quot;);&#xd;&#xa;    workflow.setVariable(&quot;errorCode&quot;, 403);&#xd;&#xa;    logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);&#xd;&#xa;    workflow.setVariable(&quot;completionStatus&quot;, &quot;FAILED&quot;);&#xd;&#xa;    logger.info(&quot;Setting completionStatus: [&quot; + workflow.getVariable(&quot;completionStatus&quot;) + &quot;]&quot;);&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;workflow.setVariable(&quot;errorMessage&quot;, xpath:{/workflow/HttpClient_2/output});&#xd;&#xa;logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);   "/>
+        <inputs val="&lt;inputs>&lt;xml class=&quot;java.lang.String&quot;>xpath:{/workflow/HttpClient_2/output}&lt;/xml>&lt;xpath class=&quot;java.lang.String&quot;>//@fileGUID&lt;/xpath>&lt;outputType class=&quot;workflow.types.SimpleType&quot;>String&lt;/outputType>&lt;outputAsList class=&quot;java.lang.Boolean&quot;>true&lt;/outputAsList>&lt;/inputs>"/>
+        <transition activity="GenericResponse_1" commented="0"
+            originalStyle="" points="" sourceX="397" sourceY="118"
+            status="0" style="defaultEdge" targetX="399" targetY="63"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/inputs/verifyIntegrity} == false;"/>
+        </transition>
+        <transition activity="XPathQuery_7" commented="0"
+            originalStyle="" points="" sourceX="390" sourceY="110"
+            status="0" style="defaultEdge" targetX="551" targetY="104"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/inputs/verifyIntegrity} == true;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1539894249118"
+        description="iterates a group of activities over a list of values"
+        displayName="ForEach" height="259" interactive="0" jobMode="0"
+        name="ForEach" namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="swimlane"
+        uniqueName="ForEach_1" waitSetting="0" width="444" x="132" y="404">
+        <inputs val="&lt;inputs>&lt;name class=&quot;java.lang.String&quot;>filePartPathList&lt;/name>&lt;values class=&quot;java.lang.Object&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/filePartPathList}&lt;/values>&lt;numberOfParallelExecutions class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>1&lt;/numberOfParallelExecutions>&lt;continueOnFailure class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>false&lt;/continueOnFailure>&lt;/inputs>"/>
+        <superProcess>
+            <Start commented="0" continueOnFailure="0"
+                created="1539894249118" description=""
+                displayName="Start" height="23" interactive="0"
+                jobMode="0" name="Start" originalStyle=""
+                skipAttempt="0"
+                style="label;fillColor=#FFFF33;gradientColor=#FFFF00"
+                uniqueName="Start_2" waitSetting="0" width="58" x="37" y="32">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="Script_4" commented="0"
+                    originalStyle="" points="" sourceX="47" sourceY="41"
+                    status="0" style="defaultEdge" targetX="69"
+                    targetY="82" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Start>
+            <Activity commented="0" continueOnFailure="1"
+                created="1539980498757"
+                description="performs http operations"
+                displayName="Upload Chunk File" height="22"
+                interactive="0" jobMode="0" maxRestarts="0"
+                name="HttpClient"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=HttpClient" uniqueName="HttpClient_4"
+                waitSetting="0" width="130" x="133" y="73">
+                <onExit language="1" script="workflow.setVariable(&quot;fileChunkOutput&quot;, xpath:{/workflow/HttpClient_4/output});&#xd;&#xa;logger.info(&quot;Setting fileChunkOutput: [&quot; + workflow.getVariable(&quot;fileChunkOutput&quot;) + &quot;]&quot;);"/>
+                <inputs val="&lt;inputs>&lt;request>&lt;url>xpath:{/workflow/variables/requestURL}&lt;/url>&lt;method>POST&lt;/method>&lt;postType>Raw&lt;/postType>&lt;postContent>xpath:{/workflow/variables/contentStoreFileChunk}&lt;/postContent>&lt;postContentType>charset=UTF-8&lt;/postContentType>&lt;parameters>&lt;name>uploadType&lt;/name>&lt;value>chunkedFile&lt;/value>&lt;/parameters>&lt;parameters>&lt;name>requestId&lt;/name>&lt;value>xpath:{/workflow/variables/contentStoreRequestId}&lt;/value>&lt;/parameters>&lt;headers>&lt;name>Authtoken&lt;/name>&lt;value>xpath:{/workflow/variables/authToken}&lt;/value>&lt;/headers>&lt;headers>&lt;name>Accept&lt;/name>&lt;value>application/xml&lt;/value>&lt;/headers>&lt;headers>&lt;name>Host&lt;/name>&lt;value>xpath:{/workflow/system/workflowEngine/clientName}&lt;/value>&lt;/headers>&lt;headers>&lt;name>FileEOF&lt;/name>&lt;value>xpath:{/workflow/variables/EOFflag}&lt;/value>&lt;/headers>&lt;/request>&lt;/inputs>"/>
+                <transition activity="Script_7" commented="0"
+                    originalStyle="" points="" sourceX="198"
+                    sourceY="84" status="0" style="defaultEdge"
+                    targetX="191" targetY="125" transitionIndex="0"
+                    x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+                <onEnter language="1" script="if (xpath:{/workflow/inputs/verifyIntegrity} == true) {    &#xd;&#xa;    if (xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&quot;4&quot;) || xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&quot;5&quot;)) { &#xd;&#xa;        import workflow.types.*;&#xd;&#xa;        NameValue h1 = new NameValue();&#xd;&#xa;        &#xd;&#xa;        h1.setName(&quot;ChunkHash&quot;);&#xd;&#xa;        h1.setValue(workflow.getVariable(&quot;chunkHash&quot;));&#xd;&#xa;        logger.info(&quot;Setting header with Name: [ChunkHash] Value: [&quot; + workflow.getVariable(&quot;chunkHash&quot;) + &quot;]&quot;);&#xd;&#xa;        activity.request.getHeaders().add(h1);&#xd;&#xa;    }&#xd;&#xa;    &#xd;&#xa;    if (xpath:{/workflow/variables/EOFflag} == 1) {    //EOF headers need to be distinguished   &#xd;&#xa;        import workflow.types.*;&#xd;&#xa;        NameValue h2 = new NameValue();&#xd;&#xa;        &#xd;&#xa;        logger.info(&quot;Setting test case: [&quot; + xpath:{/workflow/inputs/verifyIntegrityMode} + &quot;]&quot;);&#xd;&#xa;        if (xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&quot;2&quot;)) { //no chunkHash, distinguished from EOF upload, pass FullFileHash in EOF.&#xd;&#xa;            h2.setName(&quot;FullFileHash&quot;);&#xd;&#xa;            h2.setValue(workflow.getVariable(&quot;FullFileHash&quot;));&#xd;&#xa;            logger.info(&quot;Setting header with Name: [FullFileHash] Value: [&quot; + workflow.getVariable(&quot;FullFileHash&quot;) + &quot;]&quot;);&#xd;&#xa;            &#xd;&#xa;        } else if (xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&quot;3&quot;)) {  //no chunkHash, distinguished from EOF upload, pass BlockLevelFileHash in EOF.&#xd;&#xa;            h2.setName(&quot;BlockLevelFileHash&quot;);&#xd;&#xa;            h2.setValue(workflow.getVariable(&quot;BlockLevelFileHash&quot;));&#xd;&#xa;            logger.info(&quot;Setting header with Name: [BlockLevelFileHash] Value: [&quot; + workflow.getVariable(&quot;BlockLevelFileHash&quot;) + &quot;]&quot;);&#xd;&#xa;            &#xd;&#xa;        } else if (xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&quot;4&quot;)) {  //chunkHash, distinguished from EOF upload, pass FullFileHash in EOF.&#xd;&#xa;            h2.setName(&quot;FullFileHash&quot;);&#xd;&#xa;            h2.setValue(workflow.getVariable(&quot;FullFileHash&quot;));&#xd;&#xa;            logger.info(&quot;Setting header with Name: [FullFileHash] Value: [&quot; + workflow.getVariable(&quot;FullFileHash&quot;) + &quot;]&quot;);&#xd;&#xa;                            &#xd;&#xa;        } else if (xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&quot;5&quot;)) {  //chunkHash, distinguished from EOF upload, pass BlockLevelFileHash in EOF.&#xd;&#xa;            h2.setName(&quot;BlockLevelFileHash&quot;);&#xd;&#xa;            h2.setValue(workflow.getVariable(&quot;BlockLevelFileHash&quot;));&#xd;&#xa;            logger.info(&quot;Setting header with Name: [BlockLevelFileHash] Value: [&quot; + workflow.getVariable(&quot;BlockLevelFileHash&quot;) + &quot;]&quot;);        &#xd;&#xa;        }&#xd;&#xa;        activity.request.getHeaders().add(h2);&#xd;&#xa;    } &#xd;&#xa;}"/>
+            </Activity>
+            <Activity commented="0" continueOnFailure="1"
+                created="1539897639735"
+                description="activity to execute code snippets in the selected language"
+                displayName="EOF?" height="23" interactive="0"
+                jobMode="0" maxRestarts="0" name="Script"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.ScriptActivity"
+                uniqueName="Script_4" waitSetting="0" width="71" x="32" y="73">
+                <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;//check if current file is the End Of File&amp;#xD;&amp;#xA;if (xpath:{/workflow/ForEach_1/filePartPathList}.equals(xpath:{/workflow/variables/EOFpath})) {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;EOFflag&amp;quot;, 1);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting EOFflag: [&amp;quot; + workflow.getVariable(&amp;quot;EOFflag&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;import java.io.File;&amp;#xD;&amp;#xA;import java.nio.file.Files;&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;File file = new File(xpath:{/workflow/ForEach_1/filePartPathList});&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;contentStoreFileChunk&amp;quot;, file);&amp;#xD;&amp;#xA;logger.info(&amp;quot;Setting contentStoreFileChunk Object: [&amp;quot; + workflow.getVariable(&amp;quot;contentStoreFileChunk&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;try {&amp;#xD;&amp;#xA;    /***** Corrupt a chunk file *****/&amp;#xD;&amp;#xA;    if (xpath:{/workflow/inputs/corruptChunk} == true) {&amp;#xD;&amp;#xA;        import java.util.Random;  &amp;#xD;&amp;#xA;        Random random = new Random();&amp;#xD;&amp;#xA;        boolean corruptFlag = false;&amp;#xD;&amp;#xA;        //only random corruption on the first try&amp;#xD;&amp;#xA;        if (xpath:{/workflow/variables/counter} &amp;lt; 1) {&amp;#xD;&amp;#xA;            corruptFlag = random.nextBoolean();    &amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        //make sure at least one file (EOF) will be corrupted&amp;#xD;&amp;#xA;        if (workflow.getVariable(&amp;quot;EOFflag&amp;quot;) == 1 &amp;amp;&amp;amp; xpath:{/workflow/variables/counter} &amp;lt; 1) {&amp;#xD;&amp;#xA;            corruptFlag = true;&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting randomed corrupt file Flag: [&amp;quot; + corruptFlag + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        if (corruptFlag == true) {&amp;#xD;&amp;#xA;            import java.security.MessageDigest;&amp;#xD;&amp;#xA;            MessageDigest md = MessageDigest.getInstance(&amp;quot;SHA-256&amp;quot;);&amp;#xD;&amp;#xA;            byte[] dataBytes = new byte[1024];&amp;#xD;&amp;#xA;            &amp;#xD;&amp;#xA;            File cFile = new File(xpath:{/workflow/ForEach_1/filePartPathList});    //new a corrupt file&amp;#xD;&amp;#xA;            String junk = &amp;quot;insert this looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong crap to corrupt file&amp;quot;;&amp;#xD;&amp;#xA;            logger.info(&amp;quot;setting junk bytes length:&amp;quot; + junk.getBytes().length());&amp;#xD;&amp;#xA;            &amp;#xD;&amp;#xA;            Random rand = new Random();&amp;#xD;&amp;#xA;            Long length = file.length();    //get original file length, for chunking corrupt file size purpose&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Setting original file size: [&amp;quot; + length + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;            int pointer = rand.nextInt((int)file.length()) - junk.length();     //random a pointer to point where to insert junk into file&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Setting random pointer: [&amp;quot; + pointer + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;            &amp;#xD;&amp;#xA;            RandomAccessFile raf = new RandomAccessFile(cFile, &amp;quot;rw&amp;quot;);     //new object to read and write the file to be corrupted           &amp;#xD;&amp;#xA;            raf.seek(pointer);           //set the pointer&amp;#xD;&amp;#xA;            raf.write(junk.getBytes()); //write junk into file to pointed position&amp;#xD;&amp;#xA;            raf.setLength(length);   //set file length to its original length&amp;#xD;&amp;#xA;            raf.close();&amp;#xD;&amp;#xA;            workflow.setVariable(&amp;quot;contentStoreFileObject&amp;quot;, cFile);&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Setting corrupted contentStoreFileObject: [&amp;quot; + workflow.getVariable(&amp;quot;contentStoreFileObject&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Setting corrupted file size: [&amp;quot; + cFile.length() + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;            //check corrupted file's hash&amp;#xD;&amp;#xA;            FileInputStream cfis = new FileInputStream(cFile);      &amp;#xD;&amp;#xA;            bytesAmount = 0; &amp;#xD;&amp;#xA;            while ((bytesAmount = cfis.read(dataBytes)) &amp;gt; 0) {  //dataBytes was defined earlier as byte[1024]&amp;#xD;&amp;#xA;                md.update(dataBytes, 0, bytesAmount);   //md was defined earlier as sha256&amp;#xD;&amp;#xA;            }&amp;#xD;&amp;#xA;            hashedBytes = md.digest();&amp;#xD;&amp;#xA;            cfis.close();&amp;#xD;&amp;#xA;            sb = new StringBuffer();&amp;#xD;&amp;#xA;            for (int i = 0; i &amp;lt; hashedBytes.length; i++) {&amp;#xD;&amp;#xA;                sb.append(Integer.toString((hashedBytes[i] &amp;amp; 0xff) + 0x100, 16).substring(1));&amp;#xD;&amp;#xA;            }&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Setting corrupted ChunkHash: [&amp;quot; + sb.toString() + &amp;quot;]&amp;quot;);   //proof that corrupt file is using different hash with original one        &amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;    /***** Check different test case and set headers correspondingly *****/&amp;#xD;&amp;#xA;    if (xpath:{/workflow/inputs/verifyIntegrity} == true) {&amp;#xD;&amp;#xA;        if (xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&amp;quot;4&amp;quot;) || xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&amp;quot;5&amp;quot;)) {     //chunkHash required&amp;#xD;&amp;#xA;            //get corresponding chunk hash of current chunk file path&amp;#xD;&amp;#xA;            for (int i = 0; i &amp;lt; xpath:{/workflow/variables/filePartPathList}.size(); i++) {&amp;#xD;&amp;#xA;                if (xpath:{/workflow/variables/filePartPathList}.get(i).equals(xpath:{/workflow/ForEach_1/filePartPathList})) {&amp;#xD;&amp;#xA;                    workflow.setVariable(&amp;quot;chunkHash&amp;quot;, xpath:{/workflow/variables/chunkHashList}.get(i));&amp;#xD;&amp;#xA;                    logger.info(&amp;quot;Setting corresponding chunkHash: [&amp;quot; + workflow.getVariable(&amp;quot;chunkHash&amp;quot;) + &amp;quot;]&amp;quot;);      &amp;#xD;&amp;#xA;                    break;  &amp;#xD;&amp;#xA;                }&amp;#xD;&amp;#xA;            }&amp;#xD;&amp;#xA;                    &amp;#xD;&amp;#xA;            /***** randomly corrupt a chunk hash *****/&amp;#xD;&amp;#xA;            if (xpath:{/workflow/inputs/corruptChunkHash} == true) {     &amp;#xD;&amp;#xA;                import java.util.Random;  &amp;#xD;&amp;#xA;                Random random = new Random();&amp;#xD;&amp;#xA;                boolean corruptHashFlag = false;       &amp;#xD;&amp;#xA;                //only random corruption on the first try         &amp;#xD;&amp;#xA;                if (xpath:{/workflow/variables/counter} &amp;lt; 1) {&amp;#xD;&amp;#xA;                    corruptHashFlag = random.nextBoolean();    &amp;#xD;&amp;#xA;                }&amp;#xD;&amp;#xA;                // make sure at least one file will be corrupted&amp;#xD;&amp;#xA;                if (workflow.getVariable(&amp;quot;EOFflag&amp;quot;) == 1 &amp;amp;&amp;amp; xpath:{/workflow/variables/counter} &amp;lt; 1) { &amp;#xD;&amp;#xA;                    corruptHashFlag = true;&amp;#xD;&amp;#xA;                }&amp;#xD;&amp;#xA;                &amp;#xD;&amp;#xA;                logger.info(&amp;quot;Setting randomed corruptHashFlag: [&amp;quot; + corruptHashFlag + &amp;quot;]&amp;quot;);            &amp;#xD;&amp;#xA;                if (corruptHashFlag == true) {&amp;#xD;&amp;#xA;                    String chunkHash = workflow.getVariable(&amp;quot;chunkHash&amp;quot;);&amp;#xD;&amp;#xA;                    char[] chars = chunkHash.toCharArray();&amp;#xD;&amp;#xA;                    &amp;#xD;&amp;#xA;                    // reverse characters of hash from beginning to the end&amp;#xD;&amp;#xA;                    int size = (int)chunkHash.length() / 2;&amp;#xD;&amp;#xA;                    char temp;&amp;#xD;&amp;#xA;                    for (int i = 0; i &amp;lt; size; i++) {&amp;#xD;&amp;#xA;                        temp = chars[i];&amp;#xD;&amp;#xA;                        chars[i] = chars[chunkHash.length() - 1 - i];&amp;#xD;&amp;#xA;                        chars[chunkHash.length() - 1 - i] = temp;&amp;#xD;&amp;#xA;                    }&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;                    chunkHash = String.valueOf(chars);   &amp;#xD;&amp;#xA;                    workflow.setVariable(&amp;quot;chunkHash&amp;quot;, chunkHash);&amp;#xD;&amp;#xA;                    logger.info(&amp;quot;Corrupt chunkHash by reversing characters from start to end: [&amp;quot; + workflow.getVariable(&amp;quot;chunkHash&amp;quot;) + &amp;quot;]&amp;quot;);            &amp;#xD;&amp;#xA;                }&amp;#xD;&amp;#xA;            }           &amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;} catch (Exception e) {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;completionStatus&amp;quot;, &amp;quot;FAILED&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting completionStatus: [&amp;quot; + workflow.getVariable(&amp;quot;completionStatus&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;errorMessage&amp;quot;, &amp;quot;Exception: [&amp;quot; + e + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting errorMessage: [&amp;quot; + workflow.getVariable(&amp;quot;errorMessage&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&quot; />&lt;/inputs>"/>
+                <transition activity="HttpClient_4" commented="0"
+                    originalStyle="" points="" sourceX="67" sourceY="84"
+                    status="0" style="defaultEdge" targetX="69"
+                    targetY="123" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1541181560774"
+                description="if/else based decision"
+                displayName="retry?" height="27" interactive="0"
+                jobMode="0" name="Decision"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="rhombus;fontStyle=1" uniqueName="Decision_1"
+                waitSetting="0" width="100" x="143" y="173">
+                <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>if (xpath:{/workflow/variables/chunkUploaded} == true || xpath:{/workflow/variables/counter} &amp;gt;= 5 || xpath:{/workflow/inputs/retryForFailure} == false) {&amp;#xD;&#xd;&#xa;    return true;&amp;#xD;&#xd;&#xa;} else {&amp;#xD;&#xd;&#xa;    int counter = xpath:{/workflow/variables/counter} + 1;&amp;#xD;&#xd;&#xa;    workflow.setVariable(&quot;counter&quot;, counter);&amp;#xD;&#xd;&#xa;    logger.info(&quot;Sleep 30 seconds and retry the: [&quot; + workflow.getVariable(&quot;counter&quot;) + &quot;] times&quot;);&amp;#xD;&#xd;&#xa;    Thread.sleep(30000);&amp;#xD;&#xd;&#xa;    return false;&amp;#xD;&#xd;&#xa;}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+                <transition activity="Script_5" commented="0"
+                    displayName="yes" originalStyle="" points=""
+                    sourceX="193" sourceY="180" status="0"
+                    style="defaultEdge" targetX="194" targetY="222"
+                    transitionIndex="0" value="true" x="2" y="55">
+                    <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+                <transition activity="Script_4" commented="0"
+                    displayName="Retry" offsetX="-7" offsetY="45"
+                    originalStyle="" points="68.0,131.0" sourceX="191"
+                    sourceY="131" status="0" style="defaultEdge"
+                    targetX="45" targetY="90" transitionIndex="0"
+                    value="false" x="0" y="0">
+                    <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="1"
+                created="1540219693610"
+                description="activity to execute code snippets in the selected language"
+                displayName="Delete Chunk" height="23" interactive="0"
+                jobMode="0" maxRestarts="0" name="Script"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.ScriptActivity"
+                uniqueName="Script_5" waitSetting="0" width="105"
+                x="142" y="224">
+                <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;try {&amp;#xD;&amp;#xA;    File file = new File(xpath:{/workflow/ForEach_1/filePartPathList});&amp;#xD;&amp;#xA;    if (file.delete()) {&amp;#xD;&amp;#xA;        logger.info(&amp;quot;File chunk: [&amp;quot; + xpath:{/workflow/ForEach_1/filePartPathList} + &amp;quot;] is deleted&amp;quot;);&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;    } else {&amp;#xD;&amp;#xA;        logger.info(&amp;quot;File chunk: [&amp;quot; + xpath:{/workflow/ForEach_1/filePartPathList} + &amp;quot;] doesn't exist&amp;quot;);&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;} catch (Exception e) {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;completionStatus&amp;quot;, &amp;quot;FAILED&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting completionStatus: [&amp;quot; + workflow.getVariable(&amp;quot;completionStatus&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;errorMessage&amp;quot;, &amp;quot;Exception: [&amp;quot; + e + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting errorMessage: [&amp;quot; + workflow.getVariable(&amp;quot;errorMessage&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;counter&amp;quot;, 0);&amp;#xD;&amp;#xA;logger.info(&amp;quot;Resetting counter: [&amp;quot; + workflow.getVariable(&amp;quot;counter&amp;quot;) + &amp;quot;]&amp;quot;);&quot; />&lt;/inputs>"/>
+            </Activity>
+            <Activity commented="0" continueOnFailure="1"
+                created="1541521430612"
+                description="retrieves a list of values from xml"
+                displayName="chunkIntegrityVerified " height="24"
+                interactive="0" jobMode="0" maxRestarts="0"
+                name="XPathQuery"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=XPathQuery" uniqueName="XPathQuery_5"
+                waitSetting="0" width="158" x="270" y="122">
+                <onExit language="1" script="logger.info(&quot;Setting chunkIntegrityVerified: [&quot; + xpath:{/workflow/XPathQuery_5/result} + &quot;]&quot;);&#xd;&#xa;if (xpath:{/workflow/XPathQuery_5/result} != null &amp;&amp; !xpath:{/workflow/XPathQuery_5/result}.equals(&quot;&quot;)){&#xd;&#xa;    if (xpath:{/workflow/XPathQuery_5/result}.equals(&quot;1&quot;)) {&#xd;&#xa;        workflow.setVariable(&quot;chunkUploaded&quot;, true);&#xd;&#xa;        logger.info(&quot;Setting chunkUploaded: [&quot; + workflow.getVariable(&quot;chunkUploaded&quot;) + &quot;]&quot;);&#xd;&#xa;    } else {&#xd;&#xa;        workflow.setVariable(&quot;chunkUploaded&quot;, false);&#xd;&#xa;        logger.info(&quot;Setting chunkUploaded: [&quot; + workflow.getVariable(&quot;chunkUploaded&quot;) + &quot;] due to chunkIntegrityVerified: [&quot; + xpath:{/workflow/XPathQuery_5/result} + &quot;]&quot;);&#xd;&#xa;    }&#xd;&#xa;&#xd;&#xa;} else {&#xd;&#xa;    workflow.setVariable(&quot;chunkUploaded&quot;, false);&#xd;&#xa;    logger.info(&quot;ERROR chunkIntegrityVerified is empty! Setting chunkUploaded: [&quot; + workflow.getVariable(&quot;chunkUploaded&quot;) + &quot;]&quot;);&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;if (workflow.getVariable(&quot;chunkUploaded&quot;) == false) {&#xd;&#xa;    workflow.setVariable(&quot;errorCode&quot;, 403);&#xd;&#xa;    logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);&#xd;&#xa;    workflow.setVariable(&quot;errorMessage&quot;, xpath:{/workflow/variables/fileChunkOutput});&#xd;&#xa;    logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);    &#xd;&#xa;}"/>
+                <inputs val="&lt;inputs>&lt;xml class=&quot;java.lang.String&quot;>xpath:{/workflow/variables/fileChunkOutput}&lt;/xml>&lt;xpath class=&quot;java.lang.String&quot;>//@chunkIntegrityVerified&lt;/xpath>&lt;outputType class=&quot;workflow.types.SimpleType&quot;>String&lt;/outputType>&lt;outputAsList class=&quot;java.lang.Boolean&quot;>false&lt;/outputAsList>&lt;/inputs>"/>
+                <transition activity="Decision_1" commented="0"
+                    originalStyle="" points="346.0,185.0" sourceX="275"
+                    sourceY="134" status="0" style="defaultEdge"
+                    targetX="230" targetY="196" transitionIndex="0"
+                    x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1541521598082"
+                description="activity to execute code snippets in the selected language"
+                displayName="Routing" height="23" interactive="0"
+                jobMode="0" name="Script"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.ScriptActivity"
+                uniqueName="Script_7" waitSetting="0" width="92" x="147" y="123">
+                <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;if (xpath:{/workflow/HttpClient_4/statusCode} == 200) {&amp;#xD;&amp;#xA;    if (xpath:{/workflow/inputs/verifyIntegrity} == true &amp;amp;&amp;amp; xpath:{/workflow/variables/EOFflag} == 0 &amp;amp;&amp;amp;     // if it's EOF, no chunkHash passed, would be full file hash instead.&amp;#xD;&amp;#xA;        (xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&amp;quot;4&amp;quot;) || xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&amp;quot;5&amp;quot;))) { &amp;#xD;&amp;#xA;        //test case 4 &amp;amp; 5 requires ChunkHash. Need to check chunkIntegrityVerified output.&amp;#xD;&amp;#xA;        return 1;&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;    } else {&amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;chunkUploaded&amp;quot;, true);&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting chunkUploaded: [&amp;quot; + workflow.getVariable(&amp;quot;chunkUploaded&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        return 0;&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;} else {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;chunkUploaded&amp;quot;, false);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting chunkUploaded: [&amp;quot; + workflow.getVariable(&amp;quot;chunkUploaded&amp;quot;) + &amp;quot;] due to statusCode: [&amp;quot; + xpath:{/workflow/HttpClient_4/statusCode} + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;errorCode&amp;quot;, 403);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting errorCode: [&amp;quot; + workflow.getVariable(&amp;quot;errorCode&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    return 0;&amp;#xD;&amp;#xA;}&quot; />&lt;/inputs>"/>
+                <transition activity="Decision_1" commented="0"
+                    originalStyle="" points="" sourceX="190"
+                    sourceY="132" status="0" style="defaultEdge"
+                    targetX="192" targetY="186" transitionIndex="0"
+                    x="0" y="0">
+                    <condition language="1" script="xpath:{/workflow/Script_7/output} == 0;"/>
+                </transition>
+                <transition activity="XPathQuery_5" commented="0"
+                    originalStyle="" points="" sourceX="195"
+                    sourceY="133" status="0" style="defaultEdge"
+                    targetX="298" targetY="134" transitionIndex="0"
+                    x="0" y="0">
+                    <condition language="1" script="xpath:{/workflow/Script_7/output} == 1;"/>
+                </transition>
+            </Activity>
+        </superProcess>
+        <activitySchema>
+            <outputs name="outputs">
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    name="filePartPathList" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs>
+                <children className="java.lang.String"
+                    inputType="java.lang.String" name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children className="java.lang.Object"
+                    inputType="java.lang.Object" name="values" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
+                <children className="java.lang.Integer" defaultValue="1"
+                    inputType="java.lang.Integer"
+                    name="numberOfParallelExecutions" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                <children className="java.lang.Boolean"
+                    defaultValue="false" inputType="java.lang.Boolean"
+                    name="continueOnFailure" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            </inputs>
+        </activitySchema>
+        <transition activity="XPathQuery_4" commented="0"
+            originalStyle="" points="" sourceX="229" sourceY="524"
+            status="0" style="defaultEdge" targetX="475" targetY="532"
+            transitionIndex="0" x="0" y="57">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1539894387774"
+        description="activity to execute code snippets in the selected language"
+        displayName="split file" height="23" interactive="0" jobMode="0"
+        maxRestarts="0" name="Script"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=Script"
+        uniqueName="Script_3" waitSetting="0" width="91" x="164" y="346">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;import java.io.*; &amp;#xD;&amp;#xA;import java.lang.Object;&amp;#xD;&amp;#xA;import java.text.DecimalFormat;&amp;#xD;&amp;#xA;import java.security.MessageDigest;&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;File f = new File(xpath:{/workflow/inputs/localFilePath});&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;int partCounter = 1;    //part file name from 0001, 0002, 0003, ...&amp;#xD;&amp;#xA;DecimalFormat df = new DecimalFormat(&amp;quot;0000&amp;quot;);     //for formatting file part name&amp;#xD;&amp;#xA;int sizeOfFiles = 1024 * 1024 * xpath:{/workflow/configuration/chunkSizeInMB};  // 4MB&amp;#xD;&amp;#xA;byte[] buffer = new byte[sizeOfFiles];&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;String fileName = f.getName();&amp;#xD;&amp;#xA;logger.info(&amp;quot;fileName: [&amp;quot; + fileName + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;String filePath = f.getParent();&amp;#xD;&amp;#xA;logger.info(&amp;quot;filePath: [&amp;quot; + filePath + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;List filePartPathList = new ArrayList();   //store list of filePartPath so that they could be processed later in ForEach activity.&amp;#xD;&amp;#xA;List chunkHashList = new ArrayList();   //store list of chunkHashList so that they could be processed later in ForEach activity.&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;//Split the file into chunks and hash them&amp;#xD;&amp;#xA;try {&amp;#xD;&amp;#xA;    FileInputStream fis = new FileInputStream(f);&amp;#xD;&amp;#xA;    BufferedInputStream bis = new BufferedInputStream(fis);&amp;#xD;&amp;#xA;    MessageDigest md = MessageDigest.getInstance(&amp;quot;SHA-256&amp;quot;);&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;    int bytesAmount = 0;&amp;#xD;&amp;#xA;    StringBuffer chunkHash = new StringBuffer();&amp;#xD;&amp;#xA;    String tempHash;   //temp variable to store first chunk hash so that it could be replaced later for failure testing.&amp;#xD;&amp;#xA;    boolean firstChunkFlag = true;  //temp flag to indicate it's the first chunk, will be turn off once tempHash it's set.&amp;#xD;&amp;#xA;         &amp;#xD;&amp;#xA;    while ((bytesAmount = bis.read(buffer)) &amp;gt; 0) {&amp;#xD;&amp;#xA;        //write each chunk of data into separate file with different number in name&amp;#xD;&amp;#xA;        String partExt = df.format(partCounter++);&amp;#xD;&amp;#xA;        String filePartName = fileName + &amp;quot;_&amp;quot; + partExt;&amp;#xD;&amp;#xA;        File newFile = new File(f.getParent(), filePartName);&amp;#xD;&amp;#xA;        try {&amp;#xD;&amp;#xA;            FileOutputStream out = new FileOutputStream(newFile);&amp;#xD;&amp;#xA;            out.write(buffer, 0, bytesAmount);&amp;#xD;&amp;#xA;            out.close();&amp;#xD;&amp;#xA;            md.update(buffer, 0, bytesAmount);&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        }  catch (Exception e) {&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Error writing file&amp;quot;);&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        byte[] hashedBytes = md.digest();&amp;#xD;&amp;#xA;        StringBuffer sb = new StringBuffer();&amp;#xD;&amp;#xA;        for (int i = 0; i &amp;lt; hashedBytes.length; i++) {&amp;#xD;&amp;#xA;            sb.append(Integer.toString((hashedBytes[i] &amp;amp; 0xff) + 0x100, 16).substring(1));&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Hex format Hash Value: [&amp;quot; + sb.toString() + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        if (firstChunkFlag == true) {&amp;#xD;&amp;#xA;            tempHash = sb.toString();&amp;#xD;&amp;#xA;            firstChunkFlag = false;&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        chunkHash.append(sb);&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Appending chunkHash: [&amp;quot; + chunkHash.toString() + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;        String filePartPath = filePath + &amp;quot;\\&amp;quot; + filePartName;&amp;#xD;&amp;#xA;        filePartPathList.add(filePartPath);&amp;#xD;&amp;#xA;        chunkHashList.add(sb.toString());&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    bis.close();&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;    import org.apache.commons.codec.digest.DigestUtils;&amp;#xD;&amp;#xA;    String BlockLevelFileHash = DigestUtils.sha256Hex(chunkHash.toString()); &amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;BlockLevelFileHash&amp;quot;, BlockLevelFileHash);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting final BlockLevelFileHash: [&amp;quot; + workflow.getVariable(&amp;quot;BlockLevelFileHash&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;chunkHashList&amp;quot;, chunkHashList);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting chunkHashList: [&amp;quot; + workflow.getVariable(&amp;quot;chunkHashList&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;    /***** Corrupt BlockLevelFileHash *****/&amp;#xD;&amp;#xA;    if (xpath:{/workflow/inputs/corruptFileHash} == true) {    //move first chunk hash to the end&amp;#xD;&amp;#xA;        if (xpath:{/workflow/configuration/hackedFileHash} != null &amp;amp;&amp;amp; !xpath:{/workflow/configuration/hackedFileHash}.equals(&amp;quot;&amp;quot;)) {&amp;#xD;&amp;#xA;            workflow.setVariable(&amp;quot;BlockLevelFileHash&amp;quot;, xpath:{/workflow/configuration/hackedFileHash});&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Corrupt BlockLevelFileHash from configuration set: [&amp;quot; + workflow.getVariable(&amp;quot;BlockLevelFileHash&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;            &amp;#xD;&amp;#xA;        } else {&amp;#xD;&amp;#xA;            chunkHash.replace(0, tempHash.length(), &amp;quot;&amp;quot;);&amp;#xD;&amp;#xA;            chunkHash.append(tempHash);&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Setting corrupt chunk hash: [&amp;quot; + chunkHash.toString() + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;            String BlockLevelFileHash = DigestUtils.sha256Hex(chunkHash.toString()); &amp;#xD;&amp;#xA;            workflow.setVariable(&amp;quot;BlockLevelFileHash&amp;quot;, BlockLevelFileHash);&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Setting corrupted BlockLevelFileHash: [&amp;quot; + workflow.getVariable(&amp;quot;BlockLevelFileHash&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;} catch (Exception e) {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;completionStatus&amp;quot;, &amp;quot;FAILED&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting completionStatus: [&amp;quot; + workflow.getVariable(&amp;quot;completionStatus&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;errorMessage&amp;quot;, &amp;quot;Exception: [&amp;quot; + e + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting errorMessage: [&amp;quot; + workflow.getVariable(&amp;quot;errorMessage&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;filePartPathList&amp;quot;, filePartPathList);&amp;#xD;&amp;#xA;logger.info(&amp;quot;Setting filePartPathList: [&amp;quot; + workflow.getVariable(&amp;quot;filePartPathList&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;EOFpath&amp;quot;, filePartPathList.get(filePartPathList.size()-1));&amp;#xD;&amp;#xA;logger.info(&amp;quot;Setting EOFpath: [&amp;quot; + workflow.getVariable(&amp;quot;EOFpath&amp;quot;) + &amp;quot;]&amp;quot;);&quot; />&lt;/inputs>"/>
+        <transition activity="ForEach_1" commented="0" originalStyle=""
+            points="" sourceX="209" sourceY="357" status="0"
+            style="defaultEdge" targetX="229" targetY="425"
+            transitionIndex="0" x="0" y="57">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1539979758833" description="performs http operations"
+        displayName="Initiate chunk session" height="22" interactive="0"
+        jobMode="0" maxRestarts="0" name="HttpClient"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=HttpClient"
+        uniqueName="HttpClient_3" waitSetting="0" width="154" x="135" y="249">
+        <inputs val="&lt;inputs>&lt;request>&lt;url>xpath:{/workflow/variables/requestURL}&lt;/url>&lt;method>POST&lt;/method>&lt;postType>Raw&lt;/postType>&lt;postContent>&lt;/postContent>&lt;postContentType>charset=UTF-8&lt;/postContentType>&lt;parameters>&lt;name>uploadType&lt;/name>&lt;value>chunkedFile&lt;/value>&lt;/parameters>&lt;parameters>&lt;name>forceRestart&lt;/name>&lt;value>true&lt;/value>&lt;/parameters>&lt;headers>&lt;name>Authtoken&lt;/name>&lt;value>xpath:{/workflow/variables/authToken}&lt;/value>&lt;/headers>&lt;headers>&lt;name>FileName&lt;/name>&lt;value>xpath:{/workflow/variables/contentStoreFileName}&lt;/value>&lt;/headers>&lt;headers>&lt;name>FileSize&lt;/name>&lt;value>xpath:{/workflow/variables/contentStoreFileSize}&lt;/value>&lt;/headers>&lt;headers>&lt;name>FileModifiedtime&lt;/name>&lt;value>xpath:{/workflow/variables/contentStoreFileModTime}&lt;/value>&lt;/headers>&lt;headers>&lt;name>ParentFolderPath&lt;/name>&lt;value>xpath:{/workflow/variables/contentStoreParentPath}&lt;/value>&lt;/headers>&lt;headers>&lt;name>Accept&lt;/name>&lt;value>application/xml&lt;/value>&lt;/headers>&lt;headers>&lt;name>Host&lt;/name>&lt;value>xpath:{/workflow/system/workflowEngine/clientName}&lt;/value>&lt;/headers>&lt;/request>&lt;/inputs>"/>
+        <transition activity="XPathQuery_3" commented="0"
+            originalStyle="" points="" sourceX="212" sourceY="315"
+            status="0" style="defaultEdge" targetX="213" targetY="358"
+            transitionIndex="0" x="1" y="-28">
+            <condition language="1" script="xpath:{/workflow/HttpClient_3/statusCode} == 200;"/>
+        </transition>
+        <transition activity="WorkflowEnd_1" commented="0"
+            displayName="Failed" originalStyle="" points="823.0,264.0"
+            sourceX="212" sourceY="260" status="0" style="defaultEdge"
+            targetX="858" targetY="67" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/HttpClient_3/statusCode} != 200;&#xd;&#xa;&#xd;&#xa;workflow.setVariable(&quot;completionStatus&quot;, &quot;FAILED&quot;);&#xd;&#xa;logger.info(&quot;Setting completionStatus: [&quot; + workflow.getVariable(&quot;completionStatus&quot;) + &quot;]&quot;);&#xd;&#xa;workflow.setVariable(&quot;errorMessage&quot;, xpath:{/workflow/HttpClient_3/output});&#xd;&#xa;logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);"/>
+        </transition>
+        <onEnter language="1" script="if (xpath:{/workflow/inputs/verifyIntegrity} == true) {    &#xd;&#xa;    if (xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&quot;3&quot;) || xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&quot;4&quot;) || xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&quot;5&quot;)) { &#xd;&#xa;        import workflow.types.*;&#xd;&#xa;        NameValue h1 = new NameValue();&#xd;&#xa;        &#xd;&#xa;        h1.setName(&quot;verifyBlockLevelFileIntegrity&quot;);&#xd;&#xa;        h1.setValue(&quot;true&quot;);&#xd;&#xa;        logger.info(&quot;Setting Parameter with Name: [verifyBlockLevelFileIntegrity] Value: [true]&quot;);&#xd;&#xa;        activity.request.getParameters().add(h1);&#xd;&#xa;    }&#xd;&#xa;}"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1539980620537"
+        description="retrieves a list of values from xml"
+        displayName="Get requestId" height="24" interactive="0"
+        jobMode="0" maxRestarts="0" name="XPathQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=XPathQuery"
+        uniqueName="XPathQuery_3" waitSetting="0" width="110" x="158" y="296">
+        <onExit language="1" script="if (xpath:{/workflow/XPathQuery_3/result} != null &amp;&amp; !xpath:{/workflow/XPathQuery_3/result}.equals(&quot;&quot;)){&#xd;&#xa;    workflow.setVariable(&quot;contentStoreRequestId&quot;, xpath:{/workflow/XPathQuery_3/result});&#xd;&#xa;    logger.info(&quot;Setting contentStoreRequestId: [&quot; + workflow.getVariable(&quot;contentStoreRequestId&quot;) + &quot;]&quot;);&#xd;&#xa;} else {&#xd;&#xa;    logger.info(&quot;ERROR contentStoreRequestId is empty!&quot;);&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;"/>
+        <inputs val="&lt;inputs>&lt;xml class=&quot;java.lang.String&quot;>xpath:{/workflow/HttpClient_3/output}&lt;/xml>&lt;xpath class=&quot;java.lang.String&quot;>//@requestId&lt;/xpath>&lt;outputType class=&quot;workflow.types.SimpleType&quot;>String&lt;/outputType>&lt;outputAsList class=&quot;java.lang.Boolean&quot;>false&lt;/outputAsList>&lt;/inputs>"/>
+        <transition activity="Script_3" commented="0" originalStyle=""
+            points="" sourceX="213" sourceY="308" status="0"
+            style="defaultEdge" targetX="207" targetY="363"
+            transitionIndex="0" x="0" y="57">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1539983533356"
+        description="retrieves a list of values from xml"
+        displayName="Get GUID" height="24" interactive="0" jobMode="0"
+        maxRestarts="0" name="XPathQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=XPathQuery"
+        uniqueName="XPathQuery_4" waitSetting="0" width="110" x="607" y="521">
+        <onExit language="1" script="if (xpath:{/workflow/XPathQuery_4/result} != null &amp;&amp; !xpath:{/workflow/XPathQuery_4/result}.equals(&quot;&quot;)){&#xd;&#xa;    workflow.setVariable(&quot;contentStoreFileGUID&quot;, xpath:{/workflow/XPathQuery_4/result});&#xd;&#xa;    logger.info(&quot;Setting contentStoreFileGUID: [&quot; + workflow.getVariable(&quot;contentStoreFileGUID&quot;) + &quot;]&quot;);   &#xd;&#xa;     &#xd;&#xa;    if (workflow.getVariable(&quot;errorCode&quot;) != null &amp;&amp; workflow.getVariable(&quot;errorCode&quot;) > 200) {  // chunk upload failed or other error occured prior&#xd;&#xa;        logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);    &#xd;&#xa;        workflow.setVariable(&quot;completionStatus&quot;, &quot;COMPLETED_WITH_ERRORS&quot;);&#xd;&#xa;        logger.info(&quot;Setting completionStatus: [&quot; + workflow.getVariable(&quot;completionStatus&quot;) + &quot;]&quot;);&#xd;&#xa;        workflow.setVariable(&quot;errorMessage&quot;, &quot;There was a failure in the process of uploading file. Please check log for further information.&quot;);&#xd;&#xa;        logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);&#xd;&#xa;        &#xd;&#xa;    } else {    // no prior failure&#xd;&#xa;        workflow.setVariable(&quot;errorCode&quot;, 200);&#xd;&#xa;        logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);&#xd;&#xa;    }&#xd;&#xa;&#xd;&#xa;} else {&#xd;&#xa;    logger.info(&quot;ERROR contentStoreFileGUID is empty!&quot;);&#xd;&#xa;    workflow.setVariable(&quot;errorCode&quot;, 403);&#xd;&#xa;    logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);&#xd;&#xa;    workflow.setVariable(&quot;completionStatus&quot;, &quot;FAILED&quot;);&#xd;&#xa;    logger.info(&quot;Setting completionStatus: [&quot; + workflow.getVariable(&quot;completionStatus&quot;) + &quot;]&quot;);&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;workflow.setVariable(&quot;errorMessage&quot;, xpath:{/workflow/variables/fileChunkOutput});&#xd;&#xa;logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);   "/>
+        <inputs val="&lt;inputs>&lt;xml class=&quot;java.lang.String&quot;>xpath:{/workflow/variables/fileChunkOutput}&lt;/xml>&lt;xpath class=&quot;java.lang.String&quot;>//@fileGUID&lt;/xpath>&lt;outputType class=&quot;workflow.types.SimpleType&quot;>String&lt;/outputType>&lt;outputAsList class=&quot;java.lang.Boolean&quot;>false&lt;/outputAsList>&lt;/inputs>"/>
+        <transition activity="XPathQuery_6" commented="0"
+            originalStyle="" points="" sourceX="662" sourceY="533"
+            status="0" style="defaultEdge" targetX="668" targetY="597"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/inputs/verifyIntegrity} == true;"/>
+        </transition>
+        <transition activity="GenericResponse_2" commented="0"
+            originalStyle="" points="" sourceX="662" sourceY="533"
+            status="0" style="defaultEdge" targetX="813" targetY="534"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/inputs/verifyIntegrity} == false;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1540406300445"
+        description="activity to execute code snippets in the selected language"
+        displayName="Hash FullFile" height="23" interactive="0"
+        jobMode="0" maxRestarts="0" name="Script"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=Script"
+        uniqueName="Script_6" waitSetting="0" width="100" x="388" y="196">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;try {&amp;#xD;&amp;#xA;    String filePath = xpath:{/workflow/inputs/localFilePath};&amp;#xD;&amp;#xA;    File file = new File(filePath);&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;    //hash full file in SHA256&amp;#xD;&amp;#xA;    if (xpath:{/workflow/inputs/verifyIntegrity} == true) {&amp;#xD;&amp;#xA;        import java.security.MessageDigest;&amp;#xD;&amp;#xA;        MessageDigest md = MessageDigest.getInstance(&amp;quot;SHA-256&amp;quot;);&amp;#xD;&amp;#xA;        FileInputStream fis = new FileInputStream(file);&amp;#xD;&amp;#xA;        byte[] dataBytes = new byte[1024];&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        int bytesAmount = 0; &amp;#xD;&amp;#xA;        while ((bytesAmount = fis.read(dataBytes)) &amp;gt; 0) {&amp;#xD;&amp;#xA;            md.update(dataBytes, 0, bytesAmount);&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        byte[] hashedBytes = md.digest();&amp;#xD;&amp;#xA;        fis.close();&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        //convert hashed bytes into readable string&amp;#xD;&amp;#xA;        StringBuffer sb = new StringBuffer();&amp;#xD;&amp;#xA;        for (int i = 0; i &amp;lt; hashedBytes.length; i++) {&amp;#xD;&amp;#xA;            sb.append(Integer.toString((hashedBytes[i] &amp;amp; 0xff) + 0x100, 16).substring(1));&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;FullFileHash&amp;quot;, sb.toString());&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting Hex format FullFileHash Value: [&amp;quot; + workflow.getVariable(&amp;quot;FullFileHash&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;    } else {&amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;FullFileHash&amp;quot;, &amp;quot;&amp;quot;);&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Empty FullFileHash: [&amp;quot; + workflow.getVariable(&amp;quot;FullFileHash&amp;quot;) + &amp;quot;] as no verifyIntegrity required&amp;quot;);&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;    /* Following code are testing rainy day cases */&amp;#xD;&amp;#xA;    if (xpath:{/workflow/inputs/corruptFile} == true) { //corrupt the file only, upload the corrupted file to content store&amp;#xD;&amp;#xA;        import java.security.MessageDigest;&amp;#xD;&amp;#xA;        import java.io.RandomAccessFile;&amp;#xD;&amp;#xA;        import java.util.Random;&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        File cFile = new File(filePath);    //new a corrupt file&amp;#xD;&amp;#xA;        String junk = &amp;quot;insert this looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong crap to corrupt file&amp;quot;;&amp;#xD;&amp;#xA;        logger.info(&amp;quot;setting junk bytes length:&amp;quot; + junk.getBytes().length());&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        Random rand = new Random();&amp;#xD;&amp;#xA;        //Long length = file.length();    //get original file length, for chunking corrupt file size purpose&amp;#xD;&amp;#xA;        int pointer = rand.nextInt((int)file.length()) - junk.length();     //random a pointer to point where to insert junk into file&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting random pointer: [&amp;quot; + pointer + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        RandomAccessFile raf = new RandomAccessFile(cFile, &amp;quot;rw&amp;quot;);     //new object to read and write the file to be corrupted           &amp;#xD;&amp;#xA;        raf.seek(pointer);           //set the pointer&amp;#xD;&amp;#xA;        raf.write(junk.getBytes()); //write junk into file to pointed position&amp;#xD;&amp;#xA;        //raf.setLength(length);   //set file length to its original length&amp;#xD;&amp;#xA;        raf.close();&amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;contentStoreFileObject&amp;quot;, cFile);&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting corrupted contentStoreFileObject: [&amp;quot; + workflow.getVariable(&amp;quot;contentStoreFileObject&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting corrupted file size: [&amp;quot; + cFile.length() + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        //check corrupted file's hash&amp;#xD;&amp;#xA;        MessageDigest md = MessageDigest.getInstance(&amp;quot;SHA-256&amp;quot;);&amp;#xD;&amp;#xA;        FileInputStream cfis = new FileInputStream(cFile);    &amp;#xD;&amp;#xA;        byte[] dataBytes = new byte[1024];&amp;#xD;&amp;#xA;          &amp;#xD;&amp;#xA;        bytesAmount = 0; &amp;#xD;&amp;#xA;        while ((bytesAmount = cfis.read(dataBytes)) &amp;gt; 0) {&amp;#xD;&amp;#xA;            md.update(dataBytes, 0, bytesAmount);   //md was defined earlier as sha256&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        hashedBytes = md.digest();&amp;#xD;&amp;#xA;        cfis.close();&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;        StringBuffer sb = new StringBuffer();&amp;#xD;&amp;#xA;        for (int i = 0; i &amp;lt; hashedBytes.length; i++) {&amp;#xD;&amp;#xA;            sb.append(Integer.toString((hashedBytes[i] &amp;amp; 0xff) + 0x100, 16).substring(1));&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;        logger.info(&amp;quot;Setting corrupted FullFileHash Value: [&amp;quot; + sb.toString() + &amp;quot;]&amp;quot;);   //proof that corrupt file is using different hash with original one&amp;#xD;&amp;#xA;        &amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;    if (xpath:{/workflow/inputs/corruptFileHash} == true) { //corrupt the file hash only, attach bad hash to content store with original file&amp;#xD;&amp;#xA;        if (xpath:{/workflow/configuration/hackedFileHash} != null &amp;amp;&amp;amp; !xpath:{/workflow/configuration/hackedFileHash}.equals(&amp;quot;&amp;quot;)) {&amp;#xD;&amp;#xA;            workflow.setVariable(&amp;quot;FullFileHash&amp;quot;, xpath:{/workflow/configuration/hackedFileHash});&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Corrupt FullFileHash from configuration set: [&amp;quot; + workflow.getVariable(&amp;quot;FullFileHash&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;            &amp;#xD;&amp;#xA;        } else {&amp;#xD;&amp;#xA;            String FullFileHash = workflow.getVariable(&amp;quot;FullFileHash&amp;quot;);&amp;#xD;&amp;#xA;            char[] chars = FullFileHash.toCharArray();&amp;#xD;&amp;#xA;            &amp;#xD;&amp;#xA;            /*random pick a character in string and replace it with a random number*/&amp;#xD;&amp;#xA;            Random rand = new Random();&amp;#xD;&amp;#xA;            int pointer = rand.nextInt((int)FullFileHash.length());&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Hacking character position: [&amp;quot; + pointer + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;            chars[pointer] = 'x';&amp;#xD;&amp;#xA;            &amp;#xD;&amp;#xA;            /* reverse characters of hash from beginning to the end&amp;#xD;&amp;#xA;            int size = (int)FullFileHash.length() / 2;&amp;#xD;&amp;#xA;            char temp;&amp;#xD;&amp;#xA;            for (int i = 0; i &amp;lt; size; i++) {&amp;#xD;&amp;#xA;                temp = chars[i];&amp;#xD;&amp;#xA;                chars[i] = chars[FullFileHash.length() - 1 - i];&amp;#xD;&amp;#xA;                chars[FullFileHash.length() - 1 - i] = temp;&amp;#xD;&amp;#xA;            }&amp;#xD;&amp;#xA;            //temp = chars[0];&amp;#xD;&amp;#xA;            //chars[0] = chars[FullFileHash.length() - 1];&amp;#xD;&amp;#xA;            //chars[FullFileHash.length() - 1] = temp;&amp;#xD;&amp;#xA;            */&amp;#xD;&amp;#xA;            FullFileHash = String.valueOf(chars);   &amp;#xD;&amp;#xA;            workflow.setVariable(&amp;quot;FullFileHash&amp;quot;, FullFileHash);&amp;#xD;&amp;#xA;            logger.info(&amp;quot;Corrupted FullFileHash: [&amp;quot; + workflow.getVariable(&amp;quot;FullFileHash&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;} catch (Exception e) {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;completionStatus&amp;quot;, &amp;quot;FAILED&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting completionStatus: [&amp;quot; + workflow.getVariable(&amp;quot;completionStatus&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;errorMessage&amp;quot;, &amp;quot;Exception: [&amp;quot; + e + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting errorMessage: [&amp;quot; + workflow.getVariable(&amp;quot;errorMessage&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;}&quot; />&lt;/inputs>"/>
+        <transition activity="HttpClient_3" commented="0"
+            displayName="Chunkfiles" offsetX="12" offsetY="21"
+            originalStyle="" points="435.0,262.0" sourceX="376"
+            sourceY="207" status="0" style="defaultEdge" targetX="272"
+            targetY="267" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/inputs/verifyIntegrity} == true &amp;&amp; !xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&quot;1&quot;);"/>
+        </transition>
+        <transition activity="HttpClient_2" commented="0"
+            originalStyle="" points="" sourceX="408" sourceY="207"
+            status="0" style="defaultEdge" targetX="442" targetY="253"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/inputs/verifyIntegrity} == false || xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&quot;1&quot;);"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1540845068759"
+        description="activity to execute code snippets in the selected language"
+        displayName="Set user &amp; Validate" height="25"
+        interactive="0" jobMode="0" maxRestarts="0" name="Script"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ScriptActivity"
+        uniqueName="Script_1" waitSetting="0" width="139" x="145" y="47">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;int path = 0;&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;// When shareId exists, assuming it will run with sharedUserName in configuration setting.&amp;#xD;&amp;#xA;if (xpath:{/workflow/inputs/shareId} != null &amp;amp;&amp;amp; !xpath:{/workflow/inputs/shareId}.equals(&amp;quot;&amp;quot;)) {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;loginUserName&amp;quot;, xpath:{/workflow/configuration/sharedUserName});&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting loginUserName: [&amp;quot; + workflow.getVariable(&amp;quot;loginUserName&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;loginUserPassword&amp;quot;, xpath:{/workflow/configuration/sharedUserPassword});&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting loginUserPassword: [&amp;quot; + workflow.getVariable(&amp;quot;loginUserPassword&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;} else {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;loginUserName&amp;quot;, xpath:{/workflow/configuration/contentStoreAdmin});&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting loginUserName: [&amp;quot; + workflow.getVariable(&amp;quot;loginUserName&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;loginUserPassword&amp;quot;, xpath:{/workflow/configuration/contentStoreAdminPassword});&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting loginUserPassword: [&amp;quot; + workflow.getVariable(&amp;quot;loginUserPassword&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;//validate inputs&amp;#xD;&amp;#xA;if (xpath:{/workflow/inputs/localFilePath} == null || xpath:{/workflow/inputs/localFilePath}.equals(&amp;quot;&amp;quot;)) {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;errorMessage&amp;quot;, &amp;quot;Error: localFilePath is missing.&amp;quot;);&amp;#xD;&amp;#xA;    path = 1;&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;} else {&amp;#xD;&amp;#xA;    try&amp;#xD;&amp;#xA;    {&amp;#xD;&amp;#xA;        File file = new File(xpath:{/workflow/inputs/localFilePath});&amp;#xD;&amp;#xA;        if (!file.exists()) {&amp;#xD;&amp;#xA;            workflow.setVariable(&amp;quot;errorMessage&amp;quot;, &amp;quot;Error: file does not exist in localFilePath: [&amp;quot; + xpath:{/workflow/inputs/localFilePath} + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;            path = 1;&amp;#xD;&amp;#xA;        }&amp;#xD;&amp;#xA;    } catch (Exception e) {&amp;#xD;&amp;#xA;        logger.info(&amp;quot;EXCEPTION: [&amp;quot; + e + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;errorMessage&amp;quot;, &amp;quot;Error: invalid file path: [&amp;quot; + xpath:{/workflow/inputs/localFilePath} + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        path = 1;&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;if (xpath:{/workflow/inputs/shareId} != null &amp;amp;&amp;amp; !xpath:{/workflow/inputs/shareId}.equals(&amp;quot;&amp;quot;)) { // When shareId exists, shareType is required; contentStoreFolderPath is not required.&amp;#xD;&amp;#xA;    if (xpath:{/workflow/inputs/shareType} == null || xpath:{/workflow/inputs/shareType}.equals(&amp;quot;&amp;quot;)) {&amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;errorMessage&amp;quot;, &amp;quot;Error: shareType is missing for shareId: [&amp;quot; + xpath:{/workflow/inputs/shareId} + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;        path = 1;&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    &amp;#xD;&amp;#xA;} else {    // When shareId does not exist, contentStoreFolderPath is required.&amp;#xD;&amp;#xA;    if (xpath:{/workflow/inputs/contentStoreFolderPath} == null || xpath:{/workflow/inputs/contentStoreFolderPath}.equals(&amp;quot;&amp;quot;)) {&amp;#xD;&amp;#xA;        workflow.setVariable(&amp;quot;errorMessage&amp;quot;, &amp;quot;Error: contentStoreFolderPath is missing.&amp;quot;);&amp;#xD;&amp;#xA;        path = 1;&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;if (xpath:{/workflow/inputs/verifyIntegrity} == true &amp;amp;&amp;amp; (xpath:{/workflow/inputs/verifyIntegrityMode} == null || xpath:{/workflow/inputs/verifyIntegrityMode}.equals(&amp;quot;&amp;quot;))) {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;errorMessage&amp;quot;, &amp;quot;Error: verifyIntegrityMode is missing when verifyIntegrity is [true]&amp;quot;);&amp;#xD;&amp;#xA;    path = 1;&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;if (path == 1) {&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;errorCode&amp;quot;, 400);&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;completionStatus&amp;quot;, &amp;quot;FAILED&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting errorCode: [&amp;quot; + workflow.getVariable(&amp;quot;errorCode&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting errorMessage: [&amp;quot; + workflow.getVariable(&amp;quot;errorMessage&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;Setting completionStatus: [&amp;quot; + workflow.getVariable(&amp;quot;completionStatus&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;return path;&quot; />&lt;/inputs>"/>
+        <transition activity="HttpClient_1" commented="0"
+            originalStyle="" points="" sourceX="210" sourceY="59"
+            status="0" style="defaultEdge" targetX="217" targetY="108"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/Script_1/output} == 0;"/>
+        </transition>
+        <transition activity="GenericResponse_1" commented="0"
+            displayName="Invalid Inputs" originalStyle="" points=""
+            sourceX="214" sourceY="59" status="0" style="defaultEdge"
+            targetX="388" targetY="59" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/Script_1/output} == 1;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1540920669778"
+        description="returns a message to the caller of the workflow"
+        displayName="RespondToCaller" height="20" interactive="0"
+        jobMode="0" name="GenericResponse"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.GenericResponse"
+        uniqueName="GenericResponse_1" waitSetting="0" width="127"
+        x="379" y="49">
+        <inputs val="&lt;inputs>&lt;errorCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/errorCode}&lt;/errorCode>&lt;errorMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/errorMessage}&lt;/errorMessage>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_1" commented="0"
+            originalStyle="" sourceX="442" sourceY="59" status="0"
+            style="defaultEdge" targetX="890" targetY="64"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1541521432750"
+        description="retrieves a list of values from xml"
+        displayName="fileIntegrityVerified " height="24" interactive="0"
+        jobMode="0" maxRestarts="0" name="XPathQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=XPathQuery"
+        uniqueName="XPathQuery_6" waitSetting="0" width="140" x="597" y="582">
+        <onExit language="1" script="logger.info(&quot;Setting fileIntegrityVerified: [&quot; + xpath:{/workflow/XPathQuery_6/result} + &quot;]&quot;);&#xd;&#xa;if (xpath:{/workflow/XPathQuery_6/result} != null &amp;&amp; !xpath:{/workflow/XPathQuery_6/result}.equals(&quot;&quot;)){&#xd;&#xa;    if (xpath:{/workflow/XPathQuery_6/result}.equals(&quot;1&quot;)) {&#xd;&#xa;        if (workflow.getVariable(&quot;errorCode&quot;) != null &amp;&amp; workflow.getVariable(&quot;errorCode&quot;) > 200) {  // chunk upload failed or other error occured prior&#xd;&#xa;            logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);    &#xd;&#xa;            workflow.setVariable(&quot;errorMessage&quot;, &quot;There was a failure in the process of uploading file. Please check log for further information.&quot;);&#xd;&#xa;            logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);&#xd;&#xa;            workflow.setVariable(&quot;completionStatus&quot;, &quot;COMPLETED_WITH_ERRORS&quot;);&#xd;&#xa;            logger.info(&quot;Setting completionStatus: [&quot; + workflow.getVariable(&quot;completionStatus&quot;) + &quot;]&quot;);&#xd;&#xa;            &#xd;&#xa;        } else {    // no prior failure&#xd;&#xa;            workflow.setVariable(&quot;errorCode&quot;, 200);&#xd;&#xa;            logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);&#xd;&#xa;            workflow.setVariable(&quot;errorMessage&quot;, xpath:{/workflow/variables/fileChunkOutput});&#xd;&#xa;            logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);   &#xd;&#xa;        }&#xd;&#xa;        &#xd;&#xa;    } else {&#xd;&#xa;        workflow.setVariable(&quot;errorCode&quot;, 403);&#xd;&#xa;        logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);&#xd;&#xa;        workflow.setVariable(&quot;errorMessage&quot;, xpath:{/workflow/variables/fileChunkOutput});&#xd;&#xa;        logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);  &#xd;&#xa;        workflow.setVariable(&quot;completionStatus&quot;, &quot;FAILED&quot;);&#xd;&#xa;        logger.info(&quot;Setting completionStatus: [&quot; + workflow.getVariable(&quot;completionStatus&quot;) + &quot;]&quot;);         &#xd;&#xa;    }&#xd;&#xa;&#xd;&#xa;} else {&#xd;&#xa;    workflow.setVariable(&quot;errorCode&quot;, 403);&#xd;&#xa;    logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);&#xd;&#xa;    workflow.setVariable(&quot;errorMessage&quot;, &quot;fileIntegrityVerified not returned in the output: &quot; + xpath:{/workflow/variables/fileChunkOutput});&#xd;&#xa;    logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);   &#xd;&#xa;    workflow.setVariable(&quot;completionStatus&quot;, &quot;FAILED&quot;);&#xd;&#xa;    logger.info(&quot;Setting completionStatus: [&quot; + workflow.getVariable(&quot;completionStatus&quot;) + &quot;]&quot;);&#xd;&#xa;}"/>
+        <inputs val="&lt;inputs>&lt;xml class=&quot;java.lang.String&quot;>xpath:{/workflow/variables/fileChunkOutput}&lt;/xml>&lt;xpath class=&quot;java.lang.String&quot;>//@fileIntegrityVerified&lt;/xpath>&lt;outputType class=&quot;workflow.types.SimpleType&quot;>String&lt;/outputType>&lt;outputAsList class=&quot;java.lang.Boolean&quot;>false&lt;/outputAsList>&lt;/inputs>"/>
+        <transition activity="GenericResponse_2" commented="0"
+            originalStyle="" points="825.0,594.0" sourceX="667"
+            sourceY="594" status="0" style="defaultEdge" targetX="837"
+            targetY="533" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1541529842594"
+        description="returns a message to the caller of the workflow"
+        displayName="RespondToCaller" height="20" interactive="0"
+        jobMode="0" name="GenericResponse"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.GenericResponse"
+        uniqueName="GenericResponse_2" waitSetting="0" width="127"
+        x="774" y="523">
+        <inputs val="&lt;inputs>&lt;errorCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/errorCode}&lt;/errorCode>&lt;errorMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/errorMessage}&lt;/errorMessage>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_1" commented="0"
+            originalStyle="" sourceX="837" sourceY="533" status="0"
+            style="defaultEdge" targetX="902" targetY="63"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1541534948485"
+        description="retrieves a list of values from xml"
+        displayName="fileIntegrityVerified " height="23" interactive="0"
+        jobMode="0" maxRestarts="0" name="XPathQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=XPathQuery"
+        uniqueName="XPathQuery_7" waitSetting="0" width="140" x="467" y="99">
+        <onExit language="1" script="logger.info(&quot;Setting fileIntegrityVerified: [&quot; + xpath:{/workflow/XPathQuery_7/result} + &quot;]&quot;);&#xd;&#xa;if (xpath:{/workflow/XPathQuery_7/result} != null &amp;&amp; !xpath:{/workflow/XPathQuery_7/result}.equals(&quot;&quot;)){&#xd;&#xa;    if (xpath:{/workflow/XPathQuery_7/result}.equals(&quot;1&quot;)) {&#xd;&#xa;        workflow.setVariable(&quot;errorCode&quot;, 200);&#xd;&#xa;        logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);&#xd;&#xa;        workflow.setVariable(&quot;errorMessage&quot;, xpath:{/workflow/HttpClient_2/output});&#xd;&#xa;        logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);   &#xd;&#xa;    } else {&#xd;&#xa;        workflow.setVariable(&quot;errorCode&quot;, 403);&#xd;&#xa;        logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);&#xd;&#xa;        workflow.setVariable(&quot;errorMessage&quot;, xpath:{/workflow/HttpClient_2/output});&#xd;&#xa;        logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);       &#xd;&#xa;        workflow.setVariable(&quot;completionStatus&quot;, &quot;FAILED&quot;);&#xd;&#xa;        logger.info(&quot;Setting completionStatus: [&quot; + workflow.getVariable(&quot;completionStatus&quot;) + &quot;]&quot;);&#xd;&#xa;    }&#xd;&#xa;&#xd;&#xa;} else {&#xd;&#xa;    workflow.setVariable(&quot;errorCode&quot;, 403);&#xd;&#xa;    logger.info(&quot;Setting errorCode: [&quot; + workflow.getVariable(&quot;errorCode&quot;) + &quot;]&quot;);&#xd;&#xa;    workflow.setVariable(&quot;errorMessage&quot;, &quot;fileIntegrityVerified not returned in the output: &quot; + xpath:{/workflow/HttpClient_2/output});&#xd;&#xa;    logger.info(&quot;Setting errorMessage: [&quot; + workflow.getVariable(&quot;errorMessage&quot;) + &quot;]&quot;);   &#xd;&#xa;    workflow.setVariable(&quot;completionStatus&quot;, &quot;FAILED&quot;);&#xd;&#xa;    logger.info(&quot;Setting completionStatus: [&quot; + workflow.getVariable(&quot;completionStatus&quot;) + &quot;]&quot;);&#xd;&#xa;}"/>
+        <inputs val="&lt;inputs>&lt;xml class=&quot;java.lang.String&quot;>xpath:{/workflow/HttpClient_2/output}&lt;/xml>&lt;xpath class=&quot;java.lang.String&quot;>//@fileIntegrityVerified&lt;/xpath>&lt;outputType class=&quot;workflow.types.SimpleType&quot;>String&lt;/outputType>&lt;outputAsList class=&quot;java.lang.Boolean&quot;>false&lt;/outputAsList>&lt;/inputs>"/>
+        <transition activity="GenericResponse_1" commented="0"
+            originalStyle="" points="" sourceX="547" sourceY="110"
+            status="0" style="defaultEdge" targetX="482" targetY="53"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1542126759564" description="Ends the workflow"
+        displayName="WorkflowEnd" height="23" interactive="0"
+        jobMode="0" name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.EndActivity"
+        uniqueName="WorkflowEnd_1" waitSetting="0" width="106" x="769" y="48">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/completionStatus}&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/errorMessage}&lt;/failureMessage>&lt;/inputs>"/>
+    </Activity>
+    <formProperties css="" formVersion="0" javaScript="" pageMode="0">
+        <rules/>
+    </formProperties>
+</Workflow_WorkflowDefinition>

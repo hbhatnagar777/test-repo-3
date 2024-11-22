@@ -1,0 +1,296 @@
+{
+	"info": {
+		"_postman_id": "97117ca3-1efa-43d5-a560-fec5014b1979",
+		"name": "CompanyAssociaedEntitiesAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Metallic-Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"TOKEN\", jsonData.token);",
+							"",
+							"console.log(\"QSDK Token obtained is: \"+jsonData.token);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<DM2ContentIndexing_CheckCredentialReq domain=\"\" username=\"{{UserName}}\" password=\"{{Password}}\" mode=\"2\" flags=\"4\" clientType=\"16\" />"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCompanyAssociatedEntitiesTest",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var url = pm.environment.get(\"ServerURL\");\r",
+							"//var companyid = pm.iterationData.get(\"metallic_companyId\").toString();\r",
+							"//pm.environment.set(\"metallic_companyId\", 567);\r",
+							"var companyid = pm.environment.get(\"organizationId\").toString();\r",
+							"\r",
+							"// Reset the local variables\r",
+							"pm.variables.unset(\"expectedUserCount\");\r",
+							"pm.variables.unset(\"expectedUserGroupCount\");\r",
+							"pm.variables.unset(\"expectedFSCount\");\r",
+							"pm.variables.unset(\"expectedVMCount\");\r",
+							"pm.variables.unset(\"expectedHyperVCount\");\r",
+							"pm.variables.unset(\"expectedLaptopCount\");\r",
+							"pm.variables.unset(\"expectedMACount\");\r",
+							"pm.variables.unset(\"expectedDiskCount\");\r",
+							"pm.variables.unset(\"expectedCloudCount\");\r",
+							"pm.variables.unset(\"expectedHSCount\");\r",
+							"pm.variables.unset(\"expectedTapeCount\");\r",
+							"pm.variables.unset(\"expectedClientGroupCount\");\r",
+							"pm.variables.unset(\"expectedRolesCount\");\r",
+							"pm.variables.unset(\"expectedVMGroupCount\");\r",
+							"pm.variables.unset(\"expectedAlertCount\");\r",
+							"\r",
+							"var headers = {\r",
+							"        'Authtoken': postman.getEnvironmentVariable(\"TOKEN\"),\r",
+							"        'Accept': 'application/json',\r",
+							"        'OnlyGetCompanyOwnedEntities': \"1\",\r",
+							"        'operatorCompanyId': companyid,\r",
+							"        'mode': \"EdgeMode\"\r",
+							"    };\r",
+							"//1\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/user', method: 'GET', header: headers}, function (err, res) {\r",
+							"\tif (res.json().users != null)\r",
+							"\t\t{pm.variables.set(\"expectedUserCount\", res.json().users.length);}\r",
+							"});\r",
+							"//2\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/usergroup', method: 'GET', header: headers}, function (err, res) {\r",
+							"    if (res.json().userGroups != null)\r",
+							"        pm.variables.set(\"expectedUserGroupCount\", res.json().userGroups.length);\r",
+							"});\r",
+							"//3\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/client?excludeInfrastructureClients=true&hideLaptopAndDummyClients=true&Hiddenclients=false&appGroupId=35&propertylevel=1&Fl=overview%2cclientProperties.client%2cclientProperties.clientProps', method: 'GET', header: headers}, function (err, res) {\r",
+							"    if (res.json() != null)\r",
+							"\t\tpm.variables.set(\"expectedFSCount\", res.json().filterQueryCount);\r",
+							"});\r",
+							"//4\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/VM?forUser=true&status=0&fq=vmStatus%253Aeq%253A1', method: 'GET', header: headers}, function (err, res) {\r",
+							"    if (res.json() != null)\r",
+							"\t\tpm.variables.set(\"expectedVMCount\", res.json().totalRecords);\r",
+							"});\r",
+							"//5\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/client?PseudoClientType=VSPseudo&propertylevel=1', method: 'GET', header: headers}, function (err, res) {\r",
+							"\tif (res.json().VSPseudoClientsList != null)\r",
+							"\t\tpm.variables.set(\"expectedHyperVCount\", res.json().VSPseudoClientsList.length);\r",
+							"});\r",
+							"//6\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/device', method: 'GET', header: headers}, function (err, res) {\r",
+							"\tif (res.json().clientsFileSystem != null)\r",
+							"\t\tpm.variables.set(\"expectedLaptopCount\", res.json().clientsFileSystem.length);\r",
+							"});\r",
+							"//7\r",
+							"pm.sendRequest({\r",
+							"\turl: url + '/V2/MediaAgents?filterType=NONE', method: 'GET', header: headers}, function (err, res) {\r",
+							"\tif (res.json().mediaAgentList != null)\r",
+							"\t\tpm.variables.set(\"expectedMACount\", res.json().mediaAgentList.length);\r",
+							"});\r",
+							"//8\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/StoragePool?storageType=1', method: 'GET', header: headers}, function (err, res) {\r",
+							"\tif (res.json().storagePoolList != null)\r",
+							"\t\tpm.variables.set(\"expectedDiskCount\", res.json().storagePoolList.length);\r",
+							"});\r",
+							"//9\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/StoragePool?storageType=2', method: 'GET', header: headers}, function (err, res) {\r",
+							"    if (res.json().storagePoolList != null)\r",
+							"\t\tpm.variables.set(\"expectedCloudCount\", res.json().storagePoolList.length);\r",
+							"});\r",
+							"//10\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/StoragePool?storageType=3', method: 'GET', header: headers}, function (err, res) {\r",
+							"    if (res.json().storagePoolList != null)\r",
+							"\t\tpm.variables.set(\"expectedHSCount\", res.json().storagePoolList.length);\r",
+							"});\r",
+							"//11\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/Library?libraryType=Tape', method: 'GET', header: headers}, function (err, res) {\r",
+							"    if (res.json().libraryList != null)\r",
+							"\t\tpm.variables.set(\"expectedTapeCount\", res.json().libraryList.length);\r",
+							"});\r",
+							"//12\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/clientgroup', method: 'GET', header: headers}, function (err, res) {\r",
+							"    if (res.json().groups != null)\r",
+							"\t\tpm.variables.set(\"expectedClientGroupCount\", res.json().groups.length);\r",
+							"});\r",
+							"//13\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/Security/Roles', method: 'GET', header: headers}, function (err, res) {\r",
+							"    if (res.json().roleProperties != null)\r",
+							"\t\tpm.variables.set(\"expectedRolesCount\", res.json().roleProperties.length);\r",
+							"});\r",
+							"//14\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/Subclient?clientId=0&applicationId=106&PropertyLevel=5&includeVMPseudoSubclients=false&excludeVendorId=20&Fl=subClientProperties.subClientEntity.applicationId', method: 'GET', header: headers}, function (err, res) {\r",
+							"    if (res.json() != null)\r",
+							"\t\tpm.variables.set(\"expectedVMGroupCount\", res.json().filterQueryCount);\r",
+							"});\r",
+							"//15\r",
+							"pm.sendRequest({\r",
+							"    url: url + '/AlertRule', method: 'GET', header: headers}, function (err, res) {\r",
+							"    if (res.json().alertList != null)\r",
+							"\t\tpm.variables.set(\"expectedAlertCount\", res.json().alertList.length);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Read the response\r",
+							"var jsonResponse = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"Company ID:\" + pm.environment.get(\"organizationId\"))\r",
+							"\r",
+							"testFunction = (testName, actualCount, expectedCount) => {\r",
+							"    pm.test(testName, function () {\r",
+							"        //pm.response.to.have.status(200);\r",
+							"        console.log(testName + \" => actualCount: \" + actualCount + \" | expectedCount: \" + expectedCount);\r",
+							"        pm.expect(expectedCount).to.equal(actualCount);\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"// Iterate the response and get the type of entities and call respective validation api.\r",
+							"if (jsonResponse.entities != null) {\r",
+							"    var iterator = 1;\r",
+							"    jsonResponse.entities.forEach(function (entity) {\r",
+							"        switch (entity.name) {\r",
+							"            case 30:\r",
+							"\t\t\t\ttestFunction(iterator + \". User count test\", entity.count, pm.variables.get(\"expectedUserCount\"));\r",
+							"                break;\r",
+							"            case 31:\r",
+							"\t\t\t\ttestFunction(iterator + \". UserGroup count test\", entity.count, pm.variables.get(\"expectedUserGroupCount\"));\r",
+							"                break;\r",
+							"            case 1:\r",
+							"\t\t\t\ttestFunction(iterator + \". FileServer count test\", entity.count, pm.variables.get(\"expectedFSCount\"));\r",
+							"                break;\r",
+							"            case 4:\r",
+							"\t\t\t\ttestFunction(iterator + \". VM count test\", entity.count, pm.variables.get(\"expectedVMCount\"));\r",
+							"                break;\r",
+							"            case 3:\r",
+							"\t\t\t\ttestFunction(iterator + \". HyperVisor count test\", entity.count, pm.variables.get(\"expectedHyperVCount\"));\r",
+							"                break;\r",
+							"            case 2:\r",
+							"\t\t\t\ttestFunction(iterator + \". Laptop count test\", entity.count, pm.variables.get(\"expectedLaptopCount\"));\r",
+							"                break;\r",
+							"\t\t\tcase 19:\r",
+							"\t\t\t\ttestFunction(iterator + \". MA count test\", entity.count, pm.variables.get(\"expectedMACount\"));\r",
+							"                break;\r",
+							"            case 20:\r",
+							"\t\t\t\ttestFunction(iterator + \". Disk storage count test\", entity.count, pm.variables.get(\"expectedDiskCount\"));\r",
+							"                break;\r",
+							"            case 24:\r",
+							"\t\t\t\ttestFunction(iterator + \". Cloud storage count test\", entity.count, pm.variables.get(\"expectedCloudCount\"));\r",
+							"                break;\r",
+							"            case 25:\r",
+							"\t\t\t\ttestFunction(iterator + \". Hyperscale storage count test\", entity.count, pm.variables.get(\"expectedHSCount\"));\r",
+							"                break;\r",
+							"            case 26:\r",
+							"\t\t\t\ttestFunction(iterator + \". Tape storage count test\", entity.count, pm.variables.get(\"expectedTapeCount\"));\r",
+							"                break;\r",
+							"            case 32:\r",
+							"\t\t\t\ttestFunction(iterator +\". Server group count test\",entity.count, pm.variables.get(\"expectedClientGroupCount\"));\r",
+							"\t\t\t\tbreak;\r",
+							"            case 35:\r",
+							"\t\t\t\ttestFunction(iterator +\". Alert count test\",entity.count, pm.variables.get(\"expectedAlertCount\"));\r",
+							"\t\t\t\tbreak;\r",
+							"\t\t\tcase 38:\r",
+							"\t\t\t\ttestFunction(iterator +\". VM Groups count test\",entity.count, pm.variables.get(\"expectedVMGroupCount\"));\r",
+							"\t\t\t\tbreak;\r",
+							"\t\t\tcase 39:\r",
+							"\t\t\t\ttestFunction(iterator +\". Roles count test\",entity.count, pm.variables.get(\"expectedRolesCount\"));\r",
+							"\t\t\t\tbreak;\r",
+							"\t\t\tdefault:\r",
+							"                console.log(iterator + \". No test found for entityName: \" + entity.name);\r",
+							"                break;\r",
+							"        }\r",
+							"        iterator++;\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/company/{{organizationId}}/associatedentities",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"company",
+						"{{organizationId}}",
+						"associatedentities"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

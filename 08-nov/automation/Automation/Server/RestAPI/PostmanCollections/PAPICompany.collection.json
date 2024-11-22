@@ -1,0 +1,1269 @@
+{
+	"info": {
+		"_postman_id": "e2e4c843-fafa-44ca-8778-391c24f430a4",
+		"name": "PAPI -- Company",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4331195"
+	},
+	"item": [
+		{
+			"name": "0 - Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Request sent: \" ,pm.request.body.raw);",
+							"console.log(\"Response received: \" ,responseBody);",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"tests[\"Status code  200\"] = responseCode.code === 200;            //validate status code",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":4,\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Companies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"companies\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/company",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"company"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"companies\": [\n  {\n   \"id\": 64080186,\n   \"name\": \"nulla ullamco aliqua\",\n   \"primaryContacts\": [\n    {\n     \"id\": 29940608,\n     \"name\": \"id aliqua\"\n    },\n    {\n     \"id\": 95565386,\n     \"name\": \"adipisicing ut qui sit\"\n    }\n   ],\n   \"deactivated\": false,\n   \"associatedEntitiesCount\": -84627900\n  },\n  {\n   \"id\": -31824556,\n   \"name\": \"Ut nostrud irure aute consequat\",\n   \"primaryContacts\": [\n    {\n     \"id\": 76944688,\n     \"name\": \"nostrud elit\"\n    },\n    {\n     \"id\": 4984853,\n     \"name\": \"do\"\n    }\n   ],\n   \"deactivated\": true,\n   \"associatedEntitiesCount\": -20219938\n  }\n ]\n}"
+				},
+				{
+					"name": "Get Companies",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 Mar 2021 04:35:21 GMT"
+						},
+						{
+							"key": "vary",
+							"value": "accept-encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=600"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"companies\": [\n        {\n            \"id\": 65,\n            \"name\": \"testpapi\",\n            \"primaryContacts\": [\n                {\n                    \"id\": 118,\n                    \"name\": \"testpapi\"\n                }\n            ],\n            \"deactivated\": false,\n            \"associatedEntitiesCount\": 5\n        },\n        {\n            \"id\": 66,\n            \"name\": \"PAPI_Comp_1615897256\",\n            \"primaryContacts\": [\n                {\n                    \"id\": 120,\n                    \"name\": \"PAPI_Comp_1615897256\"\n                }\n            ],\n            \"deactivated\": false,\n            \"associatedEntitiesCount\": 5\n        },\n        {\n            \"id\": 75,\n            \"name\": \"PAPI_Comp_1615959522\",\n            \"primaryContacts\": [\n                {\n                    \"id\": 144,\n                    \"name\": \"PAPI_Comp_1615959522\"\n                }\n            ],\n            \"deactivated\": false,\n            \"associatedEntitiesCount\": 5\n        },\n        {\n            \"id\": 79,\n            \"name\": \"PAPI_Comp_1615959541\",\n            \"primaryContacts\": [\n                {\n                    \"id\": 149,\n                    \"name\": \"PAPI_Comp_1615959541\"\n                }\n            ],\n            \"deactivated\": false,\n            \"associatedEntitiesCount\": 5\n        },\n        {\n            \"id\": 96,\n            \"name\": \"PAPI_Comp_1615959886\",\n            \"primaryContacts\": [\n                {\n                    \"id\": 186,\n                    \"name\": \"PAPI_Comp_1615959886\"\n                }\n            ],\n            \"deactivated\": false,\n            \"associatedEntitiesCount\": 5\n        },\n        {\n            \"id\": 127,\n            \"name\": \"PAPI_Comp_1615961785\",\n            \"primaryContacts\": [\n                {\n                    \"id\": 265,\n                    \"name\": \"PAPI_Comp_1615961785\"\n                }\n            ],\n            \"deactivated\": true,\n            \"associatedEntitiesCount\": 5\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//pm.environment.set(\"companyId\", jsonData.Id);\r",
+							"//pm.environment.set(\"companyName\", jsonData.Name);\r",
+							"pm.collectionVariables.set(\"companyId\", jsonData.id);\r",
+							"pm.collectionVariables.set(\"companyName\", jsonData.name);\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"PAPI_Comp_{{$timestamp}}\",\n    \"email\": \"PAPI_Comp_{{$timestamp}}@{{$timestamp}}.com\",\n    \"contactName\": \"PAPI_Comp_{{$timestamp}}\",\n    \"alias\": \"PAPI_Comp_{{$timestamp}}\",\n    \"plans\": [\n        {\n            \"id\": 1,\n            \"name\": \"Server plan\"\n        }\n    ],\n    \"emailSuffix\": \"{{$timestamp}}.com\",\n    \"serviceCommcells\": [\n        {\n            \"name\": \"\"\n        },\n        {\n            \"name\": \"\"\n        }\n    ],\n    \"sendWelcomeEmail\": true,\n    \"primaryDomain\": \"PAPI_Comp_{{$timestamp}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/company",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"company"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"pariatur id\",\n    \"email\": \"nis\",\n    \"contactName\": \"esse enim\",\n    \"alias\": \"sed veniam\",\n    \"plans\": [\n        {\n            \"id\": 39292563,\n            \"name\": \"aute aliquip in\"\n        },\n        {\n            \"id\": -81820170,\n            \"name\": \"Lorem est\"\n        }\n    ],\n    \"emailSuffix\": \"aliquip sint velit do\",\n    \"serviceCommcells\": [\n        {\n            \"id\": 20593689,\n            \"name\": \"mollit velit\"\n        },\n        {\n            \"id\": -21753782,\n            \"name\": \"aliqua cupidatat labore qui\"\n        }\n    ],\n    \"sendWelcomeEmail\": false,\n    \"primaryDomain\": \"adipisicing\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"id\": 86097859,\n \"name\": \"labore commodo id\"\n}"
+				},
+				{
+					"name": "Create Company",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"PAPI_Comp_$randomNameSuffix\",\n    \"email\": \"PAPI_Comp_$randomNameSuffix@temp.com\",\n    \"contactName\": \"PAPI_Comp_$randomNameSuffix\",\n    \"alias\": \"PAPI_Comp_$randomNameSuffix\",\n    \"plans\": [\n        {\n            \"id\": 1,\n            \"name\": \"Server plan\"\n        }\n    ],\n    \"emailSuffix\": \"temp.com\",\n    \"serviceCommcells\": [\n        {\n            \n            \"name\": \"\"\n        },\n        {\n            \"name\": \"\"\n        }\n    ],\n    \"sendWelcomeEmail\": true,\n    \"primaryDomain\": \"PAPI_Comp_$randomNameSuffix\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "49"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 16 Mar 2021 07:25:52 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Id\": 1,\n    \"Name\": \"PAPI_Comp_$randomNameSuffix\"\n}"
+				},
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"pariatur id\",\n    \"email\": \"nis\",\n    \"contactName\": \"esse enim\",\n    \"alias\": \"sed veniam\",\n    \"plans\": [\n        {\n            \"id\": 39292563,\n            \"name\": \"aute aliquip in\"\n        },\n        {\n            \"id\": -81820170,\n            \"name\": \"Lorem est\"\n        }\n    ],\n    \"emailSuffix\": \"aliquip sint velit do\",\n    \"serviceCommcells\": [\n        {\n            \"id\": 20593689,\n            \"name\": \"mollit velit\"\n        },\n        {\n            \"id\": -21753782,\n            \"name\": \"aliqua cupidatat labore qui\"\n        }\n    ],\n    \"sendWelcomeEmail\": false,\n    \"primaryDomain\": \"adipisicing\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"pariatur id\",\n    \"email\": \"nis\",\n    \"contactName\": \"esse enim\",\n    \"alias\": \"sed veniam\",\n    \"plans\": [\n        {\n            \"id\": 39292563,\n            \"name\": \"aute aliquip in\"\n        },\n        {\n            \"id\": -81820170,\n            \"name\": \"Lorem est\"\n        }\n    ],\n    \"emailSuffix\": \"aliquip sint velit do\",\n    \"serviceCommcells\": [\n        {\n            \"id\": 20593689,\n            \"name\": \"mollit velit\"\n        },\n        {\n            \"id\": -21753782,\n            \"name\": \"aliqua cupidatat labore qui\"\n        }\n    ],\n    \"sendWelcomeEmail\": false,\n    \"primaryDomain\": \"adipisicing\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get Company Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate name and Id for company\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"companyId\"));\r",
+							"    \r",
+							"    pm.expect(jsonData.name).to.eql(pm.collectionVariables.get(\"companyName\"))\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"creationTime\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"status\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"general\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"security\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"contacts\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"emailSettings\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"sites\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"plans\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"tenantOperators\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"fileExceptions\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.environment.set(\"companyId\", pm.collectionVariables.get(\"companyId\"));\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/company/{{companyId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company/:companyId?showInheritedAssociation=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								":companyId"
+							],
+							"query": [
+								{
+									"key": "showInheritedAssociation",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "companyId"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company/:companyId?showInheritedAssociation=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								":companyId"
+							],
+							"query": [
+								{
+									"key": "showInheritedAssociation",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "companyId"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"id\": 27731722,\n \"creationTime\": 40775948,\n \"general\": {\n  \"newAlias\": \"aute non\",\n  \"emailSuffix\": \"est veniam eu laboris exercita\",\n  \"authcodeForInstallation\": true,\n  \"upnInsteadOfEmail\": false,\n  \"twoFactorAuth\": {\n   \"enable\": false,\n   \"all\": true,\n   \"userGroups\": [\n    {\n     \"id\": 18547715,\n     \"name\": \"dolor Ut nulla ipsu\"\n    },\n    {\n     \"id\": -35349557,\n     \"name\": \"sit do\"\n    }\n   ]\n  },\n  \"resellerMode\": false,\n  \"enableDataEncryption\": false,\n  \"autoDiscoverApp\": false,\n  \"infrastructureType\": \"RENTED_STORAGE\",\n  \"supportedSolutions\": [\n   \"ACTIVE_DIRECTORY\",\n   \"ACTIVATE\"\n  ],\n  \"assignLaptopOwners\": \"FIRST_LOGGED_IN_USER\",\n  \"serviceCommcells\": [\n   {\n    \"id\": -77497934,\n    \"name\": \"sint ut\"\n   },\n   {\n    \"id\": 1454128,\n    \"name\": \"esse ma\"\n   }\n  ]\n },\n \"security\": [\n  {\n   \"user\": {\n    \"id\": 93872233,\n    \"name\": \"id Ut\"\n   },\n   \"userGroup\": {\n    \"id\": -90369820,\n    \"name\": \"incididunt Duis mollit occaecat\"\n   },\n   \"isCreatorAssociation\": true,\n   \"role\": {\n    \"id\": 9479613,\n    \"name\": \"ipsum Excepteur consequat nostrud mollit\"\n   },\n   \"permissionList\": [\n    {\n     \"permissionId\": 31575837,\n     \"permissionName\": \"aute\",\n     \"categoryId\": -76120817,\n     \"categoryName\": \"aliqua reprehenderit ad\"\n    },\n    {\n     \"permissionId\": 18800646,\n     \"permissionName\": \"sunt ex ipsum\",\n     \"categoryId\": 93740658,\n     \"categoryName\": \"ex\"\n    }\n   ]\n  },\n  {\n   \"user\": {\n    \"id\": 79754816,\n    \"name\": \"aute deserunt amet irure proident\"\n   },\n   \"userGroup\": {\n    \"id\": 91066050,\n    \"name\": \"incididunt\"\n   },\n   \"isCreatorAssociation\": true,\n   \"role\": {\n    \"id\": 31284015,\n    \"name\": \"ipsum\"\n   },\n   \"permissionList\": [\n    {\n     \"permissionId\": -96029174,\n     \"permissionName\": \"eu ex \",\n     \"categoryId\": -78193699,\n     \"categoryName\": \"dolor Duis cupidatat\"\n    },\n    {\n     \"permissionId\": 40173669,\n     \"permissionName\": \"qui laboris dolor\",\n     \"categoryId\": -26922689,\n     \"categoryName\": \"do veniam eiusmod\"\n    }\n   ]\n  }\n ],\n \"contacts\": [\n  {\n   \"email\": \"non aliquip\",\n   \"name\": \"do c\",\n   \"id\": \"adipisicing cillum in non\",\n   \"fullname\": \"aute veniam fugiat \"\n  },\n  {\n   \"email\": \"in\",\n   \"name\": \"commodo laborum\",\n   \"id\": \"elit culpa minim ipsum\",\n   \"fullname\": \"ea non\"\n  }\n ],\n \"emailSettings\": {\n  \"senderName\": \"elit ipsum\",\n  \"senderEmail\": \"commodo et voluptate cupidatat sit\"\n },\n \"sites\": {\n  \"primarySiteName\": \"sit cupidatat\",\n  \"secondarySiteNames\": [\n   \"aute exercitation sit non nisi\",\n   \"sint est\"\n  ]\n },\n \"plans\": [\n  {\n   \"id\": -80770632,\n   \"name\": \"ut ut\"\n  },\n  {\n   \"id\": -64540996,\n   \"name\": \"sunt ex\"\n  }\n ],\n \"operatorsOperationType\": 69687990,\n \"tenantOperators\": [\n  {\n   \"user\": {\n    \"id\": -95204979,\n    \"name\": \"do consectetur\"\n   },\n   \"userGroup\": {\n    \"id\": -70014571,\n    \"name\": \"veniam incididunt dolore\"\n   },\n   \"role\": {\n    \"id\": -90580303,\n    \"name\": \"id\"\n   }\n  },\n  {\n   \"user\": {\n    \"id\": -14301759,\n    \"name\": \"ex occaecat minim Ut\"\n   },\n   \"userGroup\": {\n    \"id\": -24633030,\n    \"name\": \"ad fugiat nulla incididunt laborum\"\n   },\n   \"role\": {\n    \"id\": 11492142,\n    \"name\": \"consequat in id\"\n   }\n  }\n ],\n \"fileExceptions\": {\n  \"windows\": \"incididunt tempor es\",\n  \"unix\": \"in aliqua esse in\",\n  \"useCompanyGlobalFilter\": true\n }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Company Details - showInheritedAssociation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate name and Id for company\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"companyId\"));\r",
+							"    \r",
+							"    pm.expect(jsonData.name).to.eql(pm.collectionVariables.get(\"companyName\"))\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"creationTime\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"status\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"general\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"security\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"contacts\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"emailSettings\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"sites\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"plans\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"tenantOperators\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"fileExceptions\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/company/{{companyId}}?showInheritedAssociation=true",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}"
+					],
+					"query": [
+						{
+							"key": "showInheritedAssociation",
+							"value": "true",
+							"description": "Show inherited security association"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company/:companyId?showInheritedAssociation=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								":companyId"
+							],
+							"query": [
+								{
+									"key": "showInheritedAssociation",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "companyId"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company/:companyId?showInheritedAssociation=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								":companyId"
+							],
+							"query": [
+								{
+									"key": "showInheritedAssociation",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "companyId"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"id\": 27731722,\n \"creationTime\": 40775948,\n \"general\": {\n  \"newAlias\": \"aute non\",\n  \"emailSuffix\": \"est veniam eu laboris exercita\",\n  \"authcodeForInstallation\": true,\n  \"upnInsteadOfEmail\": false,\n  \"twoFactorAuth\": {\n   \"enable\": false,\n   \"all\": true,\n   \"userGroups\": [\n    {\n     \"id\": 18547715,\n     \"name\": \"dolor Ut nulla ipsu\"\n    },\n    {\n     \"id\": -35349557,\n     \"name\": \"sit do\"\n    }\n   ]\n  },\n  \"resellerMode\": false,\n  \"enableDataEncryption\": false,\n  \"autoDiscoverApp\": false,\n  \"infrastructureType\": \"RENTED_STORAGE\",\n  \"supportedSolutions\": [\n   \"ACTIVE_DIRECTORY\",\n   \"ACTIVATE\"\n  ],\n  \"assignLaptopOwners\": \"FIRST_LOGGED_IN_USER\",\n  \"serviceCommcells\": [\n   {\n    \"id\": -77497934,\n    \"name\": \"sint ut\"\n   },\n   {\n    \"id\": 1454128,\n    \"name\": \"esse ma\"\n   }\n  ]\n },\n \"security\": [\n  {\n   \"user\": {\n    \"id\": 93872233,\n    \"name\": \"id Ut\"\n   },\n   \"userGroup\": {\n    \"id\": -90369820,\n    \"name\": \"incididunt Duis mollit occaecat\"\n   },\n   \"isCreatorAssociation\": true,\n   \"role\": {\n    \"id\": 9479613,\n    \"name\": \"ipsum Excepteur consequat nostrud mollit\"\n   },\n   \"permissionList\": [\n    {\n     \"permissionId\": 31575837,\n     \"permissionName\": \"aute\",\n     \"categoryId\": -76120817,\n     \"categoryName\": \"aliqua reprehenderit ad\"\n    },\n    {\n     \"permissionId\": 18800646,\n     \"permissionName\": \"sunt ex ipsum\",\n     \"categoryId\": 93740658,\n     \"categoryName\": \"ex\"\n    }\n   ]\n  },\n  {\n   \"user\": {\n    \"id\": 79754816,\n    \"name\": \"aute deserunt amet irure proident\"\n   },\n   \"userGroup\": {\n    \"id\": 91066050,\n    \"name\": \"incididunt\"\n   },\n   \"isCreatorAssociation\": true,\n   \"role\": {\n    \"id\": 31284015,\n    \"name\": \"ipsum\"\n   },\n   \"permissionList\": [\n    {\n     \"permissionId\": -96029174,\n     \"permissionName\": \"eu ex \",\n     \"categoryId\": -78193699,\n     \"categoryName\": \"dolor Duis cupidatat\"\n    },\n    {\n     \"permissionId\": 40173669,\n     \"permissionName\": \"qui laboris dolor\",\n     \"categoryId\": -26922689,\n     \"categoryName\": \"do veniam eiusmod\"\n    }\n   ]\n  }\n ],\n \"contacts\": [\n  {\n   \"email\": \"non aliquip\",\n   \"name\": \"do c\",\n   \"id\": \"adipisicing cillum in non\",\n   \"fullname\": \"aute veniam fugiat \"\n  },\n  {\n   \"email\": \"in\",\n   \"name\": \"commodo laborum\",\n   \"id\": \"elit culpa minim ipsum\",\n   \"fullname\": \"ea non\"\n  }\n ],\n \"emailSettings\": {\n  \"senderName\": \"elit ipsum\",\n  \"senderEmail\": \"commodo et voluptate cupidatat sit\"\n },\n \"sites\": {\n  \"primarySiteName\": \"sit cupidatat\",\n  \"secondarySiteNames\": [\n   \"aute exercitation sit non nisi\",\n   \"sint est\"\n  ]\n },\n \"plans\": [\n  {\n   \"id\": -80770632,\n   \"name\": \"ut ut\"\n  },\n  {\n   \"id\": -64540996,\n   \"name\": \"sunt ex\"\n  }\n ],\n \"operatorsOperationType\": 69687990,\n \"tenantOperators\": [\n  {\n   \"user\": {\n    \"id\": -95204979,\n    \"name\": \"do consectetur\"\n   },\n   \"userGroup\": {\n    \"id\": -70014571,\n    \"name\": \"veniam incididunt dolore\"\n   },\n   \"role\": {\n    \"id\": -90580303,\n    \"name\": \"id\"\n   }\n  },\n  {\n   \"user\": {\n    \"id\": -14301759,\n    \"name\": \"ex occaecat minim Ut\"\n   },\n   \"userGroup\": {\n    \"id\": -24633030,\n    \"name\": \"ad fugiat nulla incididunt laborum\"\n   },\n   \"role\": {\n    \"id\": 11492142,\n    \"name\": \"consequat in id\"\n   }\n  }\n ],\n \"fileExceptions\": {\n  \"windows\": \"incididunt tempor es\",\n  \"unix\": \"in aliqua esse in\",\n  \"useCompanyGlobalFilter\": true\n }\n}"
+				}
+			]
+		},
+		{
+			"name": "Modify Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate error code\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.error.errorCode).to.eql(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": {\n        \"deactivate\": true,\n        \"options\": {\n            \"disableBackup\": true,\n            \"disableRestore\": true,\n            \"disableLogin\": true\n        }\n    },\n    \"newName\": \"\",\n    \"general\": {\n        \"newAlias\": \"\",\n        \"emailSuffix\": \"\",\n        \"authcodeForInstallation\": false,\n        \"upnInsteadOfEmail\": false,\n        \"twoFactorAuth\": {\n            \"enable\": false,\n            \"all\": false,\n            \"userGroups\": [\n                {\n                    \"id\": 0,\n                    \"name\": \"\"\n                },\n                {\n                    \"id\": 0,\n                    \"name\": \"\"\n                }\n            ]\n        },\n        \"resellerMode\": false,\n        \"enableDataEncryption\": true,\n        \"autoDiscoverApp\": false,\n        \"infrastructureType\": \"RENTED_AND_OWN_STORAGE\",\n        \"supportedSolutions\": [\n            \"VIRTUALIZATION\",\n            \"KUBERNETES\"\n        ],\n        \"assignLaptopOwners\": \"LAPTOP_USER_GROUPS_AS_OWNERS\",\n        \"serviceCommcells\": [\n            {\n                \"id\": 0,\n                \"name\": \"\"\n            },\n            {\n                \"id\": 0,\n                \"name\": \"\"\n            }\n        ]\n    },\n    \"emailSettings\": {\n        \"senderName\": \"\",\n        \"senderEmail\": \"\"\n    },\n    \"sites\": {\n        \"primarySiteName\": \"\",\n        \"secondarySiteNames\": [\n            \"\",\n            \"\"\n        ]\n    },\n   \n    \"plans\": [\n        {\n            \"id\": 0,\n            \"name\": \"\"\n        },\n        {\n            \"id\": 0,\n            \"name\": \"\"\n        }\n    ],\n    \"fileExceptions\": {\n        \"windows\": \"\",\n        \"unix\": \"\",\n        \"useCompanyGlobalFilter\": true\n    }\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/company/{{companyId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": {\n        \"deactivate\": true,\n        \"options\": {\n            \"disableBackup\": true,\n            \"disableRestore\": true,\n            \"disableLogin\": true\n        }\n    },\n    \"newName\": \"sint sunt nostrud dolore\",\n    \"general\": {\n        \"newAlias\": \"Excepteur culpa dolore eu\",\n        \"emailSuffix\": \"qui dolor ad\",\n        \"authcodeForInstallation\": true,\n        \"upnInsteadOfEmail\": true,\n        \"twoFactorAuth\": {\n            \"enable\": true,\n            \"all\": true,\n            \"userGroups\": [\n                {\n                    \"id\": 79097464,\n                    \"name\": \"laboris occaecat incididunt\"\n                },\n                {\n                    \"id\": -22572711,\n                    \"name\": \"ea\"\n                }\n            ]\n        },\n        \"resellerMode\": false,\n        \"enableDataEncryption\": true,\n        \"autoDiscoverApp\": false,\n        \"infrastructureType\": \"OWN_STORAGE\",\n        \"supportedSolutions\": [\n            \"ACTIVE_DIRECTORY\",\n            \"OFFICE_365\"\n        ],\n        \"assignLaptopOwners\": \"FIRST_LOGGED_IN_USER\",\n        \"serviceCommcells\": [\n            {\n                \"id\": -86187080,\n                \"name\": \"aliqua aute esse reprehenderit Ut\"\n            },\n            {\n                \"id\": 53296786,\n                \"name\": \"officia qui\"\n            }\n        ]\n    },\n    \"security\": [\n        {\n            \"user\": {\n                \"id\": -12423127,\n                \"name\": \"proident nulla anim occaecat\"\n            },\n            \"userGroup\": {\n                \"id\": -6230973,\n                \"name\": \"enim deserunt nisi eu cupidatat\"\n            },\n            \"role\": {\n                \"id\": 54232823,\n                \"name\": \"magna do\"\n            }\n        },\n        {\n            \"user\": {\n                \"id\": 13232152,\n                \"name\": \"adipisicing elit\"\n            },\n            \"userGroup\": {\n                \"id\": -88770134,\n                \"name\": \"dolor sint commodo Excepteur\"\n            },\n            \"role\": {\n                \"id\": 78160610,\n                \"name\": \"ut ipsum sint eiusmod\"\n            }\n        }\n    ],\n    \"emailSettings\": {\n        \"senderName\": \"reprehenderit nostrud\",\n        \"senderEmail\": \"laboris eiusmo\"\n    },\n    \"sites\": {\n        \"primarySiteName\": \"ullamco culpa officia\",\n        \"secondarySiteNames\": [\n            \"officia qui\",\n            \"veli\"\n        ]\n    },\n    \"tenantOperators\": [\n        {\n            \"user\": {\n                \"id\": -40394977,\n                \"name\": \"proident voluptate \"\n            },\n            \"userGroup\": {\n                \"id\": -11518282,\n                \"name\": \"quis anim cillum Duis\"\n            },\n            \"role\": {\n                \"id\": 53435233,\n                \"name\": \"ut enim dolore tempor elit\"\n            }\n        },\n        {\n            \"user\": {\n                \"id\": -79901387,\n                \"name\": \"Excepteur fugiat veniam officia dolore\"\n            },\n            \"userGroup\": {\n                \"id\": -42510846,\n                \"name\": \"a\"\n            },\n            \"role\": {\n                \"id\": -13586037,\n                \"name\": \"dolore reprehenderit\"\n            }\n        }\n    ],\n    \"plans\": [\n        {\n            \"id\": 9361072,\n            \"name\": \"Ut proident eu irure\"\n        },\n        {\n            \"id\": -88225557,\n            \"name\": \"ut est\"\n        }\n    ],\n    \"defaultPlans\": [\n        {\n            \"subtype\": \"LAPTOP\",\n            \"defaultPlan\": {\n                \"id\": -51637171,\n                \"name\": \"in nisi\"\n            }\n        },\n        {\n            \"subtype\": \"DLO\",\n            \"defaultPlan\": {\n                \"id\": 76384415,\n                \"name\": \"do id dolore elit exercitation\"\n            }\n        }\n    ],\n    \"fileExceptions\": {\n        \"windows\": \"adipisicing non pariatur commodo reprehenderit\",\n        \"unix\": \"sed aliquip ut elit\",\n        \"useCompanyGlobalFilter\": false\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/company/:companyId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								":companyId"
+							],
+							"variable": [
+								{
+									"key": "companyId"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": {\n        \"deactivate\": true,\n        \"options\": {\n            \"disableBackup\": true,\n            \"disableRestore\": true,\n            \"disableLogin\": true\n        }\n    },\n    \"newName\": \"sint sunt nostrud dolore\",\n    \"general\": {\n        \"newAlias\": \"Excepteur culpa dolore eu\",\n        \"emailSuffix\": \"qui dolor ad\",\n        \"authcodeForInstallation\": true,\n        \"upnInsteadOfEmail\": true,\n        \"twoFactorAuth\": {\n            \"enable\": true,\n            \"all\": true,\n            \"userGroups\": [\n                {\n                    \"id\": 79097464,\n                    \"name\": \"laboris occaecat incididunt\"\n                },\n                {\n                    \"id\": -22572711,\n                    \"name\": \"ea\"\n                }\n            ]\n        },\n        \"resellerMode\": false,\n        \"enableDataEncryption\": true,\n        \"autoDiscoverApp\": false,\n        \"infrastructureType\": \"OWN_STORAGE\",\n        \"supportedSolutions\": [\n            \"ACTIVE_DIRECTORY\",\n            \"OFFICE_365\"\n        ],\n        \"assignLaptopOwners\": \"FIRST_LOGGED_IN_USER\",\n        \"serviceCommcells\": [\n            {\n                \"id\": -86187080,\n                \"name\": \"aliqua aute esse reprehenderit Ut\"\n            },\n            {\n                \"id\": 53296786,\n                \"name\": \"officia qui\"\n            }\n        ]\n    },\n    \"security\": [\n        {\n            \"user\": {\n                \"id\": -12423127,\n                \"name\": \"proident nulla anim occaecat\"\n            },\n            \"userGroup\": {\n                \"id\": -6230973,\n                \"name\": \"enim deserunt nisi eu cupidatat\"\n            },\n            \"role\": {\n                \"id\": 54232823,\n                \"name\": \"magna do\"\n            }\n        },\n        {\n            \"user\": {\n                \"id\": 13232152,\n                \"name\": \"adipisicing elit\"\n            },\n            \"userGroup\": {\n                \"id\": -88770134,\n                \"name\": \"dolor sint commodo Excepteur\"\n            },\n            \"role\": {\n                \"id\": 78160610,\n                \"name\": \"ut ipsum sint eiusmod\"\n            }\n        }\n    ],\n    \"emailSettings\": {\n        \"senderName\": \"reprehenderit nostrud\",\n        \"senderEmail\": \"laboris eiusmo\"\n    },\n    \"sites\": {\n        \"primarySiteName\": \"ullamco culpa officia\",\n        \"secondarySiteNames\": [\n            \"officia qui\",\n            \"veli\"\n        ]\n    },\n    \"tenantOperators\": [\n        {\n            \"user\": {\n                \"id\": -40394977,\n                \"name\": \"proident voluptate \"\n            },\n            \"userGroup\": {\n                \"id\": -11518282,\n                \"name\": \"quis anim cillum Duis\"\n            },\n            \"role\": {\n                \"id\": 53435233,\n                \"name\": \"ut enim dolore tempor elit\"\n            }\n        },\n        {\n            \"user\": {\n                \"id\": -79901387,\n                \"name\": \"Excepteur fugiat veniam officia dolore\"\n            },\n            \"userGroup\": {\n                \"id\": -42510846,\n                \"name\": \"a\"\n            },\n            \"role\": {\n                \"id\": -13586037,\n                \"name\": \"dolore reprehenderit\"\n            }\n        }\n    ],\n    \"plans\": [\n        {\n            \"id\": 9361072,\n            \"name\": \"Ut proident eu irure\"\n        },\n        {\n            \"id\": -88225557,\n            \"name\": \"ut est\"\n        }\n    ],\n    \"defaultPlans\": [\n        {\n            \"subtype\": \"LAPTOP\",\n            \"defaultPlan\": {\n                \"id\": -51637171,\n                \"name\": \"in nisi\"\n            }\n        },\n        {\n            \"subtype\": \"DLO\",\n            \"defaultPlan\": {\n                \"id\": 76384415,\n                \"name\": \"do id dolore elit exercitation\"\n            }\n        }\n    ],\n    \"fileExceptions\": {\n        \"windows\": \"adipisicing non pariatur commodo reprehenderit\",\n        \"unix\": \"sed aliquip ut elit\",\n        \"useCompanyGlobalFilter\": false\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/company/:companyId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								":companyId"
+							],
+							"variable": [
+								{
+									"key": "companyId"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": {\n        \"deactivate\": true,\n        \"options\": {\n            \"disableBackup\": true,\n            \"disableRestore\": true,\n            \"disableLogin\": true\n        }\n    },\n    \"newName\": \"sint sunt nostrud dolore\",\n    \"general\": {\n        \"newAlias\": \"Excepteur culpa dolore eu\",\n        \"emailSuffix\": \"qui dolor ad\",\n        \"authcodeForInstallation\": true,\n        \"upnInsteadOfEmail\": true,\n        \"twoFactorAuth\": {\n            \"enable\": true,\n            \"all\": true,\n            \"userGroups\": [\n                {\n                    \"id\": 79097464,\n                    \"name\": \"laboris occaecat incididunt\"\n                },\n                {\n                    \"id\": -22572711,\n                    \"name\": \"ea\"\n                }\n            ]\n        },\n        \"resellerMode\": false,\n        \"enableDataEncryption\": true,\n        \"autoDiscoverApp\": false,\n        \"infrastructureType\": \"OWN_STORAGE\",\n        \"supportedSolutions\": [\n            \"ACTIVE_DIRECTORY\",\n            \"OFFICE_365\"\n        ],\n        \"assignLaptopOwners\": \"FIRST_LOGGED_IN_USER\",\n        \"serviceCommcells\": [\n            {\n                \"id\": -86187080,\n                \"name\": \"aliqua aute esse reprehenderit Ut\"\n            },\n            {\n                \"id\": 53296786,\n                \"name\": \"officia qui\"\n            }\n        ]\n    },\n    \"security\": [\n        {\n            \"user\": {\n                \"id\": -12423127,\n                \"name\": \"proident nulla anim occaecat\"\n            },\n            \"userGroup\": {\n                \"id\": -6230973,\n                \"name\": \"enim deserunt nisi eu cupidatat\"\n            },\n            \"role\": {\n                \"id\": 54232823,\n                \"name\": \"magna do\"\n            }\n        },\n        {\n            \"user\": {\n                \"id\": 13232152,\n                \"name\": \"adipisicing elit\"\n            },\n            \"userGroup\": {\n                \"id\": -88770134,\n                \"name\": \"dolor sint commodo Excepteur\"\n            },\n            \"role\": {\n                \"id\": 78160610,\n                \"name\": \"ut ipsum sint eiusmod\"\n            }\n        }\n    ],\n    \"emailSettings\": {\n        \"senderName\": \"reprehenderit nostrud\",\n        \"senderEmail\": \"laboris eiusmo\"\n    },\n    \"sites\": {\n        \"primarySiteName\": \"ullamco culpa officia\",\n        \"secondarySiteNames\": [\n            \"officia qui\",\n            \"veli\"\n        ]\n    },\n    \"tenantOperators\": [\n        {\n            \"user\": {\n                \"id\": -40394977,\n                \"name\": \"proident voluptate \"\n            },\n            \"userGroup\": {\n                \"id\": -11518282,\n                \"name\": \"quis anim cillum Duis\"\n            },\n            \"role\": {\n                \"id\": 53435233,\n                \"name\": \"ut enim dolore tempor elit\"\n            }\n        },\n        {\n            \"user\": {\n                \"id\": -79901387,\n                \"name\": \"Excepteur fugiat veniam officia dolore\"\n            },\n            \"userGroup\": {\n                \"id\": -42510846,\n                \"name\": \"a\"\n            },\n            \"role\": {\n                \"id\": -13586037,\n                \"name\": \"dolore reprehenderit\"\n            }\n        }\n    ],\n    \"plans\": [\n        {\n            \"id\": 9361072,\n            \"name\": \"Ut proident eu irure\"\n        },\n        {\n            \"id\": -88225557,\n            \"name\": \"ut est\"\n        }\n    ],\n    \"defaultPlans\": [\n        {\n            \"subtype\": \"LAPTOP\",\n            \"defaultPlan\": {\n                \"id\": -51637171,\n                \"name\": \"in nisi\"\n            }\n        },\n        {\n            \"subtype\": \"DLO\",\n            \"defaultPlan\": {\n                \"id\": 76384415,\n                \"name\": \"do id dolore elit exercitation\"\n            }\n        }\n    ],\n    \"fileExceptions\": {\n        \"windows\": \"adipisicing non pariatur commodo reprehenderit\",\n        \"unix\": \"sed aliquip ut elit\",\n        \"useCompanyGlobalFilter\": false\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/company/:companyId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								":companyId"
+							],
+							"variable": [
+								{
+									"key": "companyId"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"errorMessage\": \"dolor ut\",\n \"errorCode\": 53355353\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate error code\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.errorCode).to.eql(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/company/{{companyId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Server Error",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company/:companyId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								":companyId"
+							],
+							"variable": [
+								{
+									"key": "companyId"
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"errorMessage\": \"dolor ut\",\n \"errorCode\": 53355353\n}"
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company/:companyId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								":companyId"
+							],
+							"variable": [
+								{
+									"key": "companyId"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"errorMessage\": \"dolor ut\",\n \"errorCode\": 53355353\n}"
+				},
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authtoken",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/company/:companyId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"company",
+								":companyId"
+							],
+							"variable": [
+								{
+									"key": "companyId"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Token",
+			"value": ""
+		},
+		{
+			"key": "companyId",
+			"value": ""
+		},
+		{
+			"key": "companyName",
+			"value": ""
+		}
+	]
+}

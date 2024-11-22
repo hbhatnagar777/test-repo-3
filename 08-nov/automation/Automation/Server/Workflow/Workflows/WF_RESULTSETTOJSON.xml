@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />"
+    description="Workflow to test activities ResultSetToJSON and JSONToResultSet"
+    executeOnWeb="0" inputs="&lt;inputs />" interactive="0"
+    isHtmlDescription="0" manualPercentageComplete="0"
+    name="WF_RESULTSETTOJSON" outputs="&lt;outputs />"
+    revision="$Revision: 1.2 $" tags=""
+    uniqueGuid="3cd810d1-cdb0-474d-8d2e-faaf048deafb"
+    variables="&lt;variables />" webHidden="0" workflowId="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables className="" name="variables" type=""/>
+        <inputs attribute="0" className="" name="inputs" type=""/>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="58" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="CommServDBQuery_2" commented="0"
+            originalStyle="" points="" sourceX="74" sourceY="59"
+            status="0" style="defaultEdge" targetX="130" targetY="202"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1586946687911"
+        description="converts a result set to a json string"
+        displayName="ResultSetToJSON" height="34" interactive="0"
+        jobMode="0" name="ResultSetToJSON"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ResultSetToJSON"
+        uniqueName="ResultSetToJSON_1" waitSetting="0" width="131"
+        x="207" y="115">
+        <inputs val="&lt;inputs>&lt;resultSet class=&quot;java.lang.Object&quot; _list_=&quot;false&quot;>xpath:{/workflow/JSONToResultSet_1/resultSet}&lt;/resultSet>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_1" commented="0"
+            originalStyle="" points="" sourceX="409" sourceY="126"
+            status="0" style="defaultEdge" targetX="732" targetY="121"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;xpath:{/workflow/ResultSetToJSON_2/output}.equals(xpath:{/workflow/ResultSetToJSON_1/output});"/>
+        </transition>
+        <transition activity="WorkflowEnd_2" commented="0"
+            originalStyle="" points="" sourceX="272" sourceY="132"
+            status="0" style="defaultEdge" targetX="509" targetY="125"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;!(xpath:{/workflow/ResultSetToJSON_2/output}.equals(xpath:{/workflow/ResultSetToJSON_1/output}));"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1586946691758"
+        description="converts a json string to a result set"
+        displayName="JSONToResultSet" height="34" interactive="0"
+        jobMode="0" name="JSONToResultSet"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.JsonToResultSet"
+        uniqueName="JSONToResultSet_1" waitSetting="0" width="131"
+        x="210" y="23">
+        <inputs val="&lt;inputs>&lt;json class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/ResultSetToJSON_2/output}&lt;/json>&lt;/inputs>"/>
+        <transition activity="ResultSetToJSON_1" commented="0"
+            originalStyle="" points="" sourceX="219" sourceY="67"
+            status="0" style="defaultEdge" targetX="380" targetY="136"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1586946705393" description="Ends the workflow"
+        displayName="Passed" height="34" interactive="0" jobMode="0"
+        name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.EndActivity"
+        uniqueName="WorkflowEnd_1" waitSetting="0" width="106" x="223" y="195">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>COMPLETED&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1587020987938"
+        description="executes queries against a commcell database"
+        displayName="CommServDBQuery" height="34" interactive="0"
+        jobMode="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.CommServDBQuery"
+        uniqueName="CommServDBQuery_2" waitSetting="0" width="143"
+        x="16" y="129">
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>select * from app_commcell&lt;/query>&lt;/inputs>"/>
+        <transition activity="ResultSetToJSON_2" commented="0"
+            originalStyle="" points="" sourceX="87" sourceY="146"
+            status="0" style="defaultEdge" targetX="84" targetY="217"
+            transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1587021070062"
+        description="converts a result set to a json string"
+        displayName="ResultSetToJSON" height="34" interactive="0"
+        jobMode="0" name="ResultSetToJSON"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ResultSetToJSON"
+        uniqueName="ResultSetToJSON_2" waitSetting="0" width="131"
+        x="19" y="200">
+        <inputs val="&lt;inputs>&lt;resultSet class=&quot;java.lang.Object&quot; _list_=&quot;false&quot;>xpath:{/workflow/CommServDBQuery_2/resultSets}&lt;/resultSet>&lt;/inputs>"/>
+        <transition activity="JSONToResultSet_1" commented="0"
+            originalStyle="" points="" sourceX="239" sourceY="135"
+            status="0" style="defaultEdge" targetX="208" targetY="67"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1587021686122" description="Ends the workflow"
+        displayName="Failed" height="34" interactive="0" jobMode="0"
+        name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.EndActivity"
+        uniqueName="WorkflowEnd_2" waitSetting="0" width="106" x="388" y="115">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>FAILED&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Failed to validate the activities&lt;/failureMessage>&lt;/inputs>"/>
+    </Activity>
+</Workflow_WorkflowDefinition>

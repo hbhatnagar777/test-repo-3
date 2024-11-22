@@ -1,0 +1,652 @@
+{
+	"info": {
+		"_postman_id": "ca0d0875-6099-4a7d-9816-766d6ff5428a",
+		"name": "Storage Pool Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"snasim.abc@xyz.com\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Storage Pool",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body has archiveGroupCopy tag\"] = responseBody.has(\"archiveGroupCopy\");",
+							"if(tests[\"Response Body has newly created storage policy\"] = responseBody.has(\"storagePolicyName\"))",
+							"{",
+							"    console.log(\"The newly created storage policy is: \"+jsonData.archiveGroupCopy.storagePolicyName);",
+							"    postman.setEnvironmentVariable(\"storagePolicyName\",jsonData.archiveGroupCopy.storagePolicyName);",
+							"}",
+							"if(tests[\"Response Body has id of the newly created storage policy.\"] = responseBody.has(\"storagePolicyId\"))",
+							"{",
+							"    console.log(\"The newly created storage policy's id is: \"+jsonData.archiveGroupCopy.storagePolicyId);",
+							"    postman.setEnvironmentVariable(\"storagePolicyId\",jsonData.archiveGroupCopy.storagePolicyId);",
+							"    postman.setEnvironmentVariable(\"storagePoolId\", jsonData.archiveGroupCopy.storagePolicyId);",
+							"}",
+							"if(tests[\"Response Body has newly create storage policy copy name\"] = responseBody.has(\"copyName\"))",
+							"{",
+							"    console.log(\"The newly created storage policy copy name is: \"+jsonData.archiveGroupCopy.copyName);",
+							"    postman.setEnvironmentVariable(\"copyName\",jsonData.archiveGroupCopy.copyName);",
+							"}",
+							"",
+							"if (tests[\"Response Body has id of newly create storage policy copy name\"] = responseBody.has(\"copyId\"))",
+							"{",
+							"    console.log(\"The id of the newly created storage policy copy is: \"+jsonData.archiveGroupCopy.copyId);",
+							"    postman.setEnvironmentVariable(\"copyId\",jsonData.archiveGroupCopy.copyId);",
+							"}",
+							"tests[\"Response Body has an error code\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Response Body has an error code 0\"] = jsonData.error.errorCode === 0 ;",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"path\",\"C:\\\\\\\\temp\\\\\\\\StoragePool\"+Date.now())",
+							"postman.setEnvironmentVariable(\"path1\",\"C:\\\\\\\\temp\\\\\\\\StoragePool1\"+Date.now())",
+							"postman.setEnvironmentVariable(\"storagePoolName\",\"newmanStoragePool\"+Date.now())",
+							"postman.setEnvironmentVariable(\"storagePoolCopyName\",\"newmanStoragePoolCopy\"+Date.now())"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"storagePolicyName\": \"{{storagePoolName}}\",\r\n  \"type\": 1,\r\n  \"copyName\": \"{{storagePoolCopyName}}\",\r\n  \"numberOfCopies\": 1,\r\n  \"clientGroup\": {\r\n    \"_type_\": 28,\r\n    \"clientGroupId\": 0,\r\n    \"clientGroupName\": \"\"\r\n  },\r\n  \"storage\": [\r\n    {\r\n      \"path\": \"{{path}}\",\r\n      \"mediaAgent\": {\r\n        \"mediaAgentName\": \"{{mediaAgentName}}\"\r\n      },\r\n      \"credentials\": {}\r\n    }\r\n  ],\r\n  \"storagePolicyCopyInfo\": {\r\n    \"copyType\": 1,\r\n    \"isFromGui\": true,\r\n    \"active\": 1,\r\n    \"isDefault\": 1,\r\n    \"numberOfStreamsToCombine\": 1,\r\n    \"dedupeFlags\": {\r\n      \"enableDASHFull\": 1,\r\n      \"hostGlobalDedupStore\": 1,\r\n      \"enableDeduplication\": 1\r\n    },\r\n    \"storagePolicyFlags\": {\r\n      \"blockLevelDedup\": 1,\r\n      \"enableGlobalDeduplication\": 1\r\n    },\r\n    \"DDBPartitionInfo\": {\r\n      \"maInfoList\": [\r\n        {\r\n          \"mediaAgent\": {\r\n            \"mediaAgentName\": \"{{mediaAgentName}}\"\r\n          },\r\n          \"subStoreList\": [\r\n            {\r\n              \"diskFreeWarningThreshholdMB\": 10240,\r\n              \"diskFreeThresholdMB\": 5120,\r\n              \"accessPath\": {\r\n                \"path\": \"{{path1}}\"\r\n              }\r\n            }\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"library\": {\r\n      \"libraryName\": \"{{libraryName}}\"\r\n    },\r\n    \"mediaAgent\": {\r\n      \"mediaAgentName\": \"{{mediaAgentName}}\"\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/StoragePool?Action=create",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePool"
+					],
+					"query": [
+						{
+							"key": "Action",
+							"value": "create"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Storage Pool14",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"storagePolicyName\": \"New Disk SP\",\r\n  \"type\": 1,\r\n  \"copyName\": \"New Disk SP_Primary\",\r\n  \"numberOfCopies\": 1,\r\n  \"clientGroup\": {\r\n    \"_type_\": 28,\r\n    \"clientGroupId\": 0,\r\n    \"clientGroupName\": \"\"\r\n  },\r\n  \"storage\": [\r\n    {\r\n      \"path\": \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\lib\",\r\n      \"mediaAgent\": {\r\n        \"mediaAgentId\": 2,\r\n        \"_type_\": 11,\r\n        \"mediaAgentName\": \"S-200128-93-0\"\r\n      },\r\n      \"credentials\": {}\r\n    }\r\n  ],\r\n  \"storagePolicyCopyInfo\": {\r\n    \"copyType\": 1,\r\n    \"isFromGui\": true,\r\n    \"active\": 1,\r\n    \"isDefault\": 1,\r\n    \"numberOfStreamsToCombine\": 1,\r\n    \"dedupeFlags\": {\r\n      \"enableDASHFull\": 1,\r\n      \"hostGlobalDedupStore\": 1,\r\n      \"enableDeduplication\": 1\r\n    },\r\n    \"storagePolicyFlags\": {\r\n      \"blockLevelDedup\": 1,\r\n      \"enableGlobalDeduplication\": 1\r\n    },\r\n    \"DDBPartitionInfo\": {\r\n      \"maInfoList\": [\r\n        {\r\n          \"mediaAgent\": {\r\n            \"mediaAgentId\": 2,\r\n            \"_type_\": 11,\r\n            \"mediaAgentName\": \"S-200128-93-0\"\r\n          },\r\n          \"subStoreList\": [\r\n            {\r\n              \"diskFreeWarningThreshholdMB\": 10240,\r\n              \"diskFreeThresholdMB\": 5120,\r\n              \"accessPath\": {\r\n                \"path\": \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\ddb3\"\r\n              }\r\n            }\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"library\": {\r\n      \"libraryName\": \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\lib\",\r\n      \"_type_\": 9,\r\n      \"libraryId\": 0\r\n    },\r\n    \"mediaAgent\": {\r\n      \"mediaAgentId\": 2,\r\n      \"_type_\": 11,\r\n      \"mediaAgentName\": \"S-200128-93-0\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/StoragePool?Action=create",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePool"
+							],
+							"query": [
+								{
+									"key": "Action",
+									"value": "create"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 08:41:53 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "181"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"responseType\": 0,\n    \"archiveGroupCopy\": {\n        \"copyId\": 53,\n        \"_type_\": 18,\n        \"copyName\": \"New Disk SP_Primary\",\n        \"storagePolicyName\": \"New Disk SP\",\n        \"storagePolicyId\": 54\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Storage Pool ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body has storagePoolList tag\"] = responseBody.has(\"storagePoolList\");",
+							"//postman.setEnvironmentVariable(\"storagePoolId\",jsonData.storagePoolList[storagePoolList.length-1].storagePoolEntity.storagePoolId)",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/StoragePool",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePool"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Storage Pool14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePool",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePool"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 07:17:43 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1965"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"storagePoolList\": [\n        {\n            \"numberOfNodes\": 1,\n            \"totalFreeSpace\": 48342098,\n            \"storagePoolType\": 1,\n            \"totalCapacity\": 72884093,\n            \"reserved1\": 0,\n            \"status\": \"Offline (Cannot communicate with Media Mount Manager Service.\\nPlease ensure that.\\na. The MediaAgent is reachable from CommServe.\\nb. All MediaAgent services are running.)\",\n            \"statusCode\": 0,\n            \"storagePoolEntity\": {\n                \"storagePoolName\": \"GDP_smckb2pmm105\",\n                \"_type_\": 160,\n                \"storagePoolId\": 19\n            },\n            \"storagePool\": {\n                \"_type_\": 28,\n                \"clientGroupId\": 19,\n                \"clientGroupName\": \"GDP_smckb2pmm105\"\n            }\n        },\n        {\n            \"numberOfNodes\": 1,\n            \"totalFreeSpace\": 70256270,\n            \"storagePoolType\": 1,\n            \"totalCapacity\": 72884093,\n            \"reserved1\": 0,\n            \"status\": \"Offline (Cannot communicate with Media Mount Manager Service.\\nPlease ensure that.\\na. The MediaAgent is reachable from CommServe.\\nb. All MediaAgent services are running.)\",\n            \"statusCode\": 0,\n            \"storagePoolEntity\": {\n                \"storagePoolName\": \"GDP_smckb2pmm106\",\n                \"_type_\": 160,\n                \"storagePoolId\": 22\n            },\n            \"storagePool\": {\n                \"_type_\": 28,\n                \"clientGroupId\": 22,\n                \"clientGroupName\": \"GDP_smckb2pmm106\"\n            }\n        },\n        {\n            \"numberOfNodes\": 1,\n            \"totalFreeSpace\": 72883345,\n            \"storagePoolType\": 1,\n            \"totalCapacity\": 72884093,\n            \"reserved1\": 0,\n            \"status\": \"Offline (Cannot communicate with Media Mount Manager Service.\\nPlease ensure that.\\na. The MediaAgent is reachable from CommServe.\\nb. All MediaAgent services are running.)\",\n            \"statusCode\": 0,\n            \"storagePoolEntity\": {\n                \"storagePoolName\": \"GDP_smckb2pmm107\",\n                \"_type_\": 160,\n                \"storagePoolId\": 25\n            },\n            \"storagePool\": {\n                \"_type_\": 28,\n                \"clientGroupId\": 25,\n                \"clientGroupName\": \"GDP_smckb2pmm107\"\n            }\n        },\n        {\n            \"numberOfNodes\": 1,\n            \"totalFreeSpace\": 72886585,\n            \"storagePoolType\": 1,\n            \"totalCapacity\": 72887165,\n            \"reserved1\": 0,\n            \"status\": \"Offline (Cannot communicate with Media Mount Manager Service.\\nPlease ensure that.\\na. The MediaAgent is reachable from CommServe.\\nb. All MediaAgent services are running.)\",\n            \"statusCode\": 0,\n            \"storagePoolEntity\": {\n                \"storagePoolName\": \"GDP_smckb2pmm108\",\n                \"_type_\": 160,\n                \"storagePoolId\": 28\n            },\n            \"storagePool\": {\n                \"_type_\": 28,\n                \"clientGroupId\": 28,\n                \"clientGroupName\": \"GDP_smckb2pmm108\"\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Storage Pool Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body has storage pool details\"] = responseBody.has(\"storagePoolDetails\");",
+							"tests[\"Response Body has libraryList tag\"] = responseBody.has(\"libraryList\");",
+							"tests[\"Response Body has MountPathList tag\"] = responseBody.has(\"MountPathList\");",
+							"tests[\"Response Body has dedupDBDetailsList tag\"] = responseBody.has(\"dedupDBDetailsList\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePoolId = postman.getEnvironmentVariable(\"storagePoolId\");",
+							"postman.setEnvironmentVariable(\"storagePoolId\",storagePoolId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/StoragePool/{{storagePoolId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePool",
+						"{{storagePoolId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Storage Pool Details14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePool/54",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePool",
+								"54"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 08:50:38 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "4100"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"storagePoolDetails\": {\n        \"numOfCleaningMedia\": 0,\n        \"lastDayThroughput\": \"0.00 GB/Hr\",\n        \"sizeOnDisk\": 0,\n        \"nodesPerBlock\": 0,\n        \"totalFreeSpace\": 460454,\n        \"disperseFactor\": 0,\n        \"numOfSpareMedia\": 0,\n        \"totalCapacity\": 511469,\n        \"devicePath\": \"\",\n        \"reserved3\": \"\",\n        \"applicationSize\": 0,\n        \"reserved2\": 0,\n        \"reserved1\": 1,\n        \"numOfMedia\": 0,\n        \"redundancyFactor\": 0,\n        \"retention\": \"\",\n        \"status\": \"Online\",\n        \"reserved4\": \"\",\n        \"statusCode\": 0,\n        \"dedupDBDetails\": {\n            \"uniqueBlocksOfStore\": 0,\n            \"commcellId\": 2,\n            \"maxAllowedConnections\": 200,\n            \"numberOfJobs\": 0,\n            \"storeNameAlias\": \"New Disk SP_21\",\n            \"dedupeFlags\": 377749504,\n            \"baselineApplicationSize\": 0,\n            \"fragmentedSpaceSize\": 0,\n            \"baselineSize\": 0,\n            \"totalDataSize\": 0,\n            \"storeName\": \"New Disk SP_21\",\n            \"ddbVersion\": -1,\n            \"freeSpaceOnLibrary\": 460454,\n            \"totalAppSize\": 0,\n            \"primaryRecordsPercentage\": 0,\n            \"prunePending\": 0,\n            \"deDupSavingPercent\": \"\",\n            \"noOfPartitions\": 1,\n            \"storeFlags\": 546504722,\n            \"retentionCyclesForCopy\": 2,\n            \"storeId\": 21,\n            \"reserveField6\": 1,\n            \"reserveField7\": \"1 of 1  partitions online\",\n            \"reserveField8\": \"\",\n            \"deDupSavingSize\": 0,\n            \"sizeOnMedia\": 0,\n            \"sealedTime\": 0,\n            \"maxAvgQITime\": 2000,\n            \"creationtime\": 1580892110,\n            \"avgQITimeOfStore\": 0,\n            \"reserveField1\": 0,\n            \"extendedFlags\": 2,\n            \"reserveField2\": 0,\n            \"reserveField3\": \"\",\n            \"reserveField4\": 0,\n            \"retentionDaysForCopy\": 15,\n            \"reserveField5\": 0,\n            \"status\": 0,\n            \"enablePruningTime\": {\n                \"EnableTimeZone\": 0,\n                \"EnableTime\": 0\n            }\n        },\n        \"copyInfo\": {\n            \"StoragePolicyCopy\": {\n                \"copyId\": 53,\n                \"copyName\": \"New Disk SP_Primary\",\n                \"storagePolicyName\": \"New Disk SP\",\n                \"storagePolicyId\": 54\n            },\n            \"extendedFlags\": {\n                \"encryptOnDependentPrimary\": 0\n            },\n            \"copyFlags\": {\n                \"encryptOnNetworkUsingSelectedCipher\": 0,\n                \"preserveEncryptionModeAsInSource\": 1,\n                \"auxCopyReencryptData\": 0,\n                \"storePlainText\": 0,\n                \"storeKeyOnMedia\": 1\n            },\n            \"dataEncryption\": {\n                \"encryptionKeyLength\": 0,\n                \"encryptionType\": 0,\n                \"keyProvider\": {\n                    \"keyProviderId\": 1,\n                    \"keyProviderName\": \"Built-in\"\n                }\n            }\n        },\n        \"libraryList\": [\n            {\n                \"description\": \"\",\n                \"extendedAttributes\": 0,\n                \"manufacturer\": \"Disk\",\n                \"storagePoolType\": 0,\n                \"libraryVendorId\": 1,\n                \"model\": \"Disk\",\n                \"libraryType\": 3,\n                \"status\": \"Ready\",\n                \"tapeLibSummary\": {\n                    \"numOfCleaningMedia\": 0,\n                    \"offlineReason\": \"\",\n                    \"numOfIESlots\": 0,\n                    \"lastDayThroughput\": \"\",\n                    \"isOnline\": \"\",\n                    \"numOfIESlotOccupied\": 0,\n                    \"lastRestoreTime\": \"\",\n                    \"numOfActiveMedia\": 0,\n                    \"numOfSpareMedia\": 0,\n                    \"vendor\": \"\",\n                    \"numOfRegSlots\": 0,\n                    \"model\": \"\",\n                    \"numOfMedia\": 0,\n                    \"attribute\": 0,\n                    \"numOfDrivesOffline\": 0,\n                    \"firmwareRevision\": \"\",\n                    \"associatedMediaAgents\": \"\",\n                    \"controller\": \"\",\n                    \"bytesBackedupInLast24H\": \"\",\n                    \"serialNumber\": \"\",\n                    \"numOfAgedMedia\": 0,\n                    \"numOfAssignedMedia\": 0,\n                    \"numOfAppendableMedia\": 0,\n                    \"numOfRegSlotOccupied\": 0,\n                    \"backupReservations\": 0,\n                    \"numOfSlots\": 0,\n                    \"bytesBackedupInLast1H\": \"\",\n                    \"lastBackupTime\": \"\",\n                    \"lastHourThroughput\": \"\",\n                    \"numOfDrives\": 0,\n                    \"barcodeReader\": \"\",\n                    \"numOfMediaExporting\": 0,\n                    \"auxiliaryCopyWriteReservations\": 0,\n                    \"isEnabled\": 0,\n                    \"numOfFullMedia\": 0,\n                    \"totalNumberOfWriteReservations\": 0,\n                    \"status\": 0\n                },\n                \"MountPathList\": [\n                    {\n                        \"jobIds\": \"\",\n                        \"mediaAgents\": \"\",\n                        \"libraryVendorId\": 0,\n                        \"mountPathId\": 16,\n                        \"mountPathName\": \"[S-200128-93-0] C:\\\\Users\\\\Administrator\\\\Desktop\\\\lib\",\n                        \"dataServerType\": 0,\n                        \"status\": \"Ready\",\n                        \"rpStoreLibraryInfo\": {\n                            \"copyId\": 0,\n                            \"archGroupId\": 0,\n                            \"flags\": 0,\n                            \"commCellId\": 0,\n                            \"minSpacePerRPStoreGB\": 0,\n                            \"origRPStoreId\": 0,\n                            \"rpStoreId\": 0,\n                            \"maxSpacePerRPStoreGB\": 0,\n                            \"intervalWindow\": {}\n                        },\n                        \"mountPathSummary\": {\n                            \"libraryName\": \"New Disk SPLibrary\",\n                            \"avgMediaConsumedPerDay\": 0,\n                            \"totalDeduplicationAppSize\": 0,\n                            \"avgDataWrittenPerDayMB\": 0,\n                            \"totalReserveSpaceMB\": 0,\n                            \"lastNumDays\": 0,\n                            \"libraryId\": 16,\n                            \"totalSpace\": 0,\n                            \"totalValidData\": 0,\n                            \"estimatedSpaceRunoutDays\": 0,\n                            \"warningWaterMark\": 0,\n                            \"totalFreeSpace\": 0,\n                            \"avgMediaFreedPerDay\": 0,\n                            \"totalDataWritten\": 0,\n                            \"avgCapacityFreedMB\": 0,\n                            \"lowWaterMark\": 0,\n                            \"numberOfWriters\": 0,\n                            \"attribute\": 0,\n                            \"totalAppSize\": 0,\n                            \"totalDeduplicationDataWritten\": 0\n                        },\n                        \"deviceInfo\": {\n                            \"name\": \"Device_16\",\n                            \"id\": 16\n                        }\n                    }\n                ],\n                \"library\": {\n                    \"libraryName\": \"New Disk SPLibrary\",\n                    \"_type_\": 9,\n                    \"libraryId\": 16\n                },\n                \"magLibSummary\": {\n                    \"associatedMediaAgents\": \"\",\n                    \"bytesBackedupInLast24H\": \"\",\n                    \"lastDayThroughput\": \"\",\n                    \"isOnline\": \"\",\n                    \"backupReservations\": 0,\n                    \"bytesBackedupInLast1H\": \"\",\n                    \"lastRestoreTime\": \"\",\n                    \"onlineMountPaths\": \"\",\n                    \"lastBackupTime\": \"\",\n                    \"totalAvailableSpace\": \"\",\n                    \"lastHourThroughput\": \"\",\n                    \"totalFreeSpace\": \"\",\n                    \"totalCapacity\": \"\",\n                    \"auxiliaryCopyWriteReservations\": 0,\n                    \"numOfMountPath\": 0,\n                    \"totalNumberOfWriteReservations\": 0,\n                    \"mountPathUsage\": \"\"\n                }\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Storage Pool",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePoolId = postman.getEnvironmentVariable(\"storagePoolId\");",
+							"postman.setEnvironmentVariable(\"storagePoolId\",storagePoolId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if(tests[\"Response Body contains error code\"] = responseBody.has(\"errorCode\"))",
+							"{",
+							"    console.log(\"The error code is: \",jsonData.error.errorCode);",
+							"    console.log(\"The error message is: \",jsonData.error.erroMessage);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/StoragePool/{{storagePoolId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePool",
+						"{{storagePoolId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

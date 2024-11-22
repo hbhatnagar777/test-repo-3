@@ -1,0 +1,1 @@
+START /wait install_windows_update.bat

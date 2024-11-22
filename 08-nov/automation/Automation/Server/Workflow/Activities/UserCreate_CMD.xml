@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_SetActivityRequest>
+    <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+    <activity cellClass=""
+        className="commvault.cte.workflow.activities.CustomRemoteCommandActivity"
+        definition="&lt;?xml version='1.0' encoding='UTF-8'?>&lt;Workflow_CustomRemoteCommandDefinition password=&quot;&quot; startUpPath=&quot;&quot; inputs=&quot;&amp;lt;inputs>&amp;lt;username class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;email class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;fullname class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;password class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;/inputs>&quot; host=&quot;&quot; arguments=&quot;user -u java:{activity.getInput(&amp;quot;username&amp;quot;)}:java  -p java:{activity.getInput(&amp;quot;password&amp;quot;)}:java -fn &amp;quot;java:{activity.getInput(&amp;quot;fullname&amp;quot;)}:java&amp;quot; -e &amp;quot;java:{activity.getInput(&amp;quot;email&amp;quot;)}:java&amp;quot; -tk xpath:{/workflow/system/token}&quot; user=&quot;&quot; command=&quot;qcreate&quot; />"
+        description="creates a user via the command line" displayName=""
+        flags="0" icon="" inbound="1" outbound="1" schema="">
+        <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+        <activity activityId="0" activityName="UserCreate_CMD"
+            schemaId="0" schemaNamespace="commvault.cte.workflow.activities"/>
+        <activityLocation locationType="0">
+            <location schemaLocationId="1" schemaLocationUrl="workflow_activities.jar"/>
+        </activityLocation>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0" name="" type=""/>
+            <inputs className="" defaultValue="" listType="0" name="" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="username" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    name="email" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    name="fullname" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    name="password" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+    </activity>
+</Workflow_SetActivityRequest>

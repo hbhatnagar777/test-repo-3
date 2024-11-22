@@ -1,0 +1,1759 @@
+{
+	"info": {
+		"_postman_id": "32a94896-a0b9-40ce-bf3a-7a3dbc826a10",
+		"name": "ObjectStore-FileandFolderOperations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Environment Setup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"FolderName\", \"DemoFolder\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileData\", \"Demo File Content\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileSize\", \"17\");",
+							"",
+							"postman.setEnvironmentVariable(\"SecondFileSize\", \"34\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileModifiedtime\", \"1481595468\");",
+							"",
+							"postman.setEnvironmentVariable(\"ParentFolderPath\", \"XERlbW9Gb2xkZXI=\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName1\", \"RGVtb0ZpbGUxLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName2\", \"RGVtb0ZpbGUyLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"ShareParentFolderPath\", \"XA==\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/rest_api_authentication.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Create an ObjectStore",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"RootGuid\", jsonData.edgeDriveInfo.rootGUID);",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"FolderName\", \"DemoFolder\");",
+							"",
+							"postman.setEnvironmentVariable(\"SecondFolderName\", \"DemoFolder2\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileData\", \"Demo File Content\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileSize\", \"17\");",
+							"",
+							"postman.setEnvironmentVariable(\"SecondFileSize\", \"34\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileModifiedtime\", \"1481595468\");",
+							"",
+							"postman.setEnvironmentVariable(\"ParentFolderPath\", \"XERlbW9Gb2xkZXI=\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName1\", \"RGVtb0ZpbGUxLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName2\", \"RGVtb0ZpbGUyLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"ShareParentFolderPath\", \"XA==\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore?type=testcontentstore",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "testcontentstore"
+						}
+					]
+				},
+				"description": "Use this operation to create an ObjectStore.\r\n\r\nhttp://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/put_contentstore.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Folder by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"FOLDER_GUID\", jsonData.fileResource.GUID);",
+							"",
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains folder name\"] = responseBody.has(\"name\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<App_FileResourceInfo name=\"{{FolderName}}\"/>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{RootGuid}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{RootGuid}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_folder_by_folderid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Folder by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"SECONDFOLDER_GUID\", jsonData.fileResource.GUID);",
+							"",
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains folder name\"] = responseBody.has(\"name\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\":\"{{SecondFolderName}}\",\n  \"parentPath\":\"\\\\\"\n}\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/action/createfolder",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"action",
+						"createfolder"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_folder_by_folderpath.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "View Folder Properties by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains folder name\"] = responseBody.has(\"name\");",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FOLDER_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FOLDER_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_file_properties_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "View Folder Properties by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains folder name\"] = responseBody.has(\"name\");",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/action/metadata?path=%5C{{FolderName}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"action",
+						"metadata"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5C{{FolderName}}"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_file_properties_by_filepath.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload a File",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"FILE1_GUID\", jsonData.fileGUID);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains fileGUID\"] = responseBody.has(\"fileGUID\");",
+							"",
+							"tests[\"Response Body contains requestId\"] = responseBody.has(\"requestId\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "FileName",
+						"value": "{{FileName1}}"
+					},
+					{
+						"key": "ParentFolderPath",
+						"value": "{{ParentFolderPath}}"
+					},
+					{
+						"key": "FileModifiedtime",
+						"value": "{{FileModifiedtime}}"
+					},
+					{
+						"key": "FileSize",
+						"value": "{{FileSize}}"
+					},
+					{
+						"key": "FileEOF",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{FileData}}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/action/upload?uploadType=fullFile",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"action",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "uploadType",
+							"value": "fullFile"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_full_upload.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload a File in Chunks (1)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"RequestId\", jsonData.requestId);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains chunkOffset\"] = responseBody.has(\"chunkOffset\");",
+							"",
+							"tests[\"Response Body contains requestId\"] = responseBody.has(\"requestId\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "FileName",
+						"value": "{{FileName2}}"
+					},
+					{
+						"key": "ParentFolderPath",
+						"value": "{{ParentFolderPath}}"
+					},
+					{
+						"key": "FileModifiedtime",
+						"value": "{{FileModifiedtime}}"
+					},
+					{
+						"key": "FileSize",
+						"value": "{{SecondFileSize}}"
+					},
+					{
+						"key": "FileEOF",
+						"value": "0"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{FileData}}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/action/upload?uploadType=chunkedFile&forceRestart=true",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"action",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "uploadType",
+							"value": "chunkedFile"
+						},
+						{
+							"key": "forceRestart",
+							"value": "true"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_upload_header_request.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload a File in Chunks (2)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"FILE2_GUID\", jsonData.fileGUID);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains chunkOffset\"] = responseBody.has(\"chunkOffset\");",
+							"",
+							"tests[\"Response Body contains fileGUID\"] = responseBody.has(\"fileGUID\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "FileEOF",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{FileData}}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/action/upload?uploadType=chunkedFile&requestId={{RequestId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"action",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "uploadType",
+							"value": "chunkedFile"
+						},
+						{
+							"key": "requestId",
+							"value": "{{RequestId}}"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_upload_chunk_request.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Download a File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FILE1_GUID}}/action/download",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FILE1_GUID}}",
+						"action",
+						"download"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_download_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Download a File by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/action/download?path=%5CDemoFolder%5CDemoFile1.doc",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"action",
+						"download"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5CDemoFolder%5CDemoFile1.doc"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_download_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Preview a File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FILE1_GUID}}/action/preview",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FILE1_GUID}}",
+						"action",
+						"preview"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_preview_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Rename a File by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"path\":\"\\\\DemoFolder\\\\DemoFile2.doc\",\n  \"name\":\"DemoFile2Renamed.doc\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/action/rename",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"action",
+						"rename"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_folder_rename.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Rename a File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\":\"DemoFile1Renamed.doc\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FILE1_GUID}}/action/rename",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FILE1_GUID}}",
+						"action",
+						"rename"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/put_contentstore_folder_rename.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Custom Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"customProps\":{\r\n      \"nameValues\":[\r\n         {\r\n            \"name\":\"testproperty1\",\r\n            \"value\":\"testvalue1\"\r\n         },\r\n         {\r\n            \"name\":\"testproperty2\",\r\n            \"value\":\"testvalue2\"\r\n         }\r\n      ]\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FILE1_GUID}}/properties",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FILE1_GUID}}",
+						"properties"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_custom_prop_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "View Custom Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body Contains Custom Property\"] = responseBody.has(\"testproperty1\");",
+							"",
+							"tests[\"Response Body contains Property Value\"] = responseBody.has(\"testvalue1\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FILE1_GUID}}/properties?propertyFilter=testproperty1",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FILE1_GUID}}",
+						"properties"
+					],
+					"query": [
+						{
+							"key": "propertyFilter",
+							"value": "testproperty1"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_custom_prop_filter_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Custom Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"fileFolderInfo\":[\r\n      {\r\n         \"fileGUID\":\"{{FILE1_GUID}}\"\r\n      }\r\n   ],\r\n   \"customProps\":{\r\n      \"nameValues\":[\r\n         {\r\n            \"name\":\"testproperty1\",\r\n            \"value\":\"testvalue1\"\r\n         },\r\n         {\r\n            \"name\":\"testproperty2\",\r\n            \"value\":\"testvalue2\"\r\n         }\r\n      ]\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/properties",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"properties"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_contentstore_custom_property.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Tags",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"values\":\"gold,silver\",\r\n   \"fileFolderInfo\":[\r\n      {\r\n         \"fileGUID\":\"{{FILE1_GUID}}\"\r\n      }\r\n   ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/tags",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"tags"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_tag_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "List Tags",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body Contains Tags\"] = responseBody.has(\"tags\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FILE1_GUID}}/tags",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FILE1_GUID}}",
+						"tags"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_tag_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Tags",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"values\":\"gold,silver\",\r\n   \"fileFolderInfo\":[\r\n      {\r\n         \"fileGUID\":\"{{FILE1_GUID}}\"\r\n      }\r\n   ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/tags",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"tags"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_contentstore_tag.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "View File Versions by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"//postman.setEnvironmentVariable(\"versionId\", jsonData.fileResources[0].versionGUID);",
+							"",
+							"//tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"//tests[\"Response Body contains parentPath\"] = responseBody.has(\"\\\\DemoFolder\");",
+							"",
+							"//tests[\"Response Body contains parentGuid\"] = responseBody.has(\"parentGuid\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FILE1_GUID}}/versions",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FILE1_GUID}}",
+						"versions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View File Versions by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"//postman.setEnvironmentVariable(\"versionId\", jsonData.fileResources[0].versionGUID);",
+							"",
+							"//tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"//tests[\"Response Body contains parentPath\"] = responseBody.has(\"\\\\DemoFolder\");",
+							"",
+							"//tests[\"Response Body contains parentGuid\"] = responseBody.has(\"parentGuid\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/versions?path=%5C{{FolderName}}%5CDemoFile1Renamed.doc",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"versions"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5C{{FolderName}}%5CDemoFile1Renamed.doc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download a File Version",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/plain"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/version/{{versionId}}/action/download",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"version",
+						"{{versionId}}",
+						"action",
+						"download"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_download_version_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FILE1_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FILE1_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_contentstore_folder.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Move a File by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"path\":\"\\\\DemoFolder\\\\DemoFile2Renamed.doc\",\n  \"parentPath\":\"\\\\\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/action/move",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"action",
+						"move"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_folder_move.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Move a File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"parentGuid\":\"{{RootGuid}}\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FILE2_GUID}}/action/move",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FILE2_GUID}}",
+						"action",
+						"move"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/put_contentstore_folder_move.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Folder Contents by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains a File\"] = responseBody.has(\"DemoFile2Renamed.doc\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "text/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/folder/{{RootGuid}}/action/search",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"folder",
+						"{{RootGuid}}",
+						"action",
+						"search"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_search_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Folder Contents by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains a File\"] = responseBody.has(\"DemoFile2Renamed.doc\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "text/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/folder/{{RootGuid}}/action/search",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"folder",
+						"{{RootGuid}}",
+						"action",
+						"search"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_search_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "List Folder Contents by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains a File\"] = responseBody.has(\"DemoFile2Renamed.doc\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/folder/{{RootGuid}}/action/list",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"folder",
+						"{{RootGuid}}",
+						"action",
+						"list"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_list_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "List Folder Contents by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains a File\"] = responseBody.has(\"DemoFile2Renamed.doc\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/action/list?path=%5C",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"action",
+						"list"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5C"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_list_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a File by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"path\":\"\\\\DemoFile2Renamed.doc\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/action/delete",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"action",
+						"delete"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_contentstore_folder.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Folder2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{SECONDFOLDER_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{SECONDFOLDER_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_contentstore_folder.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Folder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FOLDER_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FOLDER_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_contentstore_folder.htm"
+			},
+			"response": []
+		}
+	]
+}

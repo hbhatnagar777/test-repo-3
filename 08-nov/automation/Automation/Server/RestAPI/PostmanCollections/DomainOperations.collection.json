@@ -1,0 +1,839 @@
+{
+	"info": {
+		"_postman_id": "7ddb9b04-f1c3-4bec-9f20-e4a7a753881c",
+		"name": "Domain Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4331195"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"TOKEN\", jsonData.token);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"TOKEN\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Domain",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"errorCode is 0\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"operation\": 1,\r\n    \"provider\": {\r\n        \"serviceType\": 2,\r\n        \"flags\": 1,\r\n        \"bPassword\": \"{{ldapPassword}}\",\r\n        \"login\": \"{{ldapUser}}\",\r\n        \"enabled\": 1,\r\n        \"useSecureLdap\": 0,\r\n        \"connectName\": \"{{ldapDomain}}\",\r\n        \"bLogin\": \"{{ldapUser}}\",\r\n        \"shortName\": {\r\n            \"domainName\": \"{{ldapNetBIOS}}\"\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/DomainController",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"DomainController"
+					]
+				},
+				"description": "<h2>Description</h2>\r\nThis operation updates a domain.\r\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_domain.htm)"
+			},
+			"response": [
+				{
+					"name": "Domain",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"operation\": 1,\n    \"provider\": {\n        \"serviceType\": 2,\n        \"flags\": 0,\n        \"bPassword\": \"################\",\n        \"login\": \"admin\",\n        \"enabled\": 1,\n        \"useSecureLdap\": 0,\n        \"connectName\": \"testAD001\",\n        \"bLogin\": \"admin\",\n        \"shortName\": {\n            \"domainName\": \"mycompany\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/CommCell/DomainController",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"CommCell",
+								"DomainController"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "35",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 07 Mar 2018 03:29:31 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"errorMessage\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Domain",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"// postman.setEnvironmentVariable(\"domainId\", jsonData.providers[0].shortName.id);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"providersExists = responseBody.has(\"providers\");",
+							"tests[\"Response Body contains providersInfo\"] = providersExists;",
+							"",
+							"if(providersExists) {",
+							"    createdDomain = jsonData.providers.filter( provider => {return provider.shortName.domainName == postman.getEnvironmentVariable('ldapNetBIOS') });",
+							"    ",
+							"    tests[\"Domain created successfully\"] = createdDomain && createdDomain.length;",
+							"    ",
+							"    if(createdDomain && createdDomain.length) {",
+							"        postman.setEnvironmentVariable(\"domainId\", createdDomain[0].shortName.id);",
+							"        tests[\"Created Domain has correct bLogin\"] = createdDomain[0].bLogin == postman.getEnvironmentVariable('ldapUser');",
+							"        tests[\"Created Domain has correct connectName\"] = createdDomain[0].connectName == postman.getEnvironmentVariable('ldapDomain') ;",
+							"    }",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/DomainController",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"DomainController"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of domains registered with the CommServe computer.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_domain.htm)"
+			},
+			"response": [
+				{
+					"name": "Domain",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/CommCell/DomainController",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"CommCell",
+								"DomainController"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1079",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Mar 2018 04:49:03 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"providers\": [\n        {\n            \"serviceType\": 2,\n            \"flags\": 0,\n            \"description\": \"\",\n            \"login\": \"gbuilder\",\n            \"enabled\": 1,\n            \"trustedHostUser\": \"###########\",\n            \"password\": \"###################\",\n            \"bTrustedHostUser\": \"\",\n            \"useSecureLdap\": 0,\n            \"connectName\": \"#######\",\n            \"port\": 0,\n            \"bLogin\": \"####\",\n            \"tppm\": {\n                \"enable\": false,\n                \"tppmType\": 4,\n                \"proxyInformation\": {\n                    \"portNumber\": 0,\n                    \"proxyEntity\": {\n                        \"clientName\": \"0\",\n                        \"clientId\": 0,\n                        \"_type_\": 3\n                    }\n                }\n            },\n            \"resourceProvider\": {\n                \"domainName\": \"Qinetix Commcell\",\n                \"id\": 0\n            },\n            \"shortName\": {\n                \"domainName\": \"###########\",\n                \"id\": 1\n            }\n        },\n        {\n            \"serviceType\": 2,\n            \"flags\": 0,\n            \"description\": \"\",\n            \"login\": \"administrator\",\n            \"enabled\": 1,\n            \"trustedHostUser\": \"administrator\",\n            \"password\": \"#####################\",\n            \"bTrustedHostUser\": \"\",\n            \"useSecureLdap\": 0,\n            \"connectName\": \"############\",\n            \"port\": 0,\n            \"bLogin\": \"administrator\",\n            \"tppm\": {\n                \"enable\": false,\n                \"tppmType\": 4,\n                \"proxyInformation\": {\n                    \"portNumber\": 0,\n                    \"proxyEntity\": {\n                        \"clientName\": \"0\",\n                        \"clientId\": 0,\n                        \"_type_\": 3\n                    }\n                }\n            },\n            \"resourceProvider\": {\n                \"domainName\": \"Qinetix Commcell\",\n                \"id\": 0\n            },\n            \"shortName\": {\n                \"domainName\": \"##########\",\n                \"id\": 2\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Domain",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"errorCode is 0\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"operation\": 3,\r\n    \"provider\": {\r\n        \"serviceType\": 2,\r\n        \"flags\": 1,\r\n        \"bPassword\": \"{{ldapPassword}}\",\r\n        \"login\": \"{{ldapUser}}\",\r\n        \"enabled\": 0,\r\n        \"useSecureLdap\": 0,\r\n        \"connectName\": \"{{ldapDomain}}\",\r\n        \"bLogin\": \"{{ldapUser}}\",\r\n        \"shortName\": {\r\n            \"domainName\": \"{{ldapNetBIOS}}\",\r\n            \"id\": {{domainId}}\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/DomainController",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"DomainController"
+					]
+				},
+				"description": "<h2>Description</h2>\r\nThis operation updates a domain.\r\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_domain.htm)"
+			},
+			"response": [
+				{
+					"name": "Domain",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"operation\": 1,\n    \"provider\": {\n        \"serviceType\": 2,\n        \"flags\": 0,\n        \"bPassword\": \"###########\",\n        \"login\": \"admin\",\n        \"enabled\": 1,\n        \"useSecureLdap\": 0,\n        \"connectName\": \"testAD001\",\n        \"bLogin\": \"admin\",\n        \"shortName\": {\n            \"domainName\": \"mycompany\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/CommCell/DomainController",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"CommCell",
+								"DomainController"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "35",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 07 Mar 2018 03:29:31 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"errorMessage\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Domain",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"// postman.setEnvironmentVariable(\"domainId\", jsonData.providers[0].shortName.id);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains providersInfo\"] = responseBody.has(\"providers\");",
+							"if(responseBody.has(\"providers\")) {",
+							"    createdDomain = jsonData.providers.filter( provider => {return provider.shortName.id == parseInt(postman.getEnvironmentVariable('domainId')) });",
+							"    ",
+							"    tests[\"Domain exists\"] = createdDomain && createdDomain.length;",
+							"    ",
+							"    if(createdDomain && createdDomain.length) {",
+							"        tests[\"useSecureLdap updated successfully\"] = createdDomain[0].enabled == 0;",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/DomainController",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"DomainController"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of domains registered with the CommServe computer.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_domain.htm)"
+			},
+			"response": [
+				{
+					"name": "Domain",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/CommCell/DomainController",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"CommCell",
+								"DomainController"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1079",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Mar 2018 04:49:03 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"providers\": [\n        {\n            \"serviceType\": 2,\n            \"flags\": 0,\n            \"description\": \"\",\n            \"login\": \"#########\",\n            \"enabled\": 1,\n            \"trustedHostUser\": \"###########\",\n            \"password\": \"###############################\",\n            \"bTrustedHostUser\": \"\",\n            \"useSecureLdap\": 0,\n            \"connectName\": \"#############\",\n            \"port\": 0,\n            \"bLogin\": \"############\",\n            \"tppm\": {\n                \"enable\": false,\n                \"tppmType\": 4,\n                \"proxyInformation\": {\n                    \"portNumber\": 0,\n                    \"proxyEntity\": {\n                        \"clientName\": \"0\",\n                        \"clientId\": 0,\n                        \"_type_\": 3\n                    }\n                }\n            },\n            \"resourceProvider\": {\n                \"domainName\": \"Qinetix Commcell\",\n                \"id\": 0\n            },\n            \"shortName\": {\n                \"domainName\": \"#################\",\n                \"id\": 1\n            }\n        },\n        {\n            \"serviceType\": 2,\n            \"flags\": 0,\n            \"description\": \"\",\n            \"login\": \"administrator\",\n            \"enabled\": 1,\n            \"trustedHostUser\": \"administrator\",\n            \"password\": \"##################\",\n            \"bTrustedHostUser\": \"\",\n            \"useSecureLdap\": 0,\n            \"connectName\": \"################\",\n            \"port\": 0,\n            \"bLogin\": \"###########\",\n            \"tppm\": {\n                \"enable\": false,\n                \"tppmType\": 4,\n                \"proxyInformation\": {\n                    \"portNumber\": 0,\n                    \"proxyEntity\": {\n                        \"clientName\": \"0\",\n                        \"clientId\": 0,\n                        \"_type_\": 3\n                    }\n                }\n            },\n            \"resourceProvider\": {\n                \"domainName\": \"Qinetix Commcell\",\n                \"id\": 0\n            },\n            \"shortName\": {\n                \"domainName\": \"COMMVAULT365\",\n                \"id\": 2\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete Domain",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"errorCode is 0\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/DomainController/{{domainId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"DomainController",
+						"{{domainId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\r\nThis operation deletes a domain. \r\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_domain.htm)"
+			},
+			"response": [
+				{
+					"name": "Domain",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/CommCell/DomainController/2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"CommCell",
+								"DomainController",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "35",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Mar 2018 15:30:08 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"errorMessage\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Domain",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"providersExists = responseBody.has(\"providers\");",
+							"",
+							"if(providersExists) {",
+							"    console.log(\"Providers array exists\");",
+							"    createdDomain = jsonData.providers.filter( provider => {return provider.shortName.id == parseInt(postman.getEnvironmentVariable('domainId')) });",
+							"    tests[\"Domain deleted successfully\"] = !(createdDomain && createdDomain.length);",
+							"} else {",
+							"    tests[\"Domain deleted successfully\"] = !providersExists;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/DomainController",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"DomainController"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of domains registered with the CommServe computer.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_domain.htm)"
+			},
+			"response": [
+				{
+					"name": "Domain",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/CommCell/DomainController",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"CommCell",
+								"DomainController"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1079",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Mar 2018 04:49:03 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"providers\": [\n        {\n            \"serviceType\": 2,\n            \"flags\": 0,\n            \"description\": \"\",\n            \"login\": \"##############\",\n            \"enabled\": 1,\n            \"trustedHostUser\": \"##############\",\n            \"password\": \"#####################\",\n            \"bTrustedHostUser\": \"\",\n            \"useSecureLdap\": 0,\n            \"connectName\": \"#################\",\n            \"port\": 0,\n            \"bLogin\": \"gbuilder\",\n            \"tppm\": {\n                \"enable\": false,\n                \"tppmType\": 4,\n                \"proxyInformation\": {\n                    \"portNumber\": 0,\n                    \"proxyEntity\": {\n                        \"clientName\": \"0\",\n                        \"clientId\": 0,\n                        \"_type_\": 3\n                    }\n                }\n            },\n            \"resourceProvider\": {\n                \"domainName\": \"Qinetix Commcell\",\n                \"id\": 0\n            },\n            \"shortName\": {\n                \"domainName\": \"###############\",\n                \"id\": 1\n            }\n        },\n        {\n            \"serviceType\": 2,\n            \"flags\": 0,\n            \"description\": \"\",\n            \"login\": \"administrator\",\n            \"enabled\": 1,\n            \"trustedHostUser\": \"administrator\",\n            \"password\": \"###################\",\n            \"bTrustedHostUser\": \"\",\n            \"useSecureLdap\": 0,\n            \"connectName\": \"#####################\",\n            \"port\": 0,\n            \"bLogin\": \"administrator\",\n            \"tppm\": {\n                \"enable\": false,\n                \"tppmType\": 4,\n                \"proxyInformation\": {\n                    \"portNumber\": 0,\n                    \"proxyEntity\": {\n                        \"clientName\": \"0\",\n                        \"clientId\": 0,\n                        \"_type_\": 3\n                    }\n                }\n            },\n            \"resourceProvider\": {\n                \"domainName\": \"Qinetix Commcell\",\n                \"id\": 0\n            },\n            \"shortName\": {\n                \"domainName\": \"COMMVAULT365\",\n                \"id\": 2\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"TOKEN\"); ",
+							"postman.setEnvironmentVariable(\"TOKEN\", token);",
+							"console.log(\"value of token is:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

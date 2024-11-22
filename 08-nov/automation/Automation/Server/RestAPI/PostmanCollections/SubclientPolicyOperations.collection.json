@@ -1,0 +1,515 @@
+{
+	"info": {
+		"_postman_id": "fb705db4-ed7f-4612-b9ac-7f6191e7b2b7",
+		"name": "Subclient Policy Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"snasim.abc@xyz.com\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "New Subclient Policies",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientName = postman.getEnvironmentVariable(\"clientName\"); ",
+							"postman.setEnvironmentVariable(\"clientName\", clientName);",
+							"var clientId = postman.getEnvironmentVariable(\"clientId\"); ",
+							"postman.setEnvironmentVariable(\"clientId\", clientId);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"jsonData = JSON.parse(responseBody)",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Response Body has an error Message\"] = responseBody.has(\"errorMessage\");",
+							"if (jsonData.error.errorCode === 0 )",
+							"{",
+							"    console.log(\"Operation was successful\");",
+							"}",
+							"postman.setEnvironmentVariable(\"subclientPolicyId\",jsonData.subclientPolicy.subclientPolicyEntity.subclientPolicyId);",
+							"postman.setEnvironmentVariable(\"subclientPolicyName\",jsonData.subclientPolicy.subclientPolicyEntity.subclientPolicyName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"subclientPolicy\": {\r\n\r\n        \"idaType\": 2,\r\n        \"associationsOperationType\": 2,\r\n        \"dissociateBackupsets\": false,\r\n        \"subclientPolicyEntity\": {\r\n\r\n            \"_type_\": 65,\r\n            \"subclientPolicyName\": \"NewmanTesting\"\r\n\r\n        }\r\n    },\r\n\r\n    \"subClients\": [\r\n\r\n        {\r\n\r\n            \"subClientEntity\": {\r\n\r\n                \"applicationId\": 33,\r\n                \"appName\": \"File System\",\r\n                \"subclientName\": \"default\"\r\n\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/SubclientPolicies",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SubclientPolicies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subclient Policies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Response Body has an error Message\"] = responseBody.has(\"errorMessage\");",
+							"if (jsonData.error.errorCode === 0 )",
+							"{",
+							"    console.log(\"Operation was successful\");",
+							"    tests[\"ResponseBody has subClientPolicies\"] = responseBody.has(\"subClientPolicies\");",
+							"    tests[\"ResponseBody has subclientPolicyEntity\"] = responseBody.has(\"subclientPolicyEntity\");",
+							"    ",
+							"}",
+							"tests[\"Newly created Subclient Policy is present\"] = (function() {",
+							"    for( i=0; i < jsonData.subClientPolicies.length; i++)",
+							"        if (jsonData.subClientPolicies[i].subclientPolicyEntity.subclientPolicyId == postman.getEnvironmentVariable(\"subclientPolicyId\"))",
+							"            return true;",
+							"    return false;",
+							"})();"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/SubclientPolicies",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SubclientPolicies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subclient Policy Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Response Body has an error Message\"] = responseBody.has(\"errorMessage\");",
+							"if (jsonData.error.errorCode === 0)",
+							"{",
+							"    var backupsetid = jsonData.subClientPoliciesInfo.subClientPolicy.backupSetEntity.backupsetId ;",
+							"    var backupsetName = jsonData.subClientPoliciesInfo.subClientPolicy.backupSetEntity.backupsetName ;",
+							"    var clientName = jsonData.subClientPoliciesInfo.subClientPolicy.subClientList[0].subClientEntity.clientName ;",
+							"    var subclientName = jsonData.subClientPoliciesInfo.subClientPolicy.subClientList[0].subClientEntity.subclientName ;",
+							"    console.log(backupsetid,backupsetName,clientName,subclientName) ;",
+							"    tests[\"Response Body has subClientPoliciesInfo\"] = responseBody.has(\"subClientPoliciesInfo\");",
+							"    tests[\"Response Body has subClientPolicy\"] = responseBody.has(\"subClientPolicy\");",
+							"    tests[\"Response Body has subClientList\"] = responseBody.has(\"subClientList\");",
+							"    tests[\"Response Body has subclientPolicyEntity\"] = responseBody.has(\"subclientPolicyEntity\");",
+							"    return \"Operation was successful\" ;",
+							"    ",
+							"    ",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/xml",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/SubclientPolicies/{{subclientPolicyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SubclientPolicies",
+						"{{subclientPolicyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Subclient Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;    ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Error code is 0\"] = jsonData.error.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/SubclientPolicies/{{subclientPolicyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SubclientPolicies",
+						"{{subclientPolicyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate subclient policy deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Response Body has an error Message\"] = responseBody.has(\"errorMessage\");",
+							"if (jsonData.error.errorCode === 0 )",
+							"{",
+							"    console.log(\"Operation was successful\");",
+							"    tests[\"ResponseBody has subClientPolicies\"] = responseBody.has(\"subClientPolicies\");",
+							"    tests[\"ResponseBody has subclientPolicyEntity\"] = responseBody.has(\"subclientPolicyEntity\");",
+							"    ",
+							"}",
+							"tests[\"Newly created Subclient Policy has been deleted.\"] = (function() {",
+							"    for( i=0; i < jsonData.subClientPolicies.length; i++)",
+							"        if (jsonData.subClientPolicies[i].subclientPolicyEntity.subclientPolicyId == postman.getEnvironmentVariable(\"subclientPolicyId\"))",
+							"            return false;",
+							"    return true;",
+							"})();"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/xml",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/SubclientPolicies",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SubclientPolicies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

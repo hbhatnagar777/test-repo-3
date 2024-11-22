@@ -1,0 +1,2249 @@
+<CustomReport>
+  <report>
+    <customReportName>Performance_Automation_Reports</customReportName>
+  </report>
+  <pages>
+    <Page>
+      <pageName>MachineStats</pageName>
+      <isDefault>true</isDefault>
+      <pageTitle>
+        <text>Machine Stats</text>
+      </pageTitle>
+      <dataSets>
+        <dataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>AutomationJobPerformance_Machine_default</dataSetName>
+              <dataSetGuid>7c07e452-6176-4f93-f7d5-2b2f5b339d6e</dataSetGuid>
+            </dataSet>
+            <endpoint>DATACUBE</endpoint>
+            <shared>false</shared>
+            <dataSources />
+            <allColumns>false</allColumns>
+            <fields />
+            <GetOperation>
+              <parameters />
+              <sqlText />
+              <timeout>5</timeout>
+              <postQueryFilter>true</postQueryFilter>
+              <rDataSetQuery />
+              <rPlotQuery />
+            </GetOperation>
+            <description />
+            <queryPlan>
+              <offline>false</offline>
+              <retentionDays>1</retentionDays>
+              <versions>
+                <CommCellVersion>ALL</CommCellVersion>
+              </versions>
+            </queryPlan>
+            <version>33</version>
+            <guid>7c07e452-6176-4f93-f7d5-2b2f5b339d6e</guid>
+            <revision />
+            <dCubeDataSet>
+              <dsId></dsId>
+              <dsName>AutomationJobPerformance_Machine</dsName>
+              <dsType>blank</dsType>
+              <dsHandler>
+                <handlerId></handlerId>
+                <handlerName>default</handlerName>
+              </dsHandler>
+            </dCubeDataSet>
+            <computedColumns>
+              <scriptName>R</scriptName>
+              <script />
+              <columnList />
+            </computedColumns>
+            <signature />
+          </DataSet>
+        </dataSet>
+      </dataSets>
+      <inputs />
+      <body>{
+    "reportComponents": [
+        {
+            "type": "FACET",
+            "dataSet": {},
+            "title": {
+                "text": ""
+            },
+            "id": "AutomationFilterss",
+            "allColumns": false,
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "filterDataField": {
+                "builder": {},
+                "viewer": {
+                    "AutomationJobPerformance_Machine_default": {
+                        "fields": [
+                            {
+                                "displayName": "CSVersion",
+                                "column": "CSVersion",
+                                "numPointsToDisplay": {
+                                    "includeAll": true,
+                                    "maxPoints": 15
+                                },
+                                "sort": {
+                                    "sortField": "Count_CSVersion",
+                                    "sortDirection": "desc"
+                                },
+                                "type": "String",
+                                "filterType": "basic",
+                                "isVisible": true,
+                                "measureDataFields": [
+                                    {
+                                        "displayName": "CSVersion",
+                                        "column": "CSVersion",
+                                        "showNumberOps": false,
+                                        "aggrTypes": [
+                                            "Count"
+                                        ],
+                                        "aggrDisplayNames": [
+                                            "CSVersion_Count"
+                                        ]
+                                    }
+                                ],
+                                "isFliterApplied": true,
+                                "showSearchBar": false,
+                                "dimensionColumnHeader": "CSVersion"
+                            },
+                            {
+                                "displayName": "BuildId",
+                                "column": "BuildId",
+                                "numPointsToDisplay": {
+                                    "includeAll": true,
+                                    "maxPoints": 15
+                                },
+                                "sort": {
+                                    "sortField": "Count_BuildId",
+                                    "sortDirection": "desc"
+                                },
+                                "type": "String",
+                                "filterType": "basic",
+                                "isVisible": true,
+                                "measureDataFields": [
+                                    {
+                                        "displayName": "BuildId",
+                                        "column": "BuildId",
+                                        "showNumberOps": false,
+                                        "aggrTypes": [
+                                            "Count"
+                                        ],
+                                        "aggrDisplayNames": [
+                                            "BuildId_Count"
+                                        ]
+                                    }
+                                ],
+                                "isFliterApplied": true,
+                                "showSearchBar": false,
+                                "dimensionColumnHeader": "BuildId"
+                            },
+                            {
+                                "displayName": "MachineName",
+                                "column": "MachineName",
+                                "numPointsToDisplay": {
+                                    "includeAll": true,
+                                    "maxPoints": 15
+                                },
+                                "sort": {
+                                    "sortField": "Count_MachineName",
+                                    "sortDirection": "desc"
+                                },
+                                "type": "String",
+                                "filterType": "basic",
+                                "isVisible": true,
+                                "measureDataFields": [
+                                    {
+                                        "displayName": "MachineName",
+                                        "column": "MachineName",
+                                        "showNumberOps": false,
+                                        "aggrTypes": [
+                                            "Count"
+                                        ],
+                                        "aggrDisplayNames": [
+                                            "MachineName_Count"
+                                        ]
+                                    }
+                                ],
+                                "isFliterApplied": true,
+                                "showSearchBar": false,
+                                "dimensionColumnHeader": "MachineName"
+                            }
+                        ],
+                        "groups": []
+                    }
+                }
+            },
+            "applyOnSelect": true,
+            "orientation": "horizontal",
+            "visible": {
+                "type": "all"
+            },
+            "collapseAllFacets": true,
+            "isDataCubeDataSet": true,
+            "showOnlyBasicFilter": true,
+            "hideHeader": true,
+            "hideComponent": false,
+            "blankComponent": false
+        },
+        {
+            "type": "CHART",
+            "dataSet": {
+                "dataSetName": "AutomationJobPerformance_Machine_default",
+                "originalDataSetName": "",
+                "dataSetGuid": "7c07e452-6176-4f93-f7d5-2b2f5b339d6e"
+            },
+            "title": {
+                "text": "Machine CPU Usage"
+            },
+            "id": "CPU",
+            "chartType": "TimeSeries",
+            "isDateTime": true,
+            "xAxisTitle": {
+                "text": "Time"
+            },
+            "yAxisTitle": {
+                "text": "CPUusage Avg "
+            },
+            "barWidthAutoOnly": false,
+            "dataSeries": [],
+            "isGrouped": false,
+            "styles": {
+                "defaultChartHeight": 350,
+                "defaultChartWidth": 1000,
+                "height": 350,
+                "width": 1000,
+                "barColor": "#6aa5e7",
+                "chartPlotOptions": {
+                    "isShowGridlines": false,
+                    "isSmoothLines": true,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": true,
+                    "isShowLabels": false,
+                    "legendPosition": "right",
+                    "stackIn3d": false,
+                    "alpha3D": 15,
+                    "beta3D": 20,
+                    "columnPadding3D": 30,
+                    "depth3D": 110
+                },
+                "barSizeAutoOnly": false
+            },
+            "sorting": [
+                {
+                    "direction": "Asc",
+                    "sortAxis": "XAxis"
+                }
+            ],
+            "seriesFormatting": [],
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "visible": {},
+            "orientation": "vertical",
+            "showCompare": false,
+            "dimensionDataField": [
+                {
+                    "column": "Time",
+                    "title": {
+                        "text": "Time"
+                    },
+                    "sortOrder": "NONE",
+                    "isNumeric": false,
+                    "type": "TimeStamp",
+                    "customGroupsAvailable": false,
+                    "numPointsToDisplay": {
+                        "maxPoints": 15,
+                        "includeAll": false
+                    },
+                    "showMinCount": false,
+                    "showTimeGrouping": true,
+                    "showHourlyGrouping": true,
+                    "onlyTimeInfo": {
+                        "onlyTimeField": false,
+                        "displayTimeInLocalTimeZone": false
+                    },
+                    "timeGrouping": "auto"
+                }
+            ],
+            "measureDataField": [
+                {
+                    "column": "CPUusage",
+                    "title": {
+                        "text": "CPUusage"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Double"
+                }
+            ],
+            "multiBars": false,
+            "isGroupBy": true,
+            "rotateXAxisLabels": true,
+            "rotateXAxisLabelsDegrees": -50,
+            "hideComponent": false,
+            "blankComponent": false
+        },
+        {
+            "type": "CHART",
+            "dataSet": {
+                "dataSetName": "AutomationJobPerformance_Machine_default",
+                "originalDataSetName": "",
+                "dataSetGuid": "7c07e452-6176-4f93-f7d5-2b2f5b339d6e"
+            },
+            "title": {
+                "text": "System 15Min Load Average"
+            },
+            "id": "Load",
+            "chartType": "TimeSeries",
+            "isDateTime": true,
+            "xAxisTitle": {
+                "text": "Time"
+            },
+            "yAxisTitle": {
+                "text": "LoadAvg15Mins Avg "
+            },
+            "barWidthAutoOnly": false,
+            "dataSeries": [],
+            "isGrouped": false,
+            "styles": {
+                "defaultChartHeight": 350,
+                "defaultChartWidth": 1000,
+                "height": 350,
+                "width": 1000,
+                "barColor": "#6aa5e7",
+                "chartPlotOptions": {
+                    "isShowGridlines": false,
+                    "isSmoothLines": true,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": true,
+                    "isShowLabels": false,
+                    "legendPosition": "right",
+                    "stackIn3d": false,
+                    "alpha3D": 15,
+                    "beta3D": 20,
+                    "columnPadding3D": 30,
+                    "depth3D": 110,
+                    "isShowLegend": true
+                },
+                "barSizeAutoOnly": false
+            },
+            "sorting": [
+                {
+                    "direction": "Asc",
+                    "sortAxis": "XAxis"
+                }
+            ],
+            "seriesFormatting": [],
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "visible": {},
+            "orientation": "vertical",
+            "showCompare": false,
+            "dimensionDataField": [
+                {
+                    "column": "Time",
+                    "title": {
+                        "text": "Time"
+                    },
+                    "sortOrder": "NONE",
+                    "isNumeric": false,
+                    "type": "TimeStamp",
+                    "customGroupsAvailable": false,
+                    "numPointsToDisplay": {
+                        "maxPoints": 15,
+                        "includeAll": false
+                    },
+                    "showMinCount": false,
+                    "showTimeGrouping": true,
+                    "showHourlyGrouping": true,
+                    "onlyTimeInfo": {
+                        "onlyTimeField": false,
+                        "displayTimeInLocalTimeZone": false
+                    },
+                    "timeGrouping": "auto"
+                }
+            ],
+            "measureDataField": [
+                {
+                    "column": "LoadAvg15Mins",
+                    "title": {
+                        "text": "LoadAvg15Mins"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Double"
+                }
+            ],
+            "multiBars": false,
+            "isGroupBy": true,
+            "rotateXAxisLabels": true,
+            "rotateXAxisLabelsDegrees": -50,
+            "hideComponent": false,
+            "blankComponent": false
+        },
+        {
+            "type": "CHART",
+            "dataSet": {
+                "dataSetName": "AutomationJobPerformance_Machine_default",
+                "originalDataSetName": "",
+                "dataSetGuid": "7c07e452-6176-4f93-f7d5-2b2f5b339d6e"
+            },
+            "title": {
+                "text": "System Memory Available"
+            },
+            "id": "Memory",
+            "chartType": "TimeSeries",
+            "isDateTime": true,
+            "xAxisTitle": {
+                "text": "Time"
+            },
+            "yAxisTitle": {
+                "text": "MemoryAvailableinMB Avg "
+            },
+            "barWidthAutoOnly": false,
+            "dataSeries": [],
+            "isGrouped": false,
+            "styles": {
+                "defaultChartHeight": 350,
+                "defaultChartWidth": 1000,
+                "height": 350,
+                "width": 1000,
+                "barColor": "#6aa5e7",
+                "chartPlotOptions": {
+                    "isShowGridlines": false,
+                    "isSmoothLines": true,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": false,
+                    "isShowLabels": false,
+                    "legendPosition": "right",
+                    "stackIn3d": false,
+                    "alpha3D": 15,
+                    "beta3D": 20,
+                    "columnPadding3D": 30,
+                    "depth3D": 110
+                },
+                "barSizeAutoOnly": false
+            },
+            "sorting": [
+                {
+                    "direction": "Asc",
+                    "sortAxis": "XAxis"
+                }
+            ],
+            "seriesFormatting": [],
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "showCompare": false,
+            "dimensionDataField": [
+                {
+                    "column": "Time",
+                    "title": {
+                        "text": "Time"
+                    },
+                    "sortOrder": "NONE",
+                    "isNumeric": false,
+                    "type": "TimeStamp",
+                    "customGroupsAvailable": false,
+                    "numPointsToDisplay": {
+                        "maxPoints": 15,
+                        "includeAll": false
+                    },
+                    "showMinCount": false,
+                    "showTimeGrouping": true,
+                    "showHourlyGrouping": true,
+                    "onlyTimeInfo": {
+                        "onlyTimeField": false,
+                        "displayTimeInLocalTimeZone": false
+                    },
+                    "timeGrouping": "auto"
+                }
+            ],
+            "measureDataField": [
+                {
+                    "column": "MemoryAvailableinMB",
+                    "title": {
+                        "text": "MemoryAvailableinMB"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "formatter": {
+                        "type": "size",
+                        "source": "mb",
+                        "target": "relative",
+                        "fmt": "comma",
+                        "customformat": "",
+                        "tofixed": 2,
+                        "customDateFormat": "",
+                        "targetWindow": "_blank",
+                        "srcTimezone": "GMT"
+                    },
+                    "type": "Double"
+                }
+            ],
+            "multiBars": false,
+            "isGroupBy": true,
+            "rotateXAxisLabels": true,
+            "rotateXAxisLabelsDegrees": -50,
+            "additionalProperties": false,
+            "hideComponent": false,
+            "blankComponent": false
+        },
+        {
+            "type": "CHART",
+            "dataSet": {
+                "dataSetName": "AutomationJobPerformance_Machine_default",
+                "originalDataSetName": "",
+                "dataSetGuid": "7c07e452-6176-4f93-f7d5-2b2f5b339d6e"
+            },
+            "title": {
+                "text": "System Queue Length"
+            },
+            "id": "QueueLength",
+            "chartType": "TimeSeries",
+            "isDateTime": true,
+            "xAxisTitle": {
+                "text": "Time"
+            },
+            "yAxisTitle": {
+                "text": "AvgDiskQueueLength Avg ,ProcessorQueueLength Avg "
+            },
+            "barWidthAutoOnly": false,
+            "dataSeries": [],
+            "isGrouped": false,
+            "styles": {
+                "defaultChartHeight": 350,
+                "defaultChartWidth": 1000,
+                "height": 350,
+                "width": 1000,
+                "barColor": "#6aa5e7",
+                "chartPlotOptions": {
+                    "isShowGridlines": false,
+                    "isSmoothLines": true,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": true,
+                    "isShowLabels": false,
+                    "legendPosition": "right",
+                    "stackIn3d": false,
+                    "alpha3D": 15,
+                    "beta3D": 20,
+                    "columnPadding3D": 30,
+                    "depth3D": 110,
+                    "isShowLegend": true
+                },
+                "barSizeAutoOnly": false
+            },
+            "sorting": [
+                {
+                    "direction": "Asc",
+                    "sortAxis": "XAxis"
+                }
+            ],
+            "seriesFormatting": [],
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "showCompare": false,
+            "dimensionDataField": [
+                {
+                    "column": "Time",
+                    "title": {
+                        "text": "Time"
+                    },
+                    "sortOrder": "NONE",
+                    "isNumeric": false,
+                    "type": "TimeStamp",
+                    "customGroupsAvailable": false,
+                    "numPointsToDisplay": {
+                        "maxPoints": 15,
+                        "includeAll": false
+                    },
+                    "showMinCount": false,
+                    "showTimeGrouping": true,
+                    "showHourlyGrouping": true,
+                    "onlyTimeInfo": {
+                        "onlyTimeField": false,
+                        "displayTimeInLocalTimeZone": false
+                    },
+                    "timeGrouping": "auto"
+                }
+            ],
+            "measureDataField": [
+                {
+                    "column": "AvgDiskQueueLength",
+                    "title": {
+                        "text": "AvgDiskQueueLength"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Double"
+                },
+                {
+                    "column": "ProcessorQueueLength",
+                    "title": {
+                        "text": "ProcessorQueueLength"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Double"
+                }
+            ],
+            "multiBars": true,
+            "isGroupBy": true,
+            "rotateXAxisLabels": true,
+            "rotateXAxisLabelsDegrees": -50,
+            "hideComponent": false,
+            "blankComponent": false
+        }
+    ],
+    "filters": {
+        "builder": {},
+        "viewer": {}
+    },
+    "autoRefreshTime": 10,
+    "reportLayout": {
+        "gridsterOpts": {
+            "columns": 12
+        },
+        "CPU": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    2,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    2,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 8
+                },
+                "position": [
+                    2,
+                    0
+                ]
+            }
+        },
+        "Load": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    10,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    10,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 8
+                },
+                "position": [
+                    10,
+                    0
+                ]
+            }
+        },
+        "Memory": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    18,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    18,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 8
+                },
+                "position": [
+                    18,
+                    0
+                ]
+            }
+        },
+        "QueueLength": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    26,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    26,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 8
+                },
+                "position": [
+                    26,
+                    0
+                ]
+            }
+        },
+        "AutomationFilterss": {
+            "desktop": {
+                "position": {
+                    "0": 0,
+                    "1": 0
+                },
+                "size": {
+                    "x": 5,
+                    "y": 2
+                }
+            }
+        }
+    }
+}</body>
+      <visible />
+    </Page>
+    <Page>
+      <pageName>ProcessStats</pageName>
+      <isDefault>false</isDefault>
+      <pageTitle>
+        <text>Process Stats</text>
+      </pageTitle>
+      <dataSets>
+        <dataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>AutomationJobPerformance_Process_default</dataSetName>
+              <dataSetGuid>34960d60-fbf8-4ca8-850b-24112140378a</dataSetGuid>
+            </dataSet>
+            <endpoint>DATACUBE</endpoint>
+            <shared>false</shared>
+            <dataSources />
+            <allColumns>false</allColumns>
+            <fields />
+            <GetOperation>
+              <parameters />
+              <sqlText />
+              <timeout>5</timeout>
+              <postQueryFilter>true</postQueryFilter>
+              <rDataSetQuery />
+              <rPlotQuery />
+            </GetOperation>
+            <description />
+            <queryPlan>
+              <offline>false</offline>
+              <retentionDays>1</retentionDays>
+              <versions>
+                <CommCellVersion>ALL</CommCellVersion>
+              </versions>
+            </queryPlan>
+            <version>33</version>
+            <guid>34960d60-fbf8-4ca8-850b-24112140378a</guid>
+            <revision />
+            <dCubeDataSet>
+              <dsId></dsId>
+              <dsName>AutomationJobPerformance_Process</dsName>
+              <dsType>blank</dsType>
+              <dsHandler>
+                <handlerId></handlerId>
+                <handlerName>default</handlerName>
+              </dsHandler>
+            </dCubeDataSet>
+            <computedColumns>
+              <scriptName>R</scriptName>
+              <script />
+              <columnList />
+            </computedColumns>
+            <signature />
+          </DataSet>
+        </dataSet>
+      </dataSets>
+      <inputs />
+      <header />
+      <body>{
+    "reportComponents": [
+        {
+            "type": "FACET",
+            "dataSet": {},
+            "title": {
+                "text": ""
+            },
+            "id": "AutomationFilters",
+            "allColumns": false,
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "visible": {},
+            "filterDataField": {
+                "builder": {},
+                "viewer": {
+                    "AutomationJobPerformance_Process_default": {
+                        "fields": [
+                            {
+                                "displayName": "CSVersion",
+                                "column": "CSVersion",
+                                "numPointsToDisplay": {
+                                    "includeAll": true,
+                                    "maxPoints": 15
+                                },
+                                "sort": {
+                                    "sortField": "Count_CSVersion",
+                                    "sortDirection": "desc"
+                                },
+                                "type": "String",
+                                "filterType": "basic",
+                                "isVisible": true,
+                                "measureDataFields": [
+                                    {
+                                        "displayName": "CSVersion",
+                                        "column": "CSVersion",
+                                        "showNumberOps": false,
+                                        "aggrTypes": [
+                                            "Count"
+                                        ],
+                                        "aggrDisplayNames": [
+                                            "CSVersion_Count"
+                                        ]
+                                    }
+                                ],
+                                "isFliterApplied": true,
+                                "showSearchBar": false,
+                                "dimensionColumnHeader": "CSVersion"
+                            },
+                            {
+                                "displayName": "BuildId",
+                                "column": "BuildId",
+                                "numPointsToDisplay": {
+                                    "includeAll": true,
+                                    "maxPoints": 15
+                                },
+                                "sort": {
+                                    "sortField": "Count_BuildId",
+                                    "sortDirection": "desc"
+                                },
+                                "type": "String",
+                                "filterType": "basic",
+                                "isVisible": true,
+                                "measureDataFields": [
+                                    {
+                                        "displayName": "BuildId",
+                                        "column": "BuildId",
+                                        "showNumberOps": false,
+                                        "aggrTypes": [
+                                            "Count"
+                                        ],
+                                        "aggrDisplayNames": [
+                                            "BuildId_Count"
+                                        ]
+                                    }
+                                ],
+                                "isFliterApplied": true,
+                                "showSearchBar": false,
+                                "dimensionColumnHeader": "BuildId"
+                            },
+                            {
+                                "displayName": "MachineName",
+                                "column": "MachineName",
+                                "numPointsToDisplay": {
+                                    "includeAll": true,
+                                    "maxPoints": 15
+                                },
+                                "sort": {
+                                    "sortField": "Count_MachineName",
+                                    "sortDirection": "desc"
+                                },
+                                "type": "String",
+                                "filterType": "basic",
+                                "isVisible": true,
+                                "measureDataFields": [
+                                    {
+                                        "displayName": "MachineName",
+                                        "column": "MachineName",
+                                        "showNumberOps": false,
+                                        "aggrTypes": [
+                                            "Count"
+                                        ],
+                                        "aggrDisplayNames": [
+                                            "MachineName_Count"
+                                        ]
+                                    }
+                                ],
+                                "isFliterApplied": true,
+                                "showSearchBar": false,
+                                "dimensionColumnHeader": "MachineName"
+                            },
+                            {
+                                "displayName": "Binary",
+                                "column": "Binary",
+                                "numPointsToDisplay": {
+                                    "includeAll": true,
+                                    "maxPoints": 15
+                                },
+                                "sort": {
+                                    "sortField": "Count_Binary",
+                                    "sortDirection": "desc"
+                                },
+                                "type": "String",
+                                "filterType": "basic",
+                                "isVisible": true,
+                                "measureDataFields": [
+                                    {
+                                        "displayName": "Binary",
+                                        "column": "Binary",
+                                        "showNumberOps": false,
+                                        "aggrTypes": [
+                                            "Count"
+                                        ],
+                                        "aggrDisplayNames": [
+                                            "Binary_Count"
+                                        ]
+                                    }
+                                ],
+                                "isFliterApplied": true,
+                                "showSearchBar": false,
+                                "dimensionColumnHeader": "Binary"
+                            },
+                            {
+                                "displayName": "ProcessId",
+                                "column": "ProcessId",
+                                "numPointsToDisplay": {
+                                    "includeAll": false,
+                                    "maxPoints": 5
+                                },
+                                "sort": {
+                                    "sortField": "Count_ProcessId",
+                                    "sortDirection": "desc"
+                                },
+                                "showNumberOps": true,
+                                "type": "Long",
+                                "filterType": "basic",
+                                "isVisible": true,
+                                "measureDataFields": [
+                                    {
+                                        "displayName": "ProcessId",
+                                        "column": "ProcessId",
+                                        "showNumberOps": false,
+                                        "aggrTypes": [
+                                            "Count"
+                                        ],
+                                        "aggrDisplayNames": [
+                                            "ProcessId_Count"
+                                        ]
+                                    }
+                                ],
+                                "isFliterApplied": true,
+                                "showSearchBar": false,
+                                "dimensionColumnHeader": "ProcessId"
+                            }
+                        ],
+                        "groups": []
+                    }
+                }
+            },
+            "applyOnSelect": true,
+            "orientation": "horizontal",
+            "collapseAllFacets": true,
+            "isDataCubeDataSet": true,
+            "showOnlyBasicFilter": true,
+            "hideHeader": true,
+            "hideComponent": false,
+            "blankComponent": false
+        },
+        {
+            "type": "CHART",
+            "dataSet": {
+                "dataSetName": "AutomationJobPerformance_Process_default",
+                "originalDataSetName": "",
+                "dataSetGuid": "34960d60-fbf8-4ca8-850b-24112140378a"
+            },
+            "title": {
+                "text": "Process CPU Usage"
+            },
+            "id": "CPU",
+            "chartType": "TimeSeries",
+            "isDateTime": true,
+            "xAxisTitle": {
+                "text": "Time"
+            },
+            "yAxisTitle": {
+                "text": "CPUusage Avg "
+            },
+            "barWidthAutoOnly": false,
+            "dataSeries": [],
+            "isGrouped": false,
+            "styles": {
+                "defaultChartHeight": 350,
+                "defaultChartWidth": 1000,
+                "height": 350,
+                "width": 1000,
+                "barColor": "#6aa5e7",
+                "chartPlotOptions": {
+                    "isShowGridlines": false,
+                    "isSmoothLines": true,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": true,
+                    "isShowLabels": false,
+                    "legendPosition": "right",
+                    "stackIn3d": false,
+                    "alpha3D": 15,
+                    "beta3D": 20,
+                    "columnPadding3D": 30,
+                    "depth3D": 110,
+                    "isShowLegend": true
+                },
+                "barSizeAutoOnly": false
+            },
+            "sorting": [
+                {
+                    "direction": "Asc",
+                    "sortAxis": "XAxis"
+                }
+            ],
+            "seriesFormatting": [],
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "visible": {},
+            "orientation": "vertical",
+            "showCompare": false,
+            "dimensionDataField": [
+                {
+                    "column": "Time",
+                    "title": {
+                        "text": "Time"
+                    },
+                    "sortOrder": "NONE",
+                    "isNumeric": false,
+                    "type": "TimeStamp",
+                    "customGroupsAvailable": false,
+                    "numPointsToDisplay": {
+                        "maxPoints": 15,
+                        "includeAll": false
+                    },
+                    "showMinCount": false,
+                    "showTimeGrouping": true,
+                    "showHourlyGrouping": true,
+                    "onlyTimeInfo": {
+                        "onlyTimeField": false,
+                        "displayTimeInLocalTimeZone": false
+                    },
+                    "timeGrouping": "auto"
+                }
+            ],
+            "measureDataField": [
+                {
+                    "column": "CPUusage",
+                    "title": {
+                        "text": "CPUusage"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Double"
+                }
+            ],
+            "multiBars": false,
+            "isGroupBy": true,
+            "rotateXAxisLabels": true,
+            "rotateXAxisLabelsDegrees": -50,
+            "hideComponent": false,
+            "blankComponent": false
+        },
+        {
+            "type": "CHART",
+            "dataSet": {
+                "dataSetName": "AutomationJobPerformance_Process_default",
+                "originalDataSetName": "",
+                "dataSetGuid": "34960d60-fbf8-4ca8-850b-24112140378a"
+            },
+            "title": {
+                "text": "Process Handle Count / Thread Count"
+            },
+            "id": "Counts",
+            "chartType": "TimeSeries",
+            "isDateTime": true,
+            "xAxisTitle": {
+                "text": "Time"
+            },
+            "yAxisTitle": {
+                "text": "HandleCount Avg ,ThreadCount Avg "
+            },
+            "barWidthAutoOnly": false,
+            "dataSeries": [],
+            "isGrouped": false,
+            "styles": {
+                "defaultChartHeight": 350,
+                "defaultChartWidth": 1000,
+                "height": 350,
+                "width": 1000,
+                "barColor": "#6aa5e7",
+                "chartPlotOptions": {
+                    "isShowGridlines": false,
+                    "isSmoothLines": true,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": true,
+                    "isShowLabels": false,
+                    "legendPosition": "right",
+                    "stackIn3d": false,
+                    "alpha3D": 15,
+                    "beta3D": 20,
+                    "columnPadding3D": 30,
+                    "depth3D": 110,
+                    "isShowLegend": true
+                },
+                "barSizeAutoOnly": false
+            },
+            "sorting": [
+                {
+                    "direction": "Asc",
+                    "sortAxis": "XAxis"
+                }
+            ],
+            "seriesFormatting": [],
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "showCompare": false,
+            "dimensionDataField": [
+                {
+                    "column": "Time",
+                    "title": {
+                        "text": "Time"
+                    },
+                    "sortOrder": "NONE",
+                    "isNumeric": false,
+                    "type": "TimeStamp",
+                    "customGroupsAvailable": false,
+                    "numPointsToDisplay": {
+                        "maxPoints": 15,
+                        "includeAll": false
+                    },
+                    "showMinCount": false,
+                    "showTimeGrouping": true,
+                    "showHourlyGrouping": true,
+                    "onlyTimeInfo": {
+                        "onlyTimeField": false,
+                        "displayTimeInLocalTimeZone": false
+                    },
+                    "timeGrouping": "auto"
+                }
+            ],
+            "measureDataField": [
+                {
+                    "column": "HandleCount",
+                    "title": {
+                        "text": "HandleCount"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Long"
+                },
+                {
+                    "column": "ThreadCount",
+                    "title": {
+                        "text": "ThreadCount"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Long"
+                }
+            ],
+            "multiBars": true,
+            "isGroupBy": true,
+            "rotateXAxisLabels": true,
+            "rotateXAxisLabelsDegrees": -50,
+            "hideComponent": false,
+            "blankComponent": false
+        },
+        {
+            "type": "CHART",
+            "dataSet": {
+                "dataSetName": "AutomationJobPerformance_Process_default",
+                "originalDataSetName": "",
+                "dataSetGuid": "34960d60-fbf8-4ca8-850b-24112140378a"
+            },
+            "title": {
+                "text": "Process Working Set"
+            },
+            "id": "WorkingSet",
+            "chartType": "TimeSeries",
+            "isDateTime": true,
+            "xAxisTitle": {
+                "text": "Time"
+            },
+            "yAxisTitle": {
+                "text": "WorkingSet Avg ,WorkingSetPrivate Avg "
+            },
+            "barWidthAutoOnly": false,
+            "dataSeries": [],
+            "isGrouped": false,
+            "styles": {
+                "defaultChartHeight": 350,
+                "defaultChartWidth": 1000,
+                "height": 350,
+                "width": 1000,
+                "barColor": "#6aa5e7",
+                "chartPlotOptions": {
+                    "isShowGridlines": false,
+                    "isSmoothLines": true,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": false,
+                    "isShowLabels": false,
+                    "legendPosition": "right",
+                    "stackIn3d": false,
+                    "alpha3D": 15,
+                    "beta3D": 20,
+                    "columnPadding3D": 30,
+                    "depth3D": 110,
+                    "isShowLegend": true
+                },
+                "barSizeAutoOnly": false
+            },
+            "sorting": [
+                {
+                    "direction": "Asc",
+                    "sortAxis": "XAxis"
+                }
+            ],
+            "seriesFormatting": [],
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "showCompare": false,
+            "dimensionDataField": [
+                {
+                    "column": "Time",
+                    "title": {
+                        "text": "Time"
+                    },
+                    "sortOrder": "NONE",
+                    "isNumeric": false,
+                    "type": "TimeStamp",
+                    "customGroupsAvailable": false,
+                    "numPointsToDisplay": {
+                        "maxPoints": 15,
+                        "includeAll": false
+                    },
+                    "showMinCount": false,
+                    "showTimeGrouping": true,
+                    "showHourlyGrouping": true,
+                    "onlyTimeInfo": {
+                        "onlyTimeField": false,
+                        "displayTimeInLocalTimeZone": false
+                    },
+                    "timeGrouping": "auto"
+                }
+            ],
+            "measureDataField": [
+                {
+                    "column": "WorkingSet",
+                    "title": {
+                        "text": "WorkingSet"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Long",
+                    "formatter": {
+                        "type": "size",
+                        "source": "bytes",
+                        "target": "relative",
+                        "fmt": "comma",
+                        "customformat": "",
+                        "tofixed": 2,
+                        "customDateFormat": "",
+                        "targetWindow": "_blank",
+                        "srcTimezone": "GMT"
+                    }
+                },
+                {
+                    "column": "WorkingSetPrivate",
+                    "title": {
+                        "text": "WorkingSetPrivate"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Long",
+                    "formatter": {
+                        "type": "size",
+                        "source": "bytes",
+                        "target": "relative",
+                        "fmt": "comma",
+                        "customformat": "",
+                        "tofixed": 2,
+                        "customDateFormat": "",
+                        "targetWindow": "_blank",
+                        "srcTimezone": "GMT"
+                    }
+                }
+            ],
+            "multiBars": true,
+            "isGroupBy": true,
+            "rotateXAxisLabels": true,
+            "rotateXAxisLabelsDegrees": -50,
+            "visible": {},
+            "orientation": "vertical",
+            "additionalProperties": false,
+            "hideComponent": false,
+            "blankComponent": false
+        },
+        {
+            "type": "CHART",
+            "dataSet": {
+                "dataSetName": "AutomationJobPerformance_Process_default",
+                "originalDataSetName": "",
+                "dataSetGuid": "34960d60-fbf8-4ca8-850b-24112140378a"
+            },
+            "title": {
+                "text": "Process Private / Virtual Set"
+            },
+            "id": "PrivateVirtual",
+            "chartType": "TimeSeries",
+            "isDateTime": true,
+            "xAxisTitle": {
+                "text": "Time"
+            },
+            "yAxisTitle": {
+                "text": "PrivateBytes Avg ,VirtualBytes Avg "
+            },
+            "barWidthAutoOnly": false,
+            "dataSeries": [],
+            "isGrouped": false,
+            "styles": {
+                "defaultChartHeight": 350,
+                "defaultChartWidth": 1000,
+                "height": 350,
+                "width": 1000,
+                "barColor": "#6aa5e7",
+                "chartPlotOptions": {
+                    "isShowGridlines": false,
+                    "isSmoothLines": true,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": false,
+                    "isShowLabels": false,
+                    "legendPosition": "right",
+                    "stackIn3d": false,
+                    "alpha3D": 15,
+                    "beta3D": 20,
+                    "columnPadding3D": 30,
+                    "depth3D": 110,
+                    "isShowLegend": true
+                },
+                "barSizeAutoOnly": false
+            },
+            "sorting": [
+                {
+                    "direction": "Asc",
+                    "sortAxis": "XAxis"
+                }
+            ],
+            "seriesFormatting": [],
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "showCompare": false,
+            "dimensionDataField": [
+                {
+                    "column": "Time",
+                    "title": {
+                        "text": "Time"
+                    },
+                    "sortOrder": "NONE",
+                    "isNumeric": false,
+                    "type": "TimeStamp",
+                    "customGroupsAvailable": false,
+                    "numPointsToDisplay": {
+                        "maxPoints": 15,
+                        "includeAll": false
+                    },
+                    "showMinCount": false,
+                    "showTimeGrouping": true,
+                    "showHourlyGrouping": true,
+                    "onlyTimeInfo": {
+                        "onlyTimeField": false,
+                        "displayTimeInLocalTimeZone": false
+                    },
+                    "timeGrouping": "auto"
+                }
+            ],
+            "measureDataField": [
+                {
+                    "column": "PrivateBytes",
+                    "title": {
+                        "text": "PrivateBytes"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Long",
+                    "formatter": {
+                        "type": "size",
+                        "source": "bytes",
+                        "target": "relative",
+                        "fmt": "comma",
+                        "customformat": "",
+                        "tofixed": 2,
+                        "customDateFormat": "",
+                        "targetWindow": "_blank",
+                        "srcTimezone": "GMT"
+                    }
+                },
+                {
+                    "column": "VirtualBytes",
+                    "title": {
+                        "text": "VirtualBytes"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Long",
+                    "formatter": {
+                        "type": "size",
+                        "source": "bytes",
+                        "target": "relative",
+                        "fmt": "comma",
+                        "customformat": "",
+                        "tofixed": 2,
+                        "customDateFormat": "",
+                        "targetWindow": "_blank",
+                        "srcTimezone": "GMT"
+                    }
+                }
+            ],
+            "multiBars": true,
+            "isGroupBy": true,
+            "rotateXAxisLabels": true,
+            "rotateXAxisLabelsDegrees": -50,
+            "visible": {},
+            "orientation": "vertical",
+            "showTopRightTooltip": false,
+            "additionalProperties": false,
+            "hideComponent": false,
+            "blankComponent": false
+        }
+    ],
+    "filters": {
+        "builder": {},
+        "viewer": {
+            "AutomationJobPerformance_Process_default": {}
+        }
+    },
+    "autoRefreshTime": 10,
+    "reportLayout": {
+        "gridsterOpts": {
+            "columns": 12
+        },
+        "CPU": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    2,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    2,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 8
+                },
+                "position": [
+                    1,
+                    0
+                ]
+            }
+        },
+        "Counts": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    10,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    10,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 8
+                },
+                "position": [
+                    9,
+                    0
+                ]
+            }
+        },
+        "WorkingSet": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    18,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    18,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 8
+                },
+                "position": [
+                    17,
+                    0
+                ]
+            }
+        },
+        "PrivateVirtual": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    26,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    26,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 8
+                },
+                "position": [
+                    25,
+                    0
+                ]
+            }
+        },
+        "AutomationFilters": {
+            "desktop": {
+                "position": {
+                    "0": 0,
+                    "1": 0
+                }
+            }
+        }
+    }
+}</body>
+      <defaultUrlEnabled>false</defaultUrlEnabled>
+      <footer />
+      <visible />
+    </Page>
+    <Page>
+      <pageName>PodStats</pageName>
+      <isDefault>false</isDefault>
+      <pageTitle>
+        <text>Pod Stats</text>
+      </pageTitle>
+      <dataSets>
+        <dataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>Automation_Pod_Metrics_default</dataSetName>
+              <dataSetGuid>dad65e94-bda2-4b45-eaf3-c3ed7a0716a0</dataSetGuid>
+            </dataSet>
+            <endpoint>DATACUBE</endpoint>
+            <shared>false</shared>
+            <dataSources />
+            <allColumns>false</allColumns>
+            <fields />
+            <GetOperation>
+              <parameters />
+              <sqlText />
+              <timeout>5</timeout>
+              <rDataSetQuery />
+              <rPlotQuery />
+            </GetOperation>
+            <description />
+            <queryPlan>
+              <offline>false</offline>
+              <retentionDays>1</retentionDays>
+              <versions>
+                <CommCellVersion>ALL</CommCellVersion>
+              </versions>
+            </queryPlan>
+            <version>9</version>
+            <guid>dad65e94-bda2-4b45-eaf3-c3ed7a0716a0</guid>
+            <revision />
+            <dCubeDataSet>
+              <dsId></dsId>
+              <dsName>Automation_Pod_Metrics</dsName>
+              <dsType>blank</dsType>
+              <dsHandler>
+                <handlerId></handlerId>
+                <handlerName>default</handlerName>
+              </dsHandler>
+            </dCubeDataSet>
+            <computedColumns>
+              <scriptName>R</scriptName>
+              <script />
+              <columnList />
+            </computedColumns>
+            <signature />
+          </DataSet>
+        </dataSet>
+      </dataSets>
+      <inputs />
+      <header />
+      <body>{
+    "reportComponents": [
+        {
+            "type": "FACET",
+            "dataSet": {},
+            "title": {
+                "text": ""
+            },
+            "id": "PodFilters",
+            "allColumns": false,
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "hideComponent": false,
+            "blankComponent": false,
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "visible": {},
+            "filterDataField": {
+                "builder": {},
+                "viewer": {
+                    "Automation_Pod_Metrics_default": {
+                        "fields": [
+                            {
+                                "displayName": "CSVersion",
+                                "column": "CSVersion",
+                                "numPointsToDisplay": {
+                                    "includeAll": true,
+                                    "maxPoints": 15
+                                },
+                                "sort": {
+                                    "sortField": "Count_CSVersion",
+                                    "sortDirection": "desc"
+                                },
+                                "type": "String",
+                                "filterType": "basic",
+                                "isVisible": true,
+                                "measureDataFields": [
+                                    {
+                                        "displayName": "CSVersion",
+                                        "column": "CSVersion",
+                                        "showNumberOps": false,
+                                        "aggrTypes": [
+                                            "Count"
+                                        ],
+                                        "aggrDisplayNames": [
+                                            "CSVersion_Count"
+                                        ]
+                                    }
+                                ],
+                                "isFliterApplied": true,
+                                "showSearchBar": true,
+                                "dimensionColumnHeader": "CSVersion"
+                            },
+                            {
+                                "displayName": "BuildId",
+                                "column": "BuildId",
+                                "numPointsToDisplay": {
+                                    "includeAll": false,
+                                    "maxPoints": 15
+                                },
+                                "sort": {
+                                    "sortField": "Count_BuildId",
+                                    "sortDirection": "desc"
+                                },
+                                "showNumberOps": true,
+                                "type": "Long",
+                                "filterType": "basic",
+                                "isVisible": true,
+                                "measureDataFields": [
+                                    {
+                                        "displayName": "BuildId",
+                                        "column": "BuildId",
+                                        "showNumberOps": false,
+                                        "aggrTypes": [
+                                            "Count"
+                                        ],
+                                        "aggrDisplayNames": [
+                                            "BuildId_Count"
+                                        ]
+                                    }
+                                ],
+                                "isFliterApplied": true,
+                                "showSearchBar": true,
+                                "dimensionColumnHeader": "BuildId"
+                            },
+                            {
+                                "displayName": "Name",
+                                "column": "Name",
+                                "numPointsToDisplay": {
+                                    "includeAll": true,
+                                    "maxPoints": 15
+                                },
+                                "sort": {
+                                    "sortField": "Count_Name",
+                                    "sortDirection": "desc"
+                                },
+                                "type": "String",
+                                "filterType": "basic",
+                                "isVisible": true,
+                                "measureDataFields": [
+                                    {
+                                        "displayName": "Name",
+                                        "column": "Name",
+                                        "showNumberOps": false,
+                                        "aggrTypes": [
+                                            "Count"
+                                        ],
+                                        "aggrDisplayNames": [
+                                            "Name_Count"
+                                        ]
+                                    }
+                                ],
+                                "isFliterApplied": true,
+                                "showSearchBar": true,
+                                "dimensionColumnHeader": "Name"
+                            }
+                        ],
+                        "groups": []
+                    }
+                }
+            },
+            "applyOnSelect": true,
+            "orientation": "horizontal",
+            "isDataCubeDataSet": true,
+            "hidefilterlink": true,
+            "collapseAllFacets": true,
+            "showOnlyBasicFilter": true,
+            "hideHeader": true
+        },
+        {
+            "type": "CHART",
+            "dataSet": {
+                "dataSetName": "Automation_Pod_Metrics_default",
+                "originalDataSetName": "",
+                "dataSetGuid": "dad65e94-bda2-4b45-eaf3-c3ed7a0716a0"
+            },
+            "title": {
+                "text": "CPU Usage (in millicores)"
+            },
+            "id": "Chart_1722237455552",
+            "chartType": "TimeSeries",
+            "isDateTime": true,
+            "xAxisTitle": {
+                "text": "TimeStamp"
+            },
+            "yAxisTitle": {
+                "text": "CpuinMilliCores Avg "
+            },
+            "barWidthAutoOnly": false,
+            "dataSeries": [],
+            "isGrouped": false,
+            "styles": {
+                "defaultChartHeight": 350,
+                "defaultChartWidth": 1000,
+                "height": 350,
+                "width": 1000,
+                "barColor": "#6aa5e7",
+                "chartPlotOptions": {
+                    "isShowGridlines": false,
+                    "isSmoothLines": true,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": true,
+                    "isShowLabels": false,
+                    "legendPosition": "right",
+                    "stackIn3d": false,
+                    "alpha3D": 15,
+                    "beta3D": 20,
+                    "columnPadding3D": 30,
+                    "depth3D": 110
+                },
+                "barSizeAutoOnly": false
+            },
+            "sorting": [
+                {
+                    "direction": "Asc",
+                    "sortAxis": "XAxis"
+                }
+            ],
+            "seriesFormatting": [],
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "hideComponent": false,
+            "blankComponent": false,
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "visible": {},
+            "orientation": "vertical",
+            "showCompare": false,
+            "dimensionDataField": [
+                {
+                    "column": "TimeStamp",
+                    "title": {
+                        "text": "TimeStamp"
+                    },
+                    "sortOrder": "NONE",
+                    "isNumeric": false,
+                    "type": "TimeStamp",
+                    "customGroupsAvailable": false,
+                    "numPointsToDisplay": {
+                        "maxPoints": 15,
+                        "includeAll": false
+                    },
+                    "showMinCount": false,
+                    "showTimeGrouping": true,
+                    "showHourlyGrouping": true,
+                    "onlyTimeInfo": {
+                        "onlyTimeField": false,
+                        "displayTimeInLocalTimeZone": false
+                    },
+                    "timeGrouping": "auto"
+                }
+            ],
+            "measureDataField": [
+                {
+                    "column": "CpuinMilliCores",
+                    "title": {
+                        "text": "CpuinMilliCores"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Long"
+                }
+            ],
+            "multiBars": false,
+            "isGroupBy": true,
+            "rotateXAxisLabels": false,
+            "rotateXAxisLabelsDegrees": null
+        },
+        {
+            "type": "CHART",
+            "dataSet": {
+                "dataSetName": "Automation_Pod_Metrics_default",
+                "originalDataSetName": "",
+                "dataSetGuid": "dad65e94-bda2-4b45-eaf3-c3ed7a0716a0"
+            },
+            "title": {
+                "text": "Memory Usage (in MiB)"
+            },
+            "id": "Chart_1722237572642",
+            "chartType": "TimeSeries",
+            "isDateTime": true,
+            "xAxisTitle": {
+                "text": "TimeStamp"
+            },
+            "yAxisTitle": {
+                "text": "MemoryinMiB Avg "
+            },
+            "barWidthAutoOnly": false,
+            "dataSeries": [],
+            "isGrouped": false,
+            "styles": {
+                "defaultChartHeight": 350,
+                "defaultChartWidth": 1000,
+                "height": 350,
+                "width": 1000,
+                "barColor": "#6aa5e7",
+                "chartPlotOptions": {
+                    "isShowGridlines": false,
+                    "isSmoothLines": true,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": true,
+                    "isShowLabels": false,
+                    "legendPosition": "right",
+                    "stackIn3d": false,
+                    "alpha3D": 15,
+                    "beta3D": 20,
+                    "columnPadding3D": 30,
+                    "depth3D": 110
+                },
+                "barSizeAutoOnly": false
+            },
+            "sorting": [
+                {
+                    "direction": "Asc",
+                    "sortAxis": "XAxis"
+                }
+            ],
+            "seriesFormatting": [],
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {},
+                "customListLayout": null
+            },
+            "hideComponent": false,
+            "blankComponent": false,
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "showCompare": false,
+            "dimensionDataField": [
+                {
+                    "column": "TimeStamp",
+                    "title": {
+                        "text": "TimeStamp"
+                    },
+                    "sortOrder": "NONE",
+                    "isNumeric": false,
+                    "type": "TimeStamp",
+                    "customGroupsAvailable": false,
+                    "numPointsToDisplay": {
+                        "maxPoints": 15,
+                        "includeAll": false
+                    },
+                    "showMinCount": false,
+                    "showTimeGrouping": true,
+                    "showHourlyGrouping": true,
+                    "onlyTimeInfo": {
+                        "onlyTimeField": false,
+                        "displayTimeInLocalTimeZone": false
+                    },
+                    "timeGrouping": "auto"
+                }
+            ],
+            "measureDataField": [
+                {
+                    "column": "MemoryinMiB",
+                    "title": {
+                        "text": "MemoryinMiB"
+                    },
+                    "aggrType": "Avg",
+                    "sortOrder": "DESC",
+                    "showNumberOps": true,
+                    "type": "Long"
+                }
+            ],
+            "multiBars": false,
+            "isGroupBy": true,
+            "rotateXAxisLabels": false,
+            "rotateXAxisLabelsDegrees": null
+        }
+    ],
+    "filters": {
+        "builder": {},
+        "viewer": []
+    },
+    "autoRefreshTime": 10,
+    "reportLayout": {
+        "gridsterOpts": {
+            "columns": 12
+        },
+        "PodFilters": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    0,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    0,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 3
+                },
+                "position": [
+                    0,
+                    0
+                ]
+            }
+        },
+        "Chart_1722237455552": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    1,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    1,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 9
+                },
+                "position": [
+                    3,
+                    0
+                ]
+            }
+        },
+        "Chart_1722237572642": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    10,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    10,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 10
+                },
+                "position": [
+                    12,
+                    0
+                ]
+            }
+        }
+    }
+}</body>
+      <footer />
+      <visible />
+    </Page>
+  </pages>
+  <reportVersion>33</reportVersion>
+  <deployedVersion>33</deployedVersion>
+  <reportDescription />
+  <guid>68ef025b-e2ab-430a-fe16-b8532822311c</guid>
+  <revision>$Revision:  $</revision>
+  <icon>vertical-bar.png</icon>
+  <customIcon />
+  <hidden>false</hidden>
+  <visibleAll>false</visibleAll>
+  <readOnly>false</readOnly>
+  <shareable>false</shareable>
+  <engineVersion>1</engineVersion>
+  <builderVersion>2</builderVersion>
+  <translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_TITLE</localeKey>
+      <localeValue>Performance_Automation_Reports</localeValue>
+    </Translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_DESCRIPTION</localeKey>
+      <localeValue />
+    </Translations>
+  </translations>
+  <cvTranslations />
+  <minCommCellVersion>
+    <releaseID>16</releaseID>
+    <servicePack>0</servicePack>
+    <spMinorVersion>0</spMinorVersion>
+  </minCommCellVersion>
+  <maxCommCellVersion>
+    <releaseID>100</releaseID>
+    <servicePack>99</servicePack>
+  </maxCommCellVersion>
+  <userReportId>Performance_Automation_Reports</userReportId>
+  <uiTags />
+  <showPagesAsTabs>true</showPagesAsTabs>
+  <type>STANDARD</type>
+  <canEdit>true</canEdit>
+  <visibleToTenantAdmins>false</visibleToTenantAdmins>
+  <builtIn>false</builtIn>
+  <systemReport>false</systemReport>
+  <isMetrics>false</isMetrics>
+</CustomReport>

@@ -1,0 +1,138 @@
+{
+    "modules"   : ["ldap", "ad", "azuread", "base", "cvad", "cvauto","cvaad", "testcase", "adminconsole", "adpage", "exchangeclientpage", "applicationpage", "appexchangepage"],
+    
+    "ldap"  :{
+        "name"  : "LDAP_EXCEPTION_DICT", 
+        "sections"  : [],
+        "exceptions"    : {
+            "1" : "No log objects passed from parent process",
+            "101" :   "Connect to ldap server failed",
+            "102" :   "Setup Ldap connection failed",
+            "103" :   "NTLM authenticaiton failed"
+        }
+    },
+         
+    "ad"    :   {
+        "name"  :   "MSAD_EXCEPTION_DICT",
+        "sections"  :   [],
+        "exceptions"    : {
+            "10"  :   "No ldap connection is None",
+            "201" :   "UGO object type is not supported",
+            "210" :   "create user failed",
+
+            "77"   : "power shell operation error",
+
+
+            "007"  : "ADCompare failed",
+            "17" : "AD Point in Time Restore Failed"
+
+        }
+    },
+    "azuread" : {
+        "name" : "AZURE_AD_EXCEPTION_DICT",
+        "section" : [],
+        "exceptions" : {
+            "100" : "no default domain name found",
+            "401" : "find option is not found in the argument",
+            "402" : "no update option is found in the argement",
+            "403" : "the update attribute is not supported",
+            "501" : "ADAL request return no 200/400 code",
+            "502" : "ADAL delete object return no 204 code",
+            "607" : "Azure AD group Relationship Restore failed",
+            "503" : "graph return 400 error",
+            "504" : "no object id is passed to hard delete",
+            "601" : "no default domain name found",
+            "701" : "attribute is not supported",
+            "703" : "object type is not allow",
+            "801" : "too many pages found, please narrow down the list operation"
+
+        }
+    },
+    
+    "base"  :   {
+        "name"  :   "BASE_EXCEPTION_DICT",
+        "sections"  :   [],
+        "exceptions"    : {}
+    }, 
+    
+    "cvad"  :   {
+        "name"  :   "CV_ADAGENT_EXCEPTION_DICT",
+        "sections"  :   [],
+        "exceptions"    :   {
+            "101" :   "",
+            "102" :   "No storage policy is provide, Please check Answer file",
+            "201" :   "AD object is not in correct format"
+        }
+    },
+    
+    "cvauto":   {
+        "name"  :   "CV_AUTO_EXCEPTION_DICT",
+        "sections"  :   [],
+        "exceptions"    :   {
+        }        
+    },
+    "cvaad" : {
+        "name"  :   "CV_AZUREAD_EXCEPTION_DICT",
+        "sections"  :   [],
+        "exceptions"    : {
+            "201" : "resotre job failed",
+            "301" : "browse result is not match azure objects count",
+            "302" : "browse didn't have the obejct",
+            "303" : "browse return correct object, but attribute is not match",
+            "401" : "attribute is not match browse result",
+            "501" : "browse return zero result or multiple result"
+        }
+    },
+    "testcase" : {
+        "name" : "TESTCASE_EXCEPTION_DICT",
+        "section" : [],
+        "exceptions" : {
+            "54643" : "Test case 54643 exception"
+        }
+    },
+    "adminconsole" : {
+        "name" : "ADMINCONSOLE_EXCEPTION_DICT",
+        "section" : [],
+        "exceptions" : {
+            "110"   : "single selection doesn't have the vlaue",
+            "305"   : "check element find in correct elements"
+        }
+    },
+    "adpage" : {
+        "name" : "ADPAGE_EXCEPTION_DICT",
+        "sections" : [],
+        "exceptions" : {
+            "203"   : "can't find the client name",
+            "301"   : "react change is not working"
+        }
+    },
+    "applicationpage": {
+        "name" : "APPLICATIONPAGE_EXCEPTION_DICT",
+        "sections" : [],
+        "exceptions" : {
+            "301" : "page title is not match"
+        }
+    },
+    "appexchangepage": {
+        "name" : "APPEXCHANGEPAGE_EXCEPTION_DICT",
+        "sections" : [],
+        "exceptions" : {
+            "301" : "page title is not match"
+        }
+    },
+    "exchangeclientpage" : {
+        "name" : " EXCHANGECLIENTPAGE_EXCEPTION_DICT",
+        "sections" : [],
+        "exceptions" : {
+            "401" : "archvie job is failed",
+            "402" : "browse result is not match",
+            "403" : "email add failed",
+            "501" : "browse failed",
+            "502" : "browse have multiple mailboxes show",
+            "503" : "can't find hte folder",
+            "504" : "add mailbox to client falied",
+            "601" : "quick link preview failed", 
+            "602" : "quick link preview email have some field not match"
+        }
+    }
+}

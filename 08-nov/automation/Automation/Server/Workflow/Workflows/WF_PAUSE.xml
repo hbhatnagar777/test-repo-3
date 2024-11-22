@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />"
+    description="Execute user input activity to take form actions "
+    inputs="&lt;inputs>&lt;INP_WORKFLOW_NAME class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_JOBID class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot; />&lt;INP_START_TIME class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_WORKFLOW_PHASE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_PAUSE_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"
+    interactive="0" isHtmlDescription="0" name="WF_PAUSE"
+    outputs="&lt;outputs />" revision="$Revision: 1.2 $"
+    uniqueGuid="ad291141-60b0-409b-8b09-fc57d123f3d4"
+    variables="&lt;variables />" webHidden="0" workflowId="0">
+    <schema>
+        <outputs attribute="0" className="" listType="0" name="outputs"
+            required="1" type=""/>
+        <variables attribute="0" className="" listType="0"
+            name="variables" required="1" type=""/>
+        <inputs attribute="0" className="" listType="0" name="inputs"
+            required="1" type="">
+            <children attribute="0" className="java.lang.String"
+                controlType="0" hidden="0" inputType="java.lang.String"
+                listType="0" name="INP_WORKFLOW_NAME" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" hidden="0" inputType="java.lang.Integer"
+                listType="0" name="INP_JOBID" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" hidden="0" inputType="java.lang.String"
+                listType="0" name="INP_START_TIME" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" hidden="0" inputType="java.lang.String"
+                listType="0" name="INP_WORKFLOW_PHASE" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" hidden="0" inputType="java.lang.String"
+                listType="0" name="INP_PAUSE_STRING" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </inputs>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="55" x="-2" y="7">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="UserInput_2" commented="0"
+            originalStyle="" points="" sourceX="25" sourceY="25"
+            status="0" style="defaultEdge" targetX="365" targetY="123"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <onEnter language="1" script="import java.util.Calendar;&#xd;&#xa;import java.text.SimpleDateFormat;&#xd;&#xa;String date = new SimpleDateFormat(&quot;MM-DD-YYYY_HH_mm_ss&quot;).format(new Date());&#xd;&#xa;String newDate = date.trim().replaceAll(&quot;\\s&quot;, &quot;&quot;);&#xd;&#xa;workflow.setVariable(&quot;VAR_DATE_STR&quot;, newDate);&#xd;&#xa;logger.info(&quot;Setting VAR_DATE_STR: [&quot; + workflow.getVariable(&quot;VAR_DATE_STR&quot;) + &quot;]&quot;);"/>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1449333935798"
+        description="Please provide appropriate response"
+        displayName="Play" height="25" interactive="1" jobMode="0"
+        name="UserInput"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=UserInput"
+        uniqueName="UserInput_2" waitSetting="0" width="56" x="81" y="13">
+        <inputs val="&lt;inputs>&lt;interactionUsers class=&quot;commvault.msgs.CvEntities.UserEntity&quot;>&lt;userName>Admin&lt;/userName>&lt;userId>1&lt;/userId>&lt;/interactionUsers>&lt;actions>&lt;name>ContinueWorkflow&lt;/name>&lt;validateForm>true&lt;/validateForm>&lt;/actions>&lt;inputs />&lt;subject>[xpath:{/workflow/inputs/INP_WORKFLOW_NAME} ] : [xpath:{/workflow/system/workflowEngine/clientName}] : [xpath:{/workflow/inputs/INP_JOBID}] :  [xpath:{/workflow/inputs/INP_START_TIME}] : [xpath:{/workflow/inputs/INP_WORKFLOW_PHASE}] : [xpath:{/workflow/inputs/INP_PAUSE_STRING}]&lt;/subject>&lt;sendEmail>true&lt;/sendEmail>&lt;approvalEnabled>false&lt;/approvalEnabled>&lt;email>&lt;from />&lt;to />&lt;cc />&lt;bcc />&lt;subject>Workflow waiting on Approval:[xpath:{/workflow/inputs/INP_WORKFLOW_NAME}]:[xpath:{/workflow/system/workflowEngine/clientName}]:[xpath:{/workflow/inputs/INP_JOBID} ]:[xpath:{/workflow/inputs/INP_START_TIME}] :[xpath:{/workflow/inputs/INP_PAUSE_STRING}]&lt;/subject>&lt;attachments />&lt;repeatInterval />&lt;body>&amp;lt;p&amp;gt;&#xd;&#xa;      Please take appropriate action to continue the Workflow.&#xd;&#xa;    &amp;lt;/p&amp;gt;&lt;/body>&lt;html>true&lt;/html>&lt;/email>&lt;formProperties />&lt;/inputs>"/>
+        <activitySchema>
+            <outputs attribute="0" listType="0" name="outputs" required="1">
+                <children
+                    className="commvault.msgs.CvEntities.UserEntity"
+                    inputType="commvault.msgs.CvEntities.UserEntity"
+                    name="completedBy" type="{commvault.msgs.CvEntities}UserEntity">
+                    <children className="java.lang.String"
+                        inputType="java.lang.String" name="userName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    <children className="java.lang.Integer"
+                        inputType="java.lang.Integer" name="userId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                </children>
+                <children className="java.lang.String"
+                    inputType="java.lang.String" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs attribute="0" listType="0" name="inputs" required="1"/>
+        </activitySchema>
+        <transition activity="EndUserSession_4" commented="0"
+            originalStyle="" points="" sourceX="364" sourceY="117"
+            status="0" style="defaultEdge" targetX="474" targetY="109"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1450446416943"
+        description="ends the interactive user session"
+        displayName="EUS" height="26" interactive="0" jobMode="0"
+        name="EndUserSession"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=EndUserSession" uniqueName="EndUserSession_4"
+        waitSetting="0" width="53" x="163" y="12">
+        <inputs val="&lt;inputs />"/>
+    </Activity>
+    <formProperties css="" javaScript=""/>
+</Workflow_WorkflowDefinition>

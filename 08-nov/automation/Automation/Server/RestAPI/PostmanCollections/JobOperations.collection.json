@@ -1,0 +1,1478 @@
+{
+	"info": {
+		"_postman_id": "a99ab2ad-e501-474a-8158-d6b0a25b6192",
+		"name": "Job Operations",
+		"description": "######/51510",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4331195"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"######\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Job Filters",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Response Body contains jobs\"] = responseBody.has(\"totalRecordsWithoutPaging\");",
+							"",
+							"tests[\"Response Body contains jobs\"] = responseBody.has(\"jobs\");",
+							"",
+							"tests[\"Response Body contains jobSummary\"] = responseBody.has(\"jobSummary\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Job?clientID={{clientId}}&jobCategory=Finished&jobFilter=backup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job"
+					],
+					"query": [
+						{
+							"key": "clientID",
+							"value": "{{clientId}}"
+						},
+						{
+							"key": "jobCategory",
+							"value": "Finished"
+						},
+						{
+							"key": "jobFilter",
+							"value": "backup"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of jobs for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_job.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Response Body contains jobs\"] = responseBody.has(\"totalRecordsWithoutPaging\");",
+							"",
+							"postman.setEnvironmentVariable(\"jobId\", (function() {",
+							"    for (i = 0;  i < jsonData.jobs.length; i++)",
+							"        if (jsonData.jobs[i].jobSummary.jobType === \"Backup\" && jsonData.jobs[i].jobSummary.status === \"Completed\" || jsonData.jobs[i].jobSummary.status === \"Killed\")",
+							"            return jsonData.jobs[i].jobSummary.jobId;",
+							"})());",
+							"",
+							"console.log(postman.getEnvironmentVariable(\"jobId\"))"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Job?jobFilter=Backup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job"
+					],
+					"query": [
+						{
+							"key": "jobFilter",
+							"value": "Backup"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of jobs for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_job.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Job Summary",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains status\"] = responseBody.has(\"status\");",
+							"",
+							"tests[\"Response Body contains jobType\"] = responseBody.has(\"jobType\");",
+							"",
+							"tests[\"Response Body contains jobId\"] = responseBody.has(\"jobId\");",
+							"",
+							"tests[\"Response Body contains percentComplete\"] = responseBody.has(\"percentComplete\");",
+							"",
+							"tests[\"Response Body contains userName\"] = responseBody.has(\"userName\");",
+							"",
+							"tests[\"Response Body contains isVisible\"] = responseBody.has(\"isVisible\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns the summary for a specific job.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_job_summary.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Job Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"//tests[\"Response Body contains scheduleName\"] = responseBody.has(\"scheduleName\");",
+							"",
+							"tests[\"Response Body contains systemState\"] = responseBody.has(\"systemState\");",
+							"",
+							"tests[\"Response Body contains encrypted\"] = responseBody.has(\"encrypted\");",
+							"",
+							"//tests[\"Response Body contains percentComplete\"] = responseBody.has(\"percentComplete\");",
+							"",
+							"//tests[\"Response Body contains taskId\"] = responseBody.has(\"taskId\");",
+							"",
+							"//tests[\"Response Body contains currentPhase\"] = responseBody.has(\"currentPhase\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"jobId\": {{jobId}}\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/JobDetails",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"JobDetails"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis opearation returns the details for a job.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_job_details.htm)"
+			},
+			"response": [
+				{
+					"name": "Job Details",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"jobId\": 432\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/JobDetails",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"JobDetails"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1021",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Jun 2017 11:03:51 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"job\":{\r\"jobDetail\":{\r\"detailInfo\":{\r\"sizeOfApplication\":\"266793\",\"transferTime\":\"27\",\"unCompressedBytes\":266793,\"dataWritten\":\"0\",\"dataXferedNetwork\":\"0\",\"numOfObjects\":0,\"sizeOfMediaOnDisk\":0,\"savingsPercent\":\"100.00\",\"startTime\":1497264303,\"throughPut\":\"0.03\",\"endTime\":1497264332,\"compressedBytes\":0,\"skippedItems\":2\r},\"generalInfo\":{\r\"useScalableResourceAllocation\":\"Unavailable\",\"backupType\":\"Unknown\",\"jobStartedFrom\":\"Interactive\",\"startTime\":1497264303,\"jobStartedBy\":\"admin\",\"priority\":-999,\"totalNumOfFiles\":-999,\"jobId\":432,\"softwareCompression\":\"Off\",\"systemState\":\"No\",\"operationType\":\"Restore\",\"taskData\":{\r\"subtaskId\":198,\"taskName\":\"\",\"taskId\":197\r},\"subclient\":{\r\"clientName\":\"firewalltestcs\",\"instanceName\":\"DefaultInstanceName\",\"backupsetId\":3,\"instanceId\":1,\"subclientId\":0,\"clientId\":2,\"appName\":\"Windows File System\",\"backupsetName\":\"defaultBackupSet\",\"applicationId\":33\r},\"destinationClient\":{\r\"clientName\":\"firewalltestcs\"\r}\r},\"progressInfo\":{\r\"reasonForJobDelay\":\"\",\"state\":\"Completed\"\r}\r}\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "POST DataAging",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"console.log(tests[\"Tassk Id exists\"] = responseBody.has(\"taskId\"));",
+							"",
+							"postman.setEnvironmentVariable(\"jobId\", parseInt(jsonData.jobIds[0]));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/DataAging",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"DataAging"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient_backup.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Job Suspend",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"5s sleep\");",
+							"},5000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}/action/pause",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}",
+						"action",
+						"pause"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation suspends a job.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_job_suspend.htm)"
+			},
+			"response": [
+				{
+					"name": "Job Suspend",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Job/436/action/pause",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Job",
+								"436",
+								"action",
+								"pause"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "4",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Jun 2017 11:07:17 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\r}"
+				}
+			]
+		},
+		{
+			"name": "Job Resume",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"10s sleep\");",
+							"},10000);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}/action/resume",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}",
+						"action",
+						"resume"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation resumes a suspended job.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_job_resume.htm)"
+			},
+			"response": [
+				{
+					"name": "Job Resume",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Job/436/action/resume",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Job",
+								"436",
+								"action",
+								"resume"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "4",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Jun 2017 11:07:52 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\r}"
+				}
+			]
+		},
+		{
+			"name": "Job Kill",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"5s sleep\");",
+							"},5000);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}/action/kill",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}",
+						"action",
+						"kill"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation kills a job.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_job_kill.htm)"
+			},
+			"response": [
+				{
+					"name": "Job Kill",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Job/433/action/kill",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Job",
+								"433",
+								"action",
+								"kill"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "4",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Jun 2017 11:05:33 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\r}"
+				}
+			]
+		},
+		{
+			"name": "Job resubmit",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"10s sleep\");",
+							"},10000);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"console.log(tests[\"Tassk Id exists\"] = responseBody.has(\"taskId\"));",
+							"",
+							"postman.setEnvironmentVariable(\"jobId2\", parseInt(jsonData.jobIds[0]));"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}/action/Resubmit",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}",
+						"action",
+						"Resubmit"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation kills a job.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_job_kill.htm)"
+			},
+			"response": [
+				{
+					"name": "Job Kill",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "4",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Jun 2017 11:05:33 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\r}"
+				}
+			]
+		},
+		{
+			"name": "POST DR Backup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"console.log(tests[\"Tassk Id exists\"] = responseBody.has(\"taskId\"));",
+							"",
+							"postman.setEnvironmentVariable(\"jobId\", parseInt(jsonData.jobIds[0]));"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<TMMsg_CommcellDRBackupReq isCompressionEnabled=\"1\" jobType=\"IMMEDIATE\" backupType=\"full\"/>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/DRBackup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"DRBackup"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient_backup.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Multijob Operations",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"5s sleep\");",
+							"},5000);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"tests[\"Success\"] = jsonData.error.errorCode === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\t\"operationDescription\": \"testing\",\r\t\"message\": 1,\r\t\"jobOpReq\": {\r\t\t\"operationType\": 3,\r\t\t\"jobs\": [\r\t\t\t{\r\t\t\t\t\"jobId\":{{jobId}}\r\t\t\t},\r\t\t\t{\r\t\t\t\t\"jobId\":{{jobId2}}\r\t\t\t}\r\t\t]\r\t}\r}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Jobs/MultiJobOperation",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Jobs",
+						"MultiJobOperation"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "MultiJobOperation",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\"operationDescription\":\"testing\",\"message\":1,\"jobOpReq\":{\r\"operationType\":0,\"jobs\":[\r{\r\"jobId\":94\r},{\r\"jobId\":93\r},{\r\"jobId\":92\r}\r]\r}\r}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Jobs/MultiJobOperation",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Jobs",
+								"MultiJobOperation"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "330",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 29 Aug 2017 05:17:15 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"errList\":[\r{\r\"jobId\":94,\"error\":{\r\"errLogMessage\":\"Operation failed. Job cannot be suspended\\u002fkilled\\u002fresumed.\",\"errorCode\":1\r}\r},{\r\"jobId\":93,\"error\":{\r\"errLogMessage\":\"Success\",\"errorCode\":1\r}\r},{\r\"jobId\":92,\"error\":{\r\"errLogMessage\":\"Success\",\"errorCode\":1\r}\r}\r],\"error\":{\r\"errLogMessage\":\"Success\",\"errorCode\":1\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains commservEvents\"] = responseBody.has(\"commservEvents\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Events?showInfo=false&showMinor=false&showMajor=false",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Events"
+					],
+					"query": [
+						{
+							"key": "showInfo",
+							"value": "false"
+						},
+						{
+							"key": "showMinor",
+							"value": "false"
+						},
+						{
+							"key": "showMajor",
+							"value": "false"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of CommCell events.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_events.htm)"
+			},
+			"response": [
+				{
+					"name": "Events - This request returns all critical events by filtering out informational, minor, and major events.",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Events?showInfo=false&showMinor=false&showMajor=false",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Events"
+							],
+							"query": [
+								{
+									"key": "showInfo",
+									"value": "false"
+								},
+								{
+									"key": "showMinor",
+									"value": "false"
+								},
+								{
+									"key": "showMajor",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "34454",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Jun 2017 11:08:28 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n\"commservEvents\":[\r\n{\r\n\"severity\":9,\"eventCode\":\"318767272\",\"jobId\":435,\"acknowledge\":0,\"eventCodeString\":\"19:168\",\"subsystem\":\"JobManager\",\"description\":\"License [Windows File System] is not active at this time.\",\"id\":35239,\"timeSource\":1497265582,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"318767272\",\"jobId\":434,\"acknowledge\":0,\"eventCodeString\":\"19:168\",\"subsystem\":\"JobManager\",\"description\":\"License [Windows File System] is not active at this time.\",\"id\":35231,\"timeSource\":1497265509,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Replication] has expired. Jobs may not run.\",\"id\":35094,\"timeSource\":1497259792,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Snapshot] has expired. Jobs may not run.\",\"id\":35093,\"timeSource\":1497259792,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Archive] has expired. Jobs may not run.\",\"id\":35092,\"timeSource\":1497259792,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Backup] has expired. Jobs may not run.\",\"id\":35091,\"timeSource\":1497259792,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Replication] has expired. Jobs may not run.\",\"id\":35079,\"timeSource\":1497250822,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Snapshot] has expired. Jobs may not run.\",\"id\":35078,\"timeSource\":1497250822,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Archive] has expired. Jobs may not run.\",\"id\":35077,\"timeSource\":1497250822,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Backup] has expired. Jobs may not run.\",\"id\":35076,\"timeSource\":1497250822,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Replication] has expired. Jobs may not run.\",\"id\":35029,\"timeSource\":1497207635,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Snapshot] has expired. Jobs may not run.\",\"id\":35028,\"timeSource\":1497207635,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Archive] has expired. Jobs may not run.\",\"id\":35027,\"timeSource\":1497207635,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Backup] has expired. Jobs may not run.\",\"id\":35026,\"timeSource\":1497207635,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"318769027\",\"acknowledge\":0,\"eventCodeString\":\"19:1923\",\"subsystem\":\"JobManager\",\"description\":\"A Disaster Recovery backup was not run in the last 72 hours. Please run a Disaster Recovery backup as soon as possible.\",\"id\":34985,\"timeSource\":1497178752,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Replication] has expired. Jobs may not run.\",\"id\":34969,\"timeSource\":1497164492,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Snapshot] has expired. Jobs may not run.\",\"id\":34968,\"timeSource\":1497164492,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Archive] has expired. Jobs may not run.\",\"id\":34967,\"timeSource\":1497164492,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Backup] has expired. Jobs may not run.\",\"id\":34966,\"timeSource\":1497164492,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Replication] has expired. Jobs may not run.\",\"id\":34919,\"timeSource\":1497121235,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Snapshot] has expired. Jobs may not run.\",\"id\":34918,\"timeSource\":1497121235,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Archive] has expired. Jobs may not run.\",\"id\":34917,\"timeSource\":1497121235,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Backup] has expired. Jobs may not run.\",\"id\":34916,\"timeSource\":1497121235,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Replication] has expired. Jobs may not run.\",\"id\":34861,\"timeSource\":1497078059,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Snapshot] has expired. Jobs may not run.\",\"id\":34860,\"timeSource\":1497078059,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Archive] has expired. Jobs may not run.\",\"id\":34859,\"timeSource\":1497078059,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Backup] has expired. Jobs may not run.\",\"id\":34858,\"timeSource\":1497078059,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Replication] has expired. Jobs may not run.\",\"id\":34811,\"timeSource\":1497034831,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Snapshot] has expired. Jobs may not run.\",\"id\":34810,\"timeSource\":1497034831,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Archive] has expired. Jobs may not run.\",\"id\":34809,\"timeSource\":1497034831,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Backup] has expired. Jobs may not run.\",\"id\":34808,\"timeSource\":1497034831,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Replication] has expired. Jobs may not run.\",\"id\":34743,\"timeSource\":1496991625,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Snapshot] has expired. Jobs may not run.\",\"id\":34742,\"timeSource\":1496991625,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Archive] has expired. Jobs may not run.\",\"id\":34741,\"timeSource\":1496991625,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Backup] has expired. Jobs may not run.\",\"id\":34740,\"timeSource\":1496991625,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Replication] has expired. Jobs may not run.\",\"id\":34657,\"timeSource\":1496948433,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Snapshot] has expired. Jobs may not run.\",\"id\":34656,\"timeSource\":1496948433,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Archive] has expired. Jobs may not run.\",\"id\":34655,\"timeSource\":1496948432,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Backup] has expired. Jobs may not run.\",\"id\":34654,\"timeSource\":1496948432,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Replication] has expired. Jobs may not run.\",\"id\":34553,\"timeSource\":1496905269,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Snapshot] has expired. Jobs may not run.\",\"id\":34552,\"timeSource\":1496905269,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Archive] has expired. Jobs may not run.\",\"id\":34551,\"timeSource\":1496905269,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"EvMgrS\",\"description\":\"License [Backup] has expired. Jobs may not run.\",\"id\":34550,\"timeSource\":1496905269,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Replication] has expired. Jobs may not run.\",\"id\":34503,\"timeSource\":1496862030,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Snapshot] has expired. Jobs may not run.\",\"id\":34502,\"timeSource\":1496862030,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Archive] has expired. Jobs may not run.\",\"id\":34501,\"timeSource\":1496862030,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"218103960\",\"acknowledge\":0,\"eventCodeString\":\"13:152\",\"subsystem\":\"DataAging\",\"description\":\"License [Backup] has expired. Jobs may not run.\",\"id\":34500,\"timeSource\":1496862030,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [IDCMA], will try again.\",\"id\":33967,\"timeSource\":1496845914,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"16777659\",\"acknowledge\":0,\"eventCodeString\":\"1:443\",\"subsystem\":\"EvMgrS\",\"description\":\"No record found in database for client id [9] and license type [63].\",\"id\":26569,\"timeSource\":1496309183,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"536871324\",\"jobId\":304,\"acknowledge\":0,\"eventCodeString\":\"32:412\",\"subsystem\":\"MediaManager\",\"description\":\"Read operation from Library [IDCMA2Lib], MediaAgent [IDCMA2], Media [E:\\\\Backupxyz] could not be completed. The reason: MediaAgent is offline. Advice: Please check the following:\\n1. Media Mount Manager is still running on MediaAgent;\\n2. Connection between MediaAgent and CommServe is in good condition.\\n\",\"id\":26432,\"timeSource\":1496304802,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"1342177299\",\"jobId\":301,\"acknowledge\":0,\"eventCodeString\":\"80:19\",\"subsystem\":\"JobManager\",\"description\":\"Invalid Storage Policy ID. Application may not yet point to a valid Storage Policy.\",\"id\":26428,\"timeSource\":1496304764,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":23152,\"timeSource\":1496126562,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":22422,\"timeSource\":1496032567,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":22421,\"timeSource\":1496032535,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":22237,\"timeSource\":1496032279,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [IDCMA2], will try again.\",\"id\":21322,\"timeSource\":1495728571,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [IDCMA2], will try again.\",\"id\":20973,\"timeSource\":1495703350,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [IDCMA2], will try again.\",\"id\":20901,\"timeSource\":1495681739,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [IDCMA2], will try again.\",\"id\":20881,\"timeSource\":1495663712,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [IDCMA2], will try again.\",\"id\":17971,\"timeSource\":1495649309,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [IDCMA2], will try again.\",\"id\":17948,\"timeSource\":1495633023,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"318769027\",\"acknowledge\":0,\"eventCodeString\":\"19:1923\",\"subsystem\":\"JobManager\",\"description\":\"A Disaster Recovery backup was not run in the last 72 hours. Please run a Disaster Recovery backup as soon as possible.\",\"id\":17921,\"timeSource\":1495626205,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":17920,\"timeSource\":1495626058,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":17877,\"timeSource\":1495626026,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [IDCMA2], will try again.\",\"id\":17827,\"timeSource\":1495625815,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":17753,\"timeSource\":1495625653,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":17704,\"timeSource\":1495625568,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":17370,\"timeSource\":1495601490,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"318769027\",\"acknowledge\":0,\"eventCodeString\":\"19:1923\",\"subsystem\":\"JobManager\",\"description\":\"A Disaster Recovery backup was not run in the last 72 hours. Please run a Disaster Recovery backup as soon as possible.\",\"id\":17264,\"timeSource\":1495601178,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":17123,\"timeSource\":1495553646,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":17122,\"timeSource\":1495553602,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":16617,\"timeSource\":1495530434,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":16509,\"timeSource\":1495528153,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"16777659\",\"acknowledge\":0,\"eventCodeString\":\"1:443\",\"subsystem\":\"EvMgrS\",\"description\":\"No record found in database for client id [25] and license type [63].\",\"id\":16127,\"timeSource\":1495524605,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":15940,\"timeSource\":1495516895,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"318769027\",\"acknowledge\":0,\"eventCodeString\":\"19:1923\",\"subsystem\":\"JobManager\",\"description\":\"A Disaster Recovery backup was not run in the last 72 hours. Please run a Disaster Recovery backup as soon as possible.\",\"id\":15735,\"timeSource\":1495513304,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":15734,\"timeSource\":1495513228,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":15718,\"timeSource\":1495453450,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":15618,\"timeSource\":1495453231,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"587204621\",\"acknowledge\":0,\"eventCodeString\":\"35:2061\",\"subsystem\":\"WorkQueue\",\"description\":\"Failed to push Firewall Configuration for client [LaptopClient], will try again.\",\"id\":15270,\"timeSource\":1495448570,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"318769027\",\"acknowledge\":0,\"eventCodeString\":\"19:1923\",\"subsystem\":\"JobManager\",\"description\":\"A Disaster Recovery backup was not run in the last 72 hours. Please run a Disaster Recovery backup as soon as possible.\",\"id\":10435,\"timeSource\":1495446795,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"318769027\",\"acknowledge\":0,\"eventCodeString\":\"19:1923\",\"subsystem\":\"JobManager\",\"description\":\"A Disaster Recovery backup was not run in the last 72 hours. Please run a Disaster Recovery backup as soon as possible.\",\"id\":10427,\"timeSource\":1495446187,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"318769027\",\"acknowledge\":0,\"eventCodeString\":\"19:1923\",\"subsystem\":\"JobManager\",\"description\":\"A Disaster Recovery backup was not run in the last 72 hours. Please run a Disaster Recovery backup as soon as possible.\",\"id\":10407,\"timeSource\":1495445418,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"16777659\",\"acknowledge\":0,\"eventCodeString\":\"1:443\",\"subsystem\":\"EvMgrS\",\"description\":\"No record found in database for client id [2] and license type [63].\",\"id\":10109,\"timeSource\":1495091994,\"type\":0,\"clientEntity\":{\r\n\"clientId\":2,\"clientName\":\"xyz\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40048] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10101,\"timeSource\":1495091012,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40049] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10093,\"timeSource\":1495089811,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40049] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10091,\"timeSource\":1495088611,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40050] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10089,\"timeSource\":1495087412,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40051] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10087,\"timeSource\":1495086211,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40047] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10084,\"timeSource\":1495085011,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40047] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10082,\"timeSource\":1495083811,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40048] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10080,\"timeSource\":1495082611,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40044] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10078,\"timeSource\":1495081412,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40045] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10075,\"timeSource\":1495080212,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40045] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10073,\"timeSource\":1495079011,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40041] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10071,\"timeSource\":1495077811,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40042] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10068,\"timeSource\":1495076611,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40042] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10066,\"timeSource\":1495075411,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40043] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10064,\"timeSource\":1495074211,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n},{\r\n\"severity\":9,\"eventCode\":\"234881220\",\"acknowledge\":0,\"eventCodeString\":\"14:196\",\"subsystem\":\"cvd\",\"description\":\"Index cache [\\u002fopt\\u002fcommvault2\\u002fMediaAgent\\u002fIndexCache] free space on MediaAgent [abc] is [40044] MB.  It is considered critically low. Backups will start failing if the cache runs out of space. Take one of the following actions:  1. Increase the index cache total disk space.  2. Reduce the retention setting on the index cache.\",\"id\":10062,\"timeSource\":1495073011,\"type\":0,\"clientEntity\":{\r\n\"clientId\":10,\"clientName\":\"abc\"\r\n}\r\n}\r\n]\r\n}"
+				},
+				{
+					"name": "Events - This request returns all events that happened after Wed, 10 Feb 2016 19:37:15 GMT",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Events?fromTime=1455133035",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Events"
+							],
+							"query": [
+								{
+									"key": "fromTime",
+									"value": "1455133035"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "33191",
+							"name": "Content-Length",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 12 Jun 2017 11:08:56 GMT",
+							"name": "Date",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"commservEvents\": [\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318768180\",\n            \"jobId\": 436,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1076\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"Restore job [436] completed. Client [xyz], Agent Type [Windows File System], Duration [00:01:14].\",\n            \"id\": 35246,\n            \"timeSource\": 1497265695,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318768083\",\n            \"jobId\": 436,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:979\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"Job [436] resumed by user admin.\",\n            \"id\": 35245,\n            \"timeSource\": 1497265672,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318768190\",\n            \"jobId\": 436,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1086\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"Restore job [436] has been suspended by user admin. Reason:[]. Client [xyz], Agent Type [Windows File System].\",\n            \"id\": 35244,\n            \"timeSource\": 1497265648,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318767287\",\n            \"jobId\": 436,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:183\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"Stop request pending for job [436].\",\n            \"id\": 35243,\n            \"timeSource\": 1497265638,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318767237\",\n            \"jobId\": 436,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:133\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"New restore request received for client [xyz], application type [Windows File System].\",\n            \"id\": 35240,\n            \"timeSource\": 1497265621,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 9,\n            \"eventCode\": \"318767272\",\n            \"jobId\": 435,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:168\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"License [Windows File System] is not active at this time.\",\n            \"id\": 35239,\n            \"timeSource\": 1497265582,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318769145\",\n            \"jobId\": 435,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:2041\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"Backup job [435] will continue on client computer [xyz] since one or more client owner(s) do not have quota set.\",\n            \"id\": 35238,\n            \"timeSource\": 1497265582,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35237,\n            \"timeSource\": 1497265553,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318768185\",\n            \"jobId\": 433,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1081\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"Restore job [433] has been killed by admin. Reason:[]. Client [xyz], Agent Type [Windows File System], Duration [00:19:50].\",\n            \"id\": 35236,\n            \"timeSource\": 1497265538,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 6,\n            \"eventCode\": \"218103838\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"13:30\",\n            \"subsystem\": \"ClMgrS\",\n            \"description\": \"Unable to communicate with MediaAgent on host [abc.xyz.com]. Please check the network connectivity between the Client and MediaAgent, and verify this product's Communication Service is running on the MediaAgent.\",\n            \"id\": 35235,\n            \"timeSource\": 1497265536,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318767286\",\n            \"jobId\": 433,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:182\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"Kill request pending for job [433].\",\n            \"id\": 35234,\n            \"timeSource\": 1497265533,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 9,\n            \"eventCode\": \"318767272\",\n            \"jobId\": 434,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:168\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"License [Windows File System] is not active at this time.\",\n            \"id\": 35231,\n            \"timeSource\": 1497265509,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318769145\",\n            \"jobId\": 434,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:2041\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"Backup job [434] will continue on client computer [xyz] since one or more client owner(s) do not have quota set.\",\n            \"id\": 35230,\n            \"timeSource\": 1497265508,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35229,\n            \"timeSource\": 1497264593,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318767615\",\n            \"jobId\": 433,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:511\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"New third party restore request received for client [xyz], application type [Windows File System].\",\n            \"id\": 35228,\n            \"timeSource\": 1497264348,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318768180\",\n            \"jobId\": 432,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1076\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"Restore job [432] completed. Client [xyz], Agent Type [Windows File System], Duration [00:00:29].\",\n            \"id\": 35227,\n            \"timeSource\": 1497264332,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318767237\",\n            \"jobId\": 432,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:133\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"New restore request received for client [xyz], application type [Windows File System].\",\n            \"id\": 35226,\n            \"timeSource\": 1497264303,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35225,\n            \"timeSource\": 1497263633,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35224,\n            \"timeSource\": 1497262672,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318768180\",\n            \"jobId\": 431,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1076\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"Restore job [431] completed. Client [xyz], Agent Type [Windows File System], Duration [00:00:31].\",\n            \"id\": 35223,\n            \"timeSource\": 1497262558,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318767237\",\n            \"jobId\": 431,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:133\",\n            \"subsystem\": \"JobManager\",\n            \"description\": \"New restore request received for client [xyz], application type [Windows File System].\",\n            \"id\": 35222,\n            \"timeSource\": 1497262527,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35221,\n            \"timeSource\": 1497261712,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 6,\n            \"eventCode\": \"318768854\",\n            \"jobId\": 400,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1750\",\n            \"subsystem\": \"Workflow\",\n            \"description\": \"Workflow [Demo - New Machine Request] failed.\",\n            \"id\": 35148,\n            \"timeSource\": 1497261035,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318768918\",\n            \"jobId\": 400,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1814\",\n            \"subsystem\": \"Workflow\",\n            \"description\": \"Activity [On Job Kill] for workflow [Demo - New Machine Request] was interrupted.\",\n            \"id\": 35147,\n            \"timeSource\": 1497261034,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318768918\",\n            \"jobId\": 400,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1814\",\n            \"subsystem\": \"Workflow\",\n            \"description\": \"Activity [On Job Kill] for workflow [Demo - New Machine Request] was interrupted.\",\n            \"id\": 35146,\n            \"timeSource\": 1497261034,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318768918\",\n            \"jobId\": 400,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1814\",\n            \"subsystem\": \"Workflow\",\n            \"description\": \"Activity [Start] for workflow [Demo - New Machine Request] was interrupted.\",\n            \"id\": 35145,\n            \"timeSource\": 1497261034,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318768918\",\n            \"jobId\": 400,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1814\",\n            \"subsystem\": \"Workflow\",\n            \"description\": \"Activity [On Job Kill] for workflow [Demo - New Machine Request] was interrupted.\",\n            \"id\": 35144,\n            \"timeSource\": 1497261034,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 6,\n            \"eventCode\": \"318768858\",\n            \"jobId\": 400,\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1754\",\n            \"subsystem\": \"Workflow\",\n            \"description\": \"Activity [Submit message] for workflow [Demo - New Machine Request] failed, reason: [Maximum number of restarts [1] reached.].\",\n            \"id\": 35143,\n            \"timeSource\": 1497261031,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"587204471\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"35:1911\",\n            \"subsystem\": \"EvMgrS\",\n            \"description\": \"User [admin] has logged on. Machine: [xyz]. Locale: [English-UnitedStates].\",\n            \"id\": 35107,\n            \"timeSource\": 1497260867,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35102,\n            \"timeSource\": 1497260811,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35101,\n            \"timeSource\": 1497259855,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870988\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:76\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[firewalltestma_3] C:\\\\Backup] in the disk library [fwMA_3lib] is now marked ready.\",\n            \"id\": 35100,\n            \"timeSource\": 1497259854,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870955\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:43\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"MediaAgent [firewalltestma_3] is ready.\",\n            \"id\": 35099,\n            \"timeSource\": 1497259848,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 3,\n            \"eventCode\": \"587202790\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"35:230\",\n            \"subsystem\": \"EvMgrS\",\n            \"description\": \"The Mail Server is not configured to send E-mail.  Please configure the Mail Server at the following location: From the CommCell Browser, right click the CommServe, select Control Panel, select E-Mail & IIS Configuration, and then select the E-Mail Server tab.\",\n            \"id\": 35098,\n            \"timeSource\": 1497259818,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"318768914\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"19:1810\",\n            \"subsystem\": \"Workflow\",\n            \"description\": \"Workflow engine [xyz] started.\",\n            \"id\": 35097,\n            \"timeSource\": 1497259814,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 9,\n            \"eventCode\": \"218103960\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"13:152\",\n            \"subsystem\": \"EvMgrS\",\n            \"description\": \"License [Replication] has expired. Jobs may not run.\",\n            \"id\": 35094,\n            \"timeSource\": 1497259792,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 9,\n            \"eventCode\": \"218103960\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"13:152\",\n            \"subsystem\": \"EvMgrS\",\n            \"description\": \"License [Snapshot] has expired. Jobs may not run.\",\n            \"id\": 35093,\n            \"timeSource\": 1497259792,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 9,\n            \"eventCode\": \"218103960\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"13:152\",\n            \"subsystem\": \"EvMgrS\",\n            \"description\": \"License [Archive] has expired. Jobs may not run.\",\n            \"id\": 35092,\n            \"timeSource\": 1497259792,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 9,\n            \"eventCode\": \"218103960\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"13:152\",\n            \"subsystem\": \"EvMgrS\",\n            \"description\": \"License [Backup] has expired. Jobs may not run.\",\n            \"id\": 35091,\n            \"timeSource\": 1497259792,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 6,\n            \"eventCode\": \"1207959716\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"72:164\",\n            \"subsystem\": \"CVD\",\n            \"description\": \"[Analytics Engine service] is up and running.\",\n            \"id\": 35096,\n            \"timeSource\": 1497256065,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 6,\n            \"eventCode\": \"1207959715\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"72:163\",\n            \"subsystem\": \"CVD\",\n            \"description\": \"[Analytics Engine service] is down or unreachable as URL [http://abc.xyz.com:20000/solr/api/ping] is not reachable. Please make sure [Analytics Engine service] is running and reachable.\",\n            \"id\": 35095,\n            \"timeSource\": 1497255836,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[firewalltestma_3] C:\\\\Backup] in the disk library [fwMA_3lib] is now marked offline.\",\n            \"id\": 35090,\n            \"timeSource\": 1497254846,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35089,\n            \"timeSource\": 1497254845,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[firewalltestma_3] C:\\\\Backup] in the disk library [fwMA_3lib] is now marked offline.\",\n            \"id\": 35088,\n            \"timeSource\": 1497253887,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35087,\n            \"timeSource\": 1497253887,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[firewalltestma_3] C:\\\\Backup] in the disk library [fwMA_3lib] is now marked offline.\",\n            \"id\": 35086,\n            \"timeSource\": 1497252927,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35085,\n            \"timeSource\": 1497252927,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[firewalltestma_3] C:\\\\Backup] in the disk library [fwMA_3lib] is now marked offline.\",\n            \"id\": 35084,\n            \"timeSource\": 1497251966,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35083,\n            \"timeSource\": 1497251966,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 3,\n            \"eventCode\": \"587202790\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"35:230\",\n            \"subsystem\": \"EvMgrS\",\n            \"description\": \"The Mail Server is not configured to send E-mail.  Please configure the Mail Server at the following location: From the CommCell Browser, right click the CommServe, select Control Panel, select E-Mail & IIS Configuration, and then select the E-Mail Server tab.\",\n            \"id\": 35082,\n            \"timeSource\": 1497251024,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[firewalltestma_3] C:\\\\Backup] in the disk library [fwMA_3lib] is now marked offline.\",\n            \"id\": 35081,\n            \"timeSource\": 1497251006,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35080,\n            \"timeSource\": 1497251006,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 9,\n            \"eventCode\": \"218103960\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"13:152\",\n            \"subsystem\": \"EvMgrS\",\n            \"description\": \"License [Replication] has expired. Jobs may not run.\",\n            \"id\": 35079,\n            \"timeSource\": 1497250822,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 9,\n            \"eventCode\": \"218103960\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"13:152\",\n            \"subsystem\": \"EvMgrS\",\n            \"description\": \"License [Snapshot] has expired. Jobs may not run.\",\n            \"id\": 35078,\n            \"timeSource\": 1497250822,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 9,\n            \"eventCode\": \"218103960\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"13:152\",\n            \"subsystem\": \"EvMgrS\",\n            \"description\": \"License [Archive] has expired. Jobs may not run.\",\n            \"id\": 35077,\n            \"timeSource\": 1497250822,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 9,\n            \"eventCode\": \"218103960\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"13:152\",\n            \"subsystem\": \"EvMgrS\",\n            \"description\": \"License [Backup] has expired. Jobs may not run.\",\n            \"id\": 35076,\n            \"timeSource\": 1497250822,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870956\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:44\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"MediaAgent [firewalltestma_3] is offline.\",\n            \"id\": 35075,\n            \"timeSource\": 1497250643,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35074,\n            \"timeSource\": 1497250045,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35073,\n            \"timeSource\": 1497249085,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35072,\n            \"timeSource\": 1497248124,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35071,\n            \"timeSource\": 1497247165,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35070,\n            \"timeSource\": 1497246205,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35069,\n            \"timeSource\": 1497245245,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35068,\n            \"timeSource\": 1497244289,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35067,\n            \"timeSource\": 1497243325,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35066,\n            \"timeSource\": 1497242365,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35065,\n            \"timeSource\": 1497241405,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35064,\n            \"timeSource\": 1497240445,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35063,\n            \"timeSource\": 1497239485,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35062,\n            \"timeSource\": 1497238525,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35061,\n            \"timeSource\": 1497237564,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35060,\n            \"timeSource\": 1497236605,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35059,\n            \"timeSource\": 1497235645,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35058,\n            \"timeSource\": 1497234685,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35057,\n            \"timeSource\": 1497233725,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35056,\n            \"timeSource\": 1497232765,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35055,\n            \"timeSource\": 1497231804,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35054,\n            \"timeSource\": 1497230844,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35053,\n            \"timeSource\": 1497229884,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35052,\n            \"timeSource\": 1497228924,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35051,\n            \"timeSource\": 1497228023,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35050,\n            \"timeSource\": 1497227063,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35049,\n            \"timeSource\": 1497226103,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35048,\n            \"timeSource\": 1497225143,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35047,\n            \"timeSource\": 1497224183,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35046,\n            \"timeSource\": 1497223223,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35045,\n            \"timeSource\": 1497222263,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35044,\n            \"timeSource\": 1497221303,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35043,\n            \"timeSource\": 1497220343,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35042,\n            \"timeSource\": 1497219383,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35041,\n            \"timeSource\": 1497218423,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35040,\n            \"timeSource\": 1497217463,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35039,\n            \"timeSource\": 1497216562,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35038,\n            \"timeSource\": 1497215601,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35037,\n            \"timeSource\": 1497214641,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35036,\n            \"timeSource\": 1497213681,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35035,\n            \"timeSource\": 1497212722,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35034,\n            \"timeSource\": 1497211762,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35033,\n            \"timeSource\": 1497210802,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        },\n        {\n            \"severity\": 0,\n            \"eventCode\": \"536870987\",\n            \"acknowledge\": 0,\n            \"eventCodeString\": \"32:75\",\n            \"subsystem\": \"MediaManager\",\n            \"description\": \"Mount path [[IDCMA2] E:\\\\Backupxyz] in the disk library [IDCMA2Lib] is now marked offline.\",\n            \"id\": 35032,\n            \"timeSource\": 1497209842,\n            \"type\": 0,\n            \"clientEntity\": {\n                \"clientId\": 2,\n                \"clientName\": \"xyz\"\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

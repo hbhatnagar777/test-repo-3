@@ -1,0 +1,558 @@
+<CustomReport>
+  <report>
+    <customReportName>Tenant Account Users</customReportName>
+  </report>
+  <pages>
+    <Page>
+      <pageName>User Details</pageName>
+      <isDefault>true</isDefault>
+      <pageTitle>
+        <text>User details</text>
+      </pageTitle>
+      <dataSets>
+        <dataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>users</dataSetName>
+              <dataSetGuid>5815ec11-8b4e-4b61-ea04-ecd72548987e</dataSetGuid>
+            </dataSet>
+            <endpoint>DATABASE</endpoint>
+            <shared>false</shared>
+            <dataSources>
+              <DataSource>
+                <connectionType>COMMCELL</connectionType>
+                <commCell>
+                  <commCellName>$LocalCommCell$</commCellName>
+                </commCell>
+              </DataSource>
+            </dataSources>
+            <allColumns>false</allColumns>
+            <fields>
+              <Column>
+                <name>sys_rowid</name>
+                <dataField>$row_number$</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Data Source</name>
+                <dataField>Data Source</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>login</name>
+                <dataField>login</dataField>
+                <type>String</type>
+              </Column>
+            </fields>
+            <GetOperation>
+              <parameters />
+              <sqlText>SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+IF object_id('tempdb.dbo.#entityTable') is not null
+     drop table #entityTable 
+ 
+create table #entityTable 
+(
+     entityId int 
+)
+
+exec sec_getUsersForThisUser '#entityTable', @sys_userId
+
+SELECT login FROM dbo.UMUsers U
+INNER JOIN #entityTable E 
+ON U.id = E.entityId
+	WHERE ((U.flags &amp; (0x384)) = 0)
+	
+--discarding all the users who are hidden, disabled, MMC SSO and common SSO										 
+  --USERS_HIDE, USERS_MMC_SSO, USERS_MMC_COMMON_SSO, USERS_QNET are hidden
+
+drop table #entityTable</sqlText>
+              <timeout>5</timeout>
+              <postQueryFilter>true</postQueryFilter>
+              <rDataSetQuery />
+              <rPlotQuery />
+            </GetOperation>
+            <description>Security associations of users.</description>
+            <databaseName>CommServ</databaseName>
+            <queryPlan>
+              <offline>false</offline>
+              <collectionType>HTTP</collectionType>
+              <retentionDays>1</retentionDays>
+              <versions>
+                <CommCellVersion>ALL</CommCellVersion>
+              </versions>
+              <dynamicCollection>false</dynamicCollection>
+              <frequency>60</frequency>
+              <direct>false</direct>
+            </queryPlan>
+            <version>1</version>
+            <guid>a020db9a-53ee-436c-a6ca-96e04cd189ce</guid>
+            <revision />
+            <computedColumns>
+              <scriptName>R</scriptName>
+              <script />
+              <columnList />
+            </computedColumns>
+          </DataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>User and User Group List Mapping</dataSetName>
+              <dataSetGuid>edf72811-fa88-4a0a-9d77-f95b21cf85ff</dataSetGuid>
+            </dataSet>
+            <endpoint>DATABASE</endpoint>
+            <shared>false</shared>
+            <dataSources>
+              <DataSource>
+                <connectionType>COMMCELL</connectionType>
+                <commCell>
+                  <commCellName>$LocalCommCell$</commCellName>
+                </commCell>
+              </DataSource>
+            </dataSources>
+            <allColumns>false</allColumns>
+            <fields>
+              <Column>
+                <name>sys_rowid</name>
+                <dataField>$row_number$</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Data Source</name>
+                <dataField>Data Source</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>User</name>
+                <dataField>User</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Status</name>
+                <dataField>Status</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>User Group List</name>
+                <dataField>User Group List</dataField>
+                <type>String</type>
+              </Column>
+            </fields>
+            <GetOperation>
+              <parameters>
+                <Parameter>
+                  <name>users</name>
+                  <dataType>String</dataType>
+                  <isList>true</isList>
+                  <values>
+                    <string>=input.users</string>
+                  </values>
+                </Parameter>
+              </parameters>
+              <sqlText>SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+IF object_id('tempdb.dbo.#userDetails') IS NOT null DROP TABLE #userDetails
+
+-- USER SECURITY CHECK FOR THIS USER
+
+IF object_id('tempdb.dbo.#entityGroupTable') IS NOT null DROP TABLE #entityGroupTable 
+
+IF object_id('tempdb.dbo.#entityTable') IS NOT null DROP TABLE #entityTable 
+ 
+create table #entityTable 
+(
+     entityId int 
+)
+
+create table #entityGroupTable 
+(
+    entityId int 
+)
+
+EXEC sec_getUserGroupsForThisUser '#entityGroupTable', @sys_userId
+
+CREATE TABLE #userDetails
+(	userName nvarchar(MAX),
+	userGroupName nvarchar(MAX),
+        status int
+)
+	
+IF EXISTS(select users from @users)	
+BEGIN
+	INSERT INTO #userDetails(userName, userGroupName, status)
+			SELECT U.login, ISNULL(G.name,''), U.enabled
+			FROM @users AS IUL --Input user list
+			INNER JOIN UMUsers U ON IUL.users = U.login
+			LEFT JOIN UMUserGroup UG ON  U.id = UG.userId 
+			LEFT JOIN UMGroups G ON UG.groupId = G.id
+			LEFT JOIN #entityGroupTable UGE ON G.id = UGE.entityId 	-- security check for logged in @user for user group
+END
+ELSE -- if users option selected ALL or nothing
+BEGIN
+	EXEC sec_getUsersForThisUser '#entityTable', @sys_userId
+
+	INSERT INTO #userDetails(userName, userGroupName, status)
+			SELECT U.login, ISNULL(G.name,''), U.enabled
+			FROM UMUsers U
+			INNER JOIN #entityTable UE ON U.id = UE.entityId		-- security check for logged in @user for user
+			LEFT JOIN UMUserGroup UG ON  U.id = UG.userId 
+			LEFT JOIN UMGroups G ON UG.groupId = G.id
+			LEFT JOIN #entityGroupTable UGE ON G.id = UGE.entityId 	-- security check for logged in @user for user group
+			WHERE ((U.flags &amp; (0x384)) = 0)	
+END
+
+
+SELECT UserDetailsTBL.userName AS 'User', UserDetailsTBL.status AS 'Status',
+		STUFF(UserDetailsTBL.GroupList,1,1,'') AS 'User Group List'
+FROM
+	( Select UD2.userName, CASE WHEN MAX(UD2.status) &gt; 0 THEN 'Enabled' ELSE 'Disabled' END AS 'status',
+            (
+                Select ',' + UD1.userGroupName AS [text()]
+                From #userDetails UD1
+                Where UD1.userName = UD2.userName
+                ORDER BY UD1.userName
+                For XML PATH ('')
+            ) [GroupList]
+        From  #userDetails UD2
+        GROUP BY UD2.userName
+    ) [UserDetailsTBL]
+WHERE UserDetailsTBL.GroupList IS NOT NULL 
+
+IF object_id('tempdb.dbo.#userDetails') IS NOT null DROP TABLE #userDetails
+
+IF object_id('tempdb.dbo.#entityGroupTable') IS NOT null DROP TABLE #entityGroupTable 
+
+IF object_id('tempdb.dbo.#entityTable') IS NOT null DROP TABLE #entityTable</sqlText>
+              <timeout>5</timeout>
+              <postQueryFilter>true</postQueryFilter>
+              <rDataSetQuery />
+              <rPlotQuery />
+            </GetOperation>
+            <description>Security associations of users.</description>
+            <databaseName>CommServ</databaseName>
+            <queryPlan>
+              <offline>false</offline>
+              <collectionType>HTTP</collectionType>
+              <retentionDays>1</retentionDays>
+              <versions>
+                <CommCellVersion>ALL</CommCellVersion>
+              </versions>
+              <dynamicCollection>false</dynamicCollection>
+              <frequency>60</frequency>
+              <direct>false</direct>
+            </queryPlan>
+            <version>1</version>
+            <guid>002cf7ec-efd3-4e85-9a65-c549fb2e48c7</guid>
+            <revision />
+            <computedColumns>
+              <scriptName>R</scriptName>
+              <script />
+              <columnList />
+            </computedColumns>
+          </DataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>EntityType Table</dataSetName>
+              <dataSetGuid>ae49c640-481a-4221-f0de-511f048549f0</dataSetGuid>
+            </dataSet>
+            <endpoint>DATABASE</endpoint>
+            <shared>false</shared>
+            <dataSources>
+              <DataSource>
+                <connectionType>COMMCELL</connectionType>
+                <commCell>
+                  <commCellName>$LocalCommCell$</commCellName>
+                </commCell>
+              </DataSource>
+            </dataSources>
+            <allColumns>false</allColumns>
+            <fields>
+              <Column>
+                <name>sys_rowid</name>
+                <dataField>$row_number$</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Data Source</name>
+                <dataField>Data Source</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>entityType</name>
+                <dataField>entityType</dataField>
+                <type>Integer</type>
+              </Column>
+              <Column>
+                <name>entityTypeName</name>
+                <dataField>entityTypeName</dataField>
+                <type>String</type>
+              </Column>
+            </fields>
+            <GetOperation>
+              <parameters />
+              <sqlText>SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+select entityType, entityTypeName from App_Entity</sqlText>
+              <timeout>5</timeout>
+              <postQueryFilter>true</postQueryFilter>
+              <rDataSetQuery />
+              <rPlotQuery />
+            </GetOperation>
+            <description>Security associations of users.</description>
+            <databaseName>CommServ</databaseName>
+            <queryPlan>
+              <offline>false</offline>
+              <collectionType>HTTP</collectionType>
+              <retentionDays>1</retentionDays>
+              <versions>
+                <CommCellVersion>ALL</CommCellVersion>
+              </versions>
+              <dynamicCollection>false</dynamicCollection>
+              <frequency>60</frequency>
+              <direct>false</direct>
+            </queryPlan>
+            <version>1</version>
+            <guid>6d1edd32-c8cc-4547-8eb3-89654796abf5</guid>
+            <revision />
+            <computedColumns>
+              <scriptName>R</scriptName>
+              <script />
+              <columnList />
+            </computedColumns>
+          </DataSet>
+        </dataSet>
+      </dataSets>
+      <inputs>
+        <RptInput>
+          <id>users</id>
+          <displayName>Users</displayName>
+          <type>String</type>
+          <controlType>ListBox</controlType>
+          <required>false</required>
+          <allowMultipleSelection>true</allowMultipleSelection>
+          <fromDataSet>true</fromDataSet>
+          <dataSetEntity>
+            <dataSetId>7296</dataSetId>
+            <dataSetName>users</dataSetName>
+            <dataSetGuid>5815ec11-8b4e-4b61-ea04-ecd72548987e</dataSetGuid>
+          </dataSetEntity>
+          <labelField>login</labelField>
+          <valueField>login</valueField>
+          <relativeOptions />
+          <sort>
+            <direction>Asc</direction>
+          </sort>
+        </RptInput>
+      </inputs>
+      <body>{
+    "reportComponents": [
+        {
+            "type": "TABLE",
+            "dataSet": {
+                "dataSetId": 7298,
+                "dataSetName": "User and User Group List Mapping",
+                "dataSetGuid": "edf72811-fa88-4a0a-9d77-f95b21cf85ff",
+                "originalDataSetName": "User and User Group List Mapping"
+            },
+            "title": {
+                "text": "User details"
+            },
+            "id": "Table1530166771037",
+            "pageSize": 20,
+            "columns": [
+                {
+                    "dataField": "Data Source",
+                    "displayName": "CommCell",
+                    "id": "DataSource",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "mobileOptions": {
+                        "visible": true,
+                        "viewOnList": true,
+                        "viewOnDetail": true
+                    },
+                    "isSelected": false,
+                    "width": "200"
+                },
+                {
+                    "dataField": "User",
+                    "displayName": "User",
+                    "id": "User",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "mobileOptions": {
+                        "visible": true,
+                        "viewOnList": true,
+                        "viewOnDetail": true
+                    },
+                    "isSelected": false,
+                    "width": "250"
+                },
+                {
+                    "dataField": "Status",
+                    "displayName": "Status",
+                    "id": "Status",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "mobileOptions": {
+                        "visible": true,
+                        "viewOnList": true,
+                        "viewOnDetail": true
+                    },
+                    "isSelected": true,
+                    "width": "200"
+                },
+                {
+                    "dataField": "User Group List",
+                    "displayName": "User groups",
+                    "id": "UserGroupList",
+                    "type": "String",
+                    "origType": "String",
+                    "visible": true,
+                    "hidden": false,
+                    "aggrType": "None",
+                    "mobileOptions": {
+                        "visible": true,
+                        "viewOnList": true,
+                        "viewOnDetail": true
+                    },
+                    "isSelected": false,
+                    "wrapText": true
+                }
+            ],
+            "allColumns": false,
+            "dataSetName": "",
+            "styles": {
+                "chartPlotOptions": {
+                    "isShowGridlines": true,
+                    "isSmoothLines": false,
+                    "isShowLineMarkers": true,
+                    "autoConvertYValues": true,
+                    "isShowLabels": false,
+                    "legendPosition": "right"
+                }
+            },
+            "mobile": {
+                "visible": "On",
+                "listItemClick": {
+                    "inputs": []
+                },
+                "customListLayout": null
+            },
+            "filters": {
+                "builder": {},
+                "viewer": {}
+            },
+            "quickChart": {
+                "height": 649
+            },
+            "autoHeight": "On",
+            "orientation": "vertical",
+            "showSearchBar": true,
+            "showFilterByDefault": false,
+            "enableHorizontalScroll": false,
+            "visible": {}
+        }
+    ],
+    "filters": {
+        "builder": {},
+        "viewer": {}
+    },
+    "autoRefreshTime": 10,
+    "reportLayout": {
+        "gridsterOpts": {
+            "columns": 12
+        },
+        "Table1530166771037": {
+            "mobile": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    15,
+                    0
+                ]
+            },
+            "tablet": {
+                "size": {
+                    "x": 4,
+                    "y": 8
+                },
+                "position": [
+                    15,
+                    0
+                ]
+            },
+            "desktop": {
+                "size": {
+                    "x": 12,
+                    "y": 16
+                },
+                "position": [
+                    0,
+                    0
+                ]
+            }
+        }
+    }
+}</body>
+    </Page>
+  </pages>
+  <reportVersion>1</reportVersion>
+  <deployedVersion>1</deployedVersion>
+  <reportDescription>Security associations of users.</reportDescription>
+  <guid>9c8195a6-7504-44b1-9aa2-21a6b8a3c2d5</guid>
+  <revision>$Revision: 1.1.2.11.2.2 $</revision>
+  <icon>data-table.png</icon>
+  <customIcon>
+    <type>SVG</type>
+    <content>&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 44"&gt;&lt;g id="user_UserGroup_permissions"&gt;&lt;path d="M14.17,39.74c-4.92-.26-11-1.2-11.84-1.86-.31-.24-1.18-2.6.44-6.1S8.2,27.25,11,26.41s5.18-1.89,5.76-3.06a10.57,10.57,0,0,0-.1-1.3c-.42-.18-2.92-2.06-3.34-3.63s-.84-1.85-.84-1.85a3.29,3.29,0,0,1-.36-4.27V7.51a2.18,2.18,0,0,1,0-.25c0-3.75,3.33-6.83,7.61-7.22-.3,0-.6,0-.91,0-4.7,0-8.51,3.25-8.51,7.26v5a3.29,3.29,0,0,0,.36,4.27s.42.29.84,1.85,2.92,3.45,3.34,3.63a10.57,10.57,0,0,1,.1,1.3c-.58,1.17-3.07,2.23-5.76,3.06S2.58,28.28,1,31.78s-.74,5.86-.43,6.1c.86.66,6.92,1.6,11.83,1.86,1.62.14,3.39.22,5.26.25C16.27,40,15.73,39.87,14.17,39.74Z" style="fill:#aaa8a8"/&gt;&lt;path d="M22.44,39c-.92,0-1.85,0-2.8,0a28.14,28.14,0,0,1-3.36-.16l-1.15-.1c-5-.27-10.17-1.14-11.19-1.6-.21-.51-.56-2.33.65-4.94,1.36-3,4.6-3.94,7.2-4.73l.36-.11c4.86-1.49,6-2.75,6.36-3.57l.1-.2v-.22a11.82,11.82,0,0,0-.11-1.46l-.06-.55-.52-.22c-.46-.24-2.49-1.88-2.79-3a4.86,4.86,0,0,0-1.08-2.29A2.27,2.27,0,0,1,13.74,13l.24-.28V7.48a1.62,1.62,0,0,1,0-.22C14,3.81,17.34,1,21.49,1S28.86,3.65,29,7v5.6l.24.28c0,.05,1,1.24-.32,2.92a4.86,4.86,0,0,0-1.08,2.29,7.9,7.9,0,0,1-1.92,3l-.46.2-.08.56c-.27,2,0,2.28.21,2.51l.42.47.33-.09A8.22,8.22,0,0,0,29.59,27a12.11,12.11,0,0,1,1.5-.54l-.22-.06a7.81,7.81,0,0,1-4.19-2.78l-.33.09c-.18-.2,0-1.7,0-1.7a8.1,8.1,0,0,0,2.43-3.64c.42-1.56.84-1.85.84-1.85A3.29,3.29,0,0,0,30,12.26V7.39s0-.09,0-.13,0-.09,0-.13V7h0c-.17-3.88-3.92-7-8.52-7S13,3.25,13,7.26a2.18,2.18,0,0,0,0,.25V12.3a3.28,3.28,0,0,0,.35,4.27s.43.29.85,1.85,2.92,3.45,3.34,3.63a10.57,10.57,0,0,1,.1,1.3c-.58,1.17-3.07,2.23-5.76,3.06S5.3,28.28,3.68,31.78s-.75,5.86-.44,6.1c.87.66,6.92,1.6,11.84,1.86a38.75,38.75,0,0,0,4.56.26c1,0,2,0,2.93,0C22.51,39.62,22.47,39.29,22.44,39Z" style="fill:#2f4f66"/&gt;&lt;g id="key"&gt;&lt;path d="M34.87,28a5.12,5.12,0,0,0-4.82,6.91l-1,1A.24.24,0,0,0,29,36l-.09,1.43-1.08.09a.28.28,0,0,0-.17.07.23.23,0,0,0-.06.16V39H26.44a.23.23,0,0,0-.16.06.24.24,0,0,0-.06.17l0,1.1L25,40.37a.24.24,0,0,0-.23.23l0,3.17a.24.24,0,0,0,.07.16h0A.23.23,0,0,0,25,44h0l2,0a.22.22,0,0,0,.15-.06L33.09,38a5.24,5.24,0,0,0,1.79.32,5.14,5.14,0,0,0,0-10.27Zm0,9.46a4.4,4.4,0,0,1-1.56-.29.16.16,0,0,0-.11-.05,4.24,4.24,0,0,1-1.39-.93,4.32,4.32,0,1,1,3.06,1.27Zm-9.54,5.93,0-2.47,1.17-.08a.22.22,0,0,0,.23-.22V39.46l1.08,0a.24.24,0,0,0,.23-.23l.07-1.13,1.1-.05a.23.23,0,0,0,.16-.06.22.22,0,0,0,.07-.17l.07-1.52.77-.77a4.29,4.29,0,0,0,.92,1.27l.11.11-4.79,4.79c-.09.09,0,.3.08.39a.47.47,0,0,0,.29.11.22.22,0,0,0,.13,0l4.82-4.82a2.31,2.31,0,0,0,.61.3l-5.75,5.75-1.41,0Z" style="fill:#1e99c5"/&gt;&lt;path d="M36.43,30.27a1.31,1.31,0,1,0,0,2.61,1.31,1.31,0,0,0,.92-2.23,1.27,1.27,0,0,0-.92-.38Zm0,2a.71.71,0,0,1-.51-.21.72.72,0,0,1,0-1,.71.71,0,0,1,.51-.21.75.75,0,0,1,.51.21.72.72,0,0,1,0,1,.75.75,0,0,1-.51.21Z" style="fill:#1e99c5"/&gt;&lt;/g&gt;&lt;/g&gt;&lt;/svg&gt;</content>
+  </customIcon>
+  <hidden>false</hidden>
+  <visibleAll>false</visibleAll>
+  <readOnly>false</readOnly>
+  <shareable>false</shareable>
+  <engineVersion>1</engineVersion>
+  <builderVersion>2</builderVersion>
+  <translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_TITLE</localeKey>
+      <localeValue>Tenant Account Users</localeValue>
+    </Translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_DESCRIPTION</localeKey>
+      <localeValue>Security associations of users.</localeValue>
+    </Translations>
+  </translations>
+  <cvTranslations />
+  <minCommCellVersion>
+    <releaseID>16</releaseID>
+    <servicePack>0</servicePack>
+    <spMinorVersion>0</spMinorVersion>
+  </minCommCellVersion>
+  <maxCommCellVersion>
+    <releaseID>100</releaseID>
+    <servicePack>99</servicePack>
+  </maxCommCellVersion>
+  <userReportId>Tenant Account Users - Copy </userReportId>
+  <uiTags>
+    <string>Administration</string>
+  </uiTags>
+  <showPagesAsTabs>true</showPagesAsTabs>
+  <type>STANDARD</type>
+  <canEdit>true</canEdit>
+  <visibleToTenantAdmins>true</visibleToTenantAdmins>
+  <builtIn>false</builtIn>
+  <systemReport>false</systemReport>
+</CustomReport>

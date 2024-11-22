@@ -1,0 +1,2340 @@
+{
+	"info": {
+		"_postman_id": "ce8b4ada-c3e9-4a75-88e8-aca066b25b3a",
+		"name": "Organization Operation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"######\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "GET Plans",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"postman.setEnvironmentVariable(\"planDetail\", JSON.stringify(jsonData.plans[0]));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v2/Plan",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"Plan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Create organization",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);",
+							"",
+							"var d = new Date();",
+							"var time = d.getTime();",
+							"",
+							"postman.setEnvironmentVariable(\"adminEmail\", time);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains providerId\"] = responseBody.has(\"providerId\");",
+							"tests[\"Response Body contains providerDomainName\"] = responseBody.has(\"providerDomainName\");",
+							"",
+							"postman.setEnvironmentVariable(\"providerId\", jsonData.response.entity.providerId);",
+							"postman.setEnvironmentVariable(\"providerDomainName\", jsonData.response.entity.providerDomainName);",
+							"setTimeout(function() {",
+							"    console.log(\"Delaying test execution by 5 seconds\");",
+							"}, 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"organizationInfo\": {\r\n        \"planDetails\": [\r\n            {{planDetail}}\r\n        ],\r\n        \"organization\": {\r\n            \"connectName\": \"autocvlt_{{$timestamp}}\",\r\n            \"emailDomainNames\": [\r\n                \"commvault.com\"\r\n            ],\r\n            \"shortName\": {\r\n                \"domainName\": \"autocvlt_{{$timestamp}}\"\r\n            }\r\n        },\r\n        \"organizationProperties\": {\r\n            \"primaryDomain\": \"\",\r\n            \"primaryContacts\": [\r\n                {\r\n                    \"fullName\": \"newman_{{$timestamp}}\",\r\n                    \"email\": \"{{adminEmail}}_{{$timestamp}}@commvault.com\"\r\n                }\r\n            ]\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Organization  authtoken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains organizationProperties\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"organizationProperties\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains authCode\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"authCode\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains error\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"error\");\r",
+							"});\r",
+							"setTimeout(function() {\r",
+							"    console.log(\"Delaying test execution by 5 seconds\");\r",
+							"}, 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}/authtoken",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}",
+						"authtoken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Organization detail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body contains providers\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"providers\");",
+							"});",
+							"",
+							"pm.test(\"Body contains serviceType\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"serviceType\");",
+							"});",
+							"",
+							"pm.test(\"Body contains flags\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"flags\");",
+							"});",
+							"",
+							"pm.test(\"Body contains description\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"description\");",
+							"});",
+							"",
+							"pm.test(\"Body contains providers\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"providers\");",
+							"});",
+							"",
+							"pm.test(\"Body contains enabled\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"enabled\");",
+							"});",
+							"",
+							"pm.test(\"Body contains connectName\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"connectName\");",
+							"});",
+							"",
+							"pm.test(\"Body contains associatedEntitiesCount\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"associatedEntitiesCount\");",
+							"});",
+							"",
+							"pm.test(\"Body contains primaryContacts\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"primaryContacts\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Body contains shortName\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"shortName\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Organization?organizationId={{providerId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization"
+					],
+					"query": [
+						{
+							"key": "organizationId",
+							"value": "{{providerId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Organizations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"checkForOrg = false;",
+							"for (i = 0; i < jsonData.providers.length; i++) {",
+							"    if(jsonData.providers[i].shortName.id == postman.getEnvironmentVariable(\"providerId\")) {",
+							"        checkForOrg = true;",
+							"        break;",
+							"    }    //validate subclients id",
+							"}",
+							"",
+							"if(tests[\"Input company exists in the JSON\"] = checkForOrg);",
+							"",
+							"pm.test(\"serviceType is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"serviceType\");",
+							"});",
+							"pm.test(\"ownerCompanyName is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"ownerCompanyName\");",
+							"});",
+							"pm.test(\"providerGUID is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"providerGUID\");",
+							"});",
+							"pm.test(\"flags is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"flags\");",
+							"});",
+							"pm.test(\"description is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"description\");",
+							"});",
+							"pm.test(\"enabled is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"enabled\");",
+							"});",
+							"pm.test(\"ownerCompanyId is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"ownerCompanyId\");",
+							"});",
+							"pm.test(\"connectName is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"connectName\");",
+							"});",
+							"pm.test(\"associatedEntitiesCount is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"associatedEntitiesCount\");",
+							"});",
+							"pm.test(\"provider is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"provider\");",
+							"});",
+							"pm.test(\"primaryContacts is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"primaryContacts\");",
+							"});",
+							"pm.test(\"shortName is present\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"shortName\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Organization",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Organization detail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"if((tests[\"Validating planDetails tag\"] = responseBody.has(\"planDetails\")))      ",
+							"            console.log(\"planDetails tag is present\");",
+							"            ",
+							"if((tests[\"Validating serviceType tag\"] = responseBody.has(\"serviceType\")))      ",
+							"            console.log(\"inheritance tag is present\");",
+							"            ",
+							"if((tests[\"Validating emailDomainNames tag\"] = responseBody.has(\"emailDomainNames\")))      ",
+							"            console.log(\"emailDomainNames tag is present\");",
+							"            ",
+							"            ",
+							"if((tests[\"Validating emailTemplateSettings tag\"] = responseBody.has(\"emailTemplateSettings\")))      ",
+							"            console.log(\"emailTemplateSettings tag is present\");",
+							"            ",
+							"if((tests[\"Validating userCount tag\"] = responseBody.has(\"userCount\")))      ",
+							"            console.log(\"userCount tag is present\");",
+							"            ",
+							"if((tests[\"Validating resourceProvider tag\"] = responseBody.has(\"resourceProvider\")))      ",
+							"            console.log(\"resourceProvider tag is present\");",
+							"            ",
+							"tests[\"Validating providerDomainName\"] = postman.getEnvironmentVariable(\"providerDomainName\") == jsonData.organizationInfo.organization.connectName",
+							"",
+							"tests[\"Validating Plan association\"] = JSON.parse(postman.getEnvironmentVariable(\"planDetail\")).plan.planId == jsonData.organizationInfo.planDetails[0].plan.planId",
+							"",
+							"tests[\"Validating serviceType\"] = jsonData.organizationInfo.organization['serviceType'] === 5;",
+							"",
+							"postman.setEnvironmentVariable(\"tenantAdminId\", jsonData.organizationInfo.organizationProperties.primaryContacts[0].user.userId);",
+							"postman.setEnvironmentVariable(\"tenantAdminUsername\", jsonData.organizationInfo.organizationProperties.primaryContacts[0].user.userName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Organization",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"",
+							"tests[\"Update request success\"] = jsonData.error.errorCode === 0;",
+							"setTimeout(function() {",
+							"    console.log(\"Delaying test execution by 5 seconds\");",
+							"}, 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"organizationInfo\": {\n        \"organization\": {\n            \"emailDomainNames\": [\n                \"mail.commvault.com\"\n            ],\n            \"shortName\": {\n                \"domainName\": \"{{providerDomainName}}\",\n                \"id\": {{providerId}}\n            }\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization?organizationId={{providerId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization"
+					],
+					"query": [
+						{
+							"key": "organizationId",
+							"value": "{{providerId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Organization detail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"",
+							"if((tests[\"Validating planDetails tag\"] = responseBody.has(\"planDetails\")))      ",
+							"            console.log(\"planDetails tag is present\");",
+							"            ",
+							"if((tests[\"Validating serviceType tag\"] = responseBody.has(\"serviceType\")))      ",
+							"            console.log(\"inheritance tag is present\");",
+							"            ",
+							"if((tests[\"Validating emailDomainNames tag\"] = responseBody.has(\"emailDomainNames\")))      ",
+							"            console.log(\"emailDomainNames tag is present\");",
+							"            ",
+							"if((tests[\"Validating emailTemplateSettings tag\"] = responseBody.has(\"emailTemplateSettings\")))      ",
+							"            console.log(\"emailTemplateSettings tag is present\");",
+							"            ",
+							"if((tests[\"Validating userCount tag\"] = responseBody.has(\"userCount\")))      ",
+							"            console.log(\"userCount tag is present\");",
+							"            ",
+							"if((tests[\"Validating resourceProvider tag\"] = responseBody.has(\"resourceProvider\")))      ",
+							"            console.log(\"resourceProvider tag is present\");",
+							"            ",
+							"tests[\"Validating emailDomainNames updation\"] = jsonData.organizationInfo.organization.emailDomainNames[0] == \"mail.commvault.com\"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); \r",
+							"setTimeout(function() {\r",
+							"    console.log(\"Delaying test execution by 5 seconds\");\r",
+							"}, 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"users\":[  \r\n      {  \r\n         \"userEntity\":{  \r\n            \"userId\":{{tenantAdminId}}\r\n         },\r\n         \"password\":\"Q29tbVZhdWx0QEAxMjM0NTY=\",\r\n         \"validationParameters\":{  \r\n            \"password\":\"{{Password}}\",\r\n            \"passwordOperationType\":2\r\n         }\r\n      }\r\n   ]\r\n} "
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User/{{tenantAdminId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{tenantAdminId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Organization before deactivation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 587206460;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a org."
+			},
+			"response": [
+				{
+					"name": "Delete Plan",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Plan/{{PlanId}}?confirmDelete=true",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Plan",
+								"{{PlanId}}"
+							],
+							"query": [
+								{
+									"key": "confirmDelete",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "35",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 15 Sep 2017 17:51:53 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "930C162901E43496C2ED776C7233E414",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"errorMessage\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Deactivate company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Deactivation success\"] = jsonData.response.errorCode === 0;",
+							"setTimeout(function() {",
+							"    console.log(\"Delaying test execution by 5 seconds\");",
+							"}, 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"deactivateOptions\": {\n        \"disableBackup\": true,\n        \"disableRestore\": true,\n        \"disableLogin\": true\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}/action/deactivate",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}",
+						"action",
+						"deactivate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Properties validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"tests[\"user disabled\"] = jsonData.users[0].enableUser === false; ",
+							"",
+							"setTimeout(function(){",
+							"    console.log(\"30s sleep\");",
+							"},30000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User/{{tenantAdminId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{tenantAdminId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login as tenant",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"tests[\"Account disabled successfully validated\"] = jsonData.errList[0].errLogMessage === \"Account Disabled\";"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"username = pm.environment.get(\"tenantAdminUsername\")",
+							"pm.environment.set(\"tenantAdminUsername\", username.replace(/\\\\/g, '\\\\\\\\'));",
+							"",
+							"/*setTimeout(function(){",
+							"    console.log(\"30s sleep\");",
+							"},30000);*/"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{tenantAdminUsername}}\",\r\n    \"password\":\"Q29tbVZhdWx0QEAxMjM0NTY=\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"######\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Clientgroups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"clientGroupId\", (function() {",
+							"    for (i = 0;  i < jsonData.groups.length; i++)",
+							"        if (jsonData.groups[i].name ===  pm.environment.get(\"providerDomainName\"))",
+							"            return jsonData.groups[i].Id;",
+							"})());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clientgroup validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Backup disabled successfully\"] = jsonData.clientGroupDetail.clientGroupActivityControl.activityControlOptions[0].enableActivityType === false;",
+							"tests[\"Restore disabled successfully\"] = jsonData.clientGroupDetail.clientGroupActivityControl.activityControlOptions[1].enableActivityType === false;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"{{clientGroupId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activate company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Deactivation success\"] = jsonData.response.errorCode === 0;",
+							"setTimeout(function() {",
+							"    console.log(\"Delaying test execution by 5 seconds\");",
+							"}, 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}/action/activate",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}",
+						"action",
+						"activate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login as tenant Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"tests[\"Login successfully validated\"] = jsonData.errList.length === 0;",
+							"",
+							"if((tests[\"Validating QSDK token tag\"] = responseBody.has(\"token\")))      ",
+							"            console.log(\"token tag is present\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){\r",
+							"    console.log(\"30s sleep\");\r",
+							"},30000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{tenantAdminUsername}}\",\r\n    \"password\":\"Q29tbVZhdWx0QEAxMjM0NTY=\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"######\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Clientgroup validation Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Backup disabled successfully\"] = jsonData.clientGroupDetail.clientGroupActivityControl.activityControlOptions[0].enableActivityType === true;",
+							"tests[\"Restore disabled successfully\"] = jsonData.clientGroupDetail.clientGroupActivityControl.activityControlOptions[1].enableActivityType === true;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"{{clientGroupId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate company Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Deactivation success\"] = jsonData.response.errorCode === 0;",
+							"setTimeout(function() {",
+							"    console.log(\"Delaying test execution by 5 seconds\");",
+							"}, 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"deactivateOptions\": {\n        \"disableBackup\": true,\n        \"disableRestore\": true,\n        \"disableLogin\": true\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}/action/deactivate",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}",
+						"action",
+						"deactivate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Organization with plans",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;",
+							"setTimeout(function() {",
+							"    console.log(\"Delaying test execution by 5 seconds\");",
+							"}, 5000);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a org."
+			},
+			"response": [
+				{
+					"name": "Delete Plan",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Plan/{{PlanId}}?confirmDelete=true",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Plan",
+								"{{PlanId}}"
+							],
+							"query": [
+								{
+									"key": "confirmDelete",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "35",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 15 Sep 2017 17:51:53 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "930C162901E43496C2ED776C7233E414",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"errorMessage\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "POST Create organization without email",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);",
+							"",
+							"var d = new Date();",
+							"var time = d.getTime();",
+							"",
+							"postman.setEnvironmentVariable(\"adminEmail\", time);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains providerId\"] = responseBody.has(\"providerId\");",
+							"tests[\"Response Body contains providerDomainName\"] = responseBody.has(\"providerDomainName\");",
+							"",
+							"postman.setEnvironmentVariable(\"providerId\", jsonData.response.entity.providerId);",
+							"postman.setEnvironmentVariable(\"providerDomainName\", jsonData.response.entity.providerDomainName);",
+							"setTimeout(function() {",
+							"    console.log(\"Delaying test execution by 5 seconds\");",
+							"}, 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"organizationInfo\": {\r\n        \"organization\": {\r\n            \"connectName\": \"autocvlt_{{$timestamp}}\",\r\n            \"emailDomainNames\": [\r\n                \"commvault.com\"\r\n            ],\r\n            \"shortName\": {\r\n                \"domainName\": \"autocvlt_{{$timestamp}}\"\r\n            }\r\n        },\r\n        \"organizationProperties\": {\r\n            \"primaryDomain\": \"\",\r\n            \"primaryContacts\": [\r\n                {\r\n                    \"fullName\": \"newman_{{$timestamp}}\",\r\n                    \"email\": \"{{adminEmail}}@commvault.com\"\r\n                }\r\n            ]\r\n        }\r\n    },\r\n    \"sendEmail\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Organization detail Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"            ",
+							"if((tests[\"Validating serviceType tag\"] = responseBody.has(\"serviceType\")))      ",
+							"            console.log(\"inheritance tag is present\");",
+							"            ",
+							"if((tests[\"Validating emailDomainNames tag\"] = responseBody.has(\"emailDomainNames\")))      ",
+							"            console.log(\"emailDomainNames tag is present\");",
+							"",
+							"            ",
+							"if((tests[\"Validating emailTemplateSettings tag\"] = responseBody.has(\"emailTemplateSettings\")))      ",
+							"            console.log(\"emailTemplateSettings tag is present\");",
+							"            ",
+							"if((tests[\"Validating userCount tag\"] = responseBody.has(\"userCount\")))      ",
+							"            console.log(\"userCount tag is present\");",
+							"            ",
+							"if((tests[\"Validating resourceProvider tag\"] = responseBody.has(\"resourceProvider\")))      ",
+							"            console.log(\"resourceProvider tag is present\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate company Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Deactivation success\"] = jsonData.response.errorCode === 0;",
+							"setTimeout(function() {",
+							"    console.log(\"Delaying test execution by 5 seconds\");",
+							"}, 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"deactivateOptions\": {\n        \"disableBackup\": true,\n        \"disableRestore\": true,\n        \"disableLogin\": true\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}/action/deactivate",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}",
+						"action",
+						"deactivate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Organization Copy Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;",
+							"setTimeout(function() {",
+							"    console.log(\"Delaying test execution by 5 seconds\");",
+							"}, 5000);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a org."
+			},
+			"response": [
+				{
+					"name": "Delete Plan",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Plan/{{PlanId}}?confirmDelete=true",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Plan",
+								"{{PlanId}}"
+							],
+							"query": [
+								{
+									"key": "confirmDelete",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "35",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 15 Sep 2017 17:51:53 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "930C162901E43496C2ED776C7233E414",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"errorMessage\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "POST Create organization without email",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);",
+							"",
+							"var d = new Date();",
+							"var time = d.getTime();",
+							"",
+							"postman.setEnvironmentVariable(\"adminEmail\", time);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains providerId\"] = responseBody.has(\"providerId\");",
+							"tests[\"Response Body contains providerDomainName\"] = responseBody.has(\"providerDomainName\");",
+							"",
+							"postman.setEnvironmentVariable(\"providerId\", jsonData.response.entity.providerId);",
+							"postman.setEnvironmentVariable(\"providerDomainName\", jsonData.response.entity.providerDomainName);",
+							"setTimeout(function() {",
+							"    console.log(\"Delaying test execution by 5 seconds\");",
+							"}, 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"organizationInfo\": {\r\n        \"organization\": {\r\n            \"connectName\": \"autocvlt_{{$timestamp}}\",\r\n            \"emailDomainNames\": [\r\n                \"commvault.com\"\r\n            ],\r\n            \"shortName\": {\r\n                \"domainName\": \"autocvlt_{{$timestamp}}\"\r\n            }\r\n        },\r\n        \"organizationProperties\": {\r\n            \"primaryDomain\": \"\",\r\n            \"primaryContacts\": [\r\n                {\r\n                    \"fullName\": \"newman_{{$timestamp}}\",\r\n                    \"email\": \"{{adminEmail}}@commvault.com\"\r\n                }\r\n            ]\r\n        }\r\n    },\r\n    \"sendEmail\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate company Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Deactivation success\"] = jsonData.response.errorCode === 0;",
+							"setTimeout(function() {",
+							"    console.log(\"Delaying test execution by 5 seconds\");",
+							"}, 5000);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"deactivateOptions\": {\n        \"disableBackup\": true,\n        \"disableRestore\": true,\n        \"disableLogin\": true\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}/action/deactivate",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}",
+						"action",
+						"deactivate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Organization  confirmDelete and prune",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}?confirmDelete=true&prune=true",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}"
+					],
+					"query": [
+						{
+							"key": "confirmDelete",
+							"value": "true"
+						},
+						{
+							"key": "prune",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Delete Plan",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Plan/{{PlanId}}?confirmDelete=true",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Plan",
+								"{{PlanId}}"
+							],
+							"query": [
+								{
+									"key": "confirmDelete",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "35",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 15 Sep 2017 17:51:53 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "930C162901E43496C2ED776C7233E414",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"errorMessage\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

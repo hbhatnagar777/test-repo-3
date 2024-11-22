@@ -1,0 +1,4283 @@
+{
+	"info": {
+		"_postman_id": "c378002e-3af5-4ab2-a48c-b00f783b92a2",
+		"name": "NLPGlobalSearchCollection",
+		"description": "Welcome\n--------------\nWelcome to NLP Global Search Model checking APIs. \n\nUsage \n--------------\nAll variables are by default all set for use, no changes are need except one. \nIn the environment to run the collection in setup ServerUrl as : https://{your console url}/adminconsole\ne.g : https://abc.xyz.com/adminconsole ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add",
+			"item": [
+				{
+					"name": "Add Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"USERS\"))     \r",
+									"            console.log(\"Add Users is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"Accept\", \"application/json\");\r",
+									"pm.collectionVariables.set(\"IntentEndpoint\", \"intent.do\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add users",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add users"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add User Groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"USERS_GROUPS\"))     \r",
+									"            console.log(\"Add User Groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add user groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add user groups"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add VM Groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"VM_GROUPS\"))     \r",
+									"            console.log(\"Add VM Groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add vm groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add vm groups"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"COMPANY\"))     \r",
+									"            console.log(\"Add Company is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add company",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add company"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Roles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"ROLES\"))     \r",
+									"            console.log(\"Add Roles is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add roles",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add roles"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Gateway",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"GATEWAY\"))     \r",
+									"            console.log(\"Add Gateway is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add gateway",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add gateway"
+								}
+							]
+						},
+						"description": "\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Server plan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"var view = jsonData.view;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"PLAN\" && view === \"SERVER_PLAN\"))     \r",
+									"            console.log(\"Add Server plan is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add server plan",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add server plan"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Laptop plan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"var view = jsonData.view;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"PLAN\" && view === \"LAPTOP_PLAN\"))     \r",
+									"            console.log(\"Add Laptop plan is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add laptop plan",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add laptop plan"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Data classification plan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"var view = jsonData.view;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"PLAN\" && view === \"DC_PLAN\"))     \r",
+									"            console.log(\"Add Data classification plan is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add data classification plan",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add data classification plan"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Hypervisor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"HYPERVISOR_SERVER\"))     \r",
+									"            console.log(\"Add Hypervisor is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add hypervisor",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add hypervisor"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Server group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"SERVER_GROUP\"))     \r",
+									"            console.log(\"Add Server group is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add server group",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add server group"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add laptop",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"LAPTOP\"))     \r",
+									"            console.log(\"Add Laptop is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add laptop",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add laptop"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add file server",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Add\" && entity === \"FS_SERVER\"))     \r",
+									"            console.log(\"Add File server is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=add file server",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "add file server"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Navigate",
+			"item": [
+				{
+					"name": "Navigate virtual machines",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"VM\"))     \r",
+									"            console.log(\"Navigate virtual machines is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=navigate virtual machines",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "navigate virtual machines"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Navigate file servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"FS_SERVER\"))     \r",
+									"            console.log(\"Navigate file servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=navigate file servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "navigate file servers"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Navigate databases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entityName;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"database\"))     \r",
+									"            console.log(\"Navigate databases is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=navigate databases",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "navigate databases"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Navigate office 365",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entityName;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"office 365\"))     \r",
+									"            console.log(\"Navigate office 365 is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=navigate office 365",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "navigate office 365"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Navigate cloud apps",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"CLOUD\"))     \r",
+									"            console.log(\"Navigate cloud apps is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=navigate cloud apps",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "navigate cloud apps"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Virtual machines",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"VM\"))     \r",
+									"            console.log(\"Virtual machines is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=virtual machines",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "virtual machines"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "File servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"FS_SERVER\"))     \r",
+									"            console.log(\"File servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=file servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "file servers"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Edit",
+			"item": [
+				{
+					"name": "Edit users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Edit\" && entity === \"USERS\"))     \r",
+									"            console.log(\"Edit Users is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=edit users",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "edit users"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit associations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"EditAssociations\" && entity === \"ASSOCIATIONS\"))     \r",
+									"            console.log(\"Edit Associations is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=edit associations",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "edit associations"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Check Readiness",
+			"item": [
+				{
+					"name": "Check Readiness servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entityName;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"CheckReadiness\" && entity === \"readiness server\"))     \r",
+									"            console.log(\"Check readiness servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=check readiness servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "check readiness servers"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Readiness laptops",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"CheckReadiness\" && entity === \"LAPTOP\"))     \r",
+									"            console.log(\"Check readiness laptops is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=check readiness laptops",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "check readiness laptops"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Readiness file servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"CheckReadiness\" && entity === \"FS_SERVER\"))     \r",
+									"            console.log(\"Check readiness file servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=check readiness file servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "check readiness file servers"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "View Jobs",
+			"item": [
+				{
+					"name": "View jobs servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"ViewJobs\" && entity === \"SERVER\"))     \r",
+									"            console.log(\"View jobs servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=view jobs servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "view jobs servers"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View jobs server groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"ViewJobs\" && entity === \"SERVER_GROUP\"))     \r",
+									"            console.log(\"View jobs server groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=view jobs server groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "view jobs server groups"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View jobs hypervisors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"ViewJobs\" && entity === \"HYPERVISOR_SERVER\"))     \r",
+									"            console.log(\"View jobs hypervisor is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=view jobs hypervisor",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "view jobs hypervisor"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Send Logs",
+			"item": [
+				{
+					"name": "Send logs servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"SendLogs\" && entity === \"SERVER\"))     \r",
+									"            console.log(\"Send logs servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=send logs servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "send logs servers"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send logs laptops",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"SendLogs\" && entity === \"LAPTOP\"))     \r",
+									"            console.log(\"Send logs laptops is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=send logs laptops",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "send logs laptops"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send logs hypervisors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"SendLogs\" && entity === \"HYPERVISOR_SERVER\"))     \r",
+									"            console.log(\"Send logs hypervisors is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=send logs hypervisors",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "send logs hypervisors"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Restore",
+			"item": [
+				{
+					"name": "Restore servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Restore\" && entity === \"SERVER\"))     \r",
+									"            console.log(\"Restore servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=restore servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "restore servers"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Restore vm groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Restore\" && entity === \"VM_GROUPS\"))     \r",
+									"            console.log(\"Restore vm groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=restore vm groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "restore vm groups"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Restore hypervisors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Restore\" && entity === \"HYPERVISOR_SERVER\"))     \r",
+									"            console.log(\"Restore hypervisors is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=restore hypervisors",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "restore hypervisors"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Install Software",
+			"item": [
+				{
+					"name": "Install software",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"InstallSoftware\" && entity === \"SOFTWARE\"))     \r",
+									"            console.log(\"Install software is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=install software",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "install software"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Install software servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"InstallSoftware\" && entity === \"SERVER\"))     \r",
+									"            console.log(\"Install software servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=install software servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "install software servers"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Upgrade/Uninstall Software",
+			"item": [
+				{
+					"name": "Uninstall software servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"UninstallSoftware\" && entity === \"SERVER\"))     \r",
+									"            console.log(\"Uninstall software servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=uninstall software servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "uninstall software servers"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Uninstall software server groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"UninstallSoftware\" && entity === \"SERVER_GROUP\"))     \r",
+									"            console.log(\"Uninstall software server groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=uninstall software server groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "uninstall software server groups"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upgrade software server groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"UpgradeSoftware\" && entity === \"SERVER_GROUP\"))     \r",
+									"            console.log(\"Upgrade software server groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=upgrade software server groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "upgrade software server groups"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Repair software",
+			"item": [
+				{
+					"name": "Repair software server groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"RepairSoftware\" && entity === \"SERVER_GROUP\"))     \r",
+									"            console.log(\"Repair software server groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=repair software server groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "repair software server groups"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Download software",
+			"item": [
+				{
+					"name": "Download software job",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"DownloadSoftware\" && entity === \"DOWNLOAD_COPY_SOFTWARE\"))     \r",
+									"            console.log(\"Download software job is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=download software job",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "download software job"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Copy software job",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"DownloadSoftware\" && entity === \"DOWNLOAD_COPY_SOFTWARE\"))     \r",
+									"            console.log(\"Copy software job is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=copy software job",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "copy software job"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update software servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"DownloadSoftware\" && entity === \"SERVER\"))     \r",
+									"            console.log(\"Update software servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=update software servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "update software servers"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update software server groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"DownloadSoftware\" && entity === \"SERVER_GROUP\"))     \r",
+									"            console.log(\"Update software server groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=update software server groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "update software server groups"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update software laptops",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"DownloadSoftware\" && entity === \"LAPTOP\"))     \r",
+									"            console.log(\"Update software laptops is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=update software laptops",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "update software laptops"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Schedule download software job",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Schedule\" && entity === \"DOWNLOAD_COPY_SOFTWARE\"))     \r",
+									"            console.log(\"Schedule download software job is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=schedule download software job",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "schedule download software job"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Backup",
+			"item": [
+				{
+					"name": "Backup servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Backup\" && entity === \"SERVER\"))     \r",
+									"            console.log(\"Backup servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=backup servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "backup servers"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Backup vm groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Backup\" && entity === \"VM_GROUPS\"))     \r",
+									"            console.log(\"Backup vm groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=backup vm groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "backup vm groups"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Backup virtual machines",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Backup\" && entity === \"VM\"))     \r",
+									"            console.log(\"Backup virtual machines is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=backup virtual machines",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "backup virtual machines"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Retire",
+			"item": [
+				{
+					"name": "Retire servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Retire\" && entity === \"SERVER\"))     \r",
+									"            console.log(\"Retire servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=retire servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "retire servers"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retire hypervisors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Retire\" && entity === \"HYPERVISOR_SERVER\"))     \r",
+									"            console.log(\"Retire hypervisors is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=retire hypervisors",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "retire hypervisors"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Run",
+			"item": [
+				{
+					"name": "Run Disaster recovery backup job",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Run\" && entity === \"DISASTER_RECOVERY\"))     \r",
+									"            console.log(\"Run disaster recovery backup job is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=run disaster recovery backup job",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "run disaster recovery backup job"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Run download software job",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"DownloadSoftware\" && entity === \"DOWNLOAD_COPY_SOFTWARE\"))     \r",
+									"            console.log(\"Run download software job is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=run download software job",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "run download software job"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Delete",
+			"item": [
+				{
+					"name": "Delete servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Delete\" && entity === \"SERVER\"))     \r",
+									"            console.log(\"Delete servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=delete servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "delete servers"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete server groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Delete\" && entity === \"SERVER_GROUP\"))     \r",
+									"            console.log(\"Delete server groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=delete server groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "delete server groups"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete vm groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Delete\" && entity === \"VM_GROUPS\"))     \r",
+									"            console.log(\"Delete vm groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=delete vm groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "delete vm groups"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Change company",
+			"item": [
+				{
+					"name": "Change company servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"ChangeCompany\" && entity === \"COMPANY\"))     \r",
+									"            console.log(\"Change company is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=change company",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "change company"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change company server groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"ChangeCompany\" && entity === \"SERVER_GROUP\"))     \r",
+									"            console.log(\"Change company server groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=change company server groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "change company server groups"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change company hypervisors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"ChangeCompany\" && entity === \"HYPERVISOR_SERVER\"))     \r",
+									"            console.log(\"Change company hypervisors is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=change company hypervisors",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "change company hypervisors"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Replication",
+			"item": [
+				{
+					"name": "Configure replication vm groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Replicate\" && entity === \"VM_GROUPS\"))     \r",
+									"            console.log(\"Configure replication vm groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=configure replication vm groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "configure replication vm groups"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Replication monitor vm groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"ReplicationMonitor\" && entity === \"VM_GROUPS\"))     \r",
+									"            console.log(\"Replication monitor vm groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=replication monitor vm groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "replication monitor vm groups"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Deactivate",
+			"item": [
+				{
+					"name": "Deactivate laptops",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Deactivate\" && entity === \"LAPTOP\"))     \r",
+									"            console.log(\"Deactivate laptops is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=deactivate laptops",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "deactivate laptops"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Clone",
+			"item": [
+				{
+					"name": "Clone server groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Clone\" && entity === \"SERVER_GROUP\"))     \r",
+									"            console.log(\"Clone server groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=clone server groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "clone server groups"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Clone vm groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Clone\" && entity === \"VM_GROUPS\"))     \r",
+									"            console.log(\"Clone vm groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=clone vm groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "clone vm groups"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Release License",
+			"item": [
+				{
+					"name": "Release license servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"ReleaseLicense\"))     \r",
+									"            console.log(\"Release license servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=release license servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "release license servers"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Push network configuration",
+			"item": [
+				{
+					"name": "Push network configuration server groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"PushNetworkConf\" && entity === \"SERVER_GROUP\"))     \r",
+									"            console.log(\"Push network configuration server groups is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=push network configuration server groups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "push network configuration server groups"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Reconfigure",
+			"item": [
+				{
+					"name": "Reconfigure servers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"ReConfigure\" && entity === \"SERVER\"))     \r",
+									"            console.log(\"Reconfigure servers is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=reconfigure servers",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "reconfigure servers"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Install/Upgrade/Uninstall Vaio",
+			"item": [
+				{
+					"name": "Uninstall vaio filter hypervisors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"UninstallVaio\" && entity === \"HYPERVISOR_SERVER\"))     \r",
+									"            console.log(\"Uninstall vaio filter hypervisors is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=uninstall vaio filter hypervisors",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "uninstall vaio filter hypervisors"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Install vaio filter hypervisors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"InstallVaio\" && entity === \"HYPERVISOR_SERVER\"))     \r",
+									"            console.log(\"Install vaio filter hypervisors is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=install vaio filter hypervisors",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "install vaio filter hypervisors"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Commcell Actions (Entity Independent)",
+			"item": [
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entityName;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Logout\"))     \r",
+									"            console.log(\"Logout is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=logout",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "logout"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Install Updates",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"DownloadSoftware\" && entity === \"INSTALL_UPDATES_SCHEDULE\"))     \r",
+									"            console.log(\"Install updates is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=install updates",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "install updates"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "About",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"About\"))     \r",
+									"            console.log(\"About is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=about",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "about"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Turn on accessibility",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entityName;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"TurnOnAc\" && entity === \"accessibility\"))     \r",
+									"            console.log(\"Turn on accessibility is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=turn on accessibility",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "turn on accessibility"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Turn off accessibility",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entityName;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"TurnOfAc\" && entity === \"off accessibility\"))     \r",
+									"            console.log(\"Turn off accessibility is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=turn off accessibility",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "turn off accessibility"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Feedback",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entityName;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Feedback\"))     \r",
+									"            console.log(\"Feedback is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=feedback",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "feedback"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Preferences",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entityName;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"UserPref\" && entity === \"preferences\"))     \r",
+									"            console.log(\"User preferencesis mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=user preferences",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "user preferences"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Miscellenous View commands",
+			"item": [
+				{
+					"name": "List of jobs that ran yesterday",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"var view = jsonData.view;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"JOB_HISTORY\" && view === \"YESTERDAY_JOBS\"))     \r",
+									"            console.log(\"Open list of jobs ran yesterday is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=open list of jobs ran yesterday",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "open list of jobs ran yesterday"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Open list of jobs ran last month",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"var view = jsonData.view;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"JOB_HISTORY\" && view === \"LAST_MONTH\"))     \r",
+									"            console.log(\"Open list of jobs ran last month is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=open list of jobs ran last month",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "open list of jobs ran last month"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Open list of jobs ran last 3 months",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"var view = jsonData.view;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"JOB_HISTORY\" && view === \"LAST_3_MONTHS\"))     \r",
+									"            console.log(\"Open list of jobs ran last 3 months is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=open list of jobs ran last 3 months",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "open list of jobs ran last 3 months"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Open failed jobs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"var view = jsonData.view;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"JOB_HISTORY\" && view === \"FAILED_LAST_24_HOURS\"))     \r",
+									"            console.log(\"Open failed jobs is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=open failed jobs",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "open failed jobs"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of jobs in last 24 hours",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"var view = jsonData.view;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"JOB_HISTORY\" && view === \"LAST_24_HOURS\"))     \r",
+									"            console.log(\"Show me list of jobs in last 24 hours is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=show me list of jobs in last 24 hours",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "show me list of jobs in last 24 hours"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of jobs last week",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"var view = jsonData.view;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"JOB_HISTORY\" && view === \"LAST_WEEK\"))     \r",
+									"            console.log(\"List of jobs ran last week is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=show me list of jobs that ran last week",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "show me list of jobs that ran last week"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show all plans",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"Response received:\", jsonData);\r",
+									"\r",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+									"\r",
+									"var action = jsonData.action;\r",
+									"var entity = jsonData.entity;\r",
+									"\r",
+									"if((tests[\"Checking if intent is mapped correctly to action\"] = action === \"Navigate\" && entity === \"PLAN\"))     \r",
+									"            console.log(\"Show all plans is mapped correctly\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ServerURL}}/{{IntentEndpoint}}?command=show all plans",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"{{IntentEndpoint}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "show all plans"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<h2>Description</h2>\nREST APIs for Commvault Activate.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Accept",
+			"value": ""
+		},
+		{
+			"key": "IntentEndpoint",
+			"value": ""
+		},
+		{
+			"key": "ServerUrl",
+			"value": ""
+		}
+	]
+}

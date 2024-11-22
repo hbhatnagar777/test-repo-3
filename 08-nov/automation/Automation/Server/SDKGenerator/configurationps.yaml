@@ -1,0 +1,21 @@
+directive:
+  - from: OpenAPI3_final1.json
+    where: >-
+      $.servers[0].url
+    set: >-
+       http://WebserverUrl.Commvault.com/webconsole/api/ag
+      
+  - from : OpenAPI3_final1.json
+    where: >-
+      $.paths..content
+    transform: >-
+      const json_obj = {};
+      for(var each in $)
+      {
+        if(each != "application/xml")
+        {
+            json_obj[each] = $[each];
+        }
+      }
+      return json_obj
+        

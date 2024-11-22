@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_SetActivityRequest>
+    <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+    <activity cellClass=""
+        className="commvault.cte.workflow.activities.CustomXMLOperationActivity"
+        definition="&lt;?xml version='1.0' encoding='UTF-8'?>&lt;Workflow_CustomOperationDefinition outputs=&quot;&amp;lt;outputs>&amp;lt;userName class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot;>xpath:{/App_DeleteUserResponse/response/entity/userName}&amp;lt;/userName>&amp;lt;errorCode class=&amp;quot;java.lang.Integer&amp;quot; _list_=&amp;quot;false&amp;quot;>xpath:{/App_DeleteUserResponse/response/errorCode}&amp;lt;/errorCode>&amp;lt;errorMessage class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot;>xpath:{/App_DeleteUserResponse/response/errorString}&amp;lt;/errorMessage>&amp;lt;/outputs>&quot; inputs=&quot;&amp;lt;inputs>&amp;lt;act_username class=&amp;quot;commvault.msgs.CvEntities.UserEntity&amp;quot; _list_=&amp;quot;false&amp;quot;>&amp;lt;userName class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;userId class=&amp;quot;java.lang.Integer&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;/act_username>&amp;lt;/inputs>&quot; operation=&quot;&amp;lt;App_DeleteUserRequest>&amp;#xd;&amp;#xa;&amp;lt;users>&amp;#xd;&amp;#xa;    &amp;lt;userEntity>&amp;#xd;&amp;#xa;        &amp;lt;userName>java:{activity.getInput(&amp;amp;quot;act_username&amp;amp;quot;)}:java&amp;lt;/userName>&amp;#xd;&amp;#xa;    &amp;lt;/userEntity>&amp;#xd;&amp;#xa;    &amp;lt;transferInfo transferAllFromOldUser=&amp;quot;1&amp;quot;>&amp;#xd;&amp;#xa;        &amp;lt;oldUser/>&amp;#xd;&amp;#xa;        &amp;lt;newUserGroup userGroupName=&amp;quot;master&amp;quot;/>&amp;#xd;&amp;#xa;    &amp;lt;/transferInfo>&amp;#xd;&amp;#xa;&amp;lt;/users>&amp;#xd;&amp;#xa;&amp;lt;/App_DeleteUserRequest>&quot;>&lt;script language=&quot;1&quot; script=&quot;/*&amp;#xa;to access xml response use: XML xml = activity.getXmlResponse();&amp;#xa;to retrieve values via xpath you can use: String value = xml.selectSingleNode(&amp;quot;string(/path/to/node)&amp;quot;);&amp;#xa;to set outputs of the activity use: activity.setOutput(&amp;quot;outputName&amp;quot;, value);&amp;#xa;*/&amp;#xa;&quot; />&lt;/Workflow_CustomOperationDefinition>"
+        description="Deletes a user from Commcell" displayName=""
+        flags="0" icon="" inbound="1" outbound="1">
+        <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+        <activity activityId="0" activityName="UserDelete" schemaId="0" schemaNamespace="commvault.cte.workflow.activities"/>
+        <activityLocation locationType="0">
+            <location schemaLocationId="1" schemaLocationUrl="workflow_activities.jar"/>
+        </activityLocation>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0" name="" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="userName" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.Integer"
+                    controlType="0" defaultValue="" displayName=""
+                    documentation="" hidden="0"
+                    inputType="java.lang.Integer" listType="0"
+                    name="errorCode" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="errorMessage" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs className="" defaultValue="" listType="0" name="" type="">
+                <children attribute="0"
+                    className="commvault.msgs.CvEntities.UserEntity"
+                    controlType="2" defaultValue="" documentation=""
+                    hidden="0"
+                    inputType="commvault.msgs.CvEntities.UserEntity"
+                    listType="0" name="act_username" readOnly="0" type="{commvault.msgs.CvEntities}UserEntity">
+                    <children attribute="0" className="java.lang.String"
+                        defaultValue="" hidden="0"
+                        inputType="java.lang.String" listType="0"
+                        name="userName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    <children attribute="0"
+                        className="java.lang.Integer" defaultValue=""
+                        hidden="0" inputType="java.lang.Integer"
+                        listType="0" name="userId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                </children>
+            </inputs>
+        </activitySchema>
+    </activity>
+</Workflow_SetActivityRequest>

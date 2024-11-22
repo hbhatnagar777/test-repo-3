@@ -1,0 +1,2073 @@
+{
+	"info": {
+		"_postman_id": "c1bd9d6d-4a78-4770-9cbb-558951e87c9a",
+		"name": "Control Panel Options",
+		"description": "######/51482#steps",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"######\",\"userName\":\"####\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\n\"providerId\":0,\"providerDomainName\":\"###\"\r\n},\"providerOrganization\":{\r\n\"providerId\":0,\"providerDomainName\":\"#####\"\r\n},\"errList\":[\r\n\r\n]\r\n}"
+				}
+			]
+		},
+		{
+			"name": "POST Cloud Metrics Reporting Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Success\"] = jsonData.errorMessage === 'Success';"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"config\": {\n        \"commcellDiagUsage\": true,\n        \"cloud\": {\n            \"serviceList\": [\n                {\n                    \"enabled\": false,\n                    \"service\": {\n                        \"id\": 1\n                    }\n                }\n            ]\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/MetricsReporting",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"MetricsReporting"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Cloud Metrics Reporting Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Response Body contains clientGroupList\"] = responseBody.has(\"clientGroupList\");",
+							"",
+							"tests[\"Response Body contains cloud tag\"] = responseBody.has(\"cloud\");",
+							"",
+							"tests[\"Response Body contains serviceList\"] = responseBody.has(\"serviceList\");",
+							"",
+							"tests[\"Response Body contains HttpServerInfo\"] = responseBody.has(\"HttpServerInfo\");",
+							"",
+							"tests[\"Response Body contains config tag\"] = responseBody.has(\"config\");",
+							"",
+							"tests[\"Health check disabled\"] = (function() {",
+							"    for(i = 0; i < jsonData.config.cloud.serviceList.length; i++)",
+							"        if (jsonData.config.cloud.serviceList[i].service.id == 1)",
+							"            if (jsonData.config.cloud.serviceList[i].enabled === false)",
+							"                return true;",
+							"    return false;",
+							"})();"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/MetricsReporting?isPrivateCloud=False",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"MetricsReporting"
+					],
+					"query": [
+						{
+							"key": "isPrivateCloud",
+							"value": "False"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Custom Calendar",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Success\"] = jsonData.processinginstructioninfo.attributes[0].value === \"0\";"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"customCalendarName\", \"Fiscal auto\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customCalendarOperationType\": 1,\n    \"customCalendar\": {\n        \"defineCustomMonths\": false,\n        \"isDefault\": false,\n        \"beginMonth\": 4,\n        \"customCalendarEntity\": {\n            \"customCalendarName\": \"{{customCalendarName}}\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/CustomCalendar",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"CustomCalendar"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Custom Calendar",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Response Body contains customCalendarId\"] = responseBody.has(\"customCalendarId\");",
+							"",
+							"tests[\"Response Body contains customCalendarEntity\"] = responseBody.has(\"customCalendarEntity\");",
+							"",
+							"tests[\"Response Body contains customCalendar tag\"] = responseBody.has(\"customCalendar\");",
+							"",
+							"tests[\"Fiscal calendar present\"] = (function() {",
+							"    for (i = 0;  i < jsonData.customCalendar.length; i++)",
+							"        if (jsonData.customCalendar[i].customCalendarEntity.customCalendarName == postman.getEnvironmentVariable(\"customCalendarName\")) {",
+							"            postman.setEnvironmentVariable(\"customCalendarId\", jsonData.customCalendar[i].customCalendarEntity.customCalendarId);",
+							"            return true;",
+							"        }",
+							"    return false;",
+							"})();"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/CustomCalendar",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"CustomCalendar"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Custom Calendar copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Success\"] = jsonData.processinginstructioninfo.attributes[0].value === \"0\";"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"customCalendarName\", \"Fiscal \" + Math.floor(Math.random() * 100) + 100);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customCalendarOperationType\": 2,\n    \"customCalendar\": {\n        \"customCalendarEntity\": {\n            \"customCalendarName\": \"{{customCalendarName}}\",\n            \"customCalendarId\": {{customCalendarId}}\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/CustomCalendar",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"CustomCalendar"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Email Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Success\"] = jsonData.errorCode === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"smtpInfo\": {\n        \"senderInfo\": {\n            \"senderName\": \"Newman Edit\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/EmailServer",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"EmailServer"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Email Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Response Body contains smtpServer\"] = responseBody.has(\"smtpServer\");",
+							"",
+							"tests[\"Response Body contains senderAddress\"] = responseBody.has(\"senderAddress\");",
+							"",
+							"tests[\"Response Body contains smtpPort tag\"] = responseBody.has(\"smtpPort\");",
+							"",
+							"tests[\"Sender Name edit success\"] = jsonData.senderInfo.senderName == \"Newman Edit\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/EmailServer",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"EmailServer"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Email Server reset",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Success\"] = jsonData.errorCode === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"smtpInfo\": {\n        \"senderInfo\": {\n            \"senderName\": \"{{senderName}}\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/EmailServer",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"EmailServer"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"",
+							"postman.setEnvironmentVariable(\"clientId\", jsonData.clientProperties[0].client.clientEntity.clientId);          //set value of clientId1",
+							"console.log(\"value of clientId set to:\", postman.getEnvironmentVariable(\"clientId\"));",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Host Interface List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Response Body contains interfaces\"] = responseBody.has(\"interfaces\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/DataInterfacePairs/HostInterfaces?hostId={{clientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"DataInterfacePairs",
+						"HostInterfaces"
+					],
+					"query": [
+						{
+							"key": "hostId",
+							"value": "{{clientId}}"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "POST operation Window",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"postman.setEnvironmentVariable(\"ruleId\", jsonData.operationWindow.ruleId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"operationWindow\": {\r\n    \"name\": \"newBlackoutWindow\",\r\n    \"ruleId\": 0,\r\n    \"operations\": [\r\n      \"OPERATION_FULL_DATA_PROTECTION\",\r\n      \"OPERATION_NON_FULL_DATA_PROTECTION\",\r\n      \"OPERATION_SYNTHETIC_FULL\",\r\n      \"OPERATION_TRANSACTION_LOG_BACKUP\"\r\n    ],\r\n    \"dayTime\": [\r\n      {\r\n        \"dayOfWeek\": [\r\n          \"MONDAY\",\r\n          \"TUESDAY\",\r\n          \"WEDNESDAY\",\r\n          \"THURSDAY\",\r\n          \"FRIDAY\"\r\n        ],\r\n        \"startTime\": 28800,\r\n        \"endTime\": 64800,\r\n        \"weekOfTheMonth\": [\r\n          \"ALL\"\r\n        ]\r\n      }\r\n    ],\r\n    \"startDate\": 1738281600,\r\n    \"endDate\": 2181945600,\r\n    \"ruleEnabled\": true,\r\n    \"company\": {\r\n      \"providerId\": 0\r\n    },\r\n    \"doNotSubmitJob\": false\r\n  },\r\n  \"entity\": {\r\n    \"clientId\": 2\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Operation Rules",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Response Body contains operationWindow\"] = responseBody.has(\"operationWindow\");",
+							"",
+							"tests[\"Response Body contains ruleEnabled\"] = responseBody.has(\"ruleEnabled\");",
+							"",
+							"tests[\"Response Body contains ruleId\"] = responseBody.has(\"ruleId\");",
+							"",
+							"tests[\"Response Body contains operations\"] = responseBody.has(\"operations\");",
+							"",
+							"tests[\"Newly created Operation window is present\"] = (function() {",
+							"    for( i=0; i < jsonData.operationWindow.length; i++)",
+							"        if (jsonData.operationWindow[i].ruleId == postman.getEnvironmentVariable(\"ruleId\"))",
+							"            return true;",
+							"    return false;",
+							"})();"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/OpWindowList?clientId={{clientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"OpWindowList"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{clientId}}"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Operation Window",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/OperationWindow/{{ruleId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"OperationWindow",
+						"{{ruleId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_metrics_reporting.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "SNMPV3Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"SUCCESS\"] = jsonData.processinginstructioninfo.attributes[0].value === \"0\";"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"snmv3ConfigOperationType\": 1,\n    \"snmv3Info\": {\n        \"hostName\": \"xyz\",\n        \"privacyCredentials\": false,\n        \"privacyAlgorithm\": 0,\n        \"id\": 0,\n        \"encryptAlgorithm\": 1,\n        \"userAccount\": {\n            \"password\": \"{{Password}}\",\n            \"userName\": \"{{UserName}}\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"SNMPV3Configuration"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "SNMPV3Configuration",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<EVGui_SetSNMPV3Config>\r\n\t\r\n\t<snmv3InfoList>\r\n        <hostName>xyz</hostName>\r\n        <password>######</password>\r\n        <userName>admin</userName>\r\n        <encrypAlgo>MD5</encrypAlgo>\r\n        <privacyAlgorithm>DES</privacyAlgorithm>\r\n        <privacyPassword></privacyPassword>\r\n        <privacyCredentials>false</privacyCredentials>\r\n    </snmv3InfoList>\r\n    <snmv3InfoList>\r\n        <hostName>abc.xyz.com</hostName>\r\n        <password>######</password>\r\n        <userName>admin</userName>\r\n        <encrypAlgo>MD5</encrypAlgo>\r\n        <privacyAlgorithm>DES</privacyAlgorithm>\r\n        <privacyPassword></privacyPassword>\r\n        <privacyCredentials>false</privacyCredentials>\r\n    </snmv3InfoList>\r\n    \r\n</EVGui_SetSNMPV3Config>\r\n\r\n\r\n\r\n"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"SNMPV3Configuration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "105",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 18 Jul 2017 06:05:56 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><EVGui_GenericResp errorCode=\"0\" errorMessage=\"\"/>"
+				}
+			]
+		},
+		{
+			"name": "SNMPV3Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Hostname is as set\"] = (function() {",
+							"    for( i=0; i < jsonData.snmv3InfoList.length; i++)",
+							"        if (jsonData.snmv3InfoList[i].hostName === \"xyz\") {",
+							"            postman.setEnvironmentVariable(\"snmpId\", jsonData.snmv3InfoList[i].id);",
+							"            return true;",
+							"        }",
+							"    return false;",
+							"})();"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"SNMPV3Configuration"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "SNMPV3Configuration",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"SNMPV3Configuration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "719",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 18 Jul 2017 06:07:20 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n<EVGui_SNMPV3ConfigResp>\n\n  <snmv3InfoList>\n    <hostName>####</hostName>\n    <password></password>\n    <userName>####</userName>\n    <encrypAlgo>MD5</encrypAlgo>\n    <privacyAlgorithm>DES</privacyAlgorithm>\n    <privacyPassword></privacyPassword>\n    <privacyCredentials>false</privacyCredentials>\n  </snmv3InfoList>\n\n  <snmv3InfoList>\n    <hostName>####</hostName>\n    <password></password>\n    <userName>ad####in</userName>\n    <encrypAlgo>MD5</encrypAlgo>\n    <privacyAlgorithm>DES</privacyAlgorithm>\n    <privacyPassword></privacyPassword>\n    <privacyCredentials>false</privacyCredentials>\n  </snmv3InfoList>\n\n</EVGui_SNMPV3ConfigResp>\n"
+				},
+				{
+					"name": "SNMPV3Configuration",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"SNMPV3Configuration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "401",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 18 Jul 2017 05:51:25 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n<EVGui_SNMPV3ConfigResp>\n\n  <snmv3InfoList>\n    <hostName>####</hostName>\n    <password></password>\n    <userName>####</userName>\n    <encrypAlgo>MD5</encrypAlgo>\n    <privacyAlgorithm>DES</privacyAlgorithm>\n    <privacyPassword></privacyPassword>\n    <privacyCredentials>false</privacyCredentials>\n  </snmv3InfoList>\n\n</EVGui_SNMPV3ConfigResp>\n"
+				}
+			]
+		},
+		{
+			"name": "Delete SNMPV3Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"SUCCESS\"] = jsonData.processinginstructioninfo.attributes[0].value === \"0\";"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"snmv3ConfigOperationType\": 2,\n    \"snmv3Info\": {\n        \"hostName\": \"{{snmphostname}}\",\n        \"id\": {{snmpId}}\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"SNMPV3Configuration"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "SNMPV3Configuration",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<EVGui_SetSNMPV3Config>\r\n\t\r\n\t<snmv3InfoList>\r\n        <hostName>xyz</hostName>\r\n        <password>######</password>\r\n        <userName>admin</userName>\r\n        <encrypAlgo>MD5</encrypAlgo>\r\n        <privacyAlgorithm>DES</privacyAlgorithm>\r\n        <privacyPassword></privacyPassword>\r\n        <privacyCredentials>false</privacyCredentials>\r\n    </snmv3InfoList>\r\n    <snmv3InfoList>\r\n        <hostName>abc.xyz.com</hostName>\r\n        <password>######</password>\r\n        <userName>admin</userName>\r\n        <encrypAlgo>MD5</encrypAlgo>\r\n        <privacyAlgorithm>DES</privacyAlgorithm>\r\n        <privacyPassword></privacyPassword>\r\n        <privacyCredentials>false</privacyCredentials>\r\n    </snmv3InfoList>\r\n    \r\n</EVGui_SetSNMPV3Config>\r\n\r\n\r\n\r\n"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/SNMPV3Configuration",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"SNMPV3Configuration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "105",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 18 Jul 2017 06:05:56 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><EVGui_GenericResp errorCode=\"0\" errorMessage=\"\"/>"
+				}
+			]
+		},
+		{
+			"name": "AuditTrial",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"SUCCESS\"] = jsonData.processinginstructioninfo.attributes[0].value === \"0\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"auditTrailInfo\": {\n        \"retentionForMedium\": 240\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/AuditTrail",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"AuditTrail"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "AuditTrial",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<App_SetAuditTrailInfoRequest>\r\n    <auditTrailInfo>\r\n        <retentionForCritical>660</retentionForCritical>\r\n        <retentionForHigh>260</retentionForHigh>\r\n        <retentionForMedium>240</retentionForMedium>\r\n        <retentionForLow>140</retentionForLow>\r\n    </auditTrailInfo>\r\n</App_SetAuditTrailInfoRequest>"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/AuditTrail",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"AuditTrail"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "211",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 26 Oct 2017 05:49:20 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><App_SetAuditTrailInfoResponse><processinginstructioninfo><attributes name=\"exitval\" value=\"0\"/></processinginstructioninfo></App_SetAuditTrailInfoResponse>"
+				}
+			]
+		},
+		{
+			"name": "AuditTrial",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Response Body contains retentionForCritical\"] = responseBody.has(\"retentionForCritical\");",
+							"",
+							"tests[\"Response Body contains retentionForLow\"] = responseBody.has(\"retentionForLow\");",
+							"",
+							"tests[\"Response Body contains retentionForMedium\"] = responseBody.has(\"retentionForMedium\");",
+							"",
+							"tests[\"Response Body contains retentionForHigh\"] = responseBody.has(\"retentionForHigh\");",
+							"",
+							"tests[\"Response Body contains retentionForHigh\"] = jsonData.auditTrailInfo.retentionForMedium == 240;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/AuditTrail",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"AuditTrail"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "AuditTrial",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/AuditTrial",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"AuditTrial"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "352",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 18 Jul 2017 06:10:13 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n<App_GetAuditTrailInfoResponse>\n\n  <auditTrailInfo>\n    <retentionForCritical>365</retentionForCritical>\n    <retentionForHigh>365</retentionForHigh>\n    <retentionForMedium>240</retentionForMedium>\n    <retentionForLow>120</retentionForLow>\n  </auditTrailInfo>\n\n</App_GetAuditTrailInfoResponse>\n"
+				}
+			]
+		},
+		{
+			"name": "JobManagementSetting",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"SUCCESS\"] = jsonData.processinginstructioninfo.attributes[0].value === \"0\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jobManagementSettings\": {\n        \"generalSettings\": {\n            \"jobAliveCheckIntervalInMinutes\": 10\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/JobManagementSetting",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"JobManagementSetting"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "JobManagementSetting",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<App_SetJobManagementSettingsRequest>\n    <jobManagementSettings>\n        <generalSettings>\n            <jobAliveCheckIntervalInMinutes>10</jobAliveCheckIntervalInMinutes>\n            <jobStreamHighWaterMarkLevel>500</jobStreamHighWaterMarkLevel>\n            <queueJobsIfConflictingJobsActive>true</queueJobsIfConflictingJobsActive>\n            <queueJobsIfActivityDisabled>false</queueJobsIfActivityDisabled>\n            <allowRunningJobsToCompletePastOperationWindow>true</allowRunningJobsToCompletePastOperationWindow>\n            <queueScheduledJobs>false</queueScheduledJobs>\n            <doNotStartBackupsOnDisabledClient>false</doNotStartBackupsOnDisabledClient>\n            <enableMultiplexingForOracle>false</enableMultiplexingForOracle>\n            <enableMultiplexingForDBAgents>false</enableMultiplexingForDBAgents>\n            <enableJobThrottleAtClientLevel>true</enableJobThrottleAtClientLevel>\n            <restorePreemptsOtherJobs>true</restorePreemptsOtherJobs>\n            <backupsPreemptsOtherBackups>true</backupsPreemptsOtherBackups>\n            <backupsPreemptsAuxilaryCopy>true</backupsPreemptsAuxilaryCopy>\n        </generalSettings>\n         </jobManagementSettings>\n</App_SetJobManagementSettingsRequest>"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/JobManagementSetting",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"JobManagementSetting"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "225",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 26 Oct 2017 09:33:23 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><App_SetJobManagementSettingsResponse><processinginstructioninfo><attributes name=\"exitval\" value=\"0\"/></processinginstructioninfo></App_SetJobManagementSettingsResponse>"
+				},
+				{
+					"name": "JobManagementSetting",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<App_SetJobManagementSettingsRequest>\n    <jobManagementSettings>\n        <generalSettings>\n            <jobAliveCheckIntervalInMinutes>10</jobAliveCheckIntervalInMinutes>\n            <jobStreamHighWaterMarkLevel>500</jobStreamHighWaterMarkLevel>\n            <queueJobsIfConflictingJobsActive>true</queueJobsIfConflictingJobsActive>\n            <queueJobsIfActivityDisabled>false</queueJobsIfActivityDisabled>\n            <allowRunningJobsToCompletePastOperationWindow>true</allowRunningJobsToCompletePastOperationWindow>\n            <queueScheduledJobs>false</queueScheduledJobs>\n            <doNotStartBackupsOnDisabledClient>false</doNotStartBackupsOnDisabledClient>\n            <enableMultiplexingForOracle>false</enableMultiplexingForOracle>\n            <enableMultiplexingForDBAgents>false</enableMultiplexingForDBAgents>\n            <enableJobThrottleAtClientLevel>true</enableJobThrottleAtClientLevel>\n            <restorePreemptsOtherJobs>true</restorePreemptsOtherJobs>\n            <backupsPreemptsOtherBackups>true</backupsPreemptsOtherBackups>\n            <backupsPreemptsAuxilaryCopy>true</backupsPreemptsAuxilaryCopy>\n        </generalSettings>\n         </jobManagementSettings>\n</App_SetJobManagementSettingsRequest>"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/JobManagementSetting",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"JobManagementSetting"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "225",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2017 08:49:31 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><App_SetJobManagementSettingsResponse><processinginstructioninfo><attributes name=\"exitval\" value=\"0\"/></processinginstructioninfo></App_SetJobManagementSettingsResponse>"
+				}
+			]
+		},
+		{
+			"name": "JobManagementSetting",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"tests[\"Response Body contains killRunningJobWhenTotalRunningTimeExpires\"] = responseBody.has(\"killRunningJobWhenTotalRunningTimeExpires\");",
+							"",
+							"tests[\"Response Body contains jobTypeRestartSettingList\"] = responseBody.has(\"jobTypeRestartSettingList\");",
+							"",
+							"tests[\"Response Body contains jobRestartSettings\"] = responseBody.has(\"jobRestartSettings\");",
+							"",
+							"tests[\"Response Body contains jobUpdatesSettings\"] = responseBody.has(\"jobUpdatesSettings\");",
+							"",
+							"tests[\"Response Body contains retentionForHigh\"] = jsonData.jobManagementSettings.generalSettings.jobAliveCheckIntervalInMinutes == 10;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/JobManagementSetting",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"JobManagementSetting"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "JobManagementSetting",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/CommServ/JobManagementSetting",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"CommServ",
+								"JobManagementSetting"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "74336",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2017 04:52:30 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n<App_GetJobManagementSettingsResponse>\n\n  <jobManagementSettings>\n    <generalSettings>\n      <jobAliveCheckIntervalInMinutes>5</jobAliveCheckIntervalInMinutes>\n      <jobStreamHighWaterMarkLevel>500</jobStreamHighWaterMarkLevel>\n      <queueJobsIfConflictingJobsActive>false</queueJobsIfConflictingJobsActive>\n      <queueJobsIfActivityDisabled>false</queueJobsIfActivityDisabled>\n      <allowRunningJobsToCompletePastOperationWindow>false</allowRunningJobsToCompletePastOperationWindow>\n      <queueScheduledJobs>false</queueScheduledJobs>\n      <doNotStartBackupsOnDisabledClient>false</doNotStartBackupsOnDisabledClient>\n      <enableMultiplexingForOracle>false</enableMultiplexingForOracle>\n      <enableMultiplexingForDBAgents>false</enableMultiplexingForDBAgents>\n      <enableJobThrottleAtClientLevel>false</enableJobThrottleAtClientLevel>\n      <restorePreemptsOtherJobs>true</restorePreemptsOtherJobs>\n      <backupsPreemptsOtherBackups>false</backupsPreemptsOtherBackups>\n      <backupsPreemptsAuxilaryCopy>false</backupsPreemptsAuxilaryCopy>\n    </generalSettings>\n    <jobPrioritySettings>\n      <priorityPrecedence>Client</priorityPrecedence>\n      <jobTypePriorityList>\n        <jobType>64</jobType>\n        <jobTypeName>Information Management</jobTypeName>\n        <combinedPriority>0</combinedPriority>\n      </jobTypePriorityList>\n      <jobTypePriorityList>\n        <jobType>13</jobType>\n        <jobTypeName>Auxiliary Copy</jobTypeName>\n        <combinedPriority>0</combinedPriority>\n      </jobTypePriorityList>\n      <jobTypePriorityList>\n        <jobType>74</jobType>\n        <jobTypeName>Media Refresh</jobTypeName>\n        <combinedPriority>0</combinedPriority>\n      </jobTypePriorityList>\n      <jobTypePriorityList>\n        <jobType>31</jobType>\n        <jobTypeName>Data Verification</jobTypeName>\n        <combinedPriority>0</combinedPriority>\n      </jobTypePriorityList>\n      <jobTypePriorityList>\n        <jobType>29</jobType>\n        <jobTypeName>Persistent Recovery</jobTypeName>\n        <combinedPriority>0</combinedPriority>\n      </jobTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>33</appTypeId>\n          <appTypeName>Windows File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>34</appTypeId>\n          <appTypeName>Windows XP 64-bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>42</appTypeId>\n          <appTypeName>Windows 2003 32-bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>43</appTypeId>\n          <appTypeName>Windows 2003 64-bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>41</appTypeId>\n          <appTypeName>Active Directory</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>58</appTypeId>\n          <appTypeName>Windows File Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>73</appTypeId>\n          <appTypeName>File Share Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>65</appTypeId>\n          <appTypeName>Image Level</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>54</appTypeId>\n          <appTypeName>Exchange Mailbox (Classic)</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>56</appTypeId>\n          <appTypeName>Exchange Mailbox Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>67</appTypeId>\n          <appTypeName>Exchange Compliance Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>35</appTypeId>\n          <appTypeName>Exchange Public Folder</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>53</appTypeId>\n          <appTypeName>Exchange Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>32</appTypeId>\n          <appTypeName>SharePoint Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>69</appTypeId>\n          <appTypeName>SharePoint Server Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>46</appTypeId>\n          <appTypeName>SharePoint Document</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>78</appTypeId>\n          <appTypeName>SharePoint Server</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>10</appTypeId>\n          <appTypeName>Novell Directory Services</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>71</appTypeId>\n          <appTypeName>GroupWise DB</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>13</appTypeId>\n          <appTypeName>NAS</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>7</appTypeId>\n          <appTypeName>Notes Document</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>6</appTypeId>\n          <appTypeName>Unix Notes Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>63</appTypeId>\n          <appTypeName>MAC FileSystem</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>64</appTypeId>\n          <appTypeName>Distributed Apps</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>19</appTypeId>\n          <appTypeName>Solaris File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>20</appTypeId>\n          <appTypeName>Solaris 64bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>74</appTypeId>\n          <appTypeName>FreeBSD</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>17</appTypeId>\n          <appTypeName>HP-UX File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>18</appTypeId>\n          <appTypeName>HP-UX 64bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>21</appTypeId>\n          <appTypeName>AIX File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>36</appTypeId>\n          <appTypeName>Unix Tru64 64-bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>29</appTypeId>\n          <appTypeName>Linux File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>5</appTypeId>\n          <appTypeName>Sybase Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>0</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>22</appTypeId>\n          <appTypeName>Oracle Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>80</appTypeId>\n          <appTypeName>Oracle RAC</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>3</appTypeId>\n          <appTypeName>Informix Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>37</appTypeId>\n          <appTypeName>DB2</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>62</appTypeId>\n          <appTypeName>DB2 on Unix</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>61</appTypeId>\n          <appTypeName>SAP for Oracle</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>79</appTypeId>\n          <appTypeName>SAP for MAX DB</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>40</appTypeId>\n          <appTypeName>ProxyHost on Unix</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>25</appTypeId>\n          <appTypeName>ProxyHost</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>75</appTypeId>\n          <appTypeName>Image Level On Unix</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>47</appTypeId>\n          <appTypeName>OSSV Plug-in on Windows</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>50</appTypeId>\n          <appTypeName>OSSV Plug-in on Unix</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>66</appTypeId>\n          <appTypeName>Unix File Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>81</appTypeId>\n          <appTypeName>SQL Server</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>85</appTypeId>\n          <appTypeName>Data Classification</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>86</appTypeId>\n          <appTypeName>OES File System on Linux</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>88</appTypeId>\n          <appTypeName>Centera</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>0</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>82</appTypeId>\n          <appTypeName>Exchange PF Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>90</appTypeId>\n          <appTypeName>Domino Mailbox Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>89</appTypeId>\n          <appTypeName>MS SharePoint Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>93</appTypeId>\n          <appTypeName>Content Indexing Agent</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>600</appTypeId>\n          <appTypeName>SRM Agent For Windows File Systems</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>605</appTypeId>\n          <appTypeName>SRM Agent For UNIX File Systems</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>103</appTypeId>\n          <appTypeName>DB2 MultiNode</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>104</appTypeId>\n          <appTypeName>MySQL</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>0</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>106</appTypeId>\n          <appTypeName>Virtual Server</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>120</appTypeId>\n          <appTypeName>SharePoint Search Connector</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>0</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>124</appTypeId>\n          <appTypeName>Object Link</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>125</appTypeId>\n          <appTypeName>PostgreSQL</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>0</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>126</appTypeId>\n          <appTypeName>Sybase IQ</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>0</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>127</appTypeId>\n          <appTypeName>External Data Connector</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>128</appTypeId>\n          <appTypeName>Documentum</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>131</appTypeId>\n          <appTypeName>Object Store</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>135</appTypeId>\n          <appTypeName>SAP HANA</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>134</appTypeId>\n          <appTypeName>Cloud Apps</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n      <agentTypePriorityList>\n        <agentTypeEntity>\n          <appTypeId>137</appTypeId>\n          <appTypeName>Exchange Mailbox</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <combinedPriority>6</combinedPriority>\n      </agentTypePriorityList>\n    </jobPrioritySettings>\n    <jobRestartSettings>\n      <jobTypeRestartSettingList>\n        <jobType>3</jobType>\n        <jobTypeName>Disaster Recovery backup</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>30</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>4</jobType>\n        <jobTypeName>Auxiliary Copy</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>2</jobType>\n        <jobTypeName>Data Aging</jobTypeName>\n        <maxRestarts>5</maxRestarts>\n        <restartIntervalInMinutes>30</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>5</jobType>\n        <jobTypeName>Download/Copy Updates</jobTypeName>\n        <maxRestarts>5</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>15</jobType>\n        <jobTypeName>Offline Content Indexing</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>19</jobType>\n        <jobTypeName>Information Management</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>30</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>6</jobType>\n        <jobTypeName>File System and Indexing Based (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>7</jobType>\n        <jobTypeName>File System and Indexing Based (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>8</jobType>\n        <jobTypeName>Exchange DB (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>24</jobType>\n        <jobTypeName>Exchange DB (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>9</jobType>\n        <jobTypeName>Informix DB (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>25</jobType>\n        <jobTypeName>Informix DB (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>10</jobType>\n        <jobTypeName>Lotus Notes DB (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>26</jobType>\n        <jobTypeName>Lotus Notes DB (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>11</jobType>\n        <jobTypeName>Oracle DB (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>27</jobType>\n        <jobTypeName>Oracle DB (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>12</jobType>\n        <jobTypeName>SQL DB (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>28</jobType>\n        <jobTypeName>SQL DB (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>18</jobType>\n        <jobTypeName>MYSQL (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>31</jobType>\n        <jobTypeName>MYSQL (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>13</jobType>\n        <jobTypeName>Sybase DB (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>29</jobType>\n        <jobTypeName>Sybase DB (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>14</jobType>\n        <jobTypeName>DB2 (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>30</jobType>\n        <jobTypeName>DB2 (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>20</jobType>\n        <jobTypeName>CDR (Data Management)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>false</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>22</jobType>\n        <jobTypeName>Media Refresh</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>23</jobType>\n        <jobTypeName>Documentum (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>32</jobType>\n        <jobTypeName>Documentum (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>35</jobType>\n        <jobTypeName>SAP for Oracle (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>36</jobType>\n        <jobTypeName>SAP for Oracle (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>37</jobType>\n        <jobTypeName>PostgreSQL (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>38</jobType>\n        <jobTypeName>PostgreSQL (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>1</jobType>\n        <jobTypeName>Other (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>33</jobType>\n        <jobTypeName>Other (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>34</jobType>\n        <jobTypeName>Workflow</jobTypeName>\n        <maxRestarts>1</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>39</jobType>\n        <jobTypeName>DeDup DB Reconstruction</jobTypeName>\n        <maxRestarts>5</maxRestarts>\n        <restartIntervalInMinutes>10</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>40</jobType>\n        <jobTypeName>CommCell Migration Export</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>41</jobType>\n        <jobTypeName>CommCell Migration Import</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>42</jobType>\n        <jobTypeName>Install Software</jobTypeName>\n        <maxRestarts>5</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>3</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>43</jobType>\n        <jobTypeName>Uninstall Software</jobTypeName>\n        <maxRestarts>5</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>44</jobType>\n        <jobTypeName>Data Verification</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>45</jobType>\n        <jobTypeName>Distributed App (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>46</jobType>\n        <jobTypeName>Distributed App (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>47</jobType>\n        <jobTypeName>Cloud Apps (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>48</jobType>\n        <jobTypeName>Cloud Apps (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>49</jobType>\n        <jobTypeName>Virtual Server (Data Protection)</jobTypeName>\n        <maxRestarts>10</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <jobTypeRestartSettingList>\n        <jobType>50</jobType>\n        <jobTypeName>Virtual Server (Data Recovery)</jobTypeName>\n        <maxRestarts>144</maxRestarts>\n        <restartIntervalInMinutes>20</restartIntervalInMinutes>\n        <restartable>true</restartable>\n        <preemptable>true</preemptable>\n        <enableTotalRunningTime>false</enableTotalRunningTime>\n        <totalRunningTime>6</totalRunningTime>\n        <killRunningJobWhenTotalRunningTimeExpires>false</killRunningJobWhenTotalRunningTimeExpires>\n      </jobTypeRestartSettingList>\n      <startPhaseRetryIntervalInMinutes>10</startPhaseRetryIntervalInMinutes>\n    </jobRestartSettings>\n    <jobUpdatesSettings>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>33</appTypeId>\n          <appTypeName>Windows File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>34</appTypeId>\n          <appTypeName>Windows XP 64-bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>42</appTypeId>\n          <appTypeName>Windows 2003 32-bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>43</appTypeId>\n          <appTypeName>Windows 2003 64-bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>41</appTypeId>\n          <appTypeName>Active Directory</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>58</appTypeId>\n          <appTypeName>Windows File Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>73</appTypeId>\n          <appTypeName>File Share Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>65</appTypeId>\n          <appTypeName>Image Level</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>54</appTypeId>\n          <appTypeName>Exchange Mailbox (Classic)</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>56</appTypeId>\n          <appTypeName>Exchange Mailbox Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>67</appTypeId>\n          <appTypeName>Exchange Compliance Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>35</appTypeId>\n          <appTypeName>Exchange Public Folder</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>53</appTypeId>\n          <appTypeName>Exchange Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>32</appTypeId>\n          <appTypeName>SharePoint Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>69</appTypeId>\n          <appTypeName>SharePoint Server Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>46</appTypeId>\n          <appTypeName>SharePoint Document</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>78</appTypeId>\n          <appTypeName>SharePoint Server</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>10</appTypeId>\n          <appTypeName>Novell Directory Services</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>71</appTypeId>\n          <appTypeName>GroupWise DB</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>13</appTypeId>\n          <appTypeName>NAS</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>7</appTypeId>\n          <appTypeName>Notes Document</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>6</appTypeId>\n          <appTypeName>Unix Notes Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>63</appTypeId>\n          <appTypeName>MAC FileSystem</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>64</appTypeId>\n          <appTypeName>Distributed Apps</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>19</appTypeId>\n          <appTypeName>Solaris File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>20</appTypeId>\n          <appTypeName>Solaris 64bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>74</appTypeId>\n          <appTypeName>FreeBSD</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>17</appTypeId>\n          <appTypeName>HP-UX File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>18</appTypeId>\n          <appTypeName>HP-UX 64bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>21</appTypeId>\n          <appTypeName>AIX File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>36</appTypeId>\n          <appTypeName>Unix Tru64 64-bit File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>29</appTypeId>\n          <appTypeName>Linux File System</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>5</appTypeId>\n          <appTypeName>Sybase Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>22</appTypeId>\n          <appTypeName>Oracle Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>80</appTypeId>\n          <appTypeName>Oracle RAC</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>3</appTypeId>\n          <appTypeName>Informix Database</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>37</appTypeId>\n          <appTypeName>DB2</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>62</appTypeId>\n          <appTypeName>DB2 on Unix</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>61</appTypeId>\n          <appTypeName>SAP for Oracle</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>79</appTypeId>\n          <appTypeName>SAP for MAX DB</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>40</appTypeId>\n          <appTypeName>ProxyHost on Unix</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>25</appTypeId>\n          <appTypeName>ProxyHost</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>75</appTypeId>\n          <appTypeName>Image Level On Unix</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>47</appTypeId>\n          <appTypeName>OSSV Plug-in on Windows</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>50</appTypeId>\n          <appTypeName>OSSV Plug-in on Unix</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>66</appTypeId>\n          <appTypeName>Unix File Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>81</appTypeId>\n          <appTypeName>SQL Server</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>85</appTypeId>\n          <appTypeName>Data Classification</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>86</appTypeId>\n          <appTypeName>OES File System on Linux</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>82</appTypeId>\n          <appTypeName>Exchange PF Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>90</appTypeId>\n          <appTypeName>Domino Mailbox Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>89</appTypeId>\n          <appTypeName>MS SharePoint Archiver</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>93</appTypeId>\n          <appTypeName>Content Indexing Agent</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>600</appTypeId>\n          <appTypeName>SRM Agent For Windows File Systems</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>605</appTypeId>\n          <appTypeName>SRM Agent For UNIX File Systems</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>103</appTypeId>\n          <appTypeName>DB2 MultiNode</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>104</appTypeId>\n          <appTypeName>MySQL</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>106</appTypeId>\n          <appTypeName>Virtual Server</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>124</appTypeId>\n          <appTypeName>Object Link</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>125</appTypeId>\n          <appTypeName>PostgreSQL</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>126</appTypeId>\n          <appTypeName>Sybase IQ</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>127</appTypeId>\n          <appTypeName>External Data Connector</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>128</appTypeId>\n          <appTypeName>Documentum</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>131</appTypeId>\n          <appTypeName>Object Store</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>135</appTypeId>\n          <appTypeName>SAP HANA</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>134</appTypeId>\n          <appTypeName>Cloud Apps</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <agentTypeJobUpdateIntervalList>\n        <agentTypeEntity>\n          <appTypeId>137</appTypeId>\n          <appTypeName>Exchange Mailbox</appTypeName>\n          <_type_>AGENTTYPE_ENTITY</_type_>\n        </agentTypeEntity>\n        <protectionTimeInMinutes>5</protectionTimeInMinutes>\n        <recoveryTimeInMinutes>5</recoveryTimeInMinutes>\n      </agentTypeJobUpdateIntervalList>\n      <stateUpdateIntervalForContinuousDataReplicator>15</stateUpdateIntervalForContinuousDataReplicator>\n    </jobUpdatesSettings>\n  </jobManagementSettings>\n\n</App_GetJobManagementSettingsResponse>\n"
+				}
+			]
+		},
+		{
+			"name": "getGlobalParam",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"responseBody has name\"] = responseBody.has(\"name\");",
+							"tests[\"responseBody has id\"] = responseBody.has(\"id\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"PatchSPAdditionalDelayDays\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/getGlobalParam",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getGlobalParam"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "getGlobalParam",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"PatchSPAdditionalDelayDays\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/getGlobalParam",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"getGlobalParam"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Jan 2021 18:24:38 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "21"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=600"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"0\",\n    \"id\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

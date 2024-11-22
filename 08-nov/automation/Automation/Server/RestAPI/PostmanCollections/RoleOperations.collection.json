@@ -1,0 +1,1366 @@
+{
+	"info": {
+		"_postman_id": "f6b3f5a7-75e9-4974-817f-66cd2faf4742",
+		"name": "RoleOperations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4331195"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							"",
+							"",
+							"//tests[\"Validating if response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\") ;   //validate response time",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            ",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Roles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating roleProperties tag\"] = responseBody.has(\"roleProperties\")))      ",
+							"            console.log(\"roleProperties tag is present\");",
+							"            ",
+							"console.log(\"Setting the value of roleId\");",
+							"",
+							"postman.setEnvironmentVariable(\"roleId\", jsonData.roleProperties[0].role.roleId);",
+							"",
+							"console.log(\"Value of roleId set to :\" ,postman.getEnvironmentVariable(\"roleId\"));",
+							"",
+							"if((tests[\"Validating roleName Master\"] = responseBody.has(\"Master\")))      ",
+							"            console.log(\"roleName Master is present\");",
+							"",
+							"if((tests[\"Validating roleName View\"] = responseBody.has(\"View\")))      ",
+							"            console.log(\"roleName View is present\");",
+							"            ",
+							"if((tests[\"Validating roleName End Users\"] = responseBody.has(\"End Users\")))      ",
+							"            console.log(\"roleName End Users is present\");",
+							"",
+							"if((tests[\"Validating roleName Compliance\"] = responseBody.has(\"Compliance\")))      ",
+							"            console.log(\"roleName Compliance is present\");",
+							"",
+							"if((tests[\"Validating roleName Client Admins\"] = responseBody.has(\"Client Admins\")))      ",
+							"            console.log(\"roleName Client Admins is present\");   ",
+							"",
+							"if((tests[\"Validating roleName All Users Laptops\"] = responseBody.has(\"All Users Laptops\")))      ",
+							"            console.log(\"roleName All Users Laptops is present\");",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Role",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "View Roles",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Role",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Role"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1855",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Jul 2017 05:50:59 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"roleProperties\":[\r{\r\"visibility\":0,\"description\":\"System Created Role with all permissions\",\"role\":{\r\"roleId\":1,\"roleName\":\"Master\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System Created Role for View permission\",\"role\":{\r\"roleId\":3,\"roleName\":\"View\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for end users\",\"role\":{\r\"roleId\":4,\"roleName\":\"End Users\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for compliance\",\"role\":{\r\"roleId\":5,\"roleName\":\"Compliance\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for client admins\",\"role\":{\r\"roleId\":6,\"roleName\":\"Client Admins\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for Laptop owners\",\"role\":{\r\"roleId\":7,\"roleName\":\"All Users Laptops\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for plan add remove role\",\"role\":{\r\"roleId\":8,\"roleName\":\"Plan Subscription Role\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for Plan creators\",\"role\":{\r\"roleId\":10,\"roleName\":\"Plan Creator Role\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"Role for company user group client group associations\",\"role\":{\r\"roleId\":11,\"roleName\":\"MSP Subscription\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for alert owners\",\"role\":{\r\"roleId\":12,\"roleName\":\"Alert Owner\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for subclient policy owners\",\"role\":{\r\"roleId\":13,\"roleName\":\"Subclient Policy Owner\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"Client Group Creator role\",\"role\":{\r\"roleId\":14,\"roleName\":\"Client Group Creator\",\"flags\":{\r\"disabled\":false\r}\r}\r}\r]\r}"
+				},
+				{
+					"name": "View Roles",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Role",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Role"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1948",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Jul 2017 10:14:25 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"roleProperties\":[\r{\r\"visibility\":0,\"description\":\"System Created Role with all permissions\",\"role\":{\r\"roleId\":1,\"roleName\":\"Master\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System Created Role for View permission\",\"role\":{\r\"roleId\":3,\"roleName\":\"View\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for end users\",\"role\":{\r\"roleId\":4,\"roleName\":\"End Users\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for compliance\",\"role\":{\r\"roleId\":5,\"roleName\":\"Compliance\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for client admins\",\"role\":{\r\"roleId\":6,\"roleName\":\"Client Admins\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for Laptop owners\",\"role\":{\r\"roleId\":7,\"roleName\":\"All Users Laptops\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for plan add remove role\",\"role\":{\r\"roleId\":8,\"roleName\":\"Plan Subscription Role\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for Plan creators\",\"role\":{\r\"roleId\":10,\"roleName\":\"Plan Creator Role\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"Role for company user group client group associations\",\"role\":{\r\"roleId\":11,\"roleName\":\"MSP Subscription\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for alert owners\",\"role\":{\r\"roleId\":12,\"roleName\":\"Alert Owner\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for subclient policy owners\",\"role\":{\r\"roleId\":13,\"roleName\":\"Subclient Policy Owner\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"Client Group Creator role\",\"role\":{\r\"roleId\":14,\"roleName\":\"Client Group Creator\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"role\":{\r\"roleId\":41,\"roleName\":\"TestRole\",\"flags\":{\r\"disabled\":false\r}\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "View Roles propertyLevel-1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating roleProperties tag\"] = responseBody.has(\"roleProperties\")))      ",
+							"            console.log(\"roleProperties tag is present\");",
+							"            ",
+							"",
+							"if((tests[\"Validating roleName Master\"] = responseBody.has(\"Master\")))      ",
+							"            console.log(\"roleName Master is present\");",
+							"",
+							"if((tests[\"Validating roleName View\"] = responseBody.has(\"View\")))      ",
+							"            console.log(\"roleName View is present\");",
+							"            ",
+							"if((tests[\"Validating roleName End Users\"] = responseBody.has(\"End Users\")))      ",
+							"            console.log(\"roleName End Users is present\");",
+							"",
+							"if((tests[\"Validating roleName Compliance\"] = responseBody.has(\"Compliance\")))      ",
+							"            console.log(\"roleName Compliance is present\");",
+							"",
+							"if((tests[\"Validating roleName Client Admins\"] = responseBody.has(\"Client Admins\")))      ",
+							"            console.log(\"roleName Client Admins is present\");   ",
+							"",
+							"if((tests[\"Validating roleName All Users Laptops\"] = responseBody.has(\"All Users Laptops\")))      ",
+							"            console.log(\"roleName All Users Laptops is present\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Role?propertyLevel=1",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role"
+					],
+					"query": [
+						{
+							"key": "propertyLevel",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "View Roles propertyLevel-1",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Role?propertyLevel=1",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Role"
+							],
+							"query": [
+								{
+									"key": "propertyLevel",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1102",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Jul 2017 12:31:49 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"roleProperties\":[\r{\r\"role\":{\r\"roleId\":1,\"roleName\":\"Master\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":3,\"roleName\":\"View\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":4,\"roleName\":\"End Users\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":5,\"roleName\":\"Compliance\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":6,\"roleName\":\"Client Admins\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":7,\"roleName\":\"All Users Laptops\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":8,\"roleName\":\"Plan Subscription Role\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":10,\"roleName\":\"Plan Creator Role\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":11,\"roleName\":\"MSP Subscription\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":12,\"roleName\":\"Alert Owner\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":13,\"roleName\":\"Subclient Policy Owner\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":14,\"roleName\":\"Client Group Creator\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"role\":{\r\"roleId\":41,\"roleName\":\"TestRole\",\"flags\":{\r\"disabled\":false\r}\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "View Roles propertyLevel-10",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating roleProperties tag\"] = responseBody.has(\"roleProperties\")))      ",
+							"            console.log(\"roleProperties tag is present\");",
+							"            ",
+							"if((tests[\"Validating description tag\"] = responseBody.has(\"description\")))      ",
+							"            console.log(\"description tag is present\");",
+							"            ",
+							"if((tests[\"Validating roleName Master\"] = responseBody.has(\"Master\")))      ",
+							"            console.log(\"roleName Master is present\");",
+							"",
+							"if((tests[\"Validating roleName View\"] = responseBody.has(\"View\")))      ",
+							"            console.log(\"roleName View is present\");",
+							"            ",
+							"if((tests[\"Validating roleName End Users\"] = responseBody.has(\"End Users\")))      ",
+							"            console.log(\"roleName End Users is present\");",
+							"",
+							"if((tests[\"Validating roleName Compliance\"] = responseBody.has(\"Compliance\")))      ",
+							"            console.log(\"roleName Compliance is present\");",
+							"",
+							"if((tests[\"Validating roleName Client Admins\"] = responseBody.has(\"Client Admins\")))      ",
+							"            console.log(\"roleName Client Admins is present\");   ",
+							"",
+							"if((tests[\"Validating roleName All Users Laptops\"] = responseBody.has(\"All Users Laptops\")))      ",
+							"            console.log(\"roleName All Users Laptops is present\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Role?propertyLevel=10",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role"
+					],
+					"query": [
+						{
+							"key": "propertyLevel",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "View Roles propertyLevel-10",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Role?propertyLevel=10",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Role"
+							],
+							"query": [
+								{
+									"key": "propertyLevel",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1948",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Jul 2017 12:33:51 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"roleProperties\":[\r{\r\"visibility\":0,\"description\":\"System Created Role with all permissions\",\"role\":{\r\"roleId\":1,\"roleName\":\"Master\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System Created Role for View permission\",\"role\":{\r\"roleId\":3,\"roleName\":\"View\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for end users\",\"role\":{\r\"roleId\":4,\"roleName\":\"End Users\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for compliance\",\"role\":{\r\"roleId\":5,\"roleName\":\"Compliance\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for client admins\",\"role\":{\r\"roleId\":6,\"roleName\":\"Client Admins\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for Laptop owners\",\"role\":{\r\"roleId\":7,\"roleName\":\"All Users Laptops\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for plan add remove role\",\"role\":{\r\"roleId\":8,\"roleName\":\"Plan Subscription Role\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for Plan creators\",\"role\":{\r\"roleId\":10,\"roleName\":\"Plan Creator Role\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"Role for company user group client group associations\",\"role\":{\r\"roleId\":11,\"roleName\":\"MSP Subscription\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for alert owners\",\"role\":{\r\"roleId\":12,\"roleName\":\"Alert Owner\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for subclient policy owners\",\"role\":{\r\"roleId\":13,\"roleName\":\"Subclient Policy Owner\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"description\":\"Client Group Creator role\",\"role\":{\r\"roleId\":14,\"roleName\":\"Client Group Creator\",\"flags\":{\r\"disabled\":false\r}\r}\r},{\r\"visibility\":0,\"role\":{\r\"roleId\":41,\"roleName\":\"TestRole\",\"flags\":{\r\"disabled\":false\r}\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "View Roles propertyLevel-30",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating roleProperties tag\"] = responseBody.has(\"roleProperties\")))      ",
+							"            console.log(\"roleProperties tag is present\");",
+							"            ",
+							"if((tests[\"Validating description tag\"] = responseBody.has(\"description\")))      ",
+							"            console.log(\"description tag is present\");",
+							"            ",
+							"if((tests[\"Validating categoryPermission tag\"] = responseBody.has(\"categoryPermission\")))      ",
+							"            console.log(\"categoryPermission tag is present\");",
+							"            ",
+							"if((tests[\"Validating roleName Master\"] = responseBody.has(\"Master\")))      ",
+							"            console.log(\"roleName Master is present\");",
+							"",
+							"if((tests[\"Validating roleName View\"] = responseBody.has(\"View\")))      ",
+							"            console.log(\"roleName View is present\");",
+							"            ",
+							"if((tests[\"Validating roleName End Users\"] = responseBody.has(\"End Users\")))      ",
+							"            console.log(\"roleName End Users is present\");",
+							"",
+							"if((tests[\"Validating roleName Compliance\"] = responseBody.has(\"Compliance\")))      ",
+							"            console.log(\"roleName Compliance is present\");",
+							"",
+							"if((tests[\"Validating roleName Client Admins\"] = responseBody.has(\"Client Admins\")))      ",
+							"            console.log(\"roleName Client Admins is present\");   ",
+							"",
+							"if((tests[\"Validating roleName All Users Laptops\"] = responseBody.has(\"All Users Laptops\")))      ",
+							"            console.log(\"roleName All Users Laptops is present\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Role?propertyLevel=30",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role"
+					],
+					"query": [
+						{
+							"key": "propertyLevel",
+							"value": "30"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "View Roles propertyLevel-30",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Role?propertyLevel=30",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Role"
+							],
+							"query": [
+								{
+									"key": "propertyLevel",
+									"value": "30"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "13046",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Jul 2017 12:36:14 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"roleProperties\":[\r{\r\"visibility\":0,\"description\":\"System Created Role with all permissions\",\"role\":{\r\"roleId\":1,\"roleName\":\"Master\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"_type_\":123,\"consumeLicense\":true\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"description\":\"System Created Role for View permission\",\"role\":{\r\"roleId\":3,\"roleName\":\"View\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":31,\"permissionName\":\"View\",\"categoryName\":\"Global\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":107\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for end users\",\"role\":{\r\"roleId\":4,\"roleName\":\"End Users\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":2,\"permissionName\":\"Agent Management\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":3,\"permissionName\":\"Agent Scheduling\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":5,\"permissionName\":\"Upload\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":6,\"permissionName\":\"Download\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":12,\"permissionName\":\"Data Protection Operations\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":20,\"permissionName\":\"In Place Recover\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":22,\"permissionName\":\"Out of Place Recover\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":24,\"permissionName\":\"EndUser Access\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":38,\"permissionName\":\"Live Browse\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":40,\"permissionName\":\"Sharing\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for compliance\",\"role\":{\r\"roleId\":5,\"roleName\":\"Compliance\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":6,\"permissionName\":\"Download\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":22,\"permissionName\":\"Out of Place Recover\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":25,\"permissionName\":\"Compliance Search\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":27,\"permissionName\":\"Tag Management\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":29,\"permissionName\":\"Legal Hold Management\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":32,\"permissionName\":\"Annotation Management\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for client admins\",\"role\":{\r\"roleId\":6,\"roleName\":\"Client Admins\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":2,\"permissionName\":\"Agent Management\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":3,\"permissionName\":\"Agent Scheduling\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":7,\"permissionName\":\"Install Package\\u002fUpdate \",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":12,\"permissionName\":\"Data Protection Operations\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":13,\"permissionName\":\"Browse\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":20,\"permissionName\":\"In Place Recover\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":22,\"permissionName\":\"Out of Place Recover\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":39,\"permissionName\":\"Full Machine Recovery\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":42,\"permissionName\":\"Out of Place Full Machine Recovery\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for Laptop owners\",\"role\":{\r\"roleId\":7,\"roleName\":\"All Users Laptops\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":65,\"permissionName\":\"Install client\",\"categoryName\":\"Commcell\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":101\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for plan add remove role\",\"role\":{\r\"roleId\":8,\"roleName\":\"Plan Subscription Role\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":159,\"permissionName\":\"Edit Plan Associations\",\"categoryName\":\"Plan\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":118\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created for Plan creators\",\"role\":{\r\"roleId\":10,\"roleName\":\"Plan Creator Role\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"categoryName\":\"Plan\",\"_type_\":121,\"consumeLicense\":true,\"categoryId\":118\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":31,\"permissionName\":\"View\",\"categoryName\":\"Global\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":107\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":156,\"permissionName\":\"Create Plan\",\"categoryName\":\"Plan\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":118,\"flags\":{\r\"exclude\":true\r}\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"description\":\"Role for company user group client group associations\",\"role\":{\r\"roleId\":11,\"roleName\":\"MSP Subscription\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"_type_\":123,\"consumeLicense\":true\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for alert owners\",\"role\":{\r\"roleId\":12,\"roleName\":\"Alert Owner\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"categoryName\":\"Alert\",\"_type_\":121,\"consumeLicense\":true,\"categoryId\":117\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":31,\"permissionName\":\"View\",\"categoryName\":\"Global\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":107\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":107,\"permissionName\":\"Change security settings\",\"categoryName\":\"Global\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":107\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":151,\"permissionName\":\"Create Alert\",\"categoryName\":\"Alert\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":117,\"flags\":{\r\"exclude\":true\r}\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"description\":\"System created role for subclient policy owners\",\"role\":{\r\"roleId\":13,\"roleName\":\"Subclient Policy Owner\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"categoryName\":\"Subclient Policy\",\"_type_\":121,\"consumeLicense\":true,\"categoryId\":121\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":31,\"permissionName\":\"View\",\"categoryName\":\"Global\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":107\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":107,\"permissionName\":\"Change security settings\",\"categoryName\":\"Global\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":107\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":174,\"permissionName\":\"Create Subclient Policy\",\"categoryName\":\"Subclient Policy\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":121,\"flags\":{\r\"exclude\":true\r}\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"description\":\"Client Group Creator role\",\"role\":{\r\"roleId\":14,\"roleName\":\"Client Group Creator\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"categoryName\":\"Client Group\",\"_type_\":121,\"consumeLicense\":true,\"categoryId\":122\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":2,\"permissionName\":\"Agent Management\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":1,\"permissionName\":\"Administrative Management\",\"categoryName\":\"Global\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":107\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":179,\"permissionName\":\"Create Client Group\",\"categoryName\":\"Client Group\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":122,\"flags\":{\r\"exclude\":true\r}\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r},{\r\"visibility\":0,\"role\":{\r\"roleId\":41,\"roleName\":\"TestRole\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"categoryName\":\"Alert\",\"_type_\":121,\"consumeLicense\":true,\"categoryId\":117\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":2,\"permissionName\":\"Agent Management\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r},{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"permissionId\":3,\"permissionName\":\"Agent Scheduling\",\"categoryName\":\"Client\",\"_type_\":122,\"consumeLicense\":true,\"categoryId\":102\r}\r]\r},\"securityAssociations\":{\r\"associations\":[\r{\r\"userOrGroup\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"userId\":1,\"_type_\":13,\"userName\":\"admin\",\"consumeLicense\":true\r}\r],\"properties\":{\r\"isCreatorAssociation\":true,\"role\":{\r\"_type_\":120,\"roleId\":3,\"roleName\":\"View\"\r}\r}\r}\r],\"ownerAssociations\":{\r\r}\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "View Role Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating roleProperties tag\"] = responseBody.has(\"roleProperties\")))      ",
+							"            console.log(\"roleProperties tag is present\");",
+							"            ",
+							"if((tests[\"Validating roleId tag\"] = responseBody.has(\"roleId\")))      ",
+							"            console.log(\"roleId tag is present\");",
+							"            ",
+							"if((tests[\"Validating description tag\"] = responseBody.has(\"description\")))      ",
+							"            console.log(\"description tag is present\");",
+							"            ",
+							"if((tests[\"Validating roleId in the response with the roleId sent in the request \"] = jsonData.roleProperties[0].role.roleId == postman.getEnvironmentVariable(\"roleId\")))",
+							"            console.log(\"roleId in the response matches with the roleId given in request URL\");",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Role/{{roleId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role",
+						"{{roleId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "View Role Properties",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Role/{{RoleId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Role",
+								"{{RoleId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "387",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Jul 2017 12:36:47 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"roleProperties\":[\r{\r\"visibility\":0,\"description\":\"System Created Role with all permissions\",\"role\":{\r\"roleId\":1,\"roleName\":\"Master\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionList\":[\r{\r\"srmReportSet\":0,\"type\":0,\"srmReportType\":0,\"clientSidePackage\":true,\"_type_\":123,\"consumeLicense\":true\r}\r]\r},\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Create a role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating if role was created successfully\"] = jsonData.response[0].errorString === \"Successful\"))",
+							"    console.log(\"Role was created successfully\");",
+							"",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"    ",
+							"if((tests[\"Validating roleName tag\"] = responseBody.has(\"roleName\")))      ",
+							"        console.log(\"roleName tag is present\");",
+							"        ",
+							"if((tests[\"Validating roleId tag\"] = responseBody.has(\"roleId\")))      ",
+							"        console.log(\"roleId tag is present\");",
+							"        ",
+							"if((tests[\"Validating roleName of created role\"] = responseBody.has(postman.getEnvironmentVariable(\"roleName\"))))      ",
+							"            console.log(\"roleName of created role is present\");",
+							"  ",
+							"console.log(\"Setting the value of roleId to the Id of newly created role\");  ",
+							"",
+							"postman.setEnvironmentVariable(\"roleId\", jsonData.response[0].entity.roleId);",
+							"",
+							"console.log(\"Value of roleId set to:\", postman.getEnvironmentVariable(\"roleId\"));",
+							"",
+							"console.log(\"Setting the value of roleName to the name of newly created role\");  ",
+							"",
+							"postman.setEnvironmentVariable(\"roleName\", jsonData.response[0].entity.roleName);",
+							"",
+							"console.log(\"Value of roleName set to:\", postman.getEnvironmentVariable(\"roleName\"));",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"roles\": [\n\t\t{\n\t\t\t\"description\": \"\",\n\t\t\t\"role\": {\n\t\t\t\t\"roleName\": \"{{roleName}}\",\n\t\t\t\t\"flags\": {\n\t\t\t\t\t\"disabled\": false\n\t\t\t\t}\n\t\t\t},\n\t\t\t\"categoryPermission\": {\n\t\t\t\t\"categoriesPermissionOperationType\": 2,\n\t\t\t\t\"categoriesPermissionList\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"categoryName\": \"Alert\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"permissionName\": \"Agent Management\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"permissionName\": \"Agent Scheduling\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t]\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Role",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create a Role",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\"roles\":[\r{\r\"description\":\"\",\"role\":{\r\"roleName\":\"{{roleName}}\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionOperationType\":2,\"categoriesPermissionList\":[\r{\r\"categoryName\":\"Alert\"\r},{\r\"permissionName\":\"Agent Management\"\r},{\r\"permissionName\":\"Agent Scheduling\"\r}\r]\r}\r}\r]\r}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Role",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Role"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "139",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 07 Jul 2017 06:41:36 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"response\":[\r{\r\"errorString\":\"Successful\",\"errorCode\":0,\"entity\":{\r\"roleName\":\"TestRole\",\"roleId\":42,\"flags\":{\r\"disabled\":false\r}\r}\r}\r]\r}"
+				},
+				{
+					"name": "Create a Role",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\"roles\":[\r{\r\"description\":\"\",\"role\":{\r\"roleName\":\"TestRole\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionOperationType\":2,\"categoriesPermissionList\":[\r{\r\"categoryName\":\"Alert\"\r},{\r\"permissionName\":\"Agent Management\"\r},{\r\"permissionName\":\"Agent Scheduling\"\r}\r]\r}\r}\r]\r}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Role",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Role"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "139",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Jul 2017 06:31:25 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"response\":[\r{\r\"errorString\":\"Successful\",\"errorCode\":0,\"entity\":{\r\"roleName\":\"TestRole\",\"roleId\":41,\"flags\":{\r\"disabled\":false\r}\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Update a Role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating if role was updated successfully\"] = jsonData.response[0].errorString === \"Successful\"))",
+							"    console.log(\"Role was updated successfully\");",
+							"",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"    ",
+							"if((tests[\"Validating roleName tag\"] = responseBody.has(\"roleName\")))      ",
+							"        console.log(\"roleName tag is present\");",
+							"        ",
+							"if((tests[\"Validating roleId tag\"] = responseBody.has(\"roleId\")))      ",
+							"        console.log(\"roleId tag is present\");",
+							"  ",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"roles\": [\n\t\t{\n\t\t\t\"description\": \"Modifying Description through REST\",\n\t\t\t\"role\": {\n\t\t\t\t\"roleName\": \"{{roleName}}\",\n\t\t\t\t\"flags\": {\n\t\t\t\t\t\"disabled\": false\n\t\t\t\t}\n\t\t\t},\n\t\t\t\"categoryPermission\": {\n\t\t\t\t\"categoriesPermissionOperationType\": 1,\n\t\t\t\t\"categoriesPermissionList\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"permissionName\": \"Agent Management\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"permissionName\": \"Agent Scheduling\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t]\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Role/{{roleId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role",
+						"{{roleId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Update a Role",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\"roles\":[\r{\r\"description\":\"Modifying Description through REST\",\"role\":{\r\"roleName\":\"{{roleName}}\",\"flags\":{\r\"disabled\":false\r}\r},\"categoryPermission\":{\r\"categoriesPermissionOperationType\":1,\"categoriesPermissionList\":[\r{\r\"permissionName\":\"Agent Management\"\r},{\r\"permissionName\":\"Agent Scheduling\"\r}\r]\r}\r}\r]\r}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Role/{{roleId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Role",
+								"{{roleId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "110",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 07 Jul 2017 06:47:02 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"response\":[\r{\r\"errorString\":\"Successful\",\"errorCode\":0,\"entity\":{\r\"roleName\":\"TestRole\",\"roleId\":43\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "View Role Properties of Updated Role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating roleProperties tag\"] = responseBody.has(\"roleProperties\")))      ",
+							"            console.log(\"roleProperties tag is present\");",
+							"            ",
+							"if((tests[\"Validating roleName of updated role\"] = responseBody.has(postman.getEnvironmentVariable(\"roleName\"))))      ",
+							"            console.log(\"roleName of updated role is present\");",
+							"            ",
+							"if((tests[\"Validating roleId tag\"] = responseBody.has(\"roleId\")))      ",
+							"            console.log(\"roleId tag is present\");",
+							"            ",
+							"if((tests[\"Validating description tag\"] = responseBody.has(\"description\")))      ",
+							"            console.log(\"description tag is present\");",
+							"            ",
+							"if((tests[\"Validating roleId in the response with the roleId sent in the request \"] = jsonData.roleProperties[0].role.roleId == postman.getEnvironmentVariable(\"roleId\")))",
+							"            console.log(\"roleId in the response matches with the roleId given in request URL\");",
+							"",
+							"if((tests[\"Validating if role properties were modified\"] = jsonData.roleProperties[0].description  === \"Modifying Description through REST\"))",
+							"    console.log(\"Role properties were updated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Role/{{roleId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role",
+						"{{roleId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Roles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))\r",
+							"    console.log(\"Status code 200 validated\");\r",
+							" \r",
+							"\r",
+							"if((tests[\"Validating if role was deleted successfully\"] = jsonData.response[0].errorString === \"Successful\"))\r",
+							"    console.log(\"Role was deleted successfully\");\r",
+							"\r",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))\r",
+							"    console.log(\"Error code returned is 0\");\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Role/{{roleId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role",
+						"{{roleId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate Delete Role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 404\"] = responseCode.code === 404; ",
+							"",
+							"",
+							"            ",
+							"",
+							"            ",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Role/{{roleId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role",
+						"{{roleId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

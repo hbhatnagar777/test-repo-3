@@ -1,0 +1,76 @@
+{
+	"info": {
+		"_postman_id": "6f90deae-9f5d-429a-aead-4dfeaf95e0dd",
+		"name": "Restricted Console",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31362971"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var isRestricted = postman.getEnvironmentVariable(\"isRestricted\");",
+							"var isAdmin = postman.getEnvironmentVariable(\"isAdmin\");",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Status code name has string\"] = responseCode.name.includes(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\") !== undefined;",
+							"",
+							"if (isRestricted === true) {",
+							"    if (jsonData.errList.length > 0) {",
+							"        tests[\"Validate Error Message\"] = jsonData.errList[0].errLogMessage === \"user is restricted from logging on to this console\";",
+							"    } else {",
+							"        tests[\"Error Message Not Found for Restricted User\"] = false; // Indicate that no error message was found for restricted user",
+							"    }",
+							"} else {",
+							"    var username = postman.getEnvironmentVariable(\"UserName\");",
+							"    var expectedUsername  = jsonData.userName.replace(/\\\\/g, \"\\\\\\\\\");",
+							"    tests[\"Logged in User\"] = expectedUsername === username ;",
+							"}",
+							"",
+							"if (isAdmin === true){",
+							"    var admin = postman.getEnvironmentVariable(\"UserName\");",
+							"    tests[\"Logged in admin\"] = jsonData.userName === admin ;",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"{{UserName}}\",\n    \"password\":\"{{Password}}\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

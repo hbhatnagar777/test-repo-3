@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />"
+    description="&lt;html>&lt;p>&#xa;      Workflow to validate the Searchable Input in UserInput/Popup Activities&#xa;    &lt;/p>&lt;/html>"
+    executeOnWeb="0" inputs="&lt;inputs />" interactive="1"
+    isHtmlDescription="1" name="WF_SEARCHABLE_INPUT"
+    outputs="&lt;outputs />" revision="$Revision: 1.2 $" tags=""
+    uniqueGuid="e8405164-ce44-47bb-bdca-5ab6a3d5936a"
+    variables="&lt;variables>&lt;VAR_LISTVALUES class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;VAR_LISTLABELS class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;/variables>"
+    webHidden="0" workflowId="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables attribute="0" className="" name="variables" type="">
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="1" name="VAR_LISTVALUES" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="1"
+                name="VAR_LISTLABELS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </variables>
+        <inputs className="" name="inputs" type=""/>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+        <onExit language="1" script="import java.util.ArrayList;&#xd;&#xa;int i=0;&#xd;&#xa;List temp_value = new ArrayList();&#xd;&#xa;List temp_label = new ArrayList();&#xd;&#xa;String local_value = &quot;&quot;;&#xd;&#xa;String local_label = &quot;&quot;;&#xd;&#xa;while(i&lt;200)&#xd;&#xa;{&#xd;&#xa;    local_value = &quot;test_&quot; + i;&#xd;&#xa;    local_label = &quot;test_label_&quot; + i;&#xd;&#xa;    temp_value.add(local_value);&#xd;&#xa;    temp_label.add(local_label);&#xd;&#xa;    i++;&#xd;&#xa;}&#xd;&#xa;workflow.setVariable(&quot;VAR_LISTVALUES&quot;,temp_value);&#xd;&#xa;workflow.setVariable(&quot;VAR_LISTLABELS&quot;,temp_label);&#xd;&#xa;logger.info(&quot;List of variables created for value validation : &quot;+workflow.getVariable(&quot;VAR_LISTVALUES&quot;));&#xd;&#xa;logger.info(&quot;List of variables created for label validation : &quot;+workflow.getVariable(&quot;VAR_LISTLABELS&quot;));"/>
+        <inputs val="&lt;inputs />"/>
+        <transition activity="PopupInput_1" commented="0"
+            originalStyle="" points="" sourceX="72" sourceY="59"
+            status="0" style="defaultEdge" targetX="226" targetY="59"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1553249850467"
+        description="popups an input form for the user to fill out"
+        displayName="Searchable Input-1" height="34" interactive="0"
+        jobMode="0" name="PopupInput"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.InteractiveInputActivity"
+        uniqueName="PopupInput_1" waitSetting="0" width="137" x="158" y="42">
+        <onExit language="1" script="logger.info(&quot;Value Provided in Searchable Input Window-1&quot;);&#xd;&#xa;logger.info(&quot;String Type input : &quot;+xpath:{/workflow/PopupInput_1/INP_STR});&#xd;&#xa;logger.info(&quot;Searchable Type input with label : &quot;+xpath:{/workflow/PopupInput_1/INP_SEARCH_LABEL});&#xd;&#xa;logger.info(&quot;Searchable Type input with value : &quot;+xpath:{/workflow/PopupInput_1/INP_SEARCH_VALUE});&#xd;&#xa;logger.info(&quot;Searchable,List Type input with label : &quot;+xpath:{/workflow/PopupInput_1/INP_SEARCH_LABEL_LIST});&#xd;&#xa;logger.info(&quot;Searchable,List Type input with value : &quot;+xpath:{/workflow/PopupInput_1/INP_SEARCH_VALUE_LIST});"/>
+        <inputs val="&lt;inputs>&lt;actions>&lt;name>Next&lt;/name>&lt;validateForm>true&lt;/validateForm>&lt;/actions>&lt;inputs>&lt;INP_STR class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_SEARCH_LABEL class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_SEARCH_VALUE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_SEARCH_LABEL_LIST class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_SEARCH_VALUE_LIST class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;/inputs>&lt;subject>Searchable Test window-1&lt;/subject>&lt;formProperties>&amp;lt;?xml version='1.0' encoding='UTF-8'?&amp;gt;&amp;lt;Workflow_FormProperties css=&quot;&quot; javaScript=&quot;&quot; pageMode=&quot;0&quot; formVersion=&quot;0&quot;&amp;gt;&amp;lt;rules /&amp;gt;&amp;lt;/Workflow_FormProperties&amp;gt;&lt;/formProperties>&lt;/inputs>"/>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0"
+                name="outputs" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="0" defaultValue=""
+                    displayName="Enter String Input" documentation=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue="" name="INP_STR"
+                    readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for Searchable with Label"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue=""
+                    name="INP_SEARCH_LABEL" readOnly="0" required="0"
+                    searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <labelsForOptions val="xpath:{/workflow/variables/VAR_LISTLABELS}"/>
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for Searchable with value"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue=""
+                    name="INP_SEARCH_VALUE" readOnly="0" required="0"
+                    searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Select list of values - based on label"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="1"
+                    maximumValue="" minimumValue=""
+                    name="INP_SEARCH_LABEL_LIST" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <labelsForOptions val="xpath:{/workflow/variables/VAR_LISTLABELS}"/>
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Select list of values - based on value"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="1"
+                    maximumValue="" minimumValue=""
+                    name="INP_SEARCH_VALUE_LIST" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children className="java.lang.Boolean"
+                    inputType="java.lang.Boolean" name="okClicked" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children className="java.lang.String"
+                    inputType="java.lang.String" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs className="" defaultValue="" listType="0"
+                name="inputs" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="0" defaultValue=""
+                    displayName="Enter String Input" documentation=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue="" name="INP_STR"
+                    readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for Searchable with Label"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue=""
+                    name="INP_SEARCH_LABEL" readOnly="0" required="0"
+                    searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <labelsForOptions val="xpath:{/workflow/variables/VAR_LISTLABELS}"/>
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for Searchable with value"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue=""
+                    name="INP_SEARCH_VALUE" readOnly="0" required="0"
+                    searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Select list of values - based on label"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="1"
+                    maximumValue="" minimumValue=""
+                    name="INP_SEARCH_LABEL_LIST" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <labelsForOptions val="xpath:{/workflow/variables/VAR_LISTLABELS}"/>
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Select list of values - based on value"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="1"
+                    maximumValue="" minimumValue=""
+                    name="INP_SEARCH_VALUE_LIST" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+            </inputs>
+        </activitySchema>
+        <transition activity="PopupInput_2" commented="0"
+            originalStyle="" points="" sourceX="208" sourceY="59"
+            status="0" style="defaultEdge" targetX="212" targetY="137"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/PopupInput_1/actionSelected}.contains(&quot;Next&quot;);"/>
+        </transition>
+        <transition activity="EndUserSession_1" commented="0"
+            originalStyle="" points="" sourceX="226" sourceY="59"
+            status="0" style="defaultEdge" targetX="385" targetY="116"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/PopupInput_1/actionSelected}.contains(&quot;Next&quot;);"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1553249857034"
+        description="ends the interactive user session"
+        displayName="EndUserSession" height="34" interactive="0"
+        jobMode="0" name="EndUserSession"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.InteractiveEndSessionActivity"
+        uniqueName="EndUserSession_1" waitSetting="0" width="124"
+        x="337" y="87">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="UserInput_1" commented="0"
+            originalStyle="" points="" sourceX="399" sourceY="104"
+            status="0" style="defaultEdge" targetX="406" targetY="186"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1553249861026" description=""
+        displayName="UserInput-Searchable" height="34" interactive="1"
+        jobMode="0" name="UserInput"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.WebFormActivity"
+        uniqueName="UserInput_1" waitSetting="0" width="154" x="329" y="167">
+        <onExit language="1" script="logger.info(&quot;Value provided in Searchable Input window-3&quot;);&#xd;&#xa;logger.info(&quot;String type Input : &quot;+xpath:{/workflow/UserInput_1/INP_USER_STR});&#xd;&#xa;logger.info(&quot;Searchable Type input with label : &quot;+xpath:{/workflow/UserInput_1/INP_USER_SEARCH_LABEL});&#xd;&#xa;logger.info(&quot;Searchable Type input with value : &quot;+xpath:{/workflow/UserInput_1/INP_USER_SEARCH_VALUE});&#xd;&#xa;logger.info(&quot;Searchable,List Type input with label : &quot;+xpath:{/workflow/UserInput_1/INP_USER_SEARCH_LABEL_LIST});&#xd;&#xa;logger.info(&quot;Searchable, List Type input with value : &quot;+xpath:{/workflow/UserInput_1/INP_USER_SEARCH_VALUE_LIST});"/>
+        <inputs val="&lt;inputs>&lt;interactionUsers>xpath:{/workflow/system/executor}&lt;/interactionUsers>&lt;inputs>&lt;INP_USER_STR class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_USER_SEARCH_LABEL class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_USER_SEARCH_VALUE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_USER_SEARCH_LABEL_LIST class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_USER_SEARCH_VALUE_LIST class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;/inputs>&lt;subject>Searchable Test window-User Input&lt;/subject>&lt;sendEmail>true&lt;/sendEmail>&lt;approvalEnabled>false&lt;/approvalEnabled>&lt;email>&lt;from />&lt;to />&lt;cc />&lt;bcc />&lt;subject>User Interaction Operation : Workflow [xpath:{/workflow/system/workflow}] executed as part of automation testing&lt;/subject>&lt;attachments />&lt;repeatInterval />&lt;body>&amp;lt;p&amp;gt;&#xd;&#xa;      Hi,&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      As part of automation testing workflow &#xd;&#xa;      [xpath:{/workflow/system/workflow}] executed to validate searchable type &#xd;&#xa;      input operation in UserInput activity.&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      Please ignore this mail.&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      &#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      Thanks.&#xd;&#xa;    &amp;lt;/p&amp;gt;&lt;/body>&lt;html>true&lt;/html>&lt;/email>&lt;formProperties>&amp;lt;?xml version='1.0' encoding='UTF-8'?&amp;gt;&amp;lt;Workflow_FormProperties css=&quot;&quot; javaScript=&quot;&quot; pageMode=&quot;0&quot; formVersion=&quot;0&quot;&amp;gt;&amp;lt;rules /&amp;gt;&amp;lt;/Workflow_FormProperties&amp;gt;&lt;/formProperties>&lt;/inputs>"/>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0"
+                name="outputs" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="0" defaultValue=""
+                    displayName="Enter String Input" documentation=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue="" name="INP_USER_STR"
+                    readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for searchable label"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue=""
+                    name="INP_USER_SEARCH_LABEL" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <labelsForOptions val="xpath:{/workflow/variables/VAR_LISTLABELS}"/>
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for searchable value"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue=""
+                    name="INP_USER_SEARCH_VALUE" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for Searchable label list"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="1"
+                    maximumValue="" minimumValue=""
+                    name="INP_USER_SEARCH_LABEL_LIST" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <labelsForOptions val="xpath:{/workflow/variables/VAR_LISTLABELS}"/>
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for Searchable value list"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="1"
+                    maximumValue="" minimumValue=""
+                    name="INP_USER_SEARCH_VALUE_LIST" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children
+                    className="commvault.msgs.CvEntities.UserEntity"
+                    inputType="commvault.msgs.CvEntities.UserEntity"
+                    name="completedBy" type="{commvault.msgs.CvEntities}UserEntity">
+                    <children className="java.lang.String"
+                        inputType="java.lang.String" name="userName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    <children className="java.lang.Integer"
+                        inputType="java.lang.Integer" name="userId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                </children>
+                <children className="java.lang.String"
+                    inputType="java.lang.String" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs className="" defaultValue="" listType="0"
+                name="inputs" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="0" defaultValue=""
+                    displayName="Enter String Input" documentation=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue="" name="INP_USER_STR"
+                    readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for searchable label"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue=""
+                    name="INP_USER_SEARCH_LABEL" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <labelsForOptions val="xpath:{/workflow/variables/VAR_LISTLABELS}"/>
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for searchable value"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue=""
+                    name="INP_USER_SEARCH_VALUE" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for Searchable label list"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="1"
+                    maximumValue="" minimumValue=""
+                    name="INP_USER_SEARCH_LABEL_LIST" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <labelsForOptions val="xpath:{/workflow/variables/VAR_LISTLABELS}"/>
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Enter value for Searchable value list"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="1"
+                    maximumValue="" minimumValue=""
+                    name="INP_USER_SEARCH_VALUE_LIST" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+            </inputs>
+        </activitySchema>
+        <transition activity="EndUserSession_2" commented="0"
+            originalStyle="" points="" sourceX="406" sourceY="186"
+            status="0" style="defaultEdge" targetX="516" targetY="190"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1553249872553"
+        description="ends the interactive user session"
+        displayName="EndUserSession" height="34" interactive="0"
+        jobMode="0" name="EndUserSession"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.InteractiveEndSessionActivity"
+        uniqueName="EndUserSession_2" waitSetting="0" width="124"
+        x="551" y="166">
+        <inputs val="&lt;inputs />"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1553251493467"
+        description="popups an input form for the user to fill out"
+        displayName="Searchable Input-2" height="34" interactive="0"
+        jobMode="0" name="PopupInput"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.InteractiveInputActivity"
+        uniqueName="PopupInput_2" waitSetting="0" width="137" x="158" y="120">
+        <onExit language="1" script="logger.info(&quot;Value provided in Searchable Input Window-2&quot;);&#xd;&#xa;logger.info(&quot;Searchable input with unicode character value : &quot;+xpath:{/workflow/PopupInput_2/INP_UNICODE_VALIDATION});&#xd;&#xa;logger.info(&quot;Searchable input with no display name customised : &quot;+xpath:{/workflow/PopupInput_2/INP_TEST});"/>
+        <inputs val="&lt;inputs>&lt;actions>&lt;name>Next&lt;/name>&lt;validateForm>true&lt;/validateForm>&lt;/actions>&lt;inputs>&lt;INP_UNICODE_VALIDATION class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_TEST class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>&lt;subject>Searchable Test window-2&lt;/subject>&lt;formProperties>&amp;lt;?xml version='1.0' encoding='UTF-8'?&amp;gt;&amp;lt;Workflow_FormProperties css=&quot;&quot; javaScript=&quot;&quot; pageMode=&quot;0&quot; formVersion=&quot;0&quot;&amp;gt;&amp;lt;rules /&amp;gt;&amp;lt;/Workflow_FormProperties&amp;gt;&lt;/formProperties>&lt;/inputs>"/>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0"
+                name="outputs" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Select Unicode Character"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue=""
+                    name="INP_UNICODE_VALIDATION" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="©"/>
+                    <options val="«"/>
+                    <options val="£"/>
+                    <options val="Ƣ"/>
+                    <options val="Ʒ"/>
+                    <options val="α"/>
+                    <options val="β"/>
+                    <options val="γ"/>
+                    <options val="η"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="" documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue="" name="INP_TEST"
+                    readOnly="0" required="1" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+                <children className="java.lang.Boolean"
+                    inputType="java.lang.Boolean" name="okClicked" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children className="java.lang.String"
+                    inputType="java.lang.String" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs className="" defaultValue="" listType="0"
+                name="inputs" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="Select Unicode Character"
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue=""
+                    name="INP_UNICODE_VALIDATION" readOnly="0"
+                    required="0" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="©"/>
+                    <options val="«"/>
+                    <options val="£"/>
+                    <options val="Ƣ"/>
+                    <options val="Ʒ"/>
+                    <options val="α"/>
+                    <options val="β"/>
+                    <options val="γ"/>
+                    <options val="η"/>
+                </children>
+                <children attribute="0" className="java.lang.String"
+                    controlHidden="0" controlType="2" defaultValue=""
+                    displayName="" documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    maximumValue="" minimumValue="" name="INP_TEST"
+                    readOnly="0" required="1" searchable="1" type="{http://www.w3.org/2001/XMLSchema}string">
+                    <options val="xpath:{/workflow/variables/VAR_LISTVALUES}"/>
+                </children>
+            </inputs>
+        </activitySchema>
+        <transition activity="EndUserSession_1" commented="0"
+            originalStyle="" points="" sourceX="226" sourceY="137"
+            status="0" style="defaultEdge" targetX="360" targetY="96"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <onStart language="1" script="logger.info(&quot;***********************************************************************************************************************************************************************&quot;);&#xd;&#xa;logger.info(&quot;Execution of workflow [&quot;+xpath:{/workflow/system/workflow/workflowName}+&quot;] with JobId [&quot;+xpath:{/workflow/system/jobId}+&quot;] started&quot;);&#xd;&#xa;logger.info(&quot;***********************************************************************************************************************************************************************&quot;);"/>
+    <formProperties css="" formVersion="0" javaScript="" pageMode="0">
+        <rules/>
+    </formProperties>
+    <onComplete language="1" script="logger.info(&quot;***********************************************************************************************************************************************************************&quot;);&#xd;&#xa;logger.info(&quot;Execution of workflow [&quot;+xpath:{/workflow/system/workflow/workflowName}+&quot;] with JobId [&quot;+xpath:{/workflow/system/jobId}+&quot;] completed&quot;);&#xd;&#xa;logger.info(&quot;***********************************************************************************************************************************************************************&quot;);"/>
+</Workflow_WorkflowDefinition>

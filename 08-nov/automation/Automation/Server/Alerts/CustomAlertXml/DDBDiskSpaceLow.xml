@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<App_SetCustomRuleRequest>
+    <queryDetail doesQuerySupportOutputFilter="1" frequency="86400"
+        isDisabled="0" isQueryModifyEnabled="1" isSystemCreated="0"
+        queryCriteriaName="" queryDescription=""
+        sqlQuery="SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED&#xa;&#xa;&#xa;if object_id('tempdb.dbo.#ddbAlertCandidate') is not null&#xa;        DROP TABLE #ddbAlertCandidate&#xa;&#xa;&#xa;  &#xa;SELECT &#xa;  IdxSIDBSubStore.SubStoreId,&#xa;  IDXSIDBStore.SIDBStoreId, &#xa;  CASE&#xa;    WHEN IdxCache.FreeDiskSpaceMB &lt;= IdxCache.DiskFreeThresholdMB  THEN 'Disk space below minimum free space '&#xa;&#x9;ELSE  'Disk space below  Warning Threshold '&#xa;  END AS Status&#xa;      ,&#xa;  APP_Client.displayName  AS mediaAgent,&#xa;  IdxSIDBStore.SIDBStoreName,&#xa;  IdxAccessPath.path,&#xa;  ArchGroup.name AS storagePolicy,&#xa;  ArchGroupCopy.name AS copy,        &#xa;  IdxCache.FreeDiskSpaceMB,&#xa;  IdxCache.DiskFreeWarningThreshholdMB,&#xa;  IdxCache.DiskFreeThresholdMB,&#xa;  ArchGroup.flags&#xa;&#xa;INTO #ddbAlertCandidate&#xa;&#xa;FROM IdxSIDBStore&#xa;INNER JOIN  IdxSIDBSubStore ON IdxSIDBSubStore.SIDBStoreId = IdxSIDBStore.SIDBStoreId&#xa;INNER JOIN  IdxCache ON IdxSIDBSubStore.IdxCacheId = IdxCache.IdxCacheId&#xa;INNER JOIN  ArchCopySIDBStore  ON IDXSIDBStore.SIDBStoreId = ArchCopySIDBStore.SIDBStoreId&#xa;INNER JOIN  ArchGroupCopy ON ArchCopySIDBStore.copyId  = ArchGroupCopy.id&#xa;INNER JOIN  ArchGroup  ON ArchGroupCopy.archGroupId = ArchGroup.id&#xa;INNER JOIN  APP_Client ON  IdxSIDBSubStore.ClientId = APP_Client.id&#xa;INNER JOIN  @mediaAgents AS MA  ON MA.entityId = APP_Client.id&#xa;INNER JOIN  IdxAccessPath ON IdxAccessPath.IdxAccessPathId =  IdxSIDBSubStore.IdxAccessPathId&#xa;WHERE IdxSIDBStore.CommCellId = 2 &#xa;AND IdxCache.FreeDiskSpaceMB &lt;= IdxCache.DiskFreeWarningThreshholdMB&#xa;AND IdxCache.FreeDiskSpaceMB &lt;> -1  -- FreeDiskSpaceMB =  -1 Means Free space still not updated for SIDBStore&#xa;AND APP_Client.releaseId >= 14  --  SIM_ID_GX_REL90 ==> 14 &#xa;AND IdxCache.IdxCacheType = 2 --  1 = regular index cache and 2 = sidb cache&#xa;&#xa;&#xa;-- If any selected substore have Global dedupe  SP show only Global SP &#xa;&#xa;DELETE FROM #ddbAlertCandidate&#xa;WHERE (flags &amp; 256 ) = 0 AND      --  CVA_SP_GLOBAL_DEDUP_FLAG&#x9;256 macro &#xa;SubStoreId in &#xa;(&#xa;  SELECT DISTINCT SubStoreId &#xa;  FROM #ddbAlertCandidate&#xa;  WHERE (flags &amp; 256 ) &lt;> 0       --  CVA_SP_GLOBAL_DEDUP_FLAG&#x9;256 macro &#xa;) &#xa;&#xa;&#xa;SELECT &#xa;  SubStoreId, &#xa;  Status  ,&#xa;  mediaAgent,&#xa;  SIDBStoreName,&#xa;  path,&#xa;  storagePolicy,&#xa;  copy,        &#xa;  FreeDiskSpaceMB,&#xa;  DiskFreeWarningThreshholdMB,&#xa;  DiskFreeThresholdMB&#xa;FROM #ddbAlertCandidate&#xa;"
+        taskInfoXml="&lt;?xml version='1.0' encoding='UTF-8'?>&lt;TMMsg_TaskInfo>&lt;task taskId=&quot;0&quot; taskName=&quot;&quot; policyType=&quot;10&quot; taskType=&quot;2&quot; alertId=&quot;0&quot; ownerId=&quot;1&quot; runUserId=&quot;1&quot; description=&quot;&quot; ownerName=&quot;Administrator&quot; GUID=&quot;64e23a63-f3d6-4eb2-b112-7a14f009f7c3&quot;>&lt;taskFlags disabled=&quot;0&quot; uninstalled=&quot;0&quot; isEZOperation=&quot;0&quot; forDDB=&quot;0&quot; isEdgeDrive=&quot;0&quot; />&lt;originalCC commCellId=&quot;2&quot; />&lt;taskSecurity>&lt;associatedUserGroups _type_=&quot;15&quot; userGroupId=&quot;1&quot; userGroupName=&quot;master&quot; />&lt;associatedUserGroups _type_=&quot;15&quot; userGroupId=&quot;3&quot; userGroupName=&quot;View All&quot; />&lt;ownerCapabilities />&lt;/taskSecurity>&lt;/task>&lt;appGroup />&lt;subTasks>&lt;subTask subTaskName=&quot;&quot; subTaskId=&quot;0&quot; subTaskType=&quot;1&quot; operationType=&quot;5014&quot; flags=&quot;0&quot; subTaskOrder=&quot;0&quot; />&lt;pattern patternId=&quot;27&quot; name=&quot;&quot; flags=&quot;0&quot; freq_type=&quot;2048&quot; freq_interval=&quot;127&quot; freq_relative_interval=&quot;0&quot; freq_recurrence_factor=&quot;1&quot; freq_subday_interval=&quot;900&quot; skipOccurence=&quot;0&quot; skipDayNumber=&quot;0&quot; active_start_date=&quot;1432684800&quot; active_start_time=&quot;0&quot; active_end_date=&quot;0&quot; active_end_time=&quot;86340&quot; active_end_occurence=&quot;0&quot; description=&quot;Every week on Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday at 12:00 AM  starting May 27, 2015and repeats every 0 hr(s) 15 min(s) until 11:59 PM&quot; freq_restart_interval=&quot;0&quot;>&lt;timeZone TimeZoneID=&quot;1000&quot; />&lt;calendar calendarId=&quot;1&quot; calendarName=&quot;Standard&quot; />&lt;/pattern>&lt;options />&lt;/subTasks>&lt;/TMMsg_TaskInfo>" visibility="0">
+        <queryEntity queryId="0" queryName="DDB Disk Space Low"/>
+        <queryOutputColumns columnFriendlyName="SubStoreId"
+            columnName="SubStoreId" isColumnFilterable="0"
+            isPrimaryKey="1" lmDataType="0">
+            <columnAdditionalDetails includeInAlertOutput="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Status"
+            columnName="Status" isColumnFilterable="0" isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Media Agent Name"
+            columnName="mediaAgent" isColumnFilterable="0"
+            isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="DDB Store Name"
+            columnName="SIDBStoreName" isColumnFilterable="0"
+            isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Access Path"
+            columnName="path" isColumnFilterable="0" isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Storage policy Name"
+            columnName="storagePolicy" isColumnFilterable="0"
+            isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Copy Name"
+            columnName="copy" isColumnFilterable="0" isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1"/>
+        </queryOutputColumns>
+        <queryOutputColumns
+            columnFriendlyName="Available Free Space in MB"
+            columnName="FreeDiskSpaceMB" isColumnFilterable="0"
+            isPrimaryKey="0" lmDataType="0">
+            <columnAdditionalDetails includeInAlertOutput="1"/>
+        </queryOutputColumns>
+        <queryOutputColumns
+            columnFriendlyName="Free Space Warning Threshold in MB"
+            columnName="DiskFreeWarningThreshholdMB"
+            isColumnFilterable="0" isPrimaryKey="0" lmDataType="0">
+            <columnAdditionalDetails includeInAlertOutput="1"/>
+        </queryOutputColumns>
+        <queryOutputColumns
+            columnFriendlyName="Minimum Free Space required in MB"
+            columnName="DiskFreeThresholdMB" isColumnFilterable="0"
+            isPrimaryKey="0" lmDataType="0">
+            <columnAdditionalDetails includeInAlertOutput="1"/>
+        </queryOutputColumns>
+        <queryParamsList>
+            <queryParamsList controlType="2" defaultValue=""
+                displayName="Media Agents" documentation=""
+                inputName="mediaagents"
+                inputType="commvault.msgs.CvEntities.MediaAgentEntity"
+                listType="1" maximumValue="" minimumValue=""
+                readOnly="0" required="0"
+                type="{commvault.msgs.CvEntities}MediaAgentEntity" typeOptions="0">
+                <defaultValues val=""/>
+            </queryParamsList>
+        </queryParamsList>
+        <additionalQueryDetails alertCriteria="0" alertType="0"
+            isHealthParam="0" querySeverity="3">
+            <scriptDescription description=""
+                guid="5F8EB6F9-051A-4BE4-BCB4-F0674D37D2EF"
+                reportName="DDB Disk Space Low" revision="$Revision: 1.3.2.1 $"/>
+        </additionalQueryDetails>
+    </queryDetail>
+</App_SetCustomRuleRequest>

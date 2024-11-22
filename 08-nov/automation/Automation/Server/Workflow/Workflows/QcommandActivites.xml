@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />"
+    description="Workflow to test Qcommand activities" executeOnWeb="0"
+    inputs="&lt;inputs>&lt;LibraryName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;TapeLibraryName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;JobIDWithSnap class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot; />&lt;TapeBarcode class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;MediaExportLocation class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;ClientDisplayName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;ClientHostName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;ClientCVDPort class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot; />&lt;/inputs>"
+    interactive="0" isHtmlDescription="0" manualPercentageComplete="0"
+    name="QcommandActivites" outputs="&lt;outputs />"
+    revision="$Revision: 1.2 $" tags=""
+    uniqueGuid="d2ed290c-3bb2-4080-99f2-a8821d901aaa"
+    variables="&lt;variables>&lt;ListSnapPassed class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;ListDrivePoolPassed class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;ListScratchPoolPassed class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;OperationMediaPassed class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;DiscoverPassed class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;SnapMountPassed class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;SnapUnmountPassed class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;RegisterPassed class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;FailureMsg class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/FailureMsg>&lt;/variables>"
+    webHidden="0" workflowId="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables attribute="0" className="" name="variables" type="">
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="" displayName=""
+                documentation="" hidden="0"
+                inputType="java.lang.Boolean" listType="0"
+                name="ListSnapPassed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                name="ListDrivePoolPassed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                name="ListScratchPoolPassed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                name="OperationMediaPassed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                name="DiscoverPassed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                name="SnapMountPassed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                name="SnapUnmountPassed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="" hidden="0"
+                inputType="java.lang.Boolean" listType="0"
+                name="RegisterPassed" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="FailureMsg" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </variables>
+        <inputs attribute="0" className="" name="inputs" type="">
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Disk Library Display Name" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="LibraryName"
+                readOnly="0" required="1" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Tape Library Display Name" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="TapeLibraryName"
+                readOnly="0" required="1" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Job ID With Snap"
+                documentation="Any backup job ID with Snap or Snap-Protect job associated with it"
+                hidden="0" inputType="java.lang.Integer" listType="0"
+                maximumValue="" minimumValue="" name="JobIDWithSnap"
+                readOnly="0" required="1" searchable="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Tape Barcode"
+                documentation="Tape barcode that has to be exported"
+                hidden="0" inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="TapeBarcode"
+                readOnly="0" required="1" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Media Export Location"
+                documentation="Location to export the tape" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue=""
+                name="MediaExportLocation" readOnly="0" required="1"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Decoupled Client Display Name"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="ClientDisplayName" readOnly="0" required="1"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Decoupled Client Hostname" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="ClientHostName"
+                readOnly="0" required="1" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Decoupled Client CVD Port Number"
+                documentation="" hidden="0"
+                inputType="java.lang.Integer" listType="0"
+                maximumValue="" minimumValue="" name="ClientCVDPort"
+                readOnly="0" required="1" searchable="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+        </inputs>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="60" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="CommServDBQuery_1" commented="0"
+            originalStyle="" points="" sourceX="72" sourceY="59"
+            status="0" style="defaultEdge" targetX="177" targetY="113"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583390615807" description=""
+        displayName="List DrivePool" height="34" interactive="0"
+        jobMode="0" name="DrivePool"
+        namespaceUri="commvault.cte.workflow.activities.cmd.list"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.cmd.list.ListDrivePool"
+        uniqueName="DrivePool_1" waitSetting="0" width="128" x="18" y="161">
+        <onExit language="1" script="import java.io.*;&#xd;&#xa;import java.util.*;&#xd;&#xa;try&#xd;&#xa;{&#xd;&#xa;   String drivePoolName= xpath:{/workflow/DrivePool_1/commandOutput};&#xd;&#xa;   logger.info(&quot;'List DrivePool' activity output: &quot;+drivePoolName);&#xd;&#xa;   String sqlResult = xpath:{/workflow/CommServDBQuery_1/resultSets[7]/row[1]/col[1]};&#xd;&#xa;   logger.info(&quot;SQL result: &quot;+sqlResult);&#xd;&#xa;   if(drivePoolName.equals(sqlResult))&#xd;&#xa;   {&#xd;&#xa;    logger.info(&quot;'List DrivePool' activity PASSED&quot;);&#xd;&#xa;    workflow.setVariable(&quot;ListDrivePoolPassed&quot;,true);&#xd;&#xa;   }&#xd;&#xa;   else&#xd;&#xa;   {&#xd;&#xa;    logger.info(&quot;'List DrivePool' activity FAILED&quot;);&#xd;&#xa;    workflow.setVariable(&quot;ListDrivePoolPassed&quot;,false);&#xd;&#xa;    workflow.setVariable(&quot;FailureMsg&quot;, &quot;List Drive Pool Command output and DB value don't match&quot;);&#xd;&#xa;   }&#xd;&#xa;   return 0; &#xd;&#xa;}&#xd;&#xa;catch (IOException ioe)&#xd;&#xa;{&#xd;&#xa;     ioe.printStackTrace();&#xd;&#xa;     return -1;&#xd;&#xa;}"/>
+        <inputs val="&lt;inputs>&lt;mediaAgent class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/CommServDBQuery_1/resultSets[1]/row[1]/col[1]}&lt;/mediaAgent>&lt;library class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/LibraryName}&lt;/library>&lt;masterPoolDrive class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/CommServDBQuery_1/resultSets[2]/row[1]/col[1]}&lt;/masterPoolDrive>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <transition activity="Decision_2" commented="0" originalStyle=""
+            points="" sourceX="68" sourceY="178" status="0"
+            style="defaultEdge" targetX="166" targetY="62"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <onEnter language="1" script="xpath:{/workflow/inputs/LibraryName}"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583390639768" description="Ends the workflow"
+        displayName="Workflow PASSED" height="34" interactive="0"
+        jobMode="0" name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.EndActivity"
+        uniqueName="WorkflowEnd_1" waitSetting="0" width="154" x="858" y="223">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>COMPLETED&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583392827081"
+        description="executes queries against a commcell database"
+        displayName="CommServDBQuery" height="34" interactive="0"
+        jobMode="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.CommServDBQuery"
+        uniqueName="CommServDBQuery_1" waitSetting="0" width="168" x="1" y="104">
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>--1&amp;#xD;&#xd;&#xa;select name from app_client where id = (select top 1 clientid from mmdevicecontroller where deviceid = &amp;#xD;&#xd;&#xa;                                       (select top 1 deviceid from MMMountPathToStorageDevice where mountpathid = &amp;#xD;&#xd;&#xa;                                       (select top 1 mountpathid from mmmountpath where libraryid = &amp;#xD;&#xd;&#xa;                                       (select libraryid from mmlibrary where aliasname = 'xpath:{/workflow/inputs/LibraryName}'))))&amp;#xD;&#xd;&#xa;--2                                     &amp;#xD;&#xd;&#xa;select top 1 masterpoolname from mmmasterpool where libraryid = (select libraryid from mmlibrary where aliasname = 'xpath:{/workflow/inputs/LibraryName}')&amp;#xD;&#xd;&#xa;--3&amp;#xD;&#xd;&#xa;select name from app_client where id = (select clientid from mmlibrarycontroller where libraryid = &amp;#xD;&#xd;&#xa;                                       (select libraryid from mmlibrary where aliasname = 'xpath:{/workflow/inputs/TapeLibraryName}'))&amp;#xD;&#xd;&#xa;--4&amp;#xD;&#xd;&#xa;select AliasName from mmlibrary where libraryid = (select LibraryId from mmmedia where barcode = 'xpath:{/workflow/inputs/TapeBarcode}')&amp;#xD;&#xd;&#xa;--5&amp;#xD;&#xd;&#xa;select name from app_client where id = (select clientid from mmlibrarycontroller where libraryid = (select LibraryId from mmmedia where barcode = 'xpath:{/workflow/inputs/TapeBarcode}'))&amp;#xD;&#xd;&#xa;--6&amp;#xD;&#xd;&#xa;select name,jobresultdir, id from app_client where id = (select clientid from app_application where id = (select appid from SMVolume where jobid = xpath:{/workflow/inputs/JobIDWithSnap}))&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;--For Validation&amp;#xD;&#xd;&#xa;--7&amp;#xD;&#xd;&#xa;select drivepoolname from mmdrivepool where masterpoolid = (select masterpoolid from mmmasterpool where libraryid = (select libraryid from mmlibrary where aliasname = 'xpath:{/workflow/inputs/LibraryName}'))&amp;#xD;&#xd;&#xa;--8&amp;#xD;&#xd;&#xa;select smvolumeid from SMVolume where jobid = xpath:{/workflow/inputs/JobIDWithSnap}&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;&lt;/query>&lt;/inputs>"/>
+        <transition activity="DrivePool_1" commented="0"
+            originalStyle="" points="" sourceX="180" sourceY="120"
+            status="0" style="defaultEdge" targetX="74" targetY="175"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583399376928" description=""
+        displayName="Discover Media" height="34" interactive="0"
+        jobMode="0" name="Discover"
+        namespaceUri="commvault.cte.workflow.activities.cmd.library"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.cmd.library.LibraryDiscover"
+        uniqueName="Discover_1" waitSetting="0" width="140" x="209" y="364">
+        <onExit language="1" script="import java.io.*;&#xd;&#xa;import java.util.*;&#xd;&#xa;try&#xd;&#xa;{&#xd;&#xa;   String discoverOutput = (xpath:{/workflow/Discover_1/commandOutput}).toString();&#xd;&#xa;   logger.info(&quot;'Discover' activity output:\n&quot;+discoverOutput);&#xd;&#xa;   if(discoverOutput.contains(&quot;Request successful.&quot;))&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'Discover' activity PASSED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;DiscoverPassed&quot;,true);&#xd;&#xa;   }&#xd;&#xa;   else&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'Discover' activity FAILED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;DiscoverPassed&quot;,false);&#xd;&#xa;        workflow.setVariable(&quot;FailureMsg&quot;, &quot;Discover Media activity failed&quot;);&#xd;&#xa;   }&#xd;&#xa;   return 0; &#xd;&#xa;}&#xd;&#xa;catch (IOException ioe)&#xd;&#xa;{&#xd;&#xa;     ioe.printStackTrace();&#xd;&#xa;     return -1;&#xd;&#xa;}"/>
+        <inputs val="&lt;inputs>&lt;library class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/TapeLibraryName}&lt;/library>&lt;scratchPool class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Default Scratch&lt;/scratchPool>&lt;mediaType class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Virtual&lt;/mediaType>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <transition activity="Decision_7" commented="0" originalStyle=""
+            points="405.0,12.0" sourceX="266" sourceY="380" status="0"
+            style="defaultEdge" targetX="471" targetY="64"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583404418516" description="Ends the workflow"
+        displayName="Workflow FAILED" height="34" interactive="0"
+        jobMode="0" name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.EndActivity"
+        uniqueName="WorkflowEnd_2" waitSetting="0" width="148" x="469" y="522">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>FAILED&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/FailureMsg}&lt;/failureMessage>&lt;/inputs>"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583406169312" description="if/else based decision"
+        displayName="Activity PASSED?" height="100" interactive="0"
+        jobMode="0" name="Decision"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="rhombus;fontStyle=1"
+        uniqueName="Decision_2" waitSetting="0" width="149" x="8" y="223">
+        <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/ListDrivePoolPassed}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_2" commented="0"
+            originalStyle="" points="193.0,413.0" sourceX="81"
+            sourceY="286" status="0" style="defaultEdge" targetX="253"
+            targetY="296" transitionIndex="0" value="false" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="ScratchPool_1" commented="0"
+            originalStyle="" points="" sourceX="72" sourceY="273"
+            status="0" style="defaultEdge" targetX="72" targetY="359"
+            transitionIndex="0" value="true" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583407309056" description=""
+        displayName="List ScratchPool" height="34" interactive="0"
+        jobMode="0" name="ScratchPool"
+        namespaceUri="commvault.cte.workflow.activities.cmd.list"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.cmd.list.ListScratchPool"
+        uniqueName="ScratchPool_1" waitSetting="0" width="143" x="12" y="347">
+        <onExit language="1" script="import java.io.*;&#xd;&#xa;import java.util.*;&#xd;&#xa;try&#xd;&#xa;{&#xd;&#xa;   String scratchPoolNames = xpath:{/workflow/ScratchPool_1/commandOutput};&#xd;&#xa;   logger.info(&quot;'List ScratchPool' activity output: \n&quot;+scratchPoolNames);&#xd;&#xa;   if(scratchPoolNames.contains(&quot;Default Scratch&quot;) &amp;&amp;  scratchPoolNames.contains(&quot;Overwrite Protect Media&quot;))&#xd;&#xa;   {&#xd;&#xa;    logger.info(&quot;'List ScratchPool' activity PASSED&quot;);&#xd;&#xa;    workflow.setVariable(&quot;ListScratchPoolPassed&quot;,true);&#xd;&#xa;   }&#xd;&#xa;   else&#xd;&#xa;   {&#xd;&#xa;    logger.info(&quot;'List ScratchPool' activity FAILED&quot;);&#xd;&#xa;    workflow.setVariable(&quot;ListScratchPoolPassed&quot;,false);&#xd;&#xa;    workflow.setVariable(&quot;FailureMsg&quot;, &quot;List Scratch Pool Command output and DB value don't match&quot;);&#xd;&#xa;   }&#xd;&#xa;   return 0; &#xd;&#xa;}&#xd;&#xa;catch (IOException ioe)&#xd;&#xa;{&#xd;&#xa;     ioe.printStackTrace();&#xd;&#xa;     return -1;&#xd;&#xa;}"/>
+        <inputs val="&lt;inputs>&lt;library class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/TapeLibraryName}&lt;/library>&lt;mediaAgent class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/CommServDBQuery_1/resultSets[3]/row[1]/col[1]}&lt;/mediaAgent>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <transition activity="Decision_3" commented="0" originalStyle=""
+            points="" sourceX="70" sourceY="362" status="0"
+            style="defaultEdge" targetX="262" targetY="55"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583408621617" description="if/else based decision"
+        displayName="Activity PASSED?" height="100" interactive="0"
+        jobMode="0" name="Decision"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="rhombus;fontStyle=1"
+        uniqueName="Decision_3" waitSetting="0" width="149" x="198" y="5">
+        <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/ListScratchPoolPassed}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_2" commented="0"
+            originalStyle="" points="383.0,319.0" sourceX="276"
+            sourceY="127" status="0" style="defaultEdge" targetX="282"
+            targetY="444" transitionIndex="0" value="false" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="Media_2" commented="0" originalStyle=""
+            points="" sourceX="272" sourceY="55" status="0"
+            style="defaultEdge" targetX="273" targetY="132"
+            transitionIndex="0" value="true" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583479184227" description=""
+        displayName="Export Media" height="34" interactive="0"
+        jobMode="0" name="Media"
+        namespaceUri="commvault.cte.workflow.activities.cmd.operation"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.cmd.operation.OperationMedia"
+        uniqueName="Media_2" waitSetting="0" width="130" x="207" y="129">
+        <inputs val="&lt;inputs>&lt;barCode class=&quot;java.lang.String&quot; _list_=&quot;true&quot;>xpath:{/workflow/inputs/TapeBarcode}&lt;/barCode>&lt;library class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/CommServDBQuery_1/resultSets[4]/row[1]/col[1]}&lt;/library>&lt;exportLocation class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/MediaExportLocation}&lt;/exportLocation>&lt;mediaAgent class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/CommServDBQuery_1/resultSets[5]/row[1]/col[1]}&lt;/mediaAgent>&lt;verifyOML class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <transition activity="CommServDBQuery_2" commented="0"
+            originalStyle="" points="" sourceX="272" sourceY="146"
+            status="0" style="defaultEdge" targetX="274" targetY="196"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583484461022"
+        description="executes queries against a commcell database"
+        displayName="Validate Export Location" height="34"
+        interactive="0" jobMode="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.CommServDBQuery"
+        uniqueName="CommServDBQuery_2" waitSetting="0" width="179"
+        x="191" y="186">
+        <onExit language="1" script="import java.io.*;&#xd;&#xa;import java.util.*;&#xd;&#xa;try&#xd;&#xa;{&#xd;&#xa;   String sqlResult = (xpath:{/workflow/CommServDBQuery_2/resultSets[1]/row[1]/col[1]}).toString();&#xd;&#xa;   if(sqlResult.equals( (xpath:{/workflow/inputs/MediaExportLocation}).toString() ) )&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'Qoperation Media' activity PASSED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;OperationMediaPassed&quot;,true);&#xd;&#xa;   }&#xd;&#xa;   else&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'Qoperation Media' activity FAILED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;OperationMediaPassed&quot;,false);&#xd;&#xa;        workflow.setVariable(&quot;FailureMsg&quot;, &quot;Export Media has not completed&quot;);&#xd;&#xa;   }&#xd;&#xa;   return 0; &#xd;&#xa;}&#xd;&#xa;catch (IOException ioe)&#xd;&#xa;{&#xd;&#xa;     ioe.printStackTrace();&#xd;&#xa;     return -1;&#xd;&#xa;}"/>
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>select exportlocation from MMMediaExport where barcode = 'xpath:{/workflow/inputs/TapeBarcode}'&lt;/query>&lt;/inputs>"/>
+        <transition activity="Decision_6" commented="0" originalStyle=""
+            points="" sourceX="270" sourceY="203" status="0"
+            style="defaultEdge" targetX="267" targetY="293"
+            transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583484713962" description="if/else based decision"
+        displayName="Activity PASSED?" height="100" interactive="0"
+        jobMode="0" name="Decision"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="rhombus;fontStyle=1"
+        uniqueName="Decision_6" waitSetting="0" width="149" x="203" y="243">
+        <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/OperationMediaPassed}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_2" commented="0"
+            originalStyle="" points="365.0,383.0" sourceX="267"
+            sourceY="281" status="0" style="defaultEdge" targetX="329"
+            targetY="451" transitionIndex="0" value="false" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="Discover_1" commented="0" originalStyle=""
+            points="" sourceX="267" sourceY="293" status="0"
+            style="defaultEdge" targetX="267" targetY="366"
+            transitionIndex="0" value="true" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1583486500798" description="if/else based decision"
+        displayName="Activity PASSED?" height="100" interactive="0"
+        jobMode="0" name="Decision"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="rhombus;fontStyle=1"
+        uniqueName="Decision_7" waitSetting="0" width="149" x="443" y="9">
+        <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/DiscoverPassed}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_2" commented="0"
+            originalStyle="" points="635.0,262.0" sourceX="527"
+            sourceY="59" status="0" style="defaultEdge" targetX="314"
+            targetY="444" transitionIndex="0" value="false" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="Snap_1" commented="0" originalStyle=""
+            points="" sourceX="527" sourceY="59" status="0"
+            style="defaultEdge" targetX="880" targetY="169"
+            transitionIndex="0" value="true" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1584005775931" description="" displayName="Snap Mount"
+        height="34" interactive="0" jobMode="0" name="Snap"
+        namespaceUri="commvault.cte.workflow.activities.cmd.operation"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.cmd.operation.OperationSnap"
+        uniqueName="Snap_1" waitSetting="0" width="114" x="459" y="134">
+        <inputs val="&lt;inputs>&lt;operation class=&quot;workflow.types.cmd.SnapOperation&quot; _list_=&quot;false&quot;>mount&lt;/operation>&lt;volumeId class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;jobId class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/JobIDWithSnap}&lt;/jobId>&lt;destinationClient class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/CommServDBQuery_1/resultSets[6]/row[1]/col[1]}&lt;/destinationClient>&lt;destinationPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/CommServDBQuery_1/resultSets[6]/row[1]/col[2]}&lt;/destinationPath>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <transition activity="CommServDBQuery_3" commented="0"
+            originalStyle="" points="" sourceX="874" sourceY="173"
+            status="0" style="defaultEdge" targetX="965" targetY="173"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1584007199685" description=""
+        displayName="Snap Unmount" height="34" interactive="0"
+        jobMode="0" name="Snap"
+        namespaceUri="commvault.cte.workflow.activities.cmd.operation"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.cmd.operation.OperationSnap"
+        uniqueName="Snap_2" waitSetting="0" width="132" x="451" y="397">
+        <inputs val="&lt;inputs>&lt;operation class=&quot;workflow.types.cmd.SnapOperation&quot; _list_=&quot;false&quot;>unmount&lt;/operation>&lt;volumeId class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;jobId class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/JobIDWithSnap}&lt;/jobId>&lt;destinationClient class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/CommServDBQuery_1/resultSets[6]/row[1]/col[1]}&lt;/destinationClient>&lt;destinationPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/CommServDBQuery_1/resultSets[6]/row[1]/col[2]}&lt;/destinationPath>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <transition activity="CommServDBQuery_4" commented="0"
+            originalStyle=""
+            points="621.2765957446809,215.95744680851064" sourceX="815"
+            sourceY="281" status="0" style="defaultEdge" targetX="815"
+            targetY="350" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1584007543447" description="if/else based decision"
+        displayName="Activity PASSED?" height="100" interactive="0"
+        jobMode="0" name="Decision"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="rhombus;fontStyle=1"
+        uniqueName="Decision_1" waitSetting="0" width="149" x="442" y="261">
+        <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/SnapMountPassed}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+        <transition activity="Snap_2" commented="0" originalStyle=""
+            points="" sourceX="953" sourceY="249" status="0"
+            style="defaultEdge" targetX="865" targetY="296"
+            transitionIndex="0" value="true" x="738" y="27">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="WorkflowEnd_2" commented="0"
+            originalStyle=""
+            points="607.4468085106383,387.2340425531915" sourceX="529"
+            sourceY="329" status="0" style="defaultEdge" targetX="306"
+            targetY="447" transitionIndex="0" value="false" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1584014189758" description="if/else based decision"
+        displayName="Activity PASSED?" height="100" interactive="0"
+        jobMode="0" name="Decision"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="rhombus;fontStyle=1"
+        uniqueName="Decision_10" waitSetting="0" width="149" x="643" y="67">
+        <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/SnapUnmountPassed}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+        <transition activity="Snap_6" commented="0" originalStyle=""
+            points="" sourceX="994" sourceY="377" status="0"
+            style="defaultEdge" targetX="1258" targetY="171"
+            transitionIndex="0" value="true" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="WorkflowEnd_2" commented="0"
+            originalStyle=""
+            points="797.872340425532,117.02127659574468" sourceX="704"
+            sourceY="129" status="0" style="defaultEdge" targetX="257"
+            targetY="446" transitionIndex="0" value="false" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1584014190464" description="" displayName="List Snap"
+        height="34" interactive="0" jobMode="0" name="Snap"
+        namespaceUri="commvault.cte.workflow.activities.cmd.list"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.cmd.list.ListSnap"
+        uniqueName="Snap_6" waitSetting="0" width="100" x="666" y="194">
+        <onExit language="1" script="import java.io.*;&#xd;&#xa;import java.util.*;&#xd;&#xa;try&#xd;&#xa;{&#xd;&#xa;   String volumeID = (xpath:{/workflow/Snap_6/volumnId}).toString(); &#xd;&#xa;   logger.info(&quot;'List Snap' activity output:\n&quot;+volumeID);&#xd;&#xa;   String sqlResult = (xpath:{/workflow/CommServDBQuery_1/resultSets[8]/row[1]/col[1]}).toString();&#xd;&#xa;   if(volumeID.contains(sqlResult))&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'List Snap' activity PASSED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;ListSnapPassed&quot;,true);&#xd;&#xa;   }&#xd;&#xa;   else&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'List Snap' activity FAILED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;ListSnapPassed&quot;,false);&#xd;&#xa;        workflow.setVariable(&quot;FailureMsg&quot;, &quot;List Snap Command output and DB value don't match&quot;);&#xd;&#xa;   }&#xd;&#xa;   return 0; &#xd;&#xa;}&#xd;&#xa;catch (IOException ioe)&#xd;&#xa;{&#xd;&#xa;     ioe.printStackTrace();&#xd;&#xa;     return -1;&#xd;&#xa;}"/>
+        <inputs val="&lt;inputs>&lt;jobId class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/JobIDWithSnap}&lt;/jobId>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <transition activity="Decision_11" commented="0"
+            originalStyle="" points="" sourceX="1270" sourceY="188"
+            status="0" style="defaultEdge" targetX="1277" targetY="313"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1584011296933"
+        description="executes queries against a commcell database"
+        displayName="Validate Snap Mount" height="34" interactive="0"
+        jobMode="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.CommServDBQuery"
+        uniqueName="CommServDBQuery_3" waitSetting="0" width="174"
+        x="428" y="201">
+        <onExit language="1" script="import java.io.*;&#xd;&#xa;import java.util.*;&#xd;&#xa;try&#xd;&#xa;{&#xd;&#xa;   int sqlResult = xpath:{/workflow/CommServDBQuery_3/resultSets[1]/row[1]/col[1]};&#xd;&#xa;   if(sqlResult == xpath:{/workflow/CommServDBQuery_1/resultSets[6]/row[1]/col[3]})&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'Qoperation Snap Mount' activity PASSED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;SnapMountPassed&quot;,true);&#xd;&#xa;   }&#xd;&#xa;   else&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'Qoperation Snap Mount' activity FAILED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;SnapMountPassed&quot;,false);&#xd;&#xa;        workflow.setVariable(&quot;FailureMsg&quot;, &quot;The snap hasn't been mounted on the given client&quot;);&#xd;&#xa;   }&#xd;&#xa;   return 0; &#xd;&#xa;}&#xd;&#xa;catch (IOException ioe)&#xd;&#xa;{&#xd;&#xa;     ioe.printStackTrace();&#xd;&#xa;     return -1;&#xd;&#xa;}"/>
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>select MountHostId from SMVolume where jobid = xpath:{/workflow/inputs/JobIDWithSnap}&lt;/query>&lt;/inputs>"/>
+        <transition activity="Decision_1" commented="0" originalStyle=""
+            points="" sourceX="1020" sourceY="169" status="0"
+            style="defaultEdge" targetX="952" targetY="214"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1584012287991"
+        description="executes queries against a commcell database"
+        displayName="Validate Snap Unmount" height="34" interactive="0"
+        jobMode="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.CommServDBQuery"
+        uniqueName="CommServDBQuery_4" waitSetting="0" width="192"
+        x="625" y="0">
+        <onExit language="1" script="import java.io.*;&#xd;&#xa;import java.util.*;&#xd;&#xa;try&#xd;&#xa;{&#xd;&#xa;   int sqlResult = xpath:{/workflow/CommServDBQuery_4/resultSets[1]/row[1]/col[1]};&#xd;&#xa;   if(sqlResult == 0)&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'Qoperation Snap Unmount' activity PASSED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;SnapUnmountPassed&quot;,true);&#xd;&#xa;   }&#xd;&#xa;   else&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'Qoperation Snap Unmount' activity FAILED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;SnapUnmountPassed&quot;,false);&#xd;&#xa;        workflow.setVariable(&quot;FailureMsg&quot;, &quot;The snap hasn't been unmounted from the given client&quot;);&#xd;&#xa;   }&#xd;&#xa;   return 0; &#xd;&#xa;}&#xd;&#xa;catch (IOException ioe)&#xd;&#xa;{&#xd;&#xa;     ioe.printStackTrace();&#xd;&#xa;     return -1;&#xd;&#xa;}"/>
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>select MountHostId from SMVolume where jobid = xpath:{/workflow/inputs/JobIDWithSnap}&lt;/query>&lt;/inputs>"/>
+        <transition activity="Decision_10" commented="0"
+            originalStyle="" points="" sourceX="816" sourceY="351"
+            status="0" style="defaultEdge" targetX="990" targetY="335"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1584014190536" description="if/else based decision"
+        displayName="Activity PASSED?" height="100" interactive="0"
+        jobMode="0" name="Decision"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="rhombus;fontStyle=1"
+        uniqueName="Decision_11" waitSetting="0" width="149" x="644" y="269">
+        <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/ListSnapPassed}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_2" commented="0"
+            originalStyle="" points="812.0,662.0" sourceX="701"
+            sourceY="249" status="0" style="defaultEdge" targetX="269"
+            targetY="449" transitionIndex="0" value="false" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="Register_1" commented="0" originalStyle=""
+            points="821.2765957446809,178.72340425531917" sourceX="718"
+            sourceY="319" status="0" style="defaultEdge" targetX="931"
+            targetY="49" transitionIndex="0" value="true" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1584431462122" description="" displayName="Register"
+        height="34" interactive="0" jobMode="0" name="Register"
+        namespaceUri="commvault.cte.workflow.activities.cmd.operation"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.cmd.operation.OperationRegister"
+        uniqueName="Register_1" waitSetting="0" width="100" x="881" y="32">
+        <onExit language="1" script="import java.io.*;&#xd;&#xa;import java.util.*;&#xd;&#xa;try&#xd;&#xa;{&#xd;&#xa;   String clientRegisterOutput = (xpath:{/workflow/Register_1/commandOutput}).toString();&#xd;&#xa;   logger.info(&quot;'Register Client' activity output:\n&quot;+clientRegisterOutput);&#xd;&#xa;   if(clientRegisterOutput.contains(&quot;Client registered successfully.&quot;))&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'Register Client' activity PASSED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;RegisterPassed&quot;,true);&#xd;&#xa;   }&#xd;&#xa;   else&#xd;&#xa;   {&#xd;&#xa;        logger.info(&quot;'Register Client' activity FAILED&quot;);&#xd;&#xa;        workflow.setVariable(&quot;RegisterPassed&quot;,false);&#xd;&#xa;        workflow.setVariable(&quot;FailureMsg&quot;, &quot;Registration of the client failed&quot;);&#xd;&#xa;   }&#xd;&#xa;   return 0; &#xd;&#xa;}&#xd;&#xa;catch (IOException ioe)&#xd;&#xa;{&#xd;&#xa;     ioe.printStackTrace();&#xd;&#xa;     return -1;&#xd;&#xa;}"/>
+        <inputs val="&lt;inputs>&lt;clientHostName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/ClientHostName}&lt;/clientHostName>&lt;port class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/ClientCVDPort}&lt;/port>&lt;displayName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/ClientDisplayName}&lt;/displayName>&lt;dock class=&quot;workflow.types.cmd.Answer&quot; _list_=&quot;false&quot;>yes&lt;/dock>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <transition activity="Decision_12" commented="0"
+            originalStyle="" points="" sourceX="931" sourceY="49"
+            status="0" style="defaultEdge" targetX="930" targetY="148"
+            transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1584431695874" description="if/else based decision"
+        displayName="Activity PASSED?" height="100" interactive="0"
+        jobMode="0" name="Decision"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="rhombus;fontStyle=1"
+        uniqueName="Decision_12" waitSetting="0" width="149" x="856" y="98">
+        <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/RegisterPassed}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_2" commented="0"
+            originalStyle=""
+            points="838.5542168674699,338.5542168674699" sourceX="920"
+            sourceY="148" status="0" style="defaultEdge" targetX="579"
+            targetY="531" transitionIndex="0" value="false" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="WorkflowEnd_1" commented="0"
+            originalStyle="" points="" sourceX="920" sourceY="148"
+            status="0" style="defaultEdge" targetX="918" targetY="249"
+            transitionIndex="0" value="true" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <formProperties css="" formVersion="0" javaScript="" pageMode="0">
+        <rules/>
+    </formProperties>
+</Workflow_WorkflowDefinition>

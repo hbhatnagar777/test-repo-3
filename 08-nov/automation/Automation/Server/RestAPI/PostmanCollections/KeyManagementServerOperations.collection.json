@@ -1,0 +1,571 @@
+{
+	"info": {
+		"_postman_id": "005b820a-83c3-4483-9487-ed1e4ccb5f0b",
+		"name": "Key Management Server Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/rest_api_authentication.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "View Key Management Servers",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"propertyLevel\",\"1\");",
+							"postman.setEnvironmentVariable(\"providerType\",\"1\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains keyProviders tag\"] = responseBody.has(\"keyProviders\");",
+							"",
+							"postman.setEnvironmentVariable(\"keyProviderId\",jsonData.keyProviders[0].provider.keyProviderId);",
+							"postman.setEnvironmentVariable(\"keyProviderName\",jsonData.keyProviders[0].provider.keyProviderName);",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/KeyManagementServers?propertyLevel={{propertyLevel}}&providerType={{providerType}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"KeyManagementServers"
+					],
+					"query": [
+						{
+							"key": "propertyLevel",
+							"value": "{{propertyLevel}}"
+						},
+						{
+							"key": "providerType",
+							"value": "{{providerType}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Details of a Key Management Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains keyProviders tag\"] = responseBody.has(\"keyProviders\");",
+							"",
+							"postman.setEnvironmentVariable(\"keyProviderId\",jsonData.keyProviders[0].provider.keyProviderId);",
+							"postman.setEnvironmentVariable(\"keyProviderName\",jsonData.keyProviders[0].provider.keyProviderName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var keyProviderId = postman.getEnvironmentVariable(\"keyProviderId\");",
+							"postman.setEnvironmentVariable(\"keyPorviderId\",keyProviderId);",
+							"var keyProviderName = postman.getEnvironmentVariable(\"keyProviderName\");",
+							"postman.setEnvironmentVariable(\"keyProviderName\",keyProviderName);",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/KeyManagementServers?/{{keyProviderId}}?propertyLevel={{propertyLevel}}&providerType={{providerType}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"KeyManagementServers"
+					],
+					"query": [
+						{
+							"key": "/{{keyProviderId}}?propertyLevel",
+							"value": "{{propertyLevel}}"
+						},
+						{
+							"key": "providerType",
+							"value": "{{providerType}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create  a Key Management Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains errorCode tag\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Error code is 0\"] = jsonData.errorCode === 0 ;",
+							"postman.setEnvironmentVariable(\"keyProviderName\",jsonData.provider.keyProviderName);",
+							"postman.setEnvironmentVariable(\"providerType\",\"3\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"keyProvider\": {\r\n        \"encryptionType\": 3,\r\n        \"keyProviderType\": 3,\r\n        \"encryptionKeyLength\":128,\r\n        \"provider\": {\r\n            \"keyProviderName\": \"kms{{$timestamp}}\"\r\n        },\r\n        \"properties\": {\r\n            \"regionName\": \"Asia Pacific (Mumbai)\",\r\n            \"regionCode\": \"ap-south-1\",\r\n            \"awsCredential\": {\r\n                \"amazonAuthenticationType\": 0\r\n            },\r\n            \"userAccount\": {\r\n                \"userName\": \"{{awsUsername}}\",\r\n                \"password\": \"{{awsPassword}}\"\r\n            }\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/KeyManagementServers",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"KeyManagementServers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a Key Management Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains errorCode tag\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Error code is 0\"] = jsonData.errorCode === 0 ;"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var keyProviderName = postman.getEnvironmentVariable(\"keyProviderName\");",
+							"postman.setEnvironmentVariable(\"keyProviderName\",keyProviderName);",
+							"var propertyLevel = postman.getEnvironmentVariable(\"propertyLevel\");",
+							"postman.setEnvironmentVariable(\"propertyLevel\",propertyLevel);",
+							"var providerType = postman.getEnvironmentVariable(\"providerType\");",
+							"postman.setEnvironmentVariable(\"providerType\",providerType);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"keyProvider\": {\r\n        \"encryptionType\": 3,\r\n        \"keyProviderType\": 3,\r\n        \"encryptionKeyLength\":256,\r\n        \"provider\": {\r\n            \"keyProviderName\": \"{{keyProviderName}}\"\r\n        },\r\n        \"properties\": {\r\n            \"regionName\": \"Asia Pacific (Mumbai)\",\r\n            \"regionCode\": \"ap-south-1\",\r\n            \"awsCredential\": {\r\n                \"amazonAuthenticationType\": 0\r\n            },\r\n            \"userAccount\": {\r\n                \"userName\": \"{{awsUsername}}\",\r\n                \"password\": \"{{awsPassword}}\"\r\n            }\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/KeyManagementServers",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"KeyManagementServers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Key Management Servers",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var propertyLevel = postman.getEnvironmentVariable(\"propertyLevel\");",
+							"postman.setEnvironmentVariable(\"propertyLevel\",propertyLevel);",
+							"var providerType = postman.getEnvironmentVariable(\"providerType\");",
+							"postman.setEnvironmentVariable(\"providerType\",providerType);",
+							"var keyProviderName = postman.getEnvironmentVariable(\"keyProviderName\");",
+							"postman.setEnvironmentVariable(\"keyProviderName\",keyProviderName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains keyProviders tag\"] = responseBody.has(\"keyProviders\");",
+							"tests[\"Newly added Key Management Server is present\"] = (function() {",
+							"    for( i=0; i < jsonData.keyProviders.length; i++)",
+							"        if (jsonData.keyProviders[i].provider.keyProviderName == postman.getEnvironmentVariable(\"keyProviderName\"))",
+							"            postman.setEnvironmentVariable(\"keyProviderId\",jsonData.keyProviders[i].provider.keyProviderId);",
+							"            return true;",
+							"    return false;",
+							"})();",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/KeyManagementServers?propertyLevel={{propertyLevel}}&providerType={{providerType}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"KeyManagementServers"
+					],
+					"query": [
+						{
+							"key": "propertyLevel",
+							"value": "{{propertyLevel}}"
+						},
+						{
+							"key": "providerType",
+							"value": "{{providerType}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Key Management Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains errorCode tag\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Error code is 0\"] = jsonData.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var keyProviderId = postman.getEnvironmentVariable(\"keyProviderId\");",
+							"postman.setEnvironmentVariable(\"keyPorviderId\",keyProviderId);",
+							"var keyProviderName = postman.getEnvironmentVariable(\"keyProviderName\");",
+							"postman.setEnvironmentVariable(\"keyProviderName\",keyProviderName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/KeyManagementServers/{{keyProviderId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"KeyManagementServers",
+						"{{keyProviderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

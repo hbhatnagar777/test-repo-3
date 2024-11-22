@@ -1,0 +1,2215 @@
+{
+	"info": {
+		"_postman_id": "ea2034a5-8487-4bf5-a6cc-c526256284ce",
+		"name": "Discussion Operation On a Client Computer Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"TOKEN\", jsonData.token);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"tests[\"Logged in User\"] = jsonData.userName === username;",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"TOKEN\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Subclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"if (\"subclientId\" in jsonData.response.entity) {",
+							"    console.log(postman.setEnvironmentVariable(\"subclientId\",jsonData.response.entity.subclientId));",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"TOKEN\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);",
+							"",
+							"",
+							"",
+							"// postman.setEnvironmentVariable(\"clientId\", 4)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"subClientProperties\": {\r\n    \"contentOperationType\": 2,\r\n    \"subClientEntity\": {\r\n      \"clientId\": {{clientId}},\r\n      \"instanceName\": \"DefaultInstanceName\",\r\n      \"appName\": \"File System\",\r\n      \"backupsetName\": \"DefaultBackupset\",\r\n      \"subclientName\": \"postmansubclient\"\r\n    },\r\n    \"content\": [\r\n      {\r\n        \"path\": \"/var/backuppath\"\r\n      }\r\n    ],\r\n    \"commonProperties\": {\r\n      \"enableBackup\": true\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Subclient Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"subClientProperties\":\r\n    {\r\n    \"contentOperationType\": 2,\r\n    \"content\": [\r\n      {\r\n        \"Path\": \"/var/backuppath\"\r\n      }\r\n    ],\r\n    \"commonProperties\": {\r\n    \"storageDevice\": {\r\n      \"dataBackupStoragePolicy\": {\r\n          \"_type_\": 17,\r\n            \"storagePolicyName\": \"{{storagePolicyName}}\"\r\n    }\r\n  }\r\n  }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Subclient Backup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"",
+							"if (\"jobIds\" in jsonData)",
+							"    postman.setEnvironmentVariable(\"jobId\", parseInt(jsonData.jobIds[0]));",
+							"    ",
+							"postman.setEnvironmentVariable(\"jobCounter\", 0)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/action/backup?backupLevel=Incremental",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"action",
+						"backup"
+					],
+					"query": [
+						{
+							"key": "backupLevel",
+							"value": "Incremental"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient_backup.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Job Summary",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"if (postman.getEnvironmentVariable(\"jobCounter\") < 10) {",
+							"    if (jsonData.jobs[0].jobSummary.status == \"Waiting\" || jsonData.jobs[0].jobSummary.status == \"Pending\" || jsonData.jobs[0].jobSummary.status == \"Running\") {",
+							"        postman.setEnvironmentVariable(\"jobCounter\", parseInt(postman.getEnvironmentVariable(\"jobCounter\")) + 1);",
+							"        setTimeout(function(){//put your code in here to be delayed",
+							"            console.log(\"30s sleep\");",
+							"            console.log(\"Looping\")",
+							"        postman.setNextRequest(\"Job Summary\");",
+							"        },30000);",
+							"    }",
+							"    else",
+							"        tests[\"Job successful\"] = jsonData.jobs[0].jobSummary.status == \"Completed\";",
+							"}",
+							"else {",
+							"    tests[\"Job status\"] = jsonData.jobs[0].jobSummary.status == \"Completed\";",
+							"    postman.setNextRequest(\"Synth Full\");",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns the summary for a specific job.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_job_summary.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Subclient Browse",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains browseResponses\"] = responseBody.has(\"browseResponses\");",
+							"",
+							"var dataResultSetExists = false;",
+							"var dataResultInd;",
+							"for (let i = 0; i < jsonData.browseResponses.length; i++) {",
+							"    if (jsonData.browseResponses[i].browseResult && jsonData.browseResponses[i].browseResult.dataResultSet) {",
+							"        dataResultSetExists = true;",
+							"        dataResultInd = i;",
+							"        break;",
+							"    }",
+							"}",
+							"",
+							"tests[\"browseResult contains dataResultSet\"] = dataResultSetExists;",
+							"",
+							"if (dataResultSetExists) {",
+							"    postman.setEnvironmentVariable(\"FILE1_GUID\", jsonData.browseResponses[dataResultInd].browseResult.dataResultSet[0].advancedData.objectGuid);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/Browse?path=%5C",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"Browse"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5C"
+						}
+					]
+				},
+				"description": "<h2> Description </h2>\nThis operation browses data obtained through a backup.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_subclient_browse.htm)"
+			},
+			"response": [
+				{
+					"name": "Subclient Browse - This request is for a root level browse for guest virtual machines.",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/49/Browse?path=%5C&showDeletedFiles=false&vsFileBrowse=true",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"49",
+								"Browse"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "%5C"
+								},
+								{
+									"key": "showDeletedFiles",
+									"value": "false"
+								},
+								{
+									"key": "vsFileBrowse",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1386",
+							"name": "Content-Length",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 01 Jun 2017 07:57:03 GMT",
+							"name": "Date",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"browseResponses\": [\n        {\n            \"respType\": 0,\n            \"workerId\": \"32\",\n            \"session\": {\n                \"sessionId\": \"1496303822-32\"\n            },\n            \"browseResult\": {\n                \"queryId\": \"0\",\n                \"dataResultSet\": [\n                    {\n                        \"path\": \"C:\",\n                        \"size\": 28457425,\n                        \"modificationTime\": 1496122177,\n                        \"displayName\": \"C:\",\n                        \"name\": \"2\\u0012C:\",\n                        \"flags\": {\n                            \"directory\": true,\n                            \"mountPoint\": true,\n                            \"isFake\": false,\n                            \"snap\": false\n                        },\n                        \"advancedData\": {\n                            \"backupJobId\": 288,\n                            \"referenceTime\": 1496122310,\n                            \"offset\": 0,\n                            \"archiveGroupId\": 3,\n                            \"objectGuid\": \"15832c0c2980f319a3be40952e7e69b0\",\n                            \"backupTime\": 1496122310,\n                            \"archiveFileId\": 107,\n                            \"subclient\": {\n                                \"type\": 0,\n                                \"_type_\": 7,\n                                \"applicationId\": 49\n                            },\n                            \"sourceCommServer\": {\n                                \"_type_\": 1,\n                                \"commCellId\": 2,\n                                \"type\": 0\n                            },\n                            \"advConfig\": {\n                                \"browseAdvancedConfigResp\": {\n                                    \"commcellNumber\": 122516778\n                                }\n                            },\n                            \"browseMetaData\": {\n                                \"fsData\": {\n                                    \"DriveFreePercentage\": 59,\n                                    \"geoLocation\": \"<App_GeoLocation ip_address='1.1.1.1' latitude='40.300720' longitude='-74.081910' status_code='SUCCESS' status_description=''/>\",\n                                    \"VolumeSize\": 214379261952\n                                },\n                                \"indexing\": {\n                                    \"folderSize\": 28457425,\n                                    \"backupTime\": 1496122299,\n                                    \"fileChangeTime\": 1496122177\n                                },\n                                \"dmStubData\": {\n                                    \"guid\": \"4adf0103078dbb0de054c95cd763ff21\"\n                                },\n                                \"virtualServerMetaData\": {\n                                    \"extentBlobBitMap\": \"\"\n                                }\n                            }\n                        }\n                    }\n                ]\n            }\n        },\n        {\n            \"respType\": 0,\n            \"workerId\": \"32\",\n            \"session\": {\n                \"sessionId\": \"1496303822-32\"\n            },\n            \"browseResult\": {\n                \"queryId\": \"1\",\n                \"aggrResultSet\": [\n                    {\n                        \"result\": 1,\n                        \"groupbyValue\": \"\",\n                        \"count\": 1\n                    }\n                ]\n            }\n        },\n        {\n            \"respType\": 5,\n            \"workerId\": \"32\",\n            \"session\": {\n                \"sessionId\": \"1496303822-32\"\n            }\n        }\n    ]\n}"
+				},
+				{
+					"name": "Subclient Browse - This request is for a root level browse.",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/2/Browse?path=%5C",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"2",
+								"Browse"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "%5C"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1386",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 01 Jun 2017 07:55:52 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"browseResponses\":[\r{\r\"respType\":0,\"workerId\":\"31\",\"session\":{\r\"sessionId\":\"1496303745-31\"\r},\"browseResult\":{\r\"queryId\":\"0\",\"dataResultSet\":[\r{\r\"path\":\"C:\",\"size\":28457425,\"modificationTime\":1496122177,\"displayName\":\"C:\",\"name\":\"2\\u0012C:\",\"flags\":{\r\"directory\":true,\"mountPoint\":true,\"isFake\":false,\"snap\":false\r},\"advancedData\":{\r\"backupJobId\":288,\"referenceTime\":1496122310,\"offset\":0,\"archiveGroupId\":3,\"objectGuid\":\"15832c0c2980f319a3be40952e7e69b0\",\"backupTime\":1496122310,\"archiveFileId\":107,\"subclient\":{\r\"type\":0,\"_type_\":7,\"applicationId\":49\r},\"sourceCommServer\":{\r\"_type_\":1,\"commCellId\":2,\"type\":0\r},\"advConfig\":{\r\"browseAdvancedConfigResp\":{\r\"commcellNumber\":122516778\r}\r},\"browseMetaData\":{\r\"fsData\":{\r\"DriveFreePercentage\":59,\"geoLocation\":\"<App_GeoLocation ip_address='1.1.1.1' latitude='40.300720' longitude='-74.081910' status_code='SUCCESS' status_description=''\\u002f>\",\"VolumeSize\":214379261952\r},\"indexing\":{\r\"folderSize\":28457425,\"backupTime\":1496122299,\"fileChangeTime\":1496122177\r},\"dmStubData\":{\r\"guid\":\"4adf0103078dbb0de054c95cd763ff21\"\r},\"virtualServerMetaData\":{\r\"extentBlobBitMap\":\"\"\r}\r}\r}\r}\r]\r}\r},{\r\"respType\":0,\"workerId\":\"31\",\"session\":{\r\"sessionId\":\"1496303745-31\"\r},\"browseResult\":{\r\"queryId\":\"1\",\"aggrResultSet\":[\r{\r\"result\":1,\"groupbyValue\":\"\",\"count\":1\r}\r]\r}\r},{\r\"respType\":5,\"workerId\":\"31\",\"session\":{\r\"sessionId\":\"1496303745-31\"\r}\r}\r]\r}"
+				},
+				{
+					"name": "Subclient Browse - This request is to browse a specific guest virtual machine.",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/49/Browse?path=%5C5039fb6c-9190-1642-f42b-bTEST121f01b&showDeletedFiles=false&vsFileBrowse=true",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"49",
+								"Browse"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "%5C5039fb6c-9190-1642-f42b-bTEST121f01b"
+								},
+								{
+									"key": "showDeletedFiles",
+									"value": "false"
+								},
+								{
+									"key": "vsFileBrowse",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "271",
+							"name": "Content-Length",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 01 Jun 2017 07:58:05 GMT",
+							"name": "Date",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"browseResponses\": [\n        {\n            \"respType\": 0,\n            \"workerId\": \"33\",\n            \"session\": {\n                \"sessionId\": \"1496303884-33\"\n            },\n            \"browseResult\": {\n                \"queryId\": \"1\",\n                \"aggrResultSet\": [\n                    {\n                        \"result\": 0,\n                        \"groupbyValue\": \"\",\n                        \"count\": 0\n                    }\n                ]\n            }\n        },\n        {\n            \"respType\": 5,\n            \"workerId\": \"33\",\n            \"session\": {\n                \"sessionId\": \"1496303884-33\"\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Create a Discussion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body Contains discussionId\"] = responseBody.has(\"discussionId\");",
+							"tests[\"entityGUID Validation\"] = jsonData.discussion.entityGUID === postman.getEnvironmentVariable(\"FILE1_GUID\");",
+							"",
+							"postman.setEnvironmentVariable(\"discussionId\", jsonData.discussion.discussionId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"entityGUID\": \"{{FILE1_GUID}}\",\n  \"comments\": [\n    {\n      \"content\": \"New discussion\"\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"file",
+						"{{FILE1_GUID}}",
+						"Discussion"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation creates a new discussion on a backed up file or folder on a client computer.\n\n<h2>Supported Error Codes</h2> \n<table width=\"100%\"> \n <tbody> \n  <tr> \n   <th width=\"20%\">Code</th> \n   <th width=\"20%\">Status</th> \n   <th width=\"60%\">Description</th> \n  </tr> \n  <tr> \n   <td>400</td> \n   <td>Bad Request</td> \n   <td>The request is missing required parameters.</td> \n  </tr> \n  <tr> \n   <td>401</td> \n   <td>Unauthorized</td> \n   <td>The request did not include an authentication token or the authentication token was expired.</td> \n  </tr> \n  <tr> \n   <td>403</td> \n   <td>Forbidden</td> \n   <td>The user did not&nbsp; have permission to access the requested resource.</td> \n  </tr> \n  <tr> \n   <td>412</td> \n   <td>Precondition Failed</td> \n   <td>Prerequisites are not met. For example, MongoDB database is not installed.</td> \n  </tr> \n </tbody> \n</table>\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient_discussion_create.htm)"
+			},
+			"response": [
+				{
+					"name": "Create a Discussion",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"entityGUID\": \"{{FILE1_GUID}}\",\n\t\"comments\": [\n\t\t{\n\t\t\t\"content\": \"New discussion\"\n\t\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"{{subclientId}}",
+								"file",
+								"{{FILE1_GUID}}",
+								"Discussion"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "269",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Sep 2017 21:31:31 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"discussion\":{\r\"entityType\":136,\"discussionId\":15,\"created\":1506626640,\"entityGUID\":\"7d938dfb73c04cf4b52bb24d67690a7d\",\"modified\":1506626640,\"nbComments\":6,\"status\":1,\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r},\"comments\":[\r\r]\r},\"error\":{\r\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Add a Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"postman.setEnvironmentVariable(\"commentId\", jsonData.comment.commentId);",
+							"tests[\"Response Body Contains discussionId\"] = responseBody.has(\"discussionId\");",
+							"tests[\"Response Body Contains commentId\"] = responseBody.has(\"commentId\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var commentBody = \"New comment\";",
+							"postman.setEnvironmentVariable('commentBody', commentBody);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"content\": \"{{commentBody}}\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"file",
+						"{{FILE1_GUID}}",
+						"Discussion",
+						"{{discussionId}}",
+						"Comment"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation adds a comment to an existing discussion on a backed up file or folder on a client computer.\n\n<h2>Supported Error Codes</h2> \n<table width=\"100%\"> \n <tbody> \n  <tr> \n   <th width=\"20%\">Code</th> \n   <th width=\"20%\">Status</th> \n   <th width=\"60%\">Description</th> \n  </tr> \n  <tr> \n   <td>400</td> \n   <td>Bad Request</td> \n   <td>The request is missing required parameters.</td> \n  </tr> \n  <tr> \n   <td>401</td> \n   <td>Unauthorized</td> \n   <td>The request did not include an authentication token or the authentication token was expired.</td> \n  </tr> \n  <tr> \n   <td>403</td> \n   <td>Forbidden</td> \n   <td>The user did not&nbsp; have permission to access the requested resource.</td> \n  </tr> \n  <tr> \n   <td>412</td> \n   <td>Precondition Failed</td> \n   <td>Prerequisites are not met. For example, MongoDB database is not installed.</td> \n  </tr> \n </tbody> \n</table>\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient_file_comment_add.htm)"
+			},
+			"response": [
+				{
+					"name": "Add a Comment",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\": \"New comment\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"{{subclientId}}",
+								"file",
+								"{{FILE1_GUID}}",
+								"Discussion",
+								"{{discussionId}}",
+								"Comment"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "223",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Sep 2017 21:38:29 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"comment\":{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506634709,\"commentId\":158,\"modified\":1506634709,\"content\":\"New comment\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r},\"error\":{\r\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "View Details of a Discussion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains entityGUID\"] = responseBody.has(\"entityGUID\");",
+							"",
+							"tests[\"Response Body Contains discussionId\"] = responseBody.has(\"discussionId\");",
+							"tests[\"entityGUID Validation\"] = jsonData.discussion.entityGUID === postman.getEnvironmentVariable(\"FILE1_GUID\");",
+							"tests[\"discussionId Validation\"] = jsonData.discussion.discussionId === parseInt(postman.getEnvironmentVariable(\"discussionId\"));",
+							"",
+							"tests[\"Owner for the comment is correct\"] = jsonData.discussion.owner.userName == postman.getEnvironmentVariable('UserName');",
+							"",
+							"tests[\"Comment was added to the discussion\"] = (jsonData.discussion.nbComments !== 0) && jsonData.discussion.comments && jsonData.discussion.comments.length;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "PAGE-SIZE",
+						"value": "20"
+					},
+					{
+						"key": "SORT-DIRECTION",
+						"value": "0"
+					},
+					{
+						"key": "NBREPLIES",
+						"value": "10"
+					},
+					{
+						"key": "LAST-COMMENT-ID",
+						"value": "1000",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion?depth=0",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"file",
+						"{{FILE1_GUID}}",
+						"Discussion"
+					],
+					"query": [
+						{
+							"key": "depth",
+							"value": "0"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation adds a comment to an existing discussion on a backed up file or folder on a client computer.\n\n<h2>Supported Error Codes</h2> \n<table width=\"100%\"> \n <tbody> \n  <tr> \n   <th width=\"20%\">Code</th> \n   <th width=\"20%\">Status</th> \n   <th width=\"60%\">Description</th> \n  </tr> \n  <tr> \n   <td>400</td> \n   <td>Bad Request</td> \n   <td>The request is missing required parameters.</td> \n  </tr> \n  <tr> \n   <td>401</td> \n   <td>Unauthorized</td> \n   <td>The request did not include an authentication token or the authentication token was expired.</td> \n  </tr> \n  <tr> \n   <td>403</td> \n   <td>Forbidden</td> \n   <td>The user did not&nbsp; have permission to access the requested resource.</td> \n  </tr> \n  <tr> \n   <td>412</td> \n   <td>Precondition Failed</td> \n   <td>Prerequisites are not met. For example, MongoDB database is not installed.</td> \n  </tr> \n </tbody> \n</table>\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_subclient_file_discussion.htm)"
+			},
+			"response": [
+				{
+					"name": "View Details of a Discussion",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "PAGE-SIZE",
+								"value": "20"
+							},
+							{
+								"key": "SORT-DIRECTION",
+								"value": "0"
+							},
+							{
+								"key": "NBREPLIES",
+								"value": "10"
+							},
+							{
+								"key": "LAST-COMMENT-ID",
+								"value": "1000"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion?depth=1",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"{{subclientId}}",
+								"file",
+								"{{FILE1_GUID}}",
+								"Discussion"
+							],
+							"query": [
+								{
+									"key": "depth",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1254",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Sep 2017 21:39:09 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"discussion\":{\r\"entityType\":136,\"discussionId\":17,\"created\":1506632398,\"entityGUID\":\"3f0a933a16dfec04c370aaa11cc190a3\",\"modified\":1506632398,\"nbComments\":5,\"status\":1,\"owner\":{\r\"newName\":\"admin\",\"userName\":\"admin\",\"userId\":1\r},\"comments\":[\r{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506634709,\"commentId\":158,\"modified\":1506634709,\"content\":\"New comment\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506634702,\"commentId\":157,\"modified\":1506634702,\"content\":\"New discussion\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506632999,\"commentId\":154,\"modified\":1506632999,\"content\":\"New discussion\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506632957,\"commentId\":153,\"modified\":1506632957,\"content\":\"New comment\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506632917,\"commentId\":152,\"modified\":1506632917,\"content\":\"New discussion\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r}\r]\r},\"error\":{\r\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "View Details of a Discussion Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains entityGUID\"] = responseBody.has(\"entityGUID\");",
+							"",
+							"tests[\"Response Body Contains discussionId\"] = responseBody.has(\"discussionId\");",
+							"tests[\"Response Body Contains comments\"] = responseBody.has(\"comments\");",
+							"",
+							"tests[\"entityGUID Validation\"] = jsonData.discussion.entityGUID === postman.getEnvironmentVariable(\"FILE1_GUID\");",
+							"tests[\"discussionId Validation\"] = jsonData.discussion.discussionId === parseInt(postman.getEnvironmentVariable(\"discussionId\"));",
+							"tests[\"Comment was added to the discussion\"] = (jsonData.discussion.nbComments !== 0) && jsonData.discussion.comments && jsonData.discussion.comments.length;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "PAGE-SIZE",
+						"value": "20"
+					},
+					{
+						"key": "SORT-DIRECTION",
+						"value": "0"
+					},
+					{
+						"key": "NBREPLIES",
+						"value": "10"
+					},
+					{
+						"key": "LAST-COMMENT-ID",
+						"value": "1000",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}?depth=1",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"file",
+						"{{FILE1_GUID}}",
+						"Discussion",
+						"{{discussionId}}"
+					],
+					"query": [
+						{
+							"key": "depth",
+							"value": "1"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation retrieves the details of a discussion on a backed up file or folder on a client computer, based on the discussion ID.\n\n<h2>Supported Error Codes</h2> \n<table width=\"100%\"> \n <tbody> \n  <tr> \n   <th width=\"20%\">Code</th> \n   <th width=\"20%\">Status</th> \n   <th width=\"60%\">Description</th> \n  </tr> \n  <tr> \n   <td>400</td> \n   <td>Bad Request</td> \n   <td>The request is missing required parameters.</td> \n  </tr> \n  <tr> \n   <td>401</td> \n   <td>Unauthorized</td> \n   <td>The request did not include an authentication token or the authentication token was expired.</td> \n  </tr> \n  <tr> \n   <td>403</td> \n   <td>Forbidden</td> \n   <td>The user did not&nbsp; have permission to access the requested resource.</td> \n  </tr> \n  <tr> \n   <td>412</td> \n   <td>Precondition Failed</td> \n   <td>Prerequisites are not met. For example, MongoDB database is not installed.</td> \n  </tr> \n </tbody> \n</table>\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_subclient_file_discussion_by_id.htm)"
+			},
+			"response": [
+				{
+					"name": "View Details of a Discussion Id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "PAGE-SIZE",
+								"value": "20"
+							},
+							{
+								"key": "SORT-DIRECTION",
+								"value": "0"
+							},
+							{
+								"key": "NBREPLIES",
+								"value": "10"
+							},
+							{
+								"key": "LAST-COMMENT-ID",
+								"value": "1000"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}?depth=1",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"{{subclientId}}",
+								"file",
+								"{{FILE1_GUID}}",
+								"Discussion",
+								"{{discussionId}}"
+							],
+							"query": [
+								{
+									"key": "depth",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1241",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Sep 2017 21:39:24 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"discussion\":{\r\"entityType\":136,\"discussionId\":17,\"created\":1506632398,\"entityGUID\":\"3f0a933a16dfec04c370aaa11cc190a3\",\"modified\":1506632398,\"nbComments\":5,\"status\":1,\"owner\":{\r\"newName\":\"admin\",\"userName\":\"admin\",\"userId\":1\r},\"comments\":[\r{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506634709,\"commentId\":158,\"modified\":1506634709,\"content\":\"New comment\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506634702,\"commentId\":157,\"modified\":1506634702,\"content\":\"New discussion\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506632999,\"commentId\":154,\"modified\":1506632999,\"content\":\"New discussion\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506632957,\"commentId\":153,\"modified\":1506632957,\"content\":\"New comment\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506632917,\"commentId\":152,\"modified\":1506632917,\"content\":\"New discussion\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r}\r]\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "View Details of a Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body Contains discussionId\"] = responseBody.has(\"discussionId\");",
+							"tests[\"Response Body Contains commentId\"] = responseBody.has(\"commentId\");",
+							"",
+							"tests[\"discussionId Validation\"] = jsonData.comment.discussionId === parseInt(postman.getEnvironmentVariable(\"discussionId\"));",
+							"tests[\"commentId Validation\"] = jsonData.comment.commentId === parseInt(postman.getEnvironmentVariable(\"commentId\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "PAGE-SIZE",
+						"value": "20"
+					},
+					{
+						"key": "SORT-DIRECTION",
+						"value": "0"
+					},
+					{
+						"key": "NBREPLIES",
+						"value": "10"
+					},
+					{
+						"key": "LAST-COMMENT-ID",
+						"value": "1000",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"file",
+						"{{FILE1_GUID}}",
+						"Discussion",
+						"{{discussionId}}",
+						"Comment",
+						"{{commentId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation retrieves the details of a comment on a backed up file or folder on a client computer, based on the discussion and comment IDs.\n\n<h2>Supported Error Codes</h2> \n<table width=\"100%\"> \n <tbody> \n  <tr> \n   <th width=\"20%\">Code</th> \n   <th width=\"20%\">Status</th> \n   <th width=\"60%\">Description</th> \n  </tr> \n  <tr> \n   <td>400</td> \n   <td>Bad Request</td> \n   <td>The request is missing required parameters.</td> \n  </tr> \n  <tr> \n   <td>401</td> \n   <td>Unauthorized</td> \n   <td>The request did not include an authentication token or the authentication token was expired.</td> \n  </tr> \n  <tr> \n   <td>403</td> \n   <td>Forbidden</td> \n   <td>The user did not&nbsp; have permission to access the requested resource.</td> \n  </tr> \n  <tr> \n   <td>412</td> \n   <td>Precondition Failed</td> \n   <td>Prerequisites are not met. For example, MongoDB database is not installed.</td> \n  </tr> \n </tbody> \n</table>\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_subclient_file_comment.htm)"
+			},
+			"response": [
+				{
+					"name": "View Details of a Comment",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "PAGE-SIZE",
+								"value": "20"
+							},
+							{
+								"key": "SORT-DIRECTION",
+								"value": "0"
+							},
+							{
+								"key": "NBREPLIES",
+								"value": "10"
+							},
+							{
+								"key": "LAST-COMMENT-ID",
+								"value": "1000"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"{{subclientId}}",
+								"file",
+								"{{FILE1_GUID}}",
+								"Discussion",
+								"{{discussionId}}",
+								"Comment",
+								"{{commentId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "210",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Sep 2017 21:39:46 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"comment\":{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506634709,\"commentId\":158,\"modified\":1506634709,\"content\":\"New comment\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Add a Reply to a Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body Contains discussionId\"] = responseBody.has(\"discussionId\");",
+							"tests[\"discussionId Validation\"] = jsonData.comment.discussionId === parseInt(postman.getEnvironmentVariable(\"discussionId\"));",
+							"",
+							"tests[\"Response Body Contains commentId\"] = responseBody.has(\"commentId\");",
+							"",
+							"tests[\"Response Body Contains depth\"] = responseBody.has(\"depth\");",
+							"tests[\"Response Body Contains nbReplies\"] = responseBody.has(\"nbReplies\");",
+							"",
+							"tests[\"Reply contains the correct content\"] = jsonData.comment.content == postman.getEnvironmentVariable(\"commentReply\");",
+							"tests[\"Reply has correct parent comment\"] = jsonData.comment.parentComment.commentId == parseInt(postman.getEnvironmentVariable(\"commentId\"));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var commentReply = \"This is a reply to comment: \" + postman.getEnvironmentVariable('commentId');",
+							"postman.setEnvironmentVariable('commentReply', commentReply);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"content\": \"{{commentReply}}\",\n  \"parentComment\": {\n    \"commentId\": {{commentId}}\n  }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"file",
+						"{{FILE1_GUID}}",
+						"Discussion",
+						"{{discussionId}}",
+						"Comment"
+					]
+				},
+				"description": "<h2>Description</h2> \r\nThis operation replies to an existing comment on a backed up folder or file on a client computer.\r\n\r\n<h2>Supported Error Codes</h2> \r\n<table width=\"100%\"> \r\n <tbody> \r\n  <tr> \r\n   <th width=\"20%\">Code</th> \r\n   <th width=\"20%\">Status</th> \r\n   <th width=\"60%\">Description</th> \r\n  </tr> \r\n  <tr> \r\n   <td>400</td> \r\n   <td>Bad Request</td> \r\n   <td>The request is missing required parameters.</td> \r\n  </tr> \r\n  <tr> \r\n   <td>401</td> \r\n   <td>Unauthorized</td> \r\n   <td>The request did not include an authentication token or the authentication token was expired.</td> \r\n  </tr> \r\n  <tr> \r\n   <td>403</td> \r\n   <td>Forbidden</td> \r\n   <td>The user did not&nbsp; have permission to access the requested resource.</td> \r\n  </tr> \r\n  <tr> \r\n   <td>412</td> \r\n   <td>Precondition Failed</td> \r\n   <td>Prerequisites are not met. For example, MongoDB database is not installed.</td> \r\n  </tr> \r\n </tbody> \r\n</table>"
+			},
+			"response": [
+				{
+					"name": "Add a Reply to a Comment",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\": \"This is a reply to comment: {{commentId}}\",\n\t\"parentComment\": {\n\t\t\"commentId\": {{commentId}}\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"{{subclientId}}",
+								"file",
+								"{{FILE1_GUID}}",
+								"Discussion",
+								"{{discussionId}}",
+								"Comment"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "279",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 03 Oct 2017 16:35:38 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"comment\":{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1507048538,\"commentId\":161,\"modified\":1507048538,\"content\":\"This is a reply to comment: 158\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r},\"parentComment\":{\r\"commentId\":158\r}\r},\"error\":{\r\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "View Number of Replies for a Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body Contains discussionId\"] = responseBody.has(\"discussionId\");",
+							"tests[\"discussionId Validation\"] = jsonData.comments[0].discussionId === parseInt(postman.getEnvironmentVariable(\"discussionId\"));",
+							"tests[\"Response Body Contains depth\"] = responseBody.has(\"depth\");",
+							"tests[\"Response Body Contains nbReplies\"] = responseBody.has(\"nbReplies\");",
+							"tests[\"Response Body Contains comments\"] = responseBody.has(\"comments\");",
+							"tests[\"Response Body Contains commentId\"] = responseBody.has(\"commentId\");",
+							"tests[\"commentId Validation\"] = jsonData.comments[0].commentId === parseInt(postman.getEnvironmentVariable(\"commentId\"));",
+							"",
+							"tests[\"Comment contains the correct reply\"] = jsonData.comments[0].replies[0].content == postman.getEnvironmentVariable('commentReply');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}/Replies?depth=1",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"file",
+						"{{FILE1_GUID}}",
+						"Discussion",
+						"{{discussionId}}",
+						"Comment",
+						"{{commentId}}",
+						"Replies"
+					],
+					"query": [
+						{
+							"key": "depth",
+							"value": "1"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation retrieves the number of replies for a comment on a file in a shared folder or on a shared file.\n\n<h2>Supported Error Codes</h2> \n<table width=\"100%\"> \n <tbody> \n  <tr> \n   <th width=\"20%\">Code</th> \n   <th width=\"20%\">Status</th> \n   <th width=\"60%\">Description</th> \n  </tr> \n  <tr> \n   <td>400</td> \n   <td>Bad Request</td> \n   <td>The request is missing required parameters.</td> \n  </tr> \n  <tr> \n   <td>401</td> \n   <td>Unauthorized</td> \n   <td>The request did not include an authentication token or the authentication token was expired.</td> \n  </tr> \n  <tr> \n   <td>403</td> \n   <td>Forbidden</td> \n   <td>The user did not&nbsp; have permission to access the requested resource.</td> \n  </tr> \n  <tr> \n   <td>412</td> \n   <td>Precondition Failed</td> \n   <td>Prerequisites are not met. For example, MongoDB database is not installed.</td> \n  </tr> \n </tbody> \n</table>\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_subclient_file_comment_replies.htm)"
+			},
+			"response": [
+				{
+					"name": "View Number of Replies for a Comment",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}/Replies?depth=1",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"{{subclientId}}",
+								"file",
+								"{{FILE1_GUID}}",
+								"Discussion",
+								"{{discussionId}}",
+								"Comment",
+								"{{commentId}}",
+								"Replies"
+							],
+							"query": [
+								{
+									"key": "depth",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "482",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 03 Oct 2017 16:37:00 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"comments\":[\r{\r\"depth\":0,\"nbReplies\":1,\"discussionId\":17,\"created\":1507048611,\"commentId\":163,\"modified\":1507048611,\"content\":\"New comment\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r},\"replies\":[\r{\r\"depth\":1,\"nbReplies\":0,\"discussionId\":17,\"created\":1507048614,\"commentId\":164,\"modified\":1507048614,\"content\":\"This is a reply to comment: 163\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r},\"parentComment\":{\r\"commentId\":163\r}\r}\r]\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Edit a Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body Contains discussionId\"] = responseBody.has(\"discussionId\");",
+							"tests[\"discussionId Validation\"] = jsonData.comment.discussionId === parseInt(postman.getEnvironmentVariable(\"discussionId\"));",
+							"tests[\"commentId Validation\"] = jsonData.comment.commentId === parseInt(postman.getEnvironmentVariable(\"commentId\"));",
+							"",
+							"tests[\"Response Body Contains commentId\"] = responseBody.has(\"commentId\");",
+							"",
+							"tests[\"Response Body Contains depth\"] = responseBody.has(\"depth\");",
+							"tests[\"Response Body Contains nbReplies\"] = responseBody.has(\"nbReplies\");",
+							"",
+							"tests[\"Comment edited succesfully\"] = jsonData.comment.content == postman.getEnvironmentVariable('editedComment')"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var comment = \"Edited comment\"; ",
+							"postman.setEnvironmentVariable(\"editedComment\", comment);",
+							"console.log(\"Change comment to \", comment);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"content\": \"{{editedComment}}\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"file",
+						"{{FILE1_GUID}}",
+						"Discussion",
+						"{{discussionId}}",
+						"Comment",
+						"{{commentId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation edits a comment for an existing discussion on a backed up file or folder on a client computer.\n\n<h2>Supported Error Codes</h2> \n<table width=\"100%\"> \n <tbody> \n  <tr> \n   <th width=\"20%\">Code</th> \n   <th width=\"20%\">Status</th> \n   <th width=\"60%\">Description</th> \n  </tr> \n  <tr> \n   <td>400</td> \n   <td>Bad Request</td> \n   <td>The request is missing required parameters.</td> \n  </tr> \n  <tr> \n   <td>401</td> \n   <td>Unauthorized</td> \n   <td>The request did not include an authentication token or the authentication token was expired.</td> \n  </tr> \n  <tr> \n   <td>403</td> \n   <td>Forbidden</td> \n   <td>The user did not&nbsp; have permission to access the requested resource.</td> \n  </tr> \n  <tr> \n   <td>412</td> \n   <td>Precondition Failed</td> \n   <td>Prerequisites are not met. For example, MongoDB database is not installed.</td> \n  </tr> \n </tbody> \n</table>\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/put_subclient_file_comment_edit.htm)"
+			},
+			"response": [
+				{
+					"name": "Edit a Comment",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"content\": \"Edited Comment\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"{{subclientId}}",
+								"file",
+								"{{FILE1_GUID}}",
+								"Discussion",
+								"{{discussionId}}",
+								"Comment",
+								"{{commentId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "226",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Sep 2017 21:41:20 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"comment\":{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":17,\"created\":1506634709,\"commentId\":158,\"modified\":1506634880,\"content\":\"Edited Comment\",\"owner\":{\r\"newName\":\"Administrator\",\"userName\":\"admin\",\"userId\":1\r}\r},\"error\":{\r\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Delete a Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"file",
+						"{{FILE1_GUID}}",
+						"Discussion",
+						"{{discussionId}}",
+						"Comment",
+						"{{commentId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a comment on a backed up file or folder on a client computer, based on the discussion and comment IDs.\n\n<h2>Supported Error Codes</h2> \n<table width=\"100%\"> \n <tbody> \n  <tr> \n   <th width=\"20%\">Code</th> \n   <th width=\"20%\">Status</th> \n   <th width=\"60%\">Description</th> \n  </tr> \n  <tr> \n   <td>400</td> \n   <td>Bad Request</td> \n   <td>The request is missing required parameters.</td> \n  </tr> \n  <tr> \n   <td>401</td> \n   <td>Unauthorized</td> \n   <td>The request did not include an authentication token or the authentication token was expired.</td> \n  </tr> \n  <tr> \n   <td>403</td> \n   <td>Forbidden</td> \n   <td>The user did not&nbsp; have permission to access the requested resource.</td> \n  </tr> \n  <tr> \n   <td>412</td> \n   <td>Precondition Failed</td> \n   <td>Prerequisites are not met. For example, MongoDB database is not installed.</td> \n  </tr> \n </tbody> \n</table>\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_subclient_file_discussion.htm)"
+			},
+			"response": [
+				{
+					"name": "Delete a Comment",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Subclient",
+								"{{subclientId}}",
+								"file",
+								"{{FILE1_GUID}}",
+								"Discussion",
+								"{{discussionId}}",
+								"Comment",
+								"{{commentId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "16",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 28 Sep 2017 21:41:32 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"error\":{\r\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Delete a Discussion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"tests[\"Response has no errors\"] = _.isEmpty(jsonData.errors);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/file/{{FILE1_GUID}}/Discussion/{{discussionId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"file",
+						"{{FILE1_GUID}}",
+						"Discussion",
+						"{{discussionId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a discussion on a backed up file or folder on a client computer, based on the discussion ID.\n\n<h2>Supported Error Codes</h2> \n<table width=\"100%\"> \n <tbody> \n  <tr> \n   <th width=\"20%\">Code</th> \n   <th width=\"20%\">Status</th> \n   <th width=\"60%\">Description</th> \n  </tr> \n  <tr> \n   <td>400</td> \n   <td>Bad Request</td> \n   <td>The request is missing required parameters.</td> \n  </tr> \n  <tr> \n   <td>401</td> \n   <td>Unauthorized</td> \n   <td>The request did not include an authentication token or the authentication token was expired.</td> \n  </tr> \n  <tr> \n   <td>403</td> \n   <td>Forbidden</td> \n   <td>The user did not&nbsp; have permission to access the requested resource.</td> \n  </tr> \n  <tr> \n   <td>412</td> \n   <td>Precondition Failed</td> \n   <td>Prerequisites are not met. For example, MongoDB database is not installed.</td> \n  </tr> \n </tbody> \n</table>\n\n[_More Details_](http://intdocresource2:8086/commvault/v11/article?p=features/rest_api/operations/delete_subclient_file_discussion.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Subclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"tests[\"Client deleted successfully\"] = jsonData.response[0].errorCode == 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"TOKEN\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);",
+							"",
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"60s sleep\");",
+							"},60000);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"TOKEN\"); ",
+							"postman.setEnvironmentVariable(\"TOKEN\", token);",
+							"console.log(\"Value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

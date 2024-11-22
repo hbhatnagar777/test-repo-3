@@ -1,0 +1,1720 @@
+{
+	"info": {
+		"_postman_id": "d5a7370f-cf3b-44f4-923e-b163c25ad4fd",
+		"name": "PAPI -- User Group",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "0 - Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"pm.test(\"Status code  200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":4,\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate JSON tags in response\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"userGroups\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"name\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"GUID\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"description\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"company\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"enabled\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "mode",
+						"value": "ea deserunt cupidatat exercitatio"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/UserGroup",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							},
+							{
+								"key": "mode",
+								"value": "ea deserunt cupidatat exercitatio"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							},
+							{
+								"key": "mode",
+								"value": "ea deserunt cupidatat exercitatio"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"userGroups\": [\n  {\n   \"id\": 35564537,\n   \"name\": \"do elit\",\n   \"GUID\": \"non ad l\",\n   \"description\": \"Ut labore cillum eu\",\n   \"enabled\": false,\n   \"company\": {\n    \"id\": -51461199,\n    \"name\": \"Lorem consequat laboris Ut\"\n   }\n  },\n  {\n   \"id\": 24771755,\n   \"name\": \"aute pariatur adipisicing\",\n   \"GUID\": \"fugiat ex Duis enim aliquip\",\n   \"description\": \"voluptate ullamco nostrud\",\n   \"enabled\": true,\n   \"company\": {\n    \"id\": 60511363,\n    \"name\": \"laboris commodo occaecat quis\"\n   }\n  }\n ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Create User Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"PAPIUG1Id\", jsonData.id);\r",
+							"pm.environment.set(\"PAPIUG1Name\", jsonData.name);\r",
+							"pm.environment.set(\"PAPIUG1GUID\", jsonData.GUID);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"PAPIUserGroup_{{$timestamp}}\",\n    \"description\": \"PAPIUserGroup_{{$timestamp}} created for Automation\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": 0,\n    \"localUserGroups\": [\n        {\n            \"id\": 0,\n            \"name\": \"\"\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/UserGroup",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"irure sunt quis\",\n    \"description\": \"aute\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": -55185382,\n    \"localUserGroups\": [\n        {\n            \"id\": 97400915,\n            \"name\": \"pariatur quis ullamco\"\n        },\n        {\n            \"id\": -14003752,\n            \"name\": \"minim in cupidatat veniam ad\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"irure sunt quis\",\n    \"description\": \"aute\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": -55185382,\n    \"localUserGroups\": [\n        {\n            \"id\": 97400915,\n            \"name\": \"pariatur quis ullamco\"\n        },\n        {\n            \"id\": -14003752,\n            \"name\": \"minim in cupidatat veniam ad\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"id\": 74016144,\n \"name\": \"nisi laboris dolor dolor\"\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"irure sunt quis\",\n    \"description\": \"aute\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": -55185382,\n    \"localUserGroups\": [\n        {\n            \"id\": 97400915,\n            \"name\": \"pariatur quis ullamco\"\n        },\n        {\n            \"id\": -14003752,\n            \"name\": \"minim in cupidatat veniam ad\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get User Group Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate JSON tags in response\", function () {\r",
+							"    \r",
+							"    pm.expect(pm.response.text()).to.include(\"name\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"GUID\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"description\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"company\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"enabled\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"enableTwoFactorAuthentication\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"laptopAdmins\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"enforceFSQuota\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"users\");\r",
+							"    //pm.expect(pm.response.text()).to.include(\"associatedEntities\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "mode",
+						"value": "ea deserunt cupidatat exercitatio"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/UserGroup/{{PAPIUG1Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"UserGroup",
+						"{{PAPIUG1Id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							},
+							{
+								"key": "mode",
+								"value": "ea deserunt cupidatat exercitatio"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup/:userGroupId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup",
+								":userGroupId"
+							],
+							"variable": [
+								{
+									"key": "userGroupId"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"id\": \"dolor sed ipsum est\",\n \"name\": \"laboris anim ipsum ea officia\",\n \"GUID\": \"ad reprehenderit enim consectetur\",\n \"description\": \"dolor non\",\n \"enabled\": false,\n \"enableTwoFactorAuthentication\": \"DISABLED_AT_COMPANY\",\n \"laptopAdmins\": false,\n \"plan\": {\n  \"id\": -40554903,\n  \"name\": \"ea magna voluptate do\"\n },\n \"company\": {\n  \"id\": -96950634,\n  \"name\": \"id eiusmod\"\n },\n \"users\": [\n  {\n   \"id\": 48425979,\n   \"name\": \"veniam amet sint\"\n  },\n  {\n   \"id\": -67722546,\n   \"name\": \"ipsum ex incididunt\"\n  }\n ],\n \"associatedEntities\": [\n  {\n   \"id\": -53996505,\n   \"name\": \"esse\",\n   \"type\": \"consequat Excepteur tempor\",\n   \"role\": {\n    \"id\": 50231614,\n    \"name\": \"do magna ullamco deserunt\"\n   },\n   \"permissionList\": {\n    \"permissionId\": -84988951,\n    \"permissionName\": \"ex sed in in\",\n    \"categoryId\": 59266199,\n    \"categoryName\": \"et ad\"\n   }\n  },\n  {\n   \"id\": -6037136,\n   \"name\": \"in\",\n   \"type\": \"incididunt Ut deserunt\",\n   \"role\": {\n    \"id\": 72004865,\n    \"name\": \"commodo Excepteur ipsum\"\n   },\n   \"permissionList\": {\n    \"permissionId\": 50046276,\n    \"permissionName\": \"magna eiusmod laboris commodo minim\",\n    \"categoryId\": -36893532,\n    \"categoryName\": \"ad ex et laborum\"\n   }\n  }\n ]\n}"
+				},
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							},
+							{
+								"key": "mode",
+								"value": "ea deserunt cupidatat exercitatio"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup/:userGroupId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup",
+								":userGroupId"
+							],
+							"variable": [
+								{
+									"key": "userGroupId"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Modify User Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate errorCode and errorMessage\", function () {\r",
+							"    \r",
+							"    pm.expect(jsonData.errorString).to.eql(\"Successful\");\r",
+							"    pm.expect(jsonData.errorCode).to.eql(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"newName\": \"{{PAPIUG1Name}}\",\n    \"newDescription\": \"Modifying description via automation\",\n    \"enabled\": false,\n    \"enforceFSQuota\": true,\n    \"quotaLimitInGB\": 85920917,\n    \"enableTwoFactorAuthentication\": \"ON\",\n    \"laptopAdmins\": false,\n    \"users\": [\n        {\n            \"id\": 1,\n            \"name\": \"admin\"\n        }\n    ],\n    \"userOperationType\": \"ADD\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/UserGroup/{{PAPIUG1Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"UserGroup",
+						"{{PAPIUG1Id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"newName\": \"dolore reprehenderit do\",\n    \"newDescription\": \"ut exercitation incididunt tempor\",\n    \"enabled\": true,\n    \"enforceFSQuota\": true,\n    \"quotaLimitInGB\": -88471664,\n    \"enableTwoFactorAuthentication\": \"ON\",\n    \"laptopAdmins\": true,\n    \"users\": [\n        {\n            \"id\": 56239178,\n            \"name\": \"laborum proident veniam\"\n        },\n        {\n            \"id\": -96175207,\n            \"name\": \"Duis\"\n        }\n    ],\n    \"userOperationType\": \"ADD\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup/:userGroupId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup",
+								":userGroupId"
+							],
+							"variable": [
+								{
+									"key": "userGroupId"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"newName\": \"dolore reprehenderit do\",\n    \"newDescription\": \"ut exercitation incididunt tempor\",\n    \"enabled\": true,\n    \"enforceFSQuota\": true,\n    \"quotaLimitInGB\": -88471664,\n    \"enableTwoFactorAuthentication\": \"ON\",\n    \"laptopAdmins\": true,\n    \"users\": [\n        {\n            \"id\": 56239178,\n            \"name\": \"laborum proident veniam\"\n        },\n        {\n            \"id\": -96175207,\n            \"name\": \"Duis\"\n        }\n    ],\n    \"userOperationType\": \"ADD\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup/:userGroupId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup",
+								":userGroupId"
+							],
+							"variable": [
+								{
+									"key": "userGroupId"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"errorMessage\": \"in\",\n \"errorCode\": 81529131\n}"
+				},
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"newName\": \"dolore reprehenderit do\",\n    \"newDescription\": \"ut exercitation incididunt tempor\",\n    \"enabled\": true,\n    \"enforceFSQuota\": true,\n    \"quotaLimitInGB\": -88471664,\n    \"enableTwoFactorAuthentication\": \"ON\",\n    \"laptopAdmins\": true,\n    \"users\": [\n        {\n            \"id\": 56239178,\n            \"name\": \"laborum proident veniam\"\n        },\n        {\n            \"id\": -96175207,\n            \"name\": \"Duis\"\n        }\n    ],\n    \"userOperationType\": \"ADD\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup/:userGroupId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup",
+								":userGroupId"
+							],
+							"variable": [
+								{
+									"key": "userGroupId"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Delete User Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate errorCode and errorMessage\", function () {\r",
+							"    \r",
+							"    pm.expect(jsonData.errorCode).to.eql(0);\r",
+							"    pm.expect(jsonData.errorString).to.eql(\"Successful\");\r",
+							"    \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/UserGroup/{{PAPIUG1Id}}?skipOwnerShipTransfer=true",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"UserGroup",
+						"{{PAPIUG1Id}}"
+					],
+					"query": [
+						{
+							"key": "skipOwnerShipTransfer",
+							"value": "true",
+							"description": "(Required) If user group properties needn't be transferred to other user or usergroup"
+						},
+						{
+							"key": "transferToUser",
+							"value": "-87580831",
+							"description": "(Required) If user group properties needs to be transferred to other user",
+							"disabled": true
+						},
+						{
+							"key": "transfertoUserGroup",
+							"value": "-87580831",
+							"description": "(Required) If user group properties needs to be transferred to other userGroup",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup/:userGroupId?skipOwnerShipTransfer=true&transferToUser=-87580831&transfertoUserGroup=-87580831",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup",
+								":userGroupId"
+							],
+							"query": [
+								{
+									"key": "skipOwnerShipTransfer",
+									"value": "true"
+								},
+								{
+									"key": "transferToUser",
+									"value": "-87580831"
+								},
+								{
+									"key": "transfertoUserGroup",
+									"value": "-87580831"
+								}
+							],
+							"variable": [
+								{
+									"key": "userGroupId"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup/:userGroupId?skipOwnerShipTransfer=true&transferToUser=-87580831&transfertoUserGroup=-87580831",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup",
+								":userGroupId"
+							],
+							"query": [
+								{
+									"key": "skipOwnerShipTransfer",
+									"value": "true"
+								},
+								{
+									"key": "transferToUser",
+									"value": "-87580831"
+								},
+								{
+									"key": "transfertoUserGroup",
+									"value": "-87580831"
+								}
+							],
+							"variable": [
+								{
+									"key": "userGroupId"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"errorMessage\": \"in\",\n \"errorCode\": 81529131\n}"
+				},
+				{
+					"name": "Server Error",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup/:userGroupId?skipOwnerShipTransfer=true&transferToUser=-87580831&transfertoUserGroup=-87580831",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup",
+								":userGroupId"
+							],
+							"query": [
+								{
+									"key": "skipOwnerShipTransfer",
+									"value": "true"
+								},
+								{
+									"key": "transferToUser",
+									"value": "-87580831"
+								},
+								{
+									"key": "transfertoUserGroup",
+									"value": "-87580831"
+								}
+							],
+							"variable": [
+								{
+									"key": "userGroupId"
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"errorMessage\": \"in\",\n \"errorCode\": 81529131\n}"
+				}
+			]
+		},
+		{
+			"name": "Create User Group 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"PAPIUG2Id\", jsonData.id);\r",
+							"pm.environment.set(\"PAPIUG2Name\", jsonData.name);\r",
+							"pm.environment.set(\"PAPIUG2GUID\", jsonData.GUID);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var name = \"PAPIUserGroup_\"+ new Date().getTime() + \"_\" + Math.floor(Math.random() * 1000);\r",
+							"pm.environment.set(\"userGroupName1\", name)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"{{userGroupName1}}\",\n    \"description\": \"{{userGroupName1}} created for Automation\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": 0,\n    \"localUserGroups\": [\n        {\n            \"id\": 0,\n            \"name\": \"\"\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/UserGroup",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"irure sunt quis\",\n    \"description\": \"aute\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": -55185382,\n    \"localUserGroups\": [\n        {\n            \"id\": 97400915,\n            \"name\": \"pariatur quis ullamco\"\n        },\n        {\n            \"id\": -14003752,\n            \"name\": \"minim in cupidatat veniam ad\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"id\": 74016144,\n \"name\": \"nisi laboris dolor dolor\"\n}"
+				},
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"irure sunt quis\",\n    \"description\": \"aute\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": -55185382,\n    \"localUserGroups\": [\n        {\n            \"id\": 97400915,\n            \"name\": \"pariatur quis ullamco\"\n        },\n        {\n            \"id\": -14003752,\n            \"name\": \"minim in cupidatat veniam ad\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"irure sunt quis\",\n    \"description\": \"aute\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": -55185382,\n    \"localUserGroups\": [\n        {\n            \"id\": 97400915,\n            \"name\": \"pariatur quis ullamco\"\n        },\n        {\n            \"id\": -14003752,\n            \"name\": \"minim in cupidatat veniam ad\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Create User Group 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"PAPIUG3Id\", jsonData.id);\r",
+							"pm.environment.set(\"PAPIUG3Name\", jsonData.name);\r",
+							"pm.environment.set(\"PAPIUG3GUID\", jsonData.GUID);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var name = \"PAPIUserGroup_\"+ new Date().getTime() + \"_\" + Math.floor(Math.random() * 1000);\r",
+							"pm.environment.set(\"userGroupName2\", name)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"{{userGroupName2}}\",\n    \"description\": \"{{userGroupName2}} created for Automation\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": 0,\n    \"localUserGroups\": [\n        {\n            \"id\": 0,\n            \"name\": \"\"\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/UserGroup",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"irure sunt quis\",\n    \"description\": \"aute\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": -55185382,\n    \"localUserGroups\": [\n        {\n            \"id\": 97400915,\n            \"name\": \"pariatur quis ullamco\"\n        },\n        {\n            \"id\": -14003752,\n            \"name\": \"minim in cupidatat veniam ad\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"irure sunt quis\",\n    \"description\": \"aute\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": -55185382,\n    \"localUserGroups\": [\n        {\n            \"id\": 97400915,\n            \"name\": \"pariatur quis ullamco\"\n        },\n        {\n            \"id\": -14003752,\n            \"name\": \"minim in cupidatat veniam ad\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroupType\": \"LOCAL\",\n    \"name\": \"irure sunt quis\",\n    \"description\": \"aute\",\n    \"enforceFSQuota\": false,\n    \"quotaLimitInGB\": -55185382,\n    \"localUserGroups\": [\n        {\n            \"id\": 97400915,\n            \"name\": \"pariatur quis ullamco\"\n        },\n        {\n            \"id\": -14003752,\n            \"name\": \"minim in cupidatat veniam ad\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"id\": 74016144,\n \"name\": \"nisi laboris dolor dolor\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete Multiple User Groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate User Group Deletion\", function () {\r",
+							"    \r",
+							"    pm.expect(jsonData.response[0].errorCode).to.eql(0);\r",
+							"    pm.expect(jsonData.response[0].errorString).to.eql(\"Success\");\r",
+							"    pm.expect(jsonData.response[0].entity.userGroupId).to.eql(pm.environment.get(\"PAPIUG2Id\"));\r",
+							"    //pm.expect(jsonData.response[0].entity.GUID).to.eql(pm.environment.get(\"PAPIUG2GUID\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate User Group Deletion\", function () {\r",
+							"    \r",
+							"    pm.expect(jsonData.response[1].errorCode).to.eql(0);\r",
+							"    pm.expect(jsonData.response[1].errorString).to.eql(\"Success\");\r",
+							"    pm.expect(jsonData.response[1].entity.userGroupId).to.eql(pm.environment.get(\"PAPIUG3Id\"));\r",
+							"    //pm.expect(jsonData.response[1].entity.GUID).to.eql(pm.environment.get(\"PAPIUG3GUID\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userGroups\": [\n        {\n            \"skipOwnerTransfer\": false,\n            \"newUser\": {\n                \"id\": 1,\n                \"name\": \"admin\"\n            },\n            \"newUserGroup\": {\n                \"id\": 0,\n                \"name\": \"\"\n            },\n            \"userGroup\": {\n                \"id\": {{PAPIUG2Id}},\n                \"name\": \"{{PAPIUG2Name}}\"\n            }\n        },\n        {\n            \"skipOwnerTransfer\": false,\n            \"newUser\": {\n                \"id\": 0,\n                \"name\": \"0\"\n            },\n            \"newUserGroup\": {\n                \"id\": 1,\n                \"name\": \"master\"\n            },\n            \"userGroup\": {\n                \"id\": {{PAPIUG3Id}},\n                \"name\": \"{{PAPIUG3Name}}\"\n            }\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/UserGroup/action/delete",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"UserGroup",
+						"action",
+						"delete"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroups\": [\n        {\n            \"skipOwnerTransfer\": true,\n            \"newUser\": {\n                \"id\": 14912920,\n                \"name\": \"tempor deserunt id elit\"\n            },\n            \"newUserGroup\": {\n                \"id\": 42350078,\n                \"name\": \"ea ipsum magna\"\n            },\n            \"userGroup\": {\n                \"id\": -99489891,\n                \"name\": \"dolor in et\"\n            }\n        },\n        {\n            \"skipOwnerTransfer\": false,\n            \"newUser\": {\n                \"id\": 78916650,\n                \"name\": \"irure id incididunt dolore sint\"\n            },\n            \"newUserGroup\": {\n                \"id\": -33269997,\n                \"name\": \"est adipisicing eiusmod elit\"\n            },\n            \"userGroup\": {\n                \"id\": 51694734,\n                \"name\": \"dolor velit\"\n            }\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup/action/delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup",
+								"action",
+								"delete"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"errorMessage\": \"in\",\n \"errorCode\": 81529131\n}"
+				},
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroups\": [\n        {\n            \"skipOwnerTransfer\": true,\n            \"newUser\": {\n                \"id\": 14912920,\n                \"name\": \"tempor deserunt id elit\"\n            },\n            \"newUserGroup\": {\n                \"id\": 42350078,\n                \"name\": \"ea ipsum magna\"\n            },\n            \"userGroup\": {\n                \"id\": -99489891,\n                \"name\": \"dolor in et\"\n            }\n        },\n        {\n            \"skipOwnerTransfer\": false,\n            \"newUser\": {\n                \"id\": 78916650,\n                \"name\": \"irure id incididunt dolore sint\"\n            },\n            \"newUserGroup\": {\n                \"id\": -33269997,\n                \"name\": \"est adipisicing eiusmod elit\"\n            },\n            \"userGroup\": {\n                \"id\": 51694734,\n                \"name\": \"dolor velit\"\n            }\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup/action/delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup",
+								"action",
+								"delete"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userGroups\": [\n        {\n            \"skipOwnerTransfer\": true,\n            \"newUser\": {\n                \"id\": 14912920,\n                \"name\": \"tempor deserunt id elit\"\n            },\n            \"newUserGroup\": {\n                \"id\": 42350078,\n                \"name\": \"ea ipsum magna\"\n            },\n            \"userGroup\": {\n                \"id\": -99489891,\n                \"name\": \"dolor in et\"\n            }\n        },\n        {\n            \"skipOwnerTransfer\": false,\n            \"newUser\": {\n                \"id\": 78916650,\n                \"name\": \"irure id incididunt dolore sint\"\n            },\n            \"newUserGroup\": {\n                \"id\": -33269997,\n                \"name\": \"est adipisicing eiusmod elit\"\n            },\n            \"userGroup\": {\n                \"id\": 51694734,\n                \"name\": \"dolor velit\"\n            }\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup/action/delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup",
+								"action",
+								"delete"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get User Groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate JSON tags in response\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"userGroups\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"name\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"GUID\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"description\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"company\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"enabled\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Body does not contain new user groups\", function () {\r",
+							"    pm.expect(pm.response.text()).to.not.include(pm.environment.get(\"PAPIUG1Name\"));\r",
+							"    pm.expect(pm.response.text()).to.not.include(pm.environment.get(\"PAPIUG2Name\"));\r",
+							"    pm.expect(pm.response.text()).to.not.include(pm.environment.get(\"PAPIUG3Name\"));\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "mode",
+						"value": "ea deserunt cupidatat exercitatio"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/UserGroup",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							},
+							{
+								"key": "mode",
+								"value": "ea deserunt cupidatat exercitatio"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							},
+							{
+								"key": "mode",
+								"value": "ea deserunt cupidatat exercitatio"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/UserGroup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"userGroups\": [\n  {\n   \"id\": 35564537,\n   \"name\": \"do elit\",\n   \"GUID\": \"non ad l\",\n   \"description\": \"Ut labore cillum eu\",\n   \"enabled\": false,\n   \"company\": {\n    \"id\": -51461199,\n    \"name\": \"Lorem consequat laboris Ut\"\n   }\n  },\n  {\n   \"id\": 24771755,\n   \"name\": \"aute pariatur adipisicing\",\n   \"GUID\": \"fugiat ex Duis enim aliquip\",\n   \"description\": \"voluptate ullamco nostrud\",\n   \"enabled\": true,\n   \"company\": {\n    \"id\": 60511363,\n    \"name\": \"laboris commodo occaecat quis\"\n   }\n  }\n ]\n}"
+				}
+			]
+		}
+	]
+}

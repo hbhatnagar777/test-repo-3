@@ -1,0 +1,996 @@
+{
+	"BrowserConstants": {
+		"DEFAULT_BROWSER": "_ChromeBrowser",
+		"IMPLICIT_WAIT_TIME": 3,
+		"HEADLESS_MODE": true,
+		"SCREEN_WIDTH": 1920,
+		"SCREEN_HEIGHT": 1080,
+		"BRAVE_BROWSER_PATH": "C:\\Program Files (x86)\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+		"ENABLE_NETWORK_MONITORING": false
+	},
+	"HttpProxy": {
+		"MACHINE_NAME": "",
+		"PORT": ""
+	},
+	"WebConsole": {
+		"STAY_LOGGED_IN": false,
+		"SSO_LOGIN": false,
+		"LOGIN_TIMEOUT": 60,
+		"LOGIN_MAX_TRIES": 3
+	},
+	"API": {
+		"VERIFY_SSL_CERTIFICATE": false
+	},
+	"Common": {
+		"handlers": {
+			"SCREENSHOT_PATH": "Log Files",
+			"LOG_BROWSER_NAME": false
+		},
+		"PagedObject": {
+			"WebAction": {
+				"DELAY": 1
+			},
+			"LoggerPlugin": {
+				"FORCE_ALL_LOGS": false
+			}
+		}
+	},
+	"Bigdata": {
+		"Cassandra": {
+			"cql_username": "cassandra",
+			"cql_password": "cassandra",
+			"jmx_username": "cassandra",
+			"jmx_password": "cassandra",
+			"ssl_keystore": "",
+			"ssl_keystorepwd": "",
+			"ssl_truststore": "",
+			"ssl_truststorepwd": ""
+		},
+        "CockroachDB": {
+            "db_username": "",
+            "db_password": "",
+            "aws_access_key": "",
+            "aws_secret_key": "",
+            "sslrootcert": "",
+            "sslcert": "",
+            "sslkey": ""
+        },
+        "YugabyteDB": {
+            "ycql_username": "",
+            "ycql_password": "",
+            "ysql_username": "",
+            "ysql_password": "",
+            "sslrootcert": "",
+            "aws_access_key": "",
+	    	"aws_secret_key": ""
+        },
+		"Couchbase": {
+	    	"aws_access_key": "",
+	    	"aws_secret_key": ""
+		}
+	},
+	"Reports": {
+		"BROWSER_ACTION_DELAY": 1,
+		"CommCellName_reports": "",
+		"PUBLIC_CLOUD": "cloud.commvault.com",
+        "EDCNode1": "",
+        "EDCNode2": "",
+		"PUBLIC_CLOUD_DOWNLOAD_SCRIPTS": "",
+		"SENDLOGS_HTTP_UPLOAD": "",
+		"send_logs_path": "",
+		"uncompressed_logs_path": "",
+        "sendlogs_username": "",
+        "sendlogs_userpassword": ""
+	},
+	"EdgeApp": {
+		"FILE_PATH_ANDROID": "",
+		"DEFAULT_APP_TYPE": "Android",
+		"ANDROID_VERSION": "7.1.1",
+		"AVD_NAME": "edge4"
+	},
+	"ADMIN_USERNAME": "admin",
+	"ADMIN_PASSWORD": "admin",
+	"SECURITY_TEST": false,
+	"Store_Server": "",
+	"email": {
+		"username": "",
+		"password": "",
+		"server": "",
+		"email_id": "",
+		"extra_receivers": "",
+		"copySender": true,
+		"includeClientsInSubject": true
+	},
+	"Cloud": {
+		"sendlogs_path": "",
+		"host_name": "",
+		"username": "",
+		"password": "",
+		"username1": "",
+		"password1": ""
+
+	},
+	"Network": {
+		"username": "",
+		"password": ""
+	},
+	"Ediscovery": {
+		"PAGE_LOAD_TIMEOUT": 60,
+		"EnduserSite": {
+			"SEARCHURL": "http://endusersite/search",
+			"SEARCHENGINE": "searchengine_name",
+			"Queryset": {
+				"USERNAME": "domainname\\username",
+				"PASSWORD": "password",
+				"SHARE_SET_WITH_USER": "domainname\\username",
+				"SHARE_SET_WITH_USER_PASSWORD": "password",
+				"SEARCH_KEYWORD": "search_query"
+			}
+		}
+	},
+	"Virtualization": {
+		"windows": {
+			"creds": ""
+		},
+		"unix": {
+			"creds": ""
+		},
+		"linux": {
+			"creds": ""
+		},
+		"rhev": {
+			"ca_path": "path for cetrificate file"
+		},
+		"aws_linux": {
+			"creds": "username1, username2",
+			"keys": "keypath1, keypath2"
+		},
+		"aws_login_creds": {
+			"keys": "access_key:secret_key"
+		},
+		"update_clients": false,
+		"run_vm_config_check": true
+    },
+	"Kubernetes": {
+		"DEBUG_MODE": false,
+		"APPLICATION_WAIT": 60,
+		"RESOURCE_WAIT": 5,
+		"LOOKUP_WAIT": 10,
+		"KUBECONFIG_FILE": "path/to/kubeconfig",
+		"PLAN_NAME": "plan_name",
+		"ACCESS_NODE": "access_node",
+		"OPENSHIFT": false,
+		"IMAGE": "ubuntu",
+		"IMAGE_REGISTRY": "",
+		"IS_METALLIC": false,
+		"UPDATE_PROXY": false
+	},
+	"HyperScale": {
+		"Credentials": {
+			"User": "Login user for hyperscale",
+			"Password": "password for hyperscale"
+		}
+	},
+	"Schedule": {
+		"cs_machine_uname": "machine\\username",
+		"cs_machine_password": "password",
+		"db_uname": "sqladmin_cv",
+		"db_password": "sqladmin password"
+	},
+	"CloudWorkflow": {
+		"EmbeddedWorkflow": {
+			"ChildWorkflow": "Get And Process Authorization",
+			"ParentWorkflow": [
+				"DeleteClientAuthorization"
+			]
+		}
+	},
+	"Workflow": {
+		"SQL": {
+			"sa": "",
+			"NonCsDb": "",
+			"WinAuthUser": "",
+			"WinAuthPass": ""
+		},
+		"EDGE": {
+			"shareuser": "",
+			"shareEmail": ""
+		},
+		"ComplexPasswords": {
+			"RightPassword": "",
+			"WrongPassword": "",
+			"CommonPassword": ""
+		}
+	},
+	"Install": {
+		"dvd_username": "",
+		"dvd_password": "",
+		"download_server": "#####",
+		"cs_password": "#####",
+		"cs_encrypted_password": "#####",
+		"cs_machine_username": "",
+		"cs_machine_password": "",
+		"update_acceptance_database": false,
+		"use_internal_media": true,
+		"media_path": "",
+		"commserve_client": {
+			"client_name": "",
+			"machine_host": "",
+			"machine_username": "",
+			"machine_password": "",
+			"sp_version": ""
+		},
+		"windows_client": {
+			"client_name": "",
+			"machine_host": "",
+			"machine_username": "",
+			"machine_password": ""
+		},
+		"unix_client": {
+			"client_name": "",
+			"machine_host": "",
+			"machine_username": "",
+			"machine_password": ""
+		},
+		"rc_client": {
+			"client_name": "",
+			"machine_host": "",
+			"machine_username": "",
+			"machine_password": ""
+		},
+		"associate_client": {
+			"client_name": "",
+			"machine_host": "",
+			"machine_username": "",
+			"machine_password": ""
+		},
+		"scale_test": {
+			"decoupled_clients":
+            [
+                {
+                    "client_name": "",
+                    "client_hostname": "",
+                    "client_username": "",
+                    "client_password": ""
+                }
+            ],
+			"normal_clients":
+            [
+                {
+                    "client_name": "",
+                    "client_hostname": "",
+                    "client_username": "",
+                    "client_password": ""
+                }
+            ],
+            "install_creds":
+                {
+                    "username": "",
+                    "password": "",
+                    "authcode": ""
+                },
+            "base_directory_windows": "",
+            "base_directory_unix": "",
+            "db_creds":
+                {
+                    "db_table": "",
+                    "db_server": "",
+                    "db_username": "",
+                    "db_password": ""
+                },
+            "numoflaptops" : 1
+		},
+		"visibility_flag":""
+	},
+	"Indexing": {
+		"is_metallic": false,
+		"metallic": {
+			"admin_username": "",
+			"admin_password": ""
+		}
+	},
+	"Organizations": {
+		"company_user_password": "",
+		"company_user_encrypted_password": ""
+	},
+	"Laptop": {
+		"Install": {
+			"SkipClientCleanup": "no",
+			"SkipPostOscBackup": "no",
+			"SkipPostOscJobWait": "no",
+			"HyperVHostname": "",
+			"HyperVUser": "",
+			"HyperVPasswd": "",
+			"ESXHostname": "",
+			"ESXUser": "",
+			"ESXPasswd": "",
+			"SkipCopyingLogs": "no",
+			"NetworkPath": "",
+			"NetworkUser": "",
+			"NetworkPassword": "",
+			"ForevercellUser": "",
+			"ForevercellPassword": "",
+			"Client_SP_Level": "",
+			"Client_SP_Revision": "",
+			"windows": {
+				"Machine_host_name": "",
+				"Machine_client_name": "",
+				"Machine_user_name": "",
+				"Machine_password": "",
+				"Machine_fqdn_name": ""
+			},
+			"mac": {
+				"Machine_host_name": "",
+				"Machine_client_name": "",
+				"Machine_user_name": "",
+				"Machine_password": "",
+				"Machine_fqdn_name": ""
+			},
+			"Company1": {
+				"Tenant_company": "",
+				"Default_Plan": "",
+				"CloudLaptopPlan": "",
+				"Tenant_admin": "",
+				"Tenant_password": "",
+				"CloudUser": "",
+				"CloudUserPassword": "",
+				"DeletedDomainUser": "",
+				"DeletedDomainUserPassword": "",
+				"Activation_User": "",
+				"Activation_Password": "",
+				"Activation_User1": "",
+				"Activation_Password1": "",
+				"Windows": {
+					"LocalUser": "",
+					"LocalUser_Password": "",
+					"Blacklist_User": ""
+				},
+				"Mac": {
+					"LocalUser": "",
+					"LocalUser_Password": "",
+					"Blacklist_User": ""
+				}
+			},
+			"Company2": {
+				"Tenant_company": "",
+				"Default_Plan": "",
+				"Tenant_admin": "",
+				"Tenant_password": "",
+				"Windows": {
+					"Machine_host_name": ""
+				},
+				"Mac": {
+					"Machine_host_name": "",
+					"Machine_password": "",
+					"Machine_user_name": "",
+					"Machine_client_name": ""
+				}
+			},
+			"Commcell": {
+				"Default_Plan": "",
+				"Server_Plan": "",
+				"Activation_User": "",
+				"Activation_Password": "",
+				"User_admin": "",
+				"Password_admin": "",
+				"DomainUserWithoutRights": "",
+				"DomainUserPasswordWithoutRights": "",
+				"NewDomainUser": "",
+				"NewDomainUser_Password": "",
+				"Windows": {
+					"Activation_Password1": "",
+					"Activation_User1": ""
+				},
+				"Mac": {
+					"Activation_Password1": "",
+					"Activation_User1": "",
+					"Machine_host_name": "",
+					"Machine_password": "",
+					"Machine_user_name": ""
+				}
+			},
+			"CustomDomainCompany": {
+				"Default_Plan": "",
+				"Tenant_company": "",
+				"Tenant_admin": "",
+				"Tenant_password": "",
+				"Activation_User": "",
+				"Activation_Password": ""
+			}
+		},
+		"UserCentricClient": {
+			"WINDOWS": {
+				"ClientName": ""
+			},
+			"UNIX": {
+				"ClientName": ""
+			}
+		},
+		"DerivedPlans": {
+			"Tenant_username": "",
+			"Tenant_Password": "",
+			"Tenant_company": "",
+			"Primary_storage": "",
+			"Derived_storage": ""
+		},
+		"ACL": {
+			"Folderowner_name": "",
+			"Folderowner_password": "",
+			"Allowed_group": "",
+			"Denyed_group": "",
+			"Denyeduser_name": "",
+			"Denyeduser_password": "",
+			"Seconduser_name": "",
+			"Seconduser_password": "",
+			"Windows": {
+                "Machine_client_name": ""
+            },
+            "Mac": {
+                "Machine_client_name": ""
+            }
+		},
+	   "EdgeMode": {
+            "Edge_username": "",
+            "Edge_password": "",
+            "Default_Plan": "",
+			"Private_share_recepient_username":"",
+            "Private_share_recepient_password":"",
+            "Share_view_access_type":"",
+            "Share_edit_access_type":"",
+            "Share_never_expire":"",
+            "Share_expire_days":"",
+            "Windows": {
+                "Machine_host_name": "",
+                "Machine_user_name": "",
+                "Machine_password": "",
+                "Client_name": "",
+                "Test_data_path":"",
+				"Preview_Folder_path": ""
+            },
+            "Mac": {
+                "Machine_host_name": "",
+                "Machine_user_name": "",
+                "Machine_password": "",
+                "Client_name": "",
+                "Test_data_path":"",
+				"Preview_Folder_path": ""
+            }
+        }
+	},
+	"UpdateQA": {
+		"domain": "",
+		"username": "",
+		"password": ""
+	},
+	"DynamicIndex": {
+		"IndexServerCluster": {
+			"ImageSecrets": {
+                "Name": "",
+                "Server" : "",
+                "User": "",
+                "Password": ""
+            },
+            "CommonInputs": {
+                "IndexServerNode": "",
+                "YamlFile": "",
+                "MediaAgentName": "",
+                "DataPath": "",
+                "Library": "",
+                "UserMailbox": [
+                    ""
+                ]
+            },
+            "AzureSubscription": "",
+            "AzureAdServicePrincipals": {
+                "appId": "",
+                "displayName": "",
+                "password": "",
+                "tenant": ""
+            },
+            "AzureSSHKeyFilePath": "",
+            "AZMachine": {
+                "name": "",
+                "username": "",
+                "password": ""
+            },
+            "KubectlMachine": {
+                "name": "",
+                "username": "",
+                "password": ""
+            }
+        },
+		"ThreatScanCluster": {
+            "Default_ACR": "",
+            "Default_DataCube_ACR": "",
+            "Default_NameSpace": "",
+            "Default_DCube_NameSpace": "datacube",
+            "Default_Cluster": "",
+            "Default_ResourceGroup": "",
+            "ScaleMgr_Deployment_Name": "",
+            "ScaleMgr_Helm_AppName": "",
+            "IndexServer_Deployment_Name": "",
+            "DcubeCtrlr_Deployment_Name": "datacube-controller",
+            "DcubeCtrlr_Container_Name": "datacube-controller",
+            "IndexServer_Helm_AppName": "",
+            "CE_Deployment_Name": "cvextractor",
+            "CE_Container_Name": "contentextractor",
+            "ImageSecrets": {
+                "Name": "cvimgpull",
+                        "Server": "",
+                        "User": "",
+                        "Password": ""
+            },
+            "CommonInputs": {
+                "IndexServerNode": "",
+                "YamlFile": "",
+                "MediaAgentName": "",
+                "DataPath": "",
+                "Library": ""
+            },
+            "AzureSubscription": "",
+            "AzureAdServicePrincipals": {
+                "appId": "",
+                "displayName": "",
+                "password": "",
+                "tenant": ""
+            },
+            "AzureSSHKeyFilePath": "",
+            "AZMachine": {
+                "name": "",
+                        "username": "",
+                        "password": ""
+            },
+            "KubectlMachine": {
+                "name": "",
+                        "username": "",
+                        "password": ""
+            }
+        },
+		"ExtractingCluster":
+        {
+            "AzureSubscription": "",
+			"ImageSecrets": {
+				"Name": "",
+                "Server" : "",
+                "User": "",
+                "Password": ""
+            },
+            "AzureAdServicePrincipals": {
+                "appId": "",
+                "displayName": "",
+                "password": "",
+                "tenant": ""
+            },
+            "AzureSSHKeyFilePath": "",
+            "RedisCacheConfig": "",
+            "AZMachine": {
+                "name": "",
+                "username": "",
+                "password": ""
+            },
+            "KubectlMachine": {
+                "name": "",
+                "username": "",
+                "password": ""
+            },
+			"CredentialName_Redis": "",
+            "CredentialName_Aks": "",
+            "CredentialName_FileShare": "",
+            "RedisCacheConfigSecretKey": "",
+            "RedisCacheConfigHost": "",
+            "FileShare_Account": "",
+            "FileShare_SecretKey": ""
+        },
+		"RequestManager": {
+			"Tag": "",
+			"Approver": "username",
+			"Reviewer": "username",
+			"ApproverPassword": "password",
+			"ReviewerPassword": "password",
+			"Requester":"email"
+		},
+		"PerformanceStats": {
+			"Index_Server": ""
+		},
+		"ExchangeClientDetails": {
+			"ExchangeServerName": [
+				""
+			],
+			"UserMailBox": [
+				""
+			],
+			"ServiceAccountDetails": {
+				"ServiceType": 14,
+				"Username": "",
+				"Password": ""
+			},
+			"ProxyServers": [
+				""
+			],
+			"JobResultDirectory": "",
+			"DomainName": "",
+			"DomainUserName": "",
+			"DomainUserPassword": "",
+			"StoragePolicyName": ""
+		},
+		"FSOServerGroupDetails": {
+			"ClientList": [],
+			"SubclientContentList": [],
+			"SqliteDBPaths": []
+		},
+		"WindowsHyperV": {
+			"HyperVName": "",
+			"HyperVUsername": "",
+			"HyperVPassword": "",
+			"VmName": "",
+			"VmUsername": "",
+			"VmPassword": "",
+			"SnapName": ""
+		},
+		"LinuxHyperV": {
+			"HyperVName": "",
+			"HyperVUsername": "",
+			"HyperVPassword": "",
+			"VmName": "",
+			"VmUsername": "",
+			"VmPassword": "",
+			"SnapName": ""
+		},
+		"Activate": {
+			"AWS": {
+				"AccountName": "",
+				"AccessKey": "",
+				"ContainerName": "",
+				"EndpointUrl": "",
+				"BucketRegion": ""
+			},
+			"Azure": {
+				"AccountName": "",
+				"AccessKey": "",
+				"ContainerName": "",
+				"EndpointUrl": ""
+			},
+			"GoogleCloud": {
+				"AccountName": "",
+				"AccessKey": "",
+				"ContainerName": "",
+				"EndpointUrl": "",
+				"KeyFilePath": ""
+			},
+			"SharePoint": {
+				"UserName": "",
+				"Password": "",
+				"IndexServerName": "",
+				"ContentAnalyzer": "",
+				"TestDataSQLiteDBPath": "",
+				"SharePointAPI": "",
+				"EntitiesListMap": "",
+				"Approver": "",
+				"Reviewer": "",
+				"Requester": "",
+				"ReviewColumn": "",
+				"RiskList": "",
+				"HostName": "",
+				"V1": {
+					"ClientName": "",
+					"Backupset": {
+						"ServiceAccount": "",
+						"ModernAuthentication": ""
+					},
+					"ListOfSites": ""
+				},
+				"V2": {
+					"ClientName": {
+						"Advanced": "",
+						"Express": ""
+					},
+					"BackupsetName": "",
+					"ListOfSites": ""
+				}
+			},
+			"OneDrive": {
+				"UserName": "",
+				"Password": "",
+				"IndexServerName": "",
+				"ContentAnalyzer": "",
+				"TestDataSQLiteDBPath": "",
+				"OneDriveAPI": "",
+				"EntitiesListMap": "",
+				"AccessNode": "",
+				"RESTORE_DIR": "",
+				"ApplicationId": "",
+				"ApplicationKeyValue": "",
+				"AzureDirectoryId": ""
+			}
+		},
+		"ActivateTenant": {
+			"tenant_operator": "",
+			"TestDataSQLiteDBPath": "",
+			"custom_entity": {
+				"Keywords": "",
+				"Sensitivity": ""
+			},
+			"Tenant01": {
+				"Name": "",
+				"user_name": "",
+				"user_password": "",
+				"PlanType": "",
+				"EntitiesListMap": "",
+				"MediaAgent": {
+					"name": "",
+					"mount_path": "",
+					"ddb_path": ""
+				},
+				"IndexServer": {
+					"index_server_name": ""
+				},
+				"ContentAnalyzer": {
+					"content_analyzer_name": ""
+				},
+				"NameServer": {
+					"domain_name": "",
+					"netbios_name": "",
+					"username": "",
+					"password": ""
+				},
+				"FileServer": {
+					"machine_name": "",
+					"directory": "",
+					"AgentNotInstalled": {
+						"client_name": "",
+						"username": "",
+						"password": ""
+					}
+				}
+			},
+			"Tenant02": {
+				"Name": "",
+				"user_name": "",
+				"user_password": "",
+				"PlanType": "",
+				"EntitiesListMap": "",
+				"MediaAgent": {
+					"name": "",
+					"mount_path": "",
+					"ddb_path": ""
+				},
+				"IndexServer": {
+					"index_server_name": ""
+				},
+				"ContentAnalyzer": {
+					"content_analyzer_name": ""
+				},
+				"NameServer": {
+					"domain_name": "",
+					"netbios_name": "",
+					"username": "",
+					"password": ""
+				},
+				"FileServer": {
+					"machine_name": "",
+					"username": "",
+					"password": "",
+					"directory": "",
+					"access_node": ""
+				}
+			},
+			"Prod_Tenant01": {
+				"Name": "",
+				"user_name": "",
+				"user_password": "",
+				"alias": "",
+				"SharePoint": {
+					"UserName": "",
+					"Password": "",
+					"IndexServerName": "",
+					"ContentAnalyzer": "",
+					"TestDataSQLiteDBPath": "",
+					"SharePointAPI": "",
+					"EntitiesListMap": {
+						"comment1": "dictionary representing the mapping between entity DB column and Entity name",
+						"comment2": "_(underscore) of key will be replaced by white space character in code",
+						"Entity_DB_Column_name": "Entity Name",
+						"IP_Address": "IP address"
+					},
+					"ReviewColumn": "",
+					"V2": {
+						"ClientName": {
+							"Advanced": ""
+						},
+						"BackupsetName": "",
+						"ListOfSites": ""
+					}
+				}
+			}
+		},
+		"DataSourceManagement": {
+			"LocalPathDS": 0,
+            "UNCPathDS": 0,
+            "BackedupDS": 0,
+            "BackedupClients": [],
+            "NASClients": [{
+                "hostname": "",
+                "username": "",
+                "password": ""
+            }],
+            "CommcellClients": [],
+            "InventoryName": "",
+            "AccessNode": [],
+            "PlanName": "",
+            "Country": ""
+        }
+	},
+	"SQL": {
+		"Username": "",
+		"Password": ""
+	},
+	"MultiCommcell": {
+		"Local_users_password": "",
+		"Testlab_users_password": {
+			"user01": "",
+			"user02": "",
+			"domain_password": ""
+		}
+	},
+	"MSPCompany": {
+		"tenant_password": "",
+		"company": {
+			"email": "",
+			"email_1": "",
+			"contact_name": "",
+			"plans": [],
+			"mail_template": "",
+			"smtp": ""
+		},
+		"backup_loc": [],
+		"OS": ""
+	},
+	"Salesforce": {
+		"salesforce_options": {
+			"login_url": "https://login.salesforce.com",
+			"salesforce_user_name": "",
+			"salesforce_user_password": "",
+			"salesforce_user_token": "",
+			"consumer_id": "",
+			"consumer_secret": "",
+			"sandbox": false
+		},
+		"infrastructure_options": {
+			"access_node": "",
+			"cache_path": "/tmp",
+			"db_type": "POSTGRESQL"
+		},
+		"postgresql_options": {
+			"db_host_name": "",
+			"db_port": "5432",
+			"db_user_name": "postgres",
+			"db_password": ""
+		},
+		"sqlserver_options": {
+			"db_host_name": "",
+			"db_instance": "MSSQLSERVER",
+			"db_port": "1433",
+			"db_user_name": "sa",
+			"db_password": ""
+		},
+		"profile": "Admin",
+		"plan": "",
+		"resource_pool": "",
+		"storage_policy": "",
+		"sf_object": "Contact",
+		"fields": [
+			"FirstName",
+			"LastName",
+			"Email",
+			"Phone"
+		]
+	},
+	"BlockCloudEndPoints": {
+		"endpoints": [
+			"<IP>       <cloud endpoint URL>",
+			"<IP>       <cloud endpoint URL>"
+		]
+	},
+	"Azure": {
+		"Tenant": "",
+		"User": "",
+		"Password": "",
+		"Subscription": "",
+		"App": {
+			"DirectoryID": "",
+			"ApplicationID": "",
+			"ApplicationSecret": ""
+		},
+		"MI":{
+			"ClientID": ""
+		}
+	},
+	"AWS": {
+		"AccessKey": "",
+		"SecretKey": "",
+		"MetallicRole": {
+			"RegionId": "",
+			"TemplateUrl": "",
+			"StackName": ""
+		},
+		"BackupGateway": {
+			"RegionId": "",
+			"TemplateUrl": "",
+			"InstanceType": "",
+			"StackName": "",
+			"KeyName": "",
+			"VpcId": "",
+			"SubnetId": "",
+			"VpcCidr": "",
+			"AuthCode": "",
+			"BackupGatewayPackageWindows": "",
+			"BackupGatewayPackageLinux": "",
+			"Authentication": ""
+		}
+	},
+	"PostmanVariables": {
+		"UnicodePassword": "",
+		"smtpHostname": "",
+		"userPassword": "",
+		"createRestApiReport": ""
+	},
+	"MySQL": {
+		"MySqlSSLOptions": {
+			"ssl_ca": "",
+			"ssl_cert": "",
+			"ssl_key": ""
+		},
+		"PublicSSLPathToDownload": ""
+	},
+	"DB2": {
+		"user_name": "",
+		"password": ""
+	},
+	"cslivesync": {
+		"active_node_failover_instance": ""
+	},
+	"license": {
+		"url": "",
+		"username": "",
+		"password": ""
+	},
+	"PERFORMANCE_TEST": false,
+	"NWLOGGER": false,
+	"AzureDB": {
+        "location": "",
+        "admin_username": "",
+        "admin_password": "",
+        "virtual_network_new_or_existing": "",
+        "virtual_network_name": "",
+        "virtual_network_resource_group_name": "",
+        "address_prefixes": "",
+        "subnet_name": "",
+        "subnet_prefix": "",
+        "os_version": "",
+        "identities": [
+            {"rg_name": "", "identity_name": ""}
+        ]
+    },
+	"GCM": {
+		"service_commcells" : [{
+			"name"        : "",
+			"webconsoleEP": "",
+			"username"    : "",
+			"password"    : ""
+			}],
+		"cloud_user": "",
+		"cloud_user_password": ""
+	},
+	"buildteam": {
+		"server": "",
+		"instance": "",
+		"dbname": "",
+		"dbuser": "",
+		"dbpassword": ""
+	},
+    "sensitivedatapath": "",
+	"LogSecurityChecker": {
+	  "KeyWords": "[]",
+	  "RegexPattern": ""
+  }
+}

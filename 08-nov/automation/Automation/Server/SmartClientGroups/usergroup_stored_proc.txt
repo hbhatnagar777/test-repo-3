@@ -1,0 +1,526 @@
+SET ANSI_NULLS ON
+-- Procedure Name
+SET QUOTED_IDENTIFIER OFF
+
+
+print '... Creating Procedure: sec_getIdaObjectsForUserGroup'
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create procedure sec_getIdaObjectsForUserGroup
+--Inputs
+  @userGroupId INT, 
+  @entityTypeReq INT,           
+  @permissionId INT,            
+  @inheritFromChildren INT,
+  @tableOutput NVARCHAR(MAX),
+  @includeNotMappedPermission INT =0,
+  @permissionList NVARCHAR(MAX)='',
+  @isAndOperation INT=0
+AS
+IF @userGroupId = 0
+            RETURN
+IF(@permissionId<>0 AND @permissionList<>'')
+    BEGIN
+        --Invalid Usage
+        RETURN
+    END
+DECLARE @inputPermissionTbl  TABLE(iPermissionId INTEGER)
+DECLARE @permissionForEntity TABLE( permissionId INTEGER)
+DECLARE @skipSubclientPolicy INT = 0
+IF @entityTypeReq IN (3, 4, 5)
+    SET @skipSubclientPolicy = 1
+IF(@permissionList<>'')
+BEGIN
+     INSERT INTO @inputPermissionTbl
+     SELECT DISTINCT _ID
+     FROM dbo.SplitIDs(@permissionList)
+END
+ELSE
+    INSERT INTO @inputPermissionTbl
+    SELECT @permissionId
+DELETE FROM @inputPermissionTbl
+WHERE iPermissionId in (SELECT id from UMPermissions where flags& 0x001 <> 0)
+IF(@includeNotMappedPermission=0)
+    INSERT INTO @permissionForEntity
+                SELECT DISTINCT permissionId
+                FROM UMPermissionEntityTypeMap
+                WHERE entityType IN (0, @entityTypeReq)
+ELSE
+BEGIN
+    INSERT INTO @permissionForEntity
+        SELECT DISTINCT permissionId 
+        FROM UMPermissionEntityTypeMap
+                INSERT INTO @permissionForEntity
+VALUES (252) 
+END
+IF(@permissionId<>0 AND  NOT EXISTS (SELECT 1 from @permissionForEntity where permissionId=@permissionId))
+    RETURN
+IF(@permissionList<>'')
+BEGIN
+    IF(@isAndOperation=1 AND EXISTS(SELECT 1 FROM @inputPermissionTbl where iPermissionId not in 
+(SELECT permissionId from @permissionForEntity)))
+        RETURN
+    ELSE IF(@isAndOperation=0 AND NOT EXISTS(SELECT 1 from @inputPermissionTbl where iPermissionId in 
+(SELECt permissionId FROM @permissionForEntity)))
+        RETURN
+END
+DECLARE @doNotExpandVMs BIT = 0
+IF @permissionId = 252 OR EXISTS (SELECT TOP 1 1 FROM @inputPermissionTbl WHERE iPermissionId = 252)
+                SET @doNotExpandVMs = 1  
+DECLARE @allAssociations INT = 0
+IF OBJECT_ID('tempdb.dbo.#userAndGroupId') IS NOT NULL
+    DROP TABLE #userAndGroupId
+CREATE TABLE #userAndGroupId
+(
+    isUser INT,
+    userOrGroupId INT,
+    UNIQUE CLUSTERED (isUser, userOrGroupId)
+)
+       IF OBJECT_ID('dbo.tempdb.#tempOutputTable') IS NOT NULL
+              DROP TABLE #tempOutputTable
+       CREATE TABLE #tempOutputTable 
+(entityReferred INT, roleId INT, permissionId INT, clientId INT, 
+appTypeId INT, instanceId INT, backupsetId INT, subclientId INT)
+       DECLARE @outputSQLStatement NVARCHAR(MAX)
+       SET @outputSQLStatement = 'INSERT INTO '+ @tableOutput
+       --Get all the enabled user groups to whom my user belongs to
+       INSERT INTO #userAndGroupId
+              SELECT 0, id
+              FROM UMGroups INNER JOIN (SELECT umGroupId FROM UMDSGroupMaps (NOLOCK) INNER JOIN UMUserGroup 
+(NOLOCK) ON UMDSGroupMaps.umDSgroupId = @userGroupId) AS UG
+              ON UMGroups.id = UG.umGroupId
+              WHERE groupFlags & 1 = 1
+              UNION
+              SELECT 0 ,@userGroupId
+    IF OBJECT_ID('dbo.tempdb.#getIdaObjects_Roles') IS NOT NULL
+            DROP TABLE #getIdaObjects_Roles
+    CREATE TABLE #getIdaObjects_Roles (roleId INT PRIMARY KEY )
+    INSERT INTO #getIdaObjects_Roles
+        SELECT DISTINCT rpe.roleId
+        FROM @permissionForEntity pe
+            INNER JOIN UMRolesWithPermissionsExpanded rpe ON
+                rpe.permissionId = pe.permissionId
+            INNER JOIN UMRoles r ON
+                rpe.roleID = r.id
+                AND r.disabled = 0
+            INNER JOIN UMSecurityAssociations Sec
+                ON Sec.roleId = rpe.roleId
+            INNER JOIN #userAndGroupId UG
+                ON Sec.isUser = UG.isUser
+                AND Sec.userOrGroupId = UG.userOrGroupId
+    --Case 1: permissionId=0. If all associations is set .
+    IF @permissionId = 0  AND @permissionList=''
+    BEGIN
+        IF EXISTS (
+                       SELECT Sec.roleId
+                       FROM UMSecurityAssociations Sec
+                           INNER JOIN #userAndGroupId UG ON
+                             Sec.isUser = UG.isUser
+                            AND Sec.userOrGroupId = UG.userOrGroupId
+                           INNER JOIN #getIdaObjects_Roles r ON
+                            Sec.roleID = r.roleID
+                       WHERE Sec.entityType1 = 1
+                            AND Sec.entityId1 = 2
+                       UNION ALL
+                       SELECT Sec.permissionID
+                       FROM UMSecurityAssociations Sec
+                           INNER JOIN #userAndGroupId UG ON
+                             Sec.isUser = UG.isUser
+                            AND Sec.userOrGroupId = UG.userOrGroupId
+                           INNER JOIN @permissionForEntity PE ON
+                             Sec.permissionId = PE.permissionID
+                       WHERE Sec.entityType1 = 1
+                            AND Sec.entityId1 = 2
+                            AND Sec.permissionID <> 0
+                       UNION ALL
+                       SELECT Sec.roleId
+                       FROM UMSecurityAssociations Sec
+                           INNER JOIN #userAndGroupId UG ON
+                             Sec.isUser = UG.isUser
+                             AND Sec.userOrGroupId = UG.userOrGroupId
+                           INNER JOIN #getIdaObjects_Roles r ON
+                            Sec.roleID = r.roleID
+                       WHERE Sec.entityType1 = 3
+                            AND Sec.includeAll = 1
+                       UNION ALL
+                       SELECT Sec.permissionID
+                       FROM UMSecurityAssociations Sec
+                           INNER JOIN #userAndGroupId UG ON
+                             Sec.isUser = UG.isUser
+                             AND Sec.userOrGroupId = UG.userOrGroupId
+                           INNER JOIN @permissionForEntity PE ON
+                             Sec.permissionId = PE.permissionID
+                       WHERE Sec.entityType1 = 3
+                            AND Sec.includeAll = 1
+                            AND Sec.permissionID <> 0
+                  )
+                     SET @allAssociations = 1
+        IF(@allAssociations=0)
+        BEGIN
+            IF EXISTS (SELECT Owners.userOrGroupId
+                       FROM UMOwners Owners INNER JOIN #userAndGroupId UG
+                       ON Owners.isUser = UG.isUser AND Owners.userOrGroupId = UG.userOrGroupId
+WHERE Owners.entityType = 1 AND Owners.entityId = 2)
+                                SET @allAssociations = 1
+        END
+  END
+  ELSE -- permissionId is not <> zero.
+  BEGIN
+        IF(@isAndOperation=0)
+        BEGIN
+             --check explicit permissions
+             IF EXISTS (
+                        SELECT permissionId
+                        FROM UMSecurityAssociations Sec INNER JOIN #userAndGroupId UG
+                        ON Sec.isUser =  UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+WHERE Sec.entityType1 = 1 AND Sec.entityId1 = 2 AND permissionId in (SELECT ipermissionId from @inputPermissionTbl)
+                        UNION
+                        SELECT permissionId
+                        FROM UMSecurityAssociations Sec INNER JOIN #userAndGroupId UG
+                        ON Sec.isUser = UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+WHERE Sec.entityType1 = 3 AND Sec.includeAll = 1 AND permissionId in (SELECT ipermissionId from @inputPermissionTbl)
+                       )
+                                SET @allAssociations = 1
+               IF @allAssociations = 0
+               BEGIN
+                        --instead of joining on ROles individually can we join directly with UMSecurityAssociations
+                    IF EXISTS (  SELECT RE.roleId
+                                 FROM    (SELECT roleId
+                                          FROM UMSecurityAssociations Sec
+                                          INNER JOIN #userAndGroupId UG
+                                            ON Sec.isUser =  UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+WHERE Sec.entityType1 = 1 AND Sec.entityId1 = 2
+                                          UNION
+                                          SELECT roleId
+                                          FROM UMSecurityAssociations Sec
+                                          INNER JOIN #userAndGroupId UG
+                                          ON Sec.isUser = UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+WHERE Sec.entityType1 = 3 AND Sec.includeAll = 1
+                                          ) RE
+                                INNER JOIN
+                                        (SELECT DISTINCT roleId
+                                         FROM UMRolesWithPermissionsExpanded INNER JOIN UMROles
+                                         ON UMRolesWithPermissionsExpanded.roleId = UMROles.id
+                                         WHERE permissionId in (SELECT ipermissionId from @inputPermissionTbl)
+AND disabled =0
+                                        ) Role
+                                ON RE.roleId = Role.roleId )
+                                        SET @allAssociations = 1
+            END
+        END --(@isAndOperation=0)
+        ELSE --(AND operation)
+        BEGIN
+                DELETE FROM @inputPermissionTbl
+                    WHERE iPermissionId IN
+                                        (SELECT DISTINCT permissionId
+                                            FROM UMSecurityAssociations Sec INNER JOIN #userAndGroupId UG
+                                            ON Sec.isUser =  UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+WHERE Sec.entityType1 = 1 AND Sec.entityId1 = 2
+                                            UNION
+                                            SELECT DISTINCT permissionId
+                                            FROM UMSecurityAssociations Sec INNER JOIN #userAndGroupId UG
+                                            ON Sec.isUser = UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+WHERE Sec.entityType1 = 3 AND Sec.includeAll = 1
+                                        UNION
+                                        (SELECT DISTINCT permissionId FROM
+                                            (   SELECT roleId
+                                                FROM UMSecurityAssociations Sec INNER JOIN #userAndGroupId UG
+                                                ON Sec.isUser =  UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+WHERE Sec.entityType1 = 1 AND Sec.entityId1 = 2
+                                                UNION
+                                                SELECT roleId
+                                                FROM UMSecurityAssociations Sec INNER JOIN #userAndGroupId UG
+                                                ON Sec.isUser = UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+WHERE Sec.entityType1 = 3 AND Sec.includeAll = 1
+                                                UNION
+                                                SELECT OwnerROles.roleId AS roleId
+                                                FROM UMOwners Owners INNER JOIN #userAndGroupId UG
+                                                ON Owners.isUser = UG.isUser AND Owners.userOrGroupId = UG.userOrGroupId
+                                                INNER JOIN UMOwnerROles OwnerROles
+                                                ON Owners.entityType = OwnerRoles.entityType
+AND Owners.entityId = OwnerRoles.entityId
+WHERE Owners.entityType = 1 AND Owners.entityId = 2
+                                                ) Role
+                                                JOIN
+                                                UMRolesWithPermissionsExpanded RE ON  Role.roleId=RE.roleId
+                                        )
+                                    )
+                        IF NOT EXISTS (SELECT 1 FROM @inputPermissionTbl)
+                                SET @allAssociations = 1
+        END --AND operation
+  END
+  IF @allAssociations = 1
+  BEGIN
+IF @entityTypeReq = 3
+                     SET @outputSQLStatement += ' SELECT id, 0, 0, 0, 0 FROM APP_Client WHERE id <> 1'
+ELSE IF @entityTypeReq = 4  
+                     SET @outputSQLStatement += ' SELECT clientId, appTypeId, 0, 0, 0 FROM APP_IDAName '
+ELSE IF @entityTypeReq = 5
+                     SET @outputSQLStatement += 
+' SELECT DISTINCT clientId, appTypeId, instance, 0, 0 FROM APP_Application'
+ELSE IF @entityTypeReq = 6
+                     SET @outputSQLStatement += 
+' SELECT DISTINCT clientId, appTypeId, instance, backupset, 0 FROM APP_Application'
+              ELSE
+                     SET @outputSQLStatement += 
+' SELECT DISTINCT clientId, appTypeId, instance, backupset, id FROM APP_Application'
+   END
+   ELSE 
+   BEGIN
+        --client group association and expansion
+        DECLARE @dynamicSQLStr VARCHAR(MAX) = ''
+        SET @dynamicSQLStr = '
+INSERT INTO #tempOutputTable '
++ CHAR(10)
++ SUBSTRING((SELECT
+'UNION'
++ CHAR(10)
++ '
+    SELECT Tbl.childEntityType, 
+Sec.roleId, Sec.permissionId, Tbl.childId, Tbl.childId2, Tbl.childId3, Tbl.childId4, Tbl.childId5
+    FROM UMSecurityAssociations Sec
+        INNER JOIN #userAndGroupId UG
+            ON Sec.isUser = UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+        INNER JOIN
+                    ('
+                    + CHAR(10)
+                    + associationQuery
+                    + CHAR(10) + '
+                    )Tbl
+            ON Sec.entityType1 = Tbl.parentEntityType AND Sec.entityId1 = Tbl.parentId'
+            + CHAR(10)
+            + '
+    UNION'
+    + CHAR(10)
+    + '
+    SELECT 
+Tbl.childEntityType, Sec.roleId, Sec.permissionId, Tbl.childId, Tbl.childId2, Tbl.childId3, Tbl.childId4, Tbl.childId5
+    FROM UMSecurityAssociations Sec
+        INNER JOIN #userAndGroupId UG
+            ON Sec.isUser = UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+        INNER JOIN
+                    ('
+                    + CHAR(10)
+                    + associationQuery
+                    + CHAR(10) + '
+                    )Tbl
+            ON Sec.entityType1 = Tbl.parentEntityType AND Sec.includeAll = 1'
+    + CHAR(10)
+    FROM App_EntityParentAssociation PE
+    WHERE
+        childEntityType = @entityTypeReq
+    FOR XML PATH (''), TYPE
+    ).value('.','NVARCHAR(MAX)'),   
+    6,              
+    2147483647      
+    )
+            EXEC (@dynamicSQLStr)
+            IF @inheritFromChildren = 1
+            BEGIN
+                IF @skipSubclientPolicy = 1
+                    INSERT INTO #tempOutputTable
+                    SELECT dbo.getEntityLevelFromEntityHierarchy(entityType1, entityType2,
+entityType3, entityType4, entityType5), roleId, permissionId, entityId1, entityId2, entityId3, entityId4, entityId5
+                    FROM UMSecurityAssociations Sec
+                    INNER JOIN #userAndGroupId UG ON Sec.isUser = UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+WHERE entityType1 = 3
+                       AND entityId2 <> 1030     
+                ELSE
+                    INSERT INTO #tempOutputTable
+                    SELECT dbo.getEntityLevelFromEntityHierarchy(entityType1, entityType2, entityType3, 
+entityType4, entityType5), roleId, permissionId, entityId1, entityId2, entityId3, entityId4, entityId5
+                    FROM UMSecurityAssociations Sec
+                    INNER JOIN #userAndGroupId UG ON Sec.isUser = UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+WHERE entityType1 = 3
+            END
+              ELSE
+            BEGIN
+                     --instead of insert, can we do a insert all with entityType1 = 3 and delete of entityType2 = 0
+                     INSERT INTO #tempOutputTable
+                     SELECT dbo.getEntityLevelFromEntityHierarchy(entityType1, entityType2, entityType3, entityType4, 
+entityType5), roleId, permissionId, entityId1, entityId2, entityId3, entityId4, entityId5
+                     FROM UMSecurityAssociations Sec
+                     INNER JOIN #userAndGroupId UG ON Sec.isUser = UG.isUser AND Sec.userOrGroupId = UG.userOrGroupId
+WHERE entityType1 = 3
+                           AND (entityType2 <= @entityTypeReq)
+                           AND (entityType3 <= @entityTypeReq)
+                           AND (entityType4 <= @entityTypeReq)
+                           AND (entityType5 <= @entityTypeReq)
+            END
+            
+              IF OBJECT_ID ('tempdb.dbo.#ownerEntities') IS NOT NULL
+                    DROP TABLE #ownerEntities
+              CREATE TABLE #ownerEntities (entityId INT)
+               INSERT INTO #ownerEntities
+                   SELECT entityId
+                   FROM UMOwners Owners INNER JOIN #userAndGroupId UG
+                   ON Owners.isUser = UG.isUser AND Owners.userOrGroupId = UG.userOrGroupId
+WHERE entityType = 3
+                   UNION
+                   SELECT Parent.clientId
+                   FROM UMOwners Owners INNER JOIN #userAndGroupId UG
+                   ON Owners.isUser = UG.isUser AND Owners.userOrGRoupId = UG.userOrGRoupId
+                   INNER JOIN APP_ClientGroupAssoc Parent
+ON Owners.entityType = 28 AND Owners.entityId = Parent.clientGroupId
+            IF @permissionId = 0  AND @permissionList=''
+            BEGIN
+                INSERT INTO #tempOutputTable
+(entityReferred, roleId, permissionId, clientId, appTYpeId, instanceId, backupsetId, subclientId)
+SELECT 3, 0, 0, entityId, 0, 0, 0, 0
+                FROM #ownerEntities
+            END
+            ELSE                            
+            BEGIN                          
+                        
+                INSERT INTO #tempOutputTable 
+(entityReferred, roleId, permissionId, clientId, appTYpeId, instanceId, backupsetId, subclientId)
+SELECT 3, OwnerROles.roleId, 0, OwnerEntities.entityId, 0, 0, 0, 0
+                FROM UMOwnerRoles OwnerRoles INNER JOIN #ownerEntities OwnerEntities
+ON OwnerRoles.entityType = 3 AND OwnerRoles.entityId = OwnerEntities.entityId
+                UNION
+SELECT 3, OwnerRoles.roleId, 0, OwnerEntities.entityId, 0, 0, 0, 0
+                FROM UMOwnerRoles OwnerRoles INNER JOIN APP_ClientGroupAssoc Parent
+ON OwnerRoles.entityType = 28 AND OwnerRoles.entityId = Parent.clientGroupId
+                INNER JOIN #ownerEntities OwnerEntities
+                ON Parent.clientId = OwnerEntities.entityId
+                UNION
+SELECT 3, OwnerROles.roleId, 0, OwnerEntities.entityId, 0, 0, 0, 0
+                FROM UMOwnerROles OwnerROles INNER JOIN #ownerEntities OwnerEntities
+ON OwnerRoles.entityType = 1 AND OwnerRoles.entityId = 2
+             END
+            
+                                                IF @doNotExpandVMs = 0
+            BEGIN
+                INSERT INTO #tempOutputTable 
+(entityReferred, clientId, appTypeId, instanceID, backupsetId, subclientID, roleId, permissionId)
+SELECT 3, CP.componentNameId, 0,0,0,0, OT.roleId, OT.permissionId
+                    FROM #tempOutputTable OT
+                        INNER JOIN APP_Application A
+                            ON OT.clientId = A.clientID
+                            AND (OT.appTypeId = 0 OR OT.appTypeId = A.appTypeId)
+                            AND (OT.instanceID = 0 OR OT.instanceID = A.instance)
+                            AND (OT.backupsetID = 0 OR OT.backupsetID = A.backupSet)
+                            AND (OT.subclientID = 0 OR OT.subclientID = A.id)
+                        INNER JOIN APP_ClientProp CP
+ON CP.attrName = 'Last Backup Subclient'
+                            AND CAST(CP.attrVal AS INT) = A.id
+                            AND CP.modified = 0
+                    WHERE
+A.appTypeId = 106
+                                                               
+                                                                IF @inheritFromChildren = 0
+                BEGIN
+                    INSERT INTO #tempOutputTable
+(entityReferred, clientId, appTypeId, instanceID, backupsetId, subclientID, roleId, permissionId)
+SELECT 3, CP.componentNameId, 0,0,0,0, OT.roleId, OT.permissionId
+                        FROM UMSecurityAssociations OT
+                            INNER JOIN #userAndGroupId UG
+                                ON OT.isUser = UG.isUser AND ot.userOrGroupId = UG.userOrGroupId
+                            INNER JOIN APP_Application A
+                                ON OT.entityId1 = A.clientID
+                                    AND (OT.entityId2 = 0 OR OT.entityID2 = A.appTypeId)
+                                    AND (OT.entityId3 = 0 OR OT.entityId3 = A.instance)
+                                    AND (OT.entityId4 = 0 OR OT.entityId4 = A.backupSet)
+                                    AND (OT.entityId5 = 0 OR OT.entityId5 = A.id)
+                            INNER JOIN APP_ClientProp CP
+ON CP.attrName = 'Last Backup Subclient'
+                                AND CAST(CP.attrVal AS INT) = A.id
+                                AND CP.modified = 0
+                        WHERE
+OT.entityType1 = 3
+AND A.appTypeId = 106
+                END
+            END
+            --can we do it based on a flag as input ? - expansion can be done on application layer side also
+IF(@entityTypeReq=4)
+            BEGIN
+                 INSERT INTO #tempOutputTable
+                           SELECT @entityTypeReq, roleId, permissionId, Apl.clientId, Apl.apptypeId,0 ,0 ,0
+                           FROM #tempOutputTable Tbl JOIN APP_IDAName Apl
+                           ON (Tbl.entityReferred < @entityTypeReq) AND (Tbl.entityReferred <> 0)
+                           AND Tbl.clientId = Apl.clientId
+                           AND (Tbl.apptypeId = Apl.appTypeID OR Tbl.appTypeId = 0)
+                           AND Tbl.instanceId = 0  AND Tbl.backupsetId = 0 AND Tbl.subclientId = 0
+                     DELETE FROM #tempOutputTable WHERE entityReferred < @entityTypeReq AND (entityReferred <> 0)
+            END
+IF @entityTypeReq > 4       
+              BEGIN
+                     INSERT INTO #tempOutputTable
+                           SELECT @entityTypeReq, roleId, permissionId, Apl.clientId, Apl.apptypeId,
+                                  CASE WHEN @entitytypereq < 5 THEN 0 ELSE Apl.instance END,
+                                  CASE WHEN @entityTypeReq < 6 THEN 0 ELSE Apl.backupset END,
+                                  CASE WHEN @entitytypereq < 7 THEN 0 ELSE Apl.id END
+                           FROM #tempOutputTable Tbl JOIN APP_APplication Apl
+                           ON (Tbl.entityReferred < @entityTypeReq) AND (Tbl.entityReferred <> 0)
+                           AND Tbl.clientId = Apl.clientId
+                           AND (Tbl.apptypeId = Apl.appTypeID OR Tbl.appTypeId = 0)
+                           AND (Tbl.instanceId = Apl.instance OR Tbl.instanceId = 0)
+                           AND (Tbl.backupsetId = Apl.backupSet OR Tbl.backupsetId = 0)
+                           AND (Tbl.subclientId = Apl.id OR Tbl.subclientId = 0)
+                     DELETE FROM #tempOutputTable WHERE entityReferred < @entityTypeReq AND (entityReferred <> 0)
+              END
+               --delete rows from #tempOutput table for no assocition roles and permissions.
+                        DELETE Tbl
+                        FROM #tempOutputTable Tbl
+                        WHERE permissionId <> 0 AND permissionId NOT IN (SELECT permissionId FROM @permissionForEntity)
+                        DELETE Tbl
+                        FROM #tempOutputTable Tbl
+                        WHERE roleID <> 0 AND roleID NOT IN (SELECT DISTINCT roleID
+                                                            FROM UMRolesWithPermissionsExpanded RPE 
+INNER JOIN @permissionForEntity PFE
+                                                            ON RPE.permissionId = PFE.permissionID)
+                        DELETE Tbl
+                        FROM #tempOutputTable Tbl
+                        WHERE roleId <> 0 AND roleID IN (SELECT id FROM UMRoles WHERE disabled = 1)
+            --WE dont need to do anything for  permissionId=0 case now. #tempOutputTable has result already.
+          IF @permissionId<>0 OR @permissionList<>''
+          BEGIN
+                --WE need to delete extra permission case in both AND and OR cases
+                DELETE Tbl
+                FROM #tempOutputTable Tbl
+                WHERE permissionId <> 0 AND permissionId NOT in (SELECT ipermissionId from @inputPermissionTbl)
+             DELETE Tbl
+              FROM #tempOutputTable Tbl
+              WHERE roleId <> 0 AND roleId NOT IN (SELECT DISTINCT roleId
+                                             FROM UMRolesWithPermissionsExpanded INNER JOIN UMRoles
+                                             ON UMRolesWithPermissionsExpanded.roleId = UMRoles.id
+                                             WHERE permissionId in 
+(SELECT ipermissionId from @inputPermissionTbl) AND disabled = 0)
+                IF(@isAndOperation=1)
+                BEGIN
+                    DECLARE @inputPermissionCount INT=(SELECT Count(  iPermissionId) from @inputPermissionTbl)
+                              DELETE TBL
+                              FROM #tempOutputTable TBL JOIN
+                              (SELECT clientId,appTypeId,instanceId,backupsetId,subclientId
+                                FROM
+                                    (SELECT  clientId,appTypeId,instanceId,backupsetId,subclientId,permissionId
+                                    FROM #tempOutputTable     WHERE permissionId <>0
+                                    UNION
+                                    SELECT clientId,appTypeId,instanceId,backupsetId,subclientId,RE.permissionId
+                                    FROM #tempOutputTable TBL
+                                    JOIN UMRolesWithPermissionsExpanded RE ON TBL.roleId=RE.roleId
+                                    JOIN UMRoles ON RE.roleId=id and disabled=0
+                                     WHERE RE.permissionId IN (SELECT iPermissionId FROM @inputPermissionTbl)
+                                    )Perm
+                                JOIN @inputPermissionTbl ON Perm.permissionId=iPermissionId
+                                GROUP BY clientId,appTypeId,instanceId,backupsetId,subclientId
+                                HAVING(count(permissionId)<@inputPermissionCount)
+                                ) T ON T.clientId=TBL.clientId AND 
+T.appTypeId=TBL.appTypeId AND T.instanceId=TBL.instanceId AND 
+T.backupsetId=TBL.backupsetId AND T.subclientId=TBL.subclientId
+                END
+            END -- PermissionID<>0
+            SET @outputSQLStatement += ' 
+SELECT DISTINCT clientId, appTypeId, instanceId, backupsetId, subclientId FROM #tempOutputTable'
+   END -- END OF ALL Associaitons <>0
+  EXEC (@outputSQLStatement)
+GO
+IF EXISTS (select * from GxQscripts where name = 'sec_getIdaObjectsForUserOld')
+delete from GxQscripts where name = 'sec_getIdaObjectsForUserOld'
+GO
+IF EXISTS (select * from GXDBVersions where aliasname='sec_getIdaObjectsForUserOld')
+delete from GXDBVersions where aliasname = 'sec_getIdaObjectsForUserOld'
+GO
+insert into GXDBVersions values(2, 'sec_getIdaObjectsForUserOld',  '00000000000000000000', 'sec_getIdaObjectsForUserOld', '00000000000000000000')
+GO

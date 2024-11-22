@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: commvault-data-pvc-{{ include "mychart.name" . }}
+  lables:
+  {{- include "ma_chart.commvault-labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.storage.data.storageClassName }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.storage.data.sizeInGB }}Gi

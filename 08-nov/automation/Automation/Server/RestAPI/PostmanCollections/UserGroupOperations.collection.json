@@ -1,0 +1,2854 @@
+{
+	"info": {
+		"_postman_id": "c060d505-db45-40f2-bf28-a4c5c9e37f1b",
+		"name": "User Group Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"####\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ###\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\n\"providerId\":0,\"providerDomainName\":\"####\"\r\n},\"providerOrganization\":{\r\n\"providerId\":0,\"providerDomainName\":\"#####\"\r\n},\"errList\":[\r\n\r\n]\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ) ;     //validate content-type",
+							"postman.setEnvironmentVariable(\"clientId\", jsonData.clientProperties[jsonData.clientProperties.length-1].client.clientEntity.clientId);          //set value of clientId1",
+							"postman.setEnvironmentVariable(\"clientName\", jsonData.clientProperties[jsonData.clientProperties.length-1].client.clientEntity.clientName);          //set value of clientId1",
+							"console.log(\"value of clientId set to:\", postman.getEnvironmentVariable(\"clientId\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Group",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains userGroups\"] = responseBody.has(\"userGroups\");",
+							"postman.setEnvironmentVariable(\"userGroupId1\",jsonData.userGroups[0].userGroupEntity.userGroupId);",
+							"postman.setEnvironmentVariable(\"userGroupName1\",jsonData.userGroups[0].userGroupEntity.userGroupName);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "238",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:26:48 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"userGroups\":[\r{\r\"userGroupEntity\":{\r\"userGroupId\":1,\"userGroupName\":\"master\"\r}\r},{\r\"userGroupEntity\":{\r\"userGroupId\":3,\"userGroupName\":\"View All\"\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "usergroup?level=10&flag=5",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains userGroups\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"userGroups\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains serviceType\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"serviceType\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains description\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"description\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains allAssociations\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"allAssociations\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains email\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"email\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains provider\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"provider\");\r",
+							"});\r",
+							"\r",
+							"//valid only for MSP setups\r",
+							"/**pm.test(\"Body contains entityInfo\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityInfo\");\r",
+							"});**/\r",
+							"\r",
+							"pm.test(\"Body contains userGroupEntity\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"userGroupEntity\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains plan\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"plan\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains userGroupId\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"userGroupId\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Body contains userGroupName\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"userGroupName\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/usergroup?level=10&flag=5",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"usergroup"
+					],
+					"query": [
+						{
+							"key": "level",
+							"value": "10"
+						},
+						{
+							"key": "flag",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"if((tests[\"Validating if user was created successfully\"] = jsonData.response[0].errorString === \"Successful\"))",
+							"    console.log(\"User was created successfully\");",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"if((tests[\"Validating username of created user\"] = responseBody.has(postman.getEnvironmentVariable(\"userName\"))))      ",
+							"            console.log(\"User Name of created user is present\");",
+							"",
+							"postman.setEnvironmentVariable(\"userId1\", jsonData.response[0].entity.userId);",
+							"console.log(\"Value of userId set to:\", postman.getEnvironmentVariable(\"userId\"));",
+							"postman.setEnvironmentVariable(\"userName1\", jsonData.response[0].entity.userName);",
+							"console.log(\"Value of userName set to:\", postman.getEnvironmentVariable(\"userName\"));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"userName\", \"UserGroupTesting\");",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"description\": \"backup admin user\",\r\n      \"agePasswordDays\": 10,\r\n      \"password\": \"Q29tbVZhdWx0QEAxMjM0NTY=\",\r\n      \"email\": \"{{$timestamp}}50975@company.com\",\r\n      \"fullName\": \"Jane Doe{{$timestamp}}\",\r\n      \"enableUser\": true,\r\n      \"associatedUserGroups\": [\r\n        {\r\n          \"userGroupName\": \"{{userGroupName1}}\"\r\n        }\r\n      ],\r\n      \"userEntity\": {\r\n        \"userName\": \"{{userName}}\"\r\n      }\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"if((tests[\"Validating users tag\"] = responseBody.has(\"users\")))      ",
+							"            console.log(\"users tag is present\");",
+							"            ",
+							"postman.setEnvironmentVariable(\"userId\", jsonData.users[0].userEntity.userId);",
+							"postman.setEnvironmentVariable(\"userName\",jsonData.users[0].userEntity.userName);",
+							"",
+							"console.log(\"Value of userId set to :\" ,postman.getEnvironmentVariable(\"userId\"));",
+							"",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"            ",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"",
+							"if((tests[\"Validating userGUID tag\"] = responseBody.has(\"userGUID\")))      ",
+							"            console.log(\"userGUID tag is present\");",
+							"            ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"            console.log(\"userName tag is present\");",
+							"            ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "User",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/User",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"User"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "3956",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 27 Jul 2017 07:12:21 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n\"users\":[\r\n{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":2294,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":3,\"userEntity\":{\r\n\"userGUID\":\"EBEA9754-607C-4CA4-B047-C9F656A1ABB0\",\"userName\":\"####\",\"userId\":1\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"59CBCFF9-ADA1-4A72-B74C-306B3427BD73\",\"userName\":\"####\",\"userId\":3\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"3792D8E7-BE0B-4F0E-8604-86D9860D4F32\",\"userName\":\"####\",\"userId\":4\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"2CA8B008-605C-4CF3-856C-0E24FB151890\",\"userName\":\"####\",\"userId\":11\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"CC0FCF25-D3B0-44EE-8C04-8003BF438442\",\"userName\":\"####\",\"userId\":12\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"8B8B9C84-AC6C-447E-A39A-07567DA1A43E\",\"userName\":\"####\",\"userId\":13\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"41826F1F-398D-4925-9247-54BAFB9DD06C\",\"userName\":\"####\",\"userId\":14\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"DDB1A347-9F34-4DCD-9CA0-DF1E4F31DFF1\",\"userName\":\"####\",\"userId\":15\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"C890A390-4AF0-4D14-91C0-5AD82D5B7D1E\",\"userName\":\"####\",\"userId\":16\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"CFEC49BE-2B38-4401-91D3-FC58E42D7E46\",\"userName\":\"####\",\"userId\":17\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"F62F8A51-3470-4A5C-A7CF-55B8D303D983\",\"userName\":\"####\",\"userId\":18\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"5A373A48-E9E3-467C-8447-2200BF524DD8\",\"userName\":\"####\",\"userId\":19\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"77670349-5BEC-4A77-A5D0-EBB053766BA9\",\"userName\":\"#######\",\"userId\":20\r\n}\r\n},{\r\n\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\n\"userGUID\":\"B036E398-8235-4717-9D6F-AD385CDD383A\",\"userName\":\"#####\",\"userId\":21\r\n}\r\n}\r\n]\r\n}"
+				}
+			]
+		},
+		{
+			"name": "User Group",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"//postman.setEnvironmentVariable(\"userGroupName\", \"newmanUG\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body contains response\"] = responseBody.has(\"response\");",
+							"tests[\"Response Body contains errorString\"] = responseBody.has(\"errorString\");",
+							"tests[\"Response Body contains errorCode 0\"] = jsonData.response[0].errorCode === 0 ;",
+							"tests[\"Response Body contains entity\"] = responseBody.has(\"entity\");",
+							"tests[\"Response Body contains userGroupId\"] = responseBody.has(\"userGroupId\");",
+							"tests[\"Response Body contains userGroupName\"] = responseBody.has(\"userGroupName\");",
+							"tests[\"Validating if user group was created successfully\"] = jsonData.response[0].errorString === \"Successful\";",
+							"postman.setEnvironmentVariable(\"userGroupId\", jsonData.response[0].entity.userGroupId);",
+							"postman.setEnvironmentVariable(\"userGroupName\",jsonData.response[0].entity.userGroupName);",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"Creating a new user group\",\r\n      \"enabled\": true,\r\n      \"securityAssociations\": {\r\n        \"associationsOperationType\": 2,\r\n        \"associations\": [\r\n          {\r\n            \"entities\": {\r\n              \"entity\": [\r\n                {\r\n                  \"clientName\": \"{{clientName}}\"\r\n                }\r\n              ]\r\n            },\r\n            \"properties\": {\r\n              \"role\": {\r\n                \"roleName\": \"View\"\r\n              }\r\n            }\r\n          }\r\n        ]\r\n      },\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{$timestamp}}50975_NewGroup\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"{{userName}}\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation creates a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"{{description}}\",\r\n      \"enabled\": true,\r\n      \"securityAssociations\": {\r\n        \"associationsOperationType\": 2,\r\n        \"associations\": [\r\n          {\r\n            \"entities\": {\r\n              \"entity\": [\r\n                {\r\n                  \"clientName\": \"{{clientName}}\"\r\n                }\r\n              ]\r\n            },\r\n            \"properties\": {\r\n              \"role\": {\r\n                \"roleName\": \"View\"\r\n              }\r\n            }\r\n          }\r\n        ]\r\n      },\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{userGroupName}}\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"####\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation creates a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "202",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:30:08 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"response\":[\r{\r\"errorString\":\"Successful\",\"errorCode\":0,\"entity\":{\r\"userGroupName\":\"Testgroup\",\"userGroupId\":9\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Schedule Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"if(tests[\"Task Id present\"] = responseBody.has(\"taskId\"))",
+							"    postman.setEnvironmentVariable(\"taskId\", jsonData.taskId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var sp_token = \"NewmanTest111\";",
+							"postman.setEnvironmentVariable(\"taskName\", sp_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskInfo\": {\n        \"taskOperation\": 5,\n        \"task\": {\n            \"description\": \"User Group Validation\",\n            \"taskType\": 4,\n            \"isEditing\": false,\n            \"policyType\": 0,\n            \"taskName\": \"User Group Validation\",\n            \"taskId\": 0,\n            \"securityAssociations\": {\n                \"associationsOperationType\": 1,\n                \"associations\": [\n                    {\n                        \"userOrGroup\": [\n                            {\n                                \"userGroupName\": \"{{userGroupName}}\",\n                                \"userGroupId\": {{userGroupId}},\n                                \"_type_\": 15\n                            },\n                            {\n                                \"userId\": {{userId}},\n                                \"_type_\": 13,\n                                \"userName\": \"{{userName}}\"\n                            }\n                        ],\n                        \"properties\": {\n                            \"isCreatorAssociation\": false,\n                            \"role\": {\n                                \"_type_\": 120,\n                                \"roleId\": 3,\n                                \"roleName\": \"View\"\n                            },\n                            \"categoryPermission\": {}\n                        }\n                    }\n                ]\n            },\n            \"taskSecurity\": {},\n            \"alert\": {\n                \"alertName\": \"\",\n                \"alertId\": 0\n            },\n            \"taskFlags\": {\n                \"isEdgeDrive\": false,\n                \"isEZOperation\": false,\n                \"disabled\": false\n            }\n        },\n        \"appGroup\": {\n            \"appGroups\": [\n                {\n                    \"_type_\": 78,\n                    \"appGroupId\": 1\n                },\n                {\n                    \"_type_\": 78,\n                    \"appGroupId\": 5\n                }\n            ]\n        },\n        \"subTasks\": [\n            {\n                \"subTaskOperation\": 2,\n                \"subTask\": {\n                    \"subTaskName\": \"User group validation\",\n                    \"subTaskType\": 2,\n                    \"operationType\": 2,\n                    \"subTaskId\": 1\n                },\n                \"pattern\": {\n                    \"active_end_occurence\": 0,\n                    \"freq_subday_interval\": 0,\n                    \"freq_type\": 8,\n                    \"description\": \"Every week on Friday at 21:00  starting 17 March 2020 \",\n                    \"active_end_time\": 0,\n                    \"skipOccurence\": 0,\n                    \"skipDayNumber\": 0,\n                    \"active_start_time\": 75600,\n                    \"active_start_date\": 1584403200,\n                    \"calendarId\": 1,\n                    \"freq_interval\": 32,\n                    \"freq_relative_interval\": 0,\n                    \"tzId\": 42,\n                    \"freq_recurrence_factor\": 1,\n                    \"daysToRun\": {\n                        \"Friday\": true\n                    },\n                    \"calendar\": {\n                        \"calendarName\": \"Standard\",\n                        \"calendarId\": 1\n                    },\n                    \"timeZone\": {\n                        \"_type_\": 55,\n                        \"TimeZoneID\": 42,\n                        \"TimeZoneName\": \"(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi\"\n                    }\n                },\n                \"options\": {\n                    \"backupOpts\": {\n                        \"truncateLogsOnSource\": false,\n                        \"sybaseSkipFullafterLogBkp\": false,\n                        \"notSynthesizeFullFromPrevBackup\": false,\n                        \"collectMetaInfo\": false,\n                        \"backupLevel\": 1,\n                        \"incLevel\": 1,\n                        \"adHocBackup\": false,\n                        \"runIncrementalBackup\": false,\n                        \"runSILOBackup\": false,\n                        \"doNotTruncateLog\": false,\n                        \"vsaBackupOptions\": {\n                            \"backupFailedVMsOnly\": false\n                        },\n                        \"cdrOptions\": {\n                            \"incremental\": false,\n                            \"dataVerificationOnly\": false,\n                            \"full\": true\n                        },\n                        \"dataOpt\": {\n                            \"skipCatalogPhaseForSnapBackup\": true,\n                            \"useCatalogServer\": true,\n                            \"followMountPoints\": true,\n                            \"enforceTransactionLogUsage\": false,\n                            \"skipConsistencyCheck\": false,\n                            \"granularrecovery\": false,\n                            \"collectVMGranularRecoveryMetadataForBkpCopy\": false,\n                            \"createNewIndex\": true,\n                            \"autoCopy\": false\n                        },\n                        \"distAppsBackupOptions\": {\n                            \"runLogBkp\": false,\n                            \"runDataBkp\": true\n                        },\n                        \"mediaOpt\": {},\n                        \"dbBackupOptions\": {\n                            \"maxDbBackupType\": 0\n                        }\n                    },\n                    \"adminOpts\": {\n                        \"contentIndexingOption\": {\n                            \"subClientBasedAnalytics\": false\n                        }\n                    },\n                    \"restoreOptions\": {\n                        \"commonOptions\": {\n                            \"syncRestore\": false\n                        }\n                    },\n                    \"commonOpts\": {\n                        \"perfJobOpts\": {}\n                    }\n                }\n            }\n        ]\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Task",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Task"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_schedule_policy.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "User Group Properties - Adds User to User Group",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"var userGroupId = postman.getEnvironmentVariable(\"userGroupId\");",
+							"postman.setEnvironmentVariable(\"userGroupId\",userGroupId);",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body contains response tag\"] = responseBody.has(\"response\");",
+							"tests[\"Response Body contains errorString tag\"] = responseBody.has(\"errorString\");",
+							"tests[\"Response Body contains errorCode 0\"] = jsonData.response[0].errorCode === 0 ;",
+							"tests[\"Response Body contains entity tag\"] = responseBody.has(\"entity\");",
+							"tests[\"Validate userGroupId in response body\"] = jsonData.response[0].entity.userGroupId == parseInt(postman.getEnvironmentVariable(\"userGroupId\"));",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"tests[\"Validate userGroupName in response body\"] = jsonData.response[0].entity.userGroupName == userGroupName;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"Description has been modified\",\r\n      \"enabled\": true,\r\n      \"usersOperationType\": 2,\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{userGroupName}}\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"{{userName}}\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup/byName(userGroupName='{{userGroupName}}')",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup",
+						"byName(userGroupName='{{userGroupName}}')"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation updates the properties associated with a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group_properties.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group Properties - This operation adds a user to the group.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"{{description}}\",\r\n      \"enabled\": true,\r\n      \"usersOperationType\": 2,\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{userGroupName}}\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"####\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup/byName(userGroupName='{{userGroupName}}')",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup",
+								"byName(userGroupName='{{userGroupName}}')"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation updates the properties associated with a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group_properties.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "192",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:31:36 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"response\":[\r{\r\"errorString\":\"\",\"errorCode\":0,\"entity\":{\r\"userGroupName\":\"Testgroup\",\"userGroupId\":9\r}\r}\r]\r}"
+				},
+				{
+					"name": "User Group Properties - This request deletes a security association.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"{{description}}\",\r\n      \"enabled\": true,\r\n      \"usersOperationType\": 2,\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{userGroupName}}\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"####\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup/byName(userGroupName='{{userGroupName}}')",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup",
+								"byName(userGroupName='{{userGroupName}}')"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation updates the properties associated with a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group_properties.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "Text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "202",
+							"name": "Content-Length",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:34:31 GMT",
+							"name": "Date",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"processinginstructioninfo\": {\n        \"attributes\": [\n            {\n                \"name\": \"exitval\",\n                \"value\": \"0\"\n            }\n        ]\n    },\n    \"response\": [\n        {\n            \"errorString\": \"Successful\",\n            \"errorCode\": 0,\n            \"entity\": {\n                \"userGroupName\": \"Testgroup\",\n                \"userGroupId\": 9\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "User Group Properties",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var userGroupId = postman.getEnvironmentVariable(\"userGroupId\");",
+							"postman.setEnvironmentVariable(\"userGroupId\",userGroupId);",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains userGroups\"] = responseBody.has(\"userGroups\");",
+							"tests[\"Response Body contains securityAssociations\"] = responseBody.has(\"securityAssociations\");",
+							"tests[\"Response Body contains provider\"] = responseBody.has(\"provider\");",
+							"tests[\"Response Body contains userGroupEntity\"] = responseBody.has(\"userGroupEntity\");",
+							"tests[\"Response Body contains plan\"] = responseBody.has(\"plan\");",
+							"tests[\"Response Body contains users\"] = responseBody.has(\"users\");",
+							"tests[\"Response Body contains vcloudGroupProp\"] = responseBody.has(\"vcloudGroupProp\");",
+							"tests[\"Response Body contains groupSecurity\"] = responseBody.has(\"groupSecurity\");",
+							"if(tests[\"Response Body contains userGroupEntity\"] = responseBody.has(\"userGroupEntity\"))",
+							"{",
+							"    tests[\"Validate userGroupId in response body\"] = jsonData.userGroups[0].userGroupEntity.userGroupId == parseInt(postman.getEnvironmentVariable(\"userGroupId\"));",
+							"    var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"    tests[\"Validate userGroupName in response body\"] = jsonData.userGroups[0].userGroupEntity.userGroupName == userGroupName;",
+							"}",
+							"tests[\"Response Body contains apiQuota\"] = responseBody.has(\"apiQuota\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup",
+						"{{userGroupId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns the properties associated with a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group_properties.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group Properties",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup",
+								"{{userGroupId}}"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns the properties associated with a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group_properties.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1840",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:27:40 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n\"processinginstructioninfo\":{\r\n\"attributes\":[\r\n{\r\n\"name\":\"exitval\",\"value\":\"0\"\r\n}\r\n]\r\n},\"userGroups\":[\r\n{\r\n\"description\":\"####\",\"allAssociations\":true,\"enforceFSQuota\":false,\"enabled\":true,\"agePasswordDays\":0,\"email\":\"\",\"edgeDriveQuotaLimitInGB\":100,\"enforceEdgeDriveQuota\":false,\"quotaLimitInGB\":100,\"preferenceMachineCentricClient\":true,\"allCapabilities\":true,\"securityAssociations\":{\r\n\"associations\":[\r\n{\r\n\"entities\":{\r\n\"entity\":[\r\n{\r\n\"commCellName\":\"####\",\"commCellId\":2,\"_type_\":1\r\n}\r\n]\r\n},\"properties\":{\r\n\"isCreatorAssociation\":true,\"categoryPermission\":{\r\n\"categoriesPermissionList\":[\r\n{\r\n\"permissionId\":178,\"permissionName\":\"####\",\"_type_\":122,\"categoryId\":102\r\n}\r\n]\r\n}\r\n}\r\n},{\r\n\"entities\":{\r\n\"entity\":[\r\n{\r\n\"commCellName\":\"####\",\"commCellId\":2,\"_type_\":1\r\n}\r\n]\r\n},\"properties\":{\r\n\"isCreatorAssociation\":false,\"categoryPermission\":{\r\n\"categoriesPermissionList\":[\r\n{\r\n\"permissionId\":179,\"permissionName\":\"Create Client Group\",\"_type_\":122,\"categoryId\":122\r\n}\r\n]\r\n}\r\n}\r\n},{\r\n\"entities\":{\r\n\"entity\":[\r\n{\r\n\"commCellName\":\"####\",\"commCellId\":2,\"_type_\":1\r\n}\r\n]\r\n},\"properties\":{\r\n\"isCreatorAssociation\":true,\"permissions\":[\r\n{\r\n\"permissionId\":178,\"permissionName\":\"VPN Management\"\r\n}\r\n]\r\n}\r\n},{\r\n\"entities\":{\r\n\"entity\":[\r\n{\r\n\"commCellName\":\"####\",\"commCellId\":2,\"_type_\":1\r\n}\r\n]\r\n},\"properties\":{\r\n\"isCreatorAssociation\":false,\"permissions\":[\r\n{\r\n\"permissionId\":179,\"permissionName\":\"Create Client Group\"\r\n}\r\n]\r\n}\r\n},{\r\n\"entities\":{\r\n\"entity\":[\r\n{\r\n\"commCellName\":\"####\",\"commCellId\":2,\"_type_\":1\r\n}\r\n]\r\n},\"properties\":{\r\n\"isCreatorAssociation\":true,\"role\":{\r\n\"_type_\":120,\"roleId\":1,\"roleName\":\"####\"\r\n}\r\n}\r\n}\r\n]\r\n},\"provider\":{\r\n\"providerId\":0\r\n},\"userGroupEntity\":{\r\n\"userGroupId\":1,\"userGroupName\":\"####\"\r\n},\"plan\":{\r\n\r\n},\"users\":[\r\n{\r\n\"userName\":\"####\",\"userId\":1\r\n}\r\n],\"vcloudGroupProp\":{\r\n\r\n},\"groupSecurity\":{\r\n\"ownerAssociations\":{\r\n\r\n}\r\n}\r\n}\r\n]\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Users and User Groups",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var userGroupId = postman.getEnvironmentVariable(\"userGroupId\");",
+							"postman.setEnvironmentVariable(\"userGroupId\",userGroupId);",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains userGroups\"] = responseBody.has(\"userGroups\");",
+							"tests[\"Response Body contains users\"] = responseBody.has(\"users\");",
+							"tests[\"Response Body contains users\"] = responseBody.has(\"userGroups\");",
+							"tests[\"Newly created User group is present\"] = (function() {",
+							"    for( i=0; i < jsonData.userGroups.length; i++)",
+							"        if (jsonData.userGroups[i].associatedUserOrUserGroup.userGroupId == postman.getEnvironmentVariable(\"userGroupId\") && jsonData.userGroups[i].associatedUserOrUserGroup.userGroupName == postman.getEnvironmentVariable(\"userGroupName\"))",
+							"            return true;",
+							"    return false;",
+							"})();"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/UsersAndGroups",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UsersAndGroups"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of users and user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_users_usergroups.htm)"
+			},
+			"response": [
+				{
+					"name": "Users and User Groups",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/UsersAndGroups",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UsersAndGroups"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of users and user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_users_usergroups.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "856",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:28:29 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n\"userGroups\":[\r\n{\r\n\"fullName\":\"\",\"description\":\"Administrative Group\",\"email\":\"\",\"associatedUserOrUserGroup\":{\r\n\"userGroupName\":\"master\",\"userGroupId\":1,\"_type_\":15\r\n}\r\n},{\r\n\"fullName\":\"\",\"description\":\"Members of this group can see all Commcell Objects, regardless of (other) group associations\",\"email\":\"\",\"associatedUserOrUserGroup\":{\r\n\"userGroupName\":\"View All\",\"userGroupId\":3,\"_type_\":15\r\n}\r\n}\r\n],\"users\":[\r\n{\r\n\"fullName\":\"####\",\"description\":\"####\",\"email\":\"####\",\"associatedUserOrUserGroup\":{\r\n\"userId\":1,\"_type_\":13,\"userName\":\"admin\"\r\n}\r\n},{\r\n\"fullName\":\"\",\"description\":\"\",\"email\":\"####\",\"associatedUserOrUserGroup\":{\r\n\"userId\":3,\"_type_\":13,\"userName\":\"####\"\r\n}\r\n},{\r\n\"fullName\":\"\",\"description\":\"\",\"email\":\"####\",\"associatedUserOrUserGroup\":{\r\n\"userId\":4,\"_type_\":13,\"userName\":\"edgeuser\"\r\n}\r\n}\r\n]\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete User Group and pass properties to another User Group",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var userGroupId = postman.getEnvironmentVariable(\"userGroupId\");",
+							"postman.setEnvironmentVariable(\"userGroupId\",userGroupId);",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body contains response\"] = responseBody.has(\"response\");",
+							"tests[\"Response Body contains errorString 0.\"] = jsonData.response[0].errorCode === 0;",
+							"tests[\"Response Body contains errorCode\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Response Body contains entity\"] = responseBody.has(\"entity\");",
+							"tests[\"Validate userGroupId in response body\"] = jsonData.response[0].entity.userGroupId == parseInt(postman.getEnvironmentVariable(\"userGroupId\"));",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"tests[\"Validate userGroupName in response body\"] = jsonData.response[0].entity.userGroupName == userGroupName;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}?newUserGroupId={{userGroupId1}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup",
+						"{{userGroupId}}"
+					],
+					"query": [
+						{
+							"key": "newUserGroupId",
+							"value": "{{userGroupId1}}"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}?newUserId=1&newUserGroupId=0",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup",
+								"{{userGroupId}}"
+							],
+							"query": [
+								{
+									"key": "newUserId",
+									"value": "1"
+								},
+								{
+									"key": "newUserGroupId",
+									"value": "0"
+								}
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation deletes a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "192",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:36:03 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"response\":[\r{\r\"errorString\":\"\",\"errorCode\":0,\"entity\":{\r\"userGroupName\":\"Testgroup\",\"userGroupId\":9\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Validate User Group Deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"if((tests[\"Validating if Status code is 404\"] = responseCode.code === 404))\r",
+							"    console.log(\"Status code 404 validated\");\r",
+							" \r",
+							"if((tests[\"Validating errorMessage tag\"] = responseBody.has(\"errorMessage\")))      \r",
+							"        console.log(\"errorMessage tag says :\"+jsonData.errorMessage);\r",
+							"    \r",
+							"if((tests[\"Validating errorCode tag\"] = responseBody.has(\"errorCode\")))      \r",
+							"        console.log(\"errorCode tag is present\");\r",
+							"        \r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup",
+						"{{userGroupId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validating change in schedule policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"",
+							"if((tests[\"Validating _type_ tag\"] = responseBody.has(\"_type_\")))      ",
+							"        console.log(\"_type_ tag is present\");",
+							"        ",
+							"if((tests[\"Validating appGroup tag\"] = responseBody.has(\"appGroup\")))      ",
+							"        console.log(\"appGroup tag is present\");",
+							"        ",
+							"if((tests[\"Validating GUID tag\"] = responseBody.has(\"GUID\")))      ",
+							"        console.log(\"GUID tag is present\");",
+							"        ",
+							"if((tests[\"Validating taskName tag\"] = responseBody.has(\"taskName\")))      ",
+							"        console.log(\"taskName tag is present\");",
+							"        ",
+							"if((tests[\"taskId taskId tag\"] = responseBody.has(\"taskId\")))      ",
+							"        console.log(\"taskId tag is present\");",
+							"",
+							"if((tests[\"Validating subTasks tag\"] = responseBody.has(\"subTasks\")))      ",
+							"        console.log(\"subTasks tag is present\");",
+							"        ",
+							"if((tests[\"Validating pattern tag\"] = responseBody.has(\"pattern\")))      ",
+							"        console.log(\"pattern tag is present\");",
+							"        ",
+							"tests[\"user group is removed\"] = (function() {",
+							"    if (jsonData.taskInfo.task.securityAssociations.associations[0].userOrGroup.length === 1)",
+							"            return true;",
+							"    return false;",
+							"})()"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); \r",
+							"postman.setEnvironmentVariable(\"Token\", token);\r",
+							"console.log(\"value of token set:\", token);\r",
+							"var taskId = postman.getEnvironmentVariable(\"taskId\"); \r",
+							"postman.setEnvironmentVariable(\"taskId\", taskId);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/SchedulePolicy/{{taskId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SchedulePolicy",
+						"{{taskId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_schedule_policy_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Schedule Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Deletion validation\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); \r",
+							"postman.setEnvironmentVariable(\"Token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/SchedulePolicy/{{taskId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SchedulePolicy",
+						"{{taskId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_schedule_policy.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "User Group",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"//postman.setEnvironmentVariable(\"userGroupName\", \"newmanUG\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body contains response\"] = responseBody.has(\"response\");",
+							"tests[\"Response Body contains errorString\"] = responseBody.has(\"errorString\");",
+							"tests[\"Response Body contains errorCode 0\"] = jsonData.response[0].errorCode === 0 ;",
+							"tests[\"Response Body contains entity\"] = responseBody.has(\"entity\");",
+							"tests[\"Response Body contains userGroupId\"] = responseBody.has(\"userGroupId\");",
+							"tests[\"Response Body contains userGroupName\"] = responseBody.has(\"userGroupName\");",
+							"tests[\"Validating if user group was created successfully\"] = jsonData.response[0].errorString === \"Successful\";",
+							"postman.setEnvironmentVariable(\"userGroupId\", jsonData.response[0].entity.userGroupId);",
+							"postman.setEnvironmentVariable(\"userGroupName\",jsonData.response[0].entity.userGroupName);",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"Creating a new user group\",\r\n      \"enabled\": true,\r\n      \"securityAssociations\": {\r\n        \"associationsOperationType\": 2,\r\n        \"associations\": [\r\n          {\r\n            \"entities\": {\r\n              \"entity\": [\r\n                {\r\n                  \"clientName\": \"{{clientName}}\"\r\n                }\r\n              ]\r\n            },\r\n            \"properties\": {\r\n              \"role\": {\r\n                \"roleName\": \"View\"\r\n              }\r\n            }\r\n          }\r\n        ]\r\n      },\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{$timestamp}}50975_NewGroup\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"{{userName}}\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation creates a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"{{description}}\",\r\n      \"enabled\": true,\r\n      \"securityAssociations\": {\r\n        \"associationsOperationType\": 2,\r\n        \"associations\": [\r\n          {\r\n            \"entities\": {\r\n              \"entity\": [\r\n                {\r\n                  \"clientName\": \"{{clientName}}\"\r\n                }\r\n              ]\r\n            },\r\n            \"properties\": {\r\n              \"role\": {\r\n                \"roleName\": \"View\"\r\n              }\r\n            }\r\n          }\r\n        ]\r\n      },\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{userGroupName}}\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"####\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation creates a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "202",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:30:08 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"response\":[\r{\r\"errorString\":\"Successful\",\"errorCode\":0,\"entity\":{\r\"userGroupName\":\"Testgroup\",\"userGroupId\":9\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Schedule Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"if(tests[\"Task Id present\"] = responseBody.has(\"taskId\"))",
+							"    postman.setEnvironmentVariable(\"taskId\", jsonData.taskId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var sp_token = \"NewmanTest111\";",
+							"postman.setEnvironmentVariable(\"taskName\", sp_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskInfo\": {\n        \"taskOperation\": 5,\n        \"task\": {\n            \"description\": \"User Group Validation\",\n            \"taskType\": 4,\n            \"isEditing\": false,\n            \"policyType\": 0,\n            \"taskName\": \"User Group Validation\",\n            \"taskId\": 0,\n            \"securityAssociations\": {\n                \"associationsOperationType\": 1,\n                \"associations\": [\n                    {\n                        \"userOrGroup\": [\n                           \n                            {\n                                \"userId\": {{userId}},\n                                \"_type_\": 13,\n                                \"userName\": \"{{userName}}\"\n                            },\n                            {\n                                \"userGroupName\": \"{{userGroupName}}\",\n                                \"userGroupId\": {{userGroupId}},\n                                \"_type_\": 15\n                            }\n                        ],\n                        \"properties\": {\n                            \"isCreatorAssociation\": false,\n                            \"role\": {\n                                \"_type_\": 120,\n                                \"roleId\": 3,\n                                \"roleName\": \"View\"\n                            },\n                            \"categoryPermission\": {}\n                        }\n                    }\n                ]\n            },\n            \"taskSecurity\": {},\n            \"alert\": {\n                \"alertName\": \"\",\n                \"alertId\": 0\n            },\n            \"taskFlags\": {\n                \"isEdgeDrive\": false,\n                \"isEZOperation\": false,\n                \"disabled\": false\n            }\n        },\n        \"appGroup\": {\n            \"appGroups\": [\n                {\n                    \"_type_\": 78,\n                    \"appGroupId\": 1\n                },\n                {\n                    \"_type_\": 78,\n                    \"appGroupId\": 5\n                }\n            ]\n        },\n        \"subTasks\": [\n            {\n                \"subTaskOperation\": 2,\n                \"subTask\": {\n                    \"subTaskName\": \"User group validation\",\n                    \"subTaskType\": 2,\n                    \"operationType\": 2,\n                    \"subTaskId\": 1\n                },\n                \"pattern\": {\n                    \"active_end_occurence\": 0,\n                    \"freq_subday_interval\": 0,\n                    \"freq_type\": 8,\n                    \"description\": \"Every week on Friday at 21:00  starting 17 March 2020 \",\n                    \"active_end_time\": 0,\n                    \"skipOccurence\": 0,\n                    \"skipDayNumber\": 0,\n                    \"active_start_time\": 75600,\n                    \"active_start_date\": 1584403200,\n                    \"calendarId\": 1,\n                    \"freq_interval\": 32,\n                    \"freq_relative_interval\": 0,\n                    \"tzId\": 42,\n                    \"freq_recurrence_factor\": 1,\n                    \"daysToRun\": {\n                        \"Friday\": true\n                    },\n                    \"calendar\": {\n                        \"calendarName\": \"Standard\",\n                        \"calendarId\": 1\n                    },\n                    \"timeZone\": {\n                        \"_type_\": 55,\n                        \"TimeZoneID\": 42,\n                        \"TimeZoneName\": \"(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi\"\n                    }\n                },\n                \"options\": {\n                    \"backupOpts\": {\n                        \"truncateLogsOnSource\": false,\n                        \"sybaseSkipFullafterLogBkp\": false,\n                        \"notSynthesizeFullFromPrevBackup\": false,\n                        \"collectMetaInfo\": false,\n                        \"backupLevel\": 1,\n                        \"incLevel\": 1,\n                        \"adHocBackup\": false,\n                        \"runIncrementalBackup\": false,\n                        \"runSILOBackup\": false,\n                        \"doNotTruncateLog\": false,\n                        \"vsaBackupOptions\": {\n                            \"backupFailedVMsOnly\": false\n                        },\n                        \"cdrOptions\": {\n                            \"incremental\": false,\n                            \"dataVerificationOnly\": false,\n                            \"full\": true\n                        },\n                        \"dataOpt\": {\n                            \"skipCatalogPhaseForSnapBackup\": true,\n                            \"useCatalogServer\": true,\n                            \"followMountPoints\": true,\n                            \"enforceTransactionLogUsage\": false,\n                            \"skipConsistencyCheck\": false,\n                            \"granularrecovery\": false,\n                            \"collectVMGranularRecoveryMetadataForBkpCopy\": false,\n                            \"createNewIndex\": true,\n                            \"autoCopy\": false\n                        },\n                        \"distAppsBackupOptions\": {\n                            \"runLogBkp\": false,\n                            \"runDataBkp\": true\n                        },\n                        \"mediaOpt\": {},\n                        \"dbBackupOptions\": {\n                            \"maxDbBackupType\": 0\n                        }\n                    },\n                    \"adminOpts\": {\n                        \"contentIndexingOption\": {\n                            \"subClientBasedAnalytics\": false\n                        }\n                    },\n                    \"restoreOptions\": {\n                        \"commonOptions\": {\n                            \"syncRestore\": false\n                        }\n                    },\n                    \"commonOpts\": {\n                        \"perfJobOpts\": {}\n                    }\n                }\n            }\n        ]\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Task",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Task"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_schedule_policy.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User Group and Pass properties to another User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var userGroupId = postman.getEnvironmentVariable(\"userGroupId\");",
+							"postman.setEnvironmentVariable(\"userGroupId\",userGroupId);",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body contains response\"] = responseBody.has(\"response\");",
+							"tests[\"Response Body contains errorString 0.\"] = jsonData.response[0].errorCode === 0;",
+							"tests[\"Response Body contains errorCode\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Response Body contains entity\"] = responseBody.has(\"entity\");",
+							"tests[\"Validate userGroupId in response body\"] = jsonData.response[0].entity.userGroupId == parseInt(postman.getEnvironmentVariable(\"userGroupId\"));",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"tests[\"Validate userGroupName in response body\"] = jsonData.response[0].entity.userGroupName == userGroupName;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}?newUserId={{userId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup",
+						"{{userGroupId}}"
+					],
+					"query": [
+						{
+							"key": "newUserId",
+							"value": "{{userId}}"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}?newUserId=1&newUserGroupId=0",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup",
+								"{{userGroupId}}"
+							],
+							"query": [
+								{
+									"key": "newUserId",
+									"value": "1"
+								},
+								{
+									"key": "newUserGroupId",
+									"value": "0"
+								}
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation deletes a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "192",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:36:03 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"response\":[\r{\r\"errorString\":\"\",\"errorCode\":0,\"entity\":{\r\"userGroupName\":\"Testgroup\",\"userGroupId\":9\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Validate User Group Deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"if((tests[\"Validating if Status code is 404\"] = responseCode.code === 404))\r",
+							"    console.log(\"Status code 404 validated\");\r",
+							" \r",
+							"if((tests[\"Validating errorMessage tag\"] = responseBody.has(\"errorMessage\")))      \r",
+							"        console.log(\"errorMessage tag says :\"+jsonData.errorMessage);\r",
+							"    \r",
+							"if((tests[\"Validating errorCode tag\"] = responseBody.has(\"errorCode\")))      \r",
+							"        console.log(\"errorCode tag is present\");\r",
+							"        \r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup",
+						"{{userGroupId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validating change in schedule policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"        ",
+							"if((tests[\"Validating _type_ tag\"] = responseBody.has(\"_type_\")))      ",
+							"        console.log(\"_type_ tag is present\");",
+							"        ",
+							"if((tests[\"Validating appGroup tag\"] = responseBody.has(\"appGroup\")))      ",
+							"        console.log(\"appGroup tag is present\");",
+							"        ",
+							"if((tests[\"Validating GUID tag\"] = responseBody.has(\"GUID\")))      ",
+							"        console.log(\"GUID tag is present\");",
+							"        ",
+							"if((tests[\"Validating taskName tag\"] = responseBody.has(\"taskName\")))      ",
+							"        console.log(\"taskName tag is present\");",
+							"        ",
+							"if((tests[\"taskId taskId tag\"] = responseBody.has(\"taskId\")))      ",
+							"        console.log(\"taskId tag is present\");",
+							"",
+							"if((tests[\"Validating subTasks tag\"] = responseBody.has(\"subTasks\")))      ",
+							"        console.log(\"subTasks tag is present\");",
+							"        ",
+							"if((tests[\"Validating pattern tag\"] = responseBody.has(\"pattern\")))      ",
+							"        console.log(\"pattern tag is present\");",
+							"        ",
+							"postman.setEnvironmentVariable(\"subTaskId\", jsonData.taskInfo.subTasks[0].subTask.subTaskId);",
+							"",
+							"tests[\"user group is removed\"] = (function() {",
+							"    if (jsonData.taskInfo.task.securityAssociations.associations[0].userOrGroup.length === 1)",
+							"            return true;",
+							"    return false;",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); \r",
+							"postman.setEnvironmentVariable(\"Token\", token);\r",
+							"console.log(\"value of token set:\", token);\r",
+							"var taskId = postman.getEnvironmentVariable(\"taskId\"); \r",
+							"postman.setEnvironmentVariable(\"taskId\", taskId);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/SchedulePolicy/{{taskId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SchedulePolicy",
+						"{{taskId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_schedule_policy_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Schedule Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Deletion validation\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); \r",
+							"postman.setEnvironmentVariable(\"Token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/SchedulePolicy/{{taskId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SchedulePolicy",
+						"{{taskId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_schedule_policy.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "User Group",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"//postman.setEnvironmentVariable(\"userGroupName\", \"newmanUG\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body contains response\"] = responseBody.has(\"response\");",
+							"tests[\"Response Body contains errorString\"] = responseBody.has(\"errorString\");",
+							"tests[\"Response Body contains errorCode 0\"] = jsonData.response[0].errorCode === 0 ;",
+							"tests[\"Response Body contains entity\"] = responseBody.has(\"entity\");",
+							"tests[\"Response Body contains userGroupId\"] = responseBody.has(\"userGroupId\");",
+							"tests[\"Response Body contains userGroupName\"] = responseBody.has(\"userGroupName\");",
+							"tests[\"Validating if user group was created successfully\"] = jsonData.response[0].errorString === \"Successful\";",
+							"postman.setEnvironmentVariable(\"userGroupId\", jsonData.response[0].entity.userGroupId);",
+							"postman.setEnvironmentVariable(\"userGroupName\",jsonData.response[0].entity.userGroupName);",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"Creating a new user group\",\r\n      \"enabled\": true,\r\n      \"securityAssociations\": {\r\n        \"associationsOperationType\": 2,\r\n        \"associations\": [\r\n          {\r\n            \"entities\": {\r\n              \"entity\": [\r\n                {\r\n                  \"clientName\": \"{{clientName}}\"\r\n                }\r\n              ]\r\n            },\r\n            \"properties\": {\r\n              \"role\": {\r\n                \"roleName\": \"View\"\r\n              }\r\n            }\r\n          }\r\n        ]\r\n      },\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{$timestamp}}50975_NewGroup\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"{{userName}}\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation creates a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"{{description}}\",\r\n      \"enabled\": true,\r\n      \"securityAssociations\": {\r\n        \"associationsOperationType\": 2,\r\n        \"associations\": [\r\n          {\r\n            \"entities\": {\r\n              \"entity\": [\r\n                {\r\n                  \"clientName\": \"{{clientName}}\"\r\n                }\r\n              ]\r\n            },\r\n            \"properties\": {\r\n              \"role\": {\r\n                \"roleName\": \"View\"\r\n              }\r\n            }\r\n          }\r\n        ]\r\n      },\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{userGroupName}}\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"####\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation creates a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "202",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:30:08 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"response\":[\r{\r\"errorString\":\"Successful\",\"errorCode\":0,\"entity\":{\r\"userGroupName\":\"Testgroup\",\"userGroupId\":9\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Schedule Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"if(tests[\"Task Id present\"] = responseBody.has(\"taskId\"))",
+							"    postman.setEnvironmentVariable(\"taskId\", jsonData.taskId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var sp_token = \"NewmanTest111\";",
+							"postman.setEnvironmentVariable(\"taskName\", sp_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskInfo\": {\n        \"taskOperation\": 5,\n        \"task\": {\n            \"description\": \"User Group Validation\",\n            \"taskType\": 4,\n            \"isEditing\": false,\n            \"policyType\": 0,\n            \"taskName\": \"User Group Validation\",\n            \"taskId\": 0,\n            \"securityAssociations\": {\n                \"associationsOperationType\": 1,\n                \"associations\": [\n                    {\n                        \"userOrGroup\": [\n                            {\n                                \"userGroupName\": \"{{userGroupName}}\",\n                                \"userGroupId\": {{userGroupId}},\n                                \"_type_\": 15\n                            }\n                        ],\n                        \"properties\": {\n                            \"isCreatorAssociation\": false,\n                            \"role\": {\n                                \"_type_\": 120,\n                                \"roleId\": 3,\n                                \"roleName\": \"View\"\n                            },\n                            \"categoryPermission\": {}\n                        }\n                    }\n                ]\n            },\n            \"taskSecurity\": {},\n            \"alert\": {\n                \"alertName\": \"\",\n                \"alertId\": 0\n            },\n            \"taskFlags\": {\n                \"isEdgeDrive\": false,\n                \"isEZOperation\": false,\n                \"disabled\": false\n            }\n        },\n        \"appGroup\": {\n            \"appGroups\": [\n                {\n                    \"_type_\": 78,\n                    \"appGroupId\": 1\n                },\n                {\n                    \"_type_\": 78,\n                    \"appGroupId\": 5\n                }\n            ]\n        },\n        \"subTasks\": [\n            {\n                \"subTaskOperation\": 2,\n                \"subTask\": {\n                    \"subTaskName\": \"User group validation\",\n                    \"subTaskType\": 2,\n                    \"operationType\": 2,\n                    \"subTaskId\": 1\n                },\n                \"pattern\": {\n                    \"active_end_occurence\": 0,\n                    \"freq_subday_interval\": 0,\n                    \"freq_type\": 8,\n                    \"description\": \"Every week on Friday at 21:00  starting 17 March 2020 \",\n                    \"active_end_time\": 0,\n                    \"skipOccurence\": 0,\n                    \"skipDayNumber\": 0,\n                    \"active_start_time\": 75600,\n                    \"active_start_date\": 1584403200,\n                    \"calendarId\": 1,\n                    \"freq_interval\": 32,\n                    \"freq_relative_interval\": 0,\n                    \"tzId\": 42,\n                    \"freq_recurrence_factor\": 1,\n                    \"daysToRun\": {\n                        \"Friday\": true\n                    },\n                    \"calendar\": {\n                        \"calendarName\": \"Standard\",\n                        \"calendarId\": 1\n                    },\n                    \"timeZone\": {\n                        \"_type_\": 55,\n                        \"TimeZoneID\": 42,\n                        \"TimeZoneName\": \"(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi\"\n                    }\n                },\n                \"options\": {\n                    \"backupOpts\": {\n                        \"truncateLogsOnSource\": false,\n                        \"sybaseSkipFullafterLogBkp\": false,\n                        \"notSynthesizeFullFromPrevBackup\": false,\n                        \"collectMetaInfo\": false,\n                        \"backupLevel\": 1,\n                        \"incLevel\": 1,\n                        \"adHocBackup\": false,\n                        \"runIncrementalBackup\": false,\n                        \"runSILOBackup\": false,\n                        \"doNotTruncateLog\": false,\n                        \"vsaBackupOptions\": {\n                            \"backupFailedVMsOnly\": false\n                        },\n                        \"cdrOptions\": {\n                            \"incremental\": false,\n                            \"dataVerificationOnly\": false,\n                            \"full\": true\n                        },\n                        \"dataOpt\": {\n                            \"skipCatalogPhaseForSnapBackup\": true,\n                            \"useCatalogServer\": true,\n                            \"followMountPoints\": true,\n                            \"enforceTransactionLogUsage\": false,\n                            \"skipConsistencyCheck\": false,\n                            \"granularrecovery\": false,\n                            \"collectVMGranularRecoveryMetadataForBkpCopy\": false,\n                            \"createNewIndex\": true,\n                            \"autoCopy\": false\n                        },\n                        \"distAppsBackupOptions\": {\n                            \"runLogBkp\": false,\n                            \"runDataBkp\": true\n                        },\n                        \"mediaOpt\": {},\n                        \"dbBackupOptions\": {\n                            \"maxDbBackupType\": 0\n                        }\n                    },\n                    \"adminOpts\": {\n                        \"contentIndexingOption\": {\n                            \"subClientBasedAnalytics\": false\n                        }\n                    },\n                    \"restoreOptions\": {\n                        \"commonOptions\": {\n                            \"syncRestore\": false\n                        }\n                    },\n                    \"commonOpts\": {\n                        \"perfJobOpts\": {}\n                    }\n                }\n            }\n        ]\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Task",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Task"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_schedule_policy.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Schedule Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Deletion validation\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); \r",
+							"postman.setEnvironmentVariable(\"Token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/SchedulePolicy/{{taskId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SchedulePolicy",
+						"{{taskId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_schedule_policy.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User Group and do not pass properties",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var userGroupId = postman.getEnvironmentVariable(\"userGroupId\");",
+							"postman.setEnvironmentVariable(\"userGroupId\",userGroupId);",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body contains response\"] = responseBody.has(\"response\");",
+							"tests[\"Response Body contains errorString 0.\"] = jsonData.response[0].errorCode === 0;",
+							"tests[\"Response Body contains errorCode\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Response Body contains entity\"] = responseBody.has(\"entity\");",
+							"tests[\"Validate userGroupId in response body\"] = jsonData.response[0].entity.userGroupId == parseInt(postman.getEnvironmentVariable(\"userGroupId\"));",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"tests[\"Validate userGroupName in response body\"] = jsonData.response[0].entity.userGroupName == userGroupName;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup",
+						"{{userGroupId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}?newUserId=1&newUserGroupId=0",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup",
+								"{{userGroupId}}"
+							],
+							"query": [
+								{
+									"key": "newUserId",
+									"value": "1"
+								},
+								{
+									"key": "newUserGroupId",
+									"value": "0"
+								}
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation deletes a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "192",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:36:03 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"response\":[\r{\r\"errorString\":\"\",\"errorCode\":0,\"entity\":{\r\"userGroupName\":\"Testgroup\",\"userGroupId\":9\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Validate User Group Deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"if((tests[\"Validating if Status code is 404\"] = responseCode.code === 404))\r",
+							"    console.log(\"Status code 404 validated\");\r",
+							" \r",
+							"if((tests[\"Validating errorMessage tag\"] = responseBody.has(\"errorMessage\")))      \r",
+							"        console.log(\"errorMessage tag says :\"+jsonData.errorMessage);\r",
+							"    \r",
+							"if((tests[\"Validating errorCode tag\"] = responseBody.has(\"errorCode\")))      \r",
+							"        console.log(\"errorCode tag is present\");\r",
+							"        \r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup",
+						"{{userGroupId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if((tests[\"Validating if user was deleted successfully\"] = jsonData.response[0].errorString === \"Success\"))",
+							"    console.log(\"User was deleted successfully\");",
+							"",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"    ",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"        ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"        ",
+							"if((tests[\"Validating userId in the response with the userId sent in the request \"] = jsonData.response[0].entity.userId == postman.getEnvironmentVariable(\"userId1\")))",
+							"            console.log(\"userId in the response matches with the userId given in request URL\");",
+							"",
+							"if((tests[\"Validating username of deleted user\"] = jsonData.response[0].entity.userName == postman.getEnvironmentVariable(\"userName1\")))    ",
+							"            console.log(\"User Name of deleted user is present\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId1}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,668 @@
+{
+	"info": {
+		"_postman_id": "f8d71ffa-c545-488a-9654-6c8bd19d1de8",
+		"name": "PAPI -- Subclient",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4331195"
+	},
+	"item": [
+		{
+			"name": "0 - Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":4,\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"    ",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0));  ",
+							"        console.log(\"ErrorCode validated\");",
+							"        ",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"        ",
+							"if((tests[\"Validating applicationId tag\"] = responseBody.has(\"applicationId\")))      ",
+							"        console.log(\"applicationId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetId tag\"] = responseBody.has(\"backupsetId\")))      ",
+							"        console.log(\"backupsetId tag is present\");",
+							"        ",
+							"if((tests[\"Validating clientId tag\"] = responseBody.has(\"clientId\")))      ",
+							"        console.log(\"clientId tag is present\");",
+							"",
+							"console.log(\"Setting the value of backupsetId with newly created backupsetId...\");",
+							"",
+							"postman.setEnvironmentVariable(\"backupsetId\", jsonData.response[0].entity.backupsetId);",
+							"console.log(\"Value of backupsetId set to :\" ,postman.getEnvironmentVariable(\"backupsetId\"));",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"clientId\", 2)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"association\": {\r\n        \"entity\": [\r\n            {\r\n                \"clientId\": {{clientId}},\r\n                \"backupsetName\": \"60233_bkpset_{{$timestamp}}\",\r\n                \"instanceName\": \"DefaultInstanceName\",\r\n                \"appName\": \"File System\"\r\n            }\r\n        ]\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Backupset",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Subclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"if (\"subclientId\" in jsonData.response.entity) {",
+							"    console.log(postman.setEnvironmentVariable(\"subclientId\",jsonData.response.entity.subclientId));",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//postman.setEnvironmentVariable(\"subclientName\", \"postman_sub_{{$timestamp}}\")",
+							"",
+							"postman.setEnvironmentVariable(\"clientId\", 2)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subClientProperties\": {\r\n        \"contentOperationType\": 2,\r\n        \"subClientEntity\": {\r\n            \"clientId\": {{clientId}},\r\n            \"instanceName\": \"DefaultInstanceName\",\r\n            \"appName\": \"File System\",\r\n            \"backupsetId\": {{backupsetId}},\r\n            \"subclientName\": \"60233_sub_{{$timestamp}}\"\r\n        },\r\n        \"content\": [\r\n            {\r\n                \"path\": \"C:\\\\Windows\\\\System32\\\\drivers\\\\etc\"\r\n            }\r\n        ],\r\n        \"commonProperties\": {\r\n            \"enableBackup\": true\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Disable Backup Subclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.errorCode).to.eql(0);\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/Subclient/{{subclientId}}/Backup/Action/Disable?enableAfterADelay=1900063997",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"Backup",
+						"Action",
+						"Disable"
+					],
+					"query": [
+						{
+							"key": "enableAfterADelay",
+							"value": "1900063997",
+							"description": "Provide UTC time in unix format."
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"",
+							"if((tests[\"Validate subClientProperties tag\"] = responseBody.has(\"subClientProperties\")));",
+							"        console.log(\"subClientProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validate subClientEntity tag\"] = responseBody.has(\"subClientEntity\")));",
+							"        console.log(\"subClientEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validate clientId tag\"] = responseBody.has(\"clientId\")));",
+							"        console.log(\"clientId tag is present\");",
+							"        ",
+							"if((tests[\"Validate fsSubClientProp tag\"] = responseBody.has(\"fsSubClientProp\")));",
+							"        console.log(\"fsSubClientProp tag is present\");",
+							"        ",
+							"if((tests[\"Validate content tag\"] = responseBody.has(\"content\")));",
+							"        console.log(\"content tag is present\");",
+							"        ",
+							"if((tests[\"Validate securityAssociations tag\"] = responseBody.has(\"securityAssociations\")));",
+							"        console.log(\"securityAssociations tag is present\");",
+							"        ",
+							"if((tests[\"Validate security tag\"] = responseBody.has(\"security\")));",
+							"        console.log(\"security tag is present\");",
+							"",
+							"var subclientName = postman.getEnvironmentVariable(\"subclientName\");",
+							"",
+							"postman.setEnvironmentVariable(\"subclientName\", jsonData.subClientProperties[0].subClientEntity.subclientName);",
+							"",
+							"pm.test(\"Validate backup is disabled\", function () {",
+							"    ",
+							"    pm.expect(jsonData.subClientProperties[0].commonProperties.enableBackupAfterDelay).to.eql(true);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enable Backup Subclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.errorCode).to.eql(0);\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/Subclient/{{subclientId}}/Backup/Action/Enable",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"Backup",
+						"Action",
+						"Enable"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"",
+							"if((tests[\"Validate subClientProperties tag\"] = responseBody.has(\"subClientProperties\")));",
+							"        console.log(\"subClientProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validate subClientEntity tag\"] = responseBody.has(\"subClientEntity\")));",
+							"        console.log(\"subClientEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validate clientId tag\"] = responseBody.has(\"clientId\")));",
+							"        console.log(\"clientId tag is present\");",
+							"        ",
+							"if((tests[\"Validate fsSubClientProp tag\"] = responseBody.has(\"fsSubClientProp\")));",
+							"        console.log(\"fsSubClientProp tag is present\");",
+							"        ",
+							"if((tests[\"Validate content tag\"] = responseBody.has(\"content\")));",
+							"        console.log(\"content tag is present\");",
+							"        ",
+							"if((tests[\"Validate securityAssociations tag\"] = responseBody.has(\"securityAssociations\")));",
+							"        console.log(\"securityAssociations tag is present\");",
+							"        ",
+							"if((tests[\"Validate security tag\"] = responseBody.has(\"security\")));",
+							"        console.log(\"security tag is present\");",
+							"",
+							"var subclientName = postman.getEnvironmentVariable(\"subclientName\");",
+							"",
+							"postman.setEnvironmentVariable(\"subclientName\", jsonData.subClientProperties[0].subClientEntity.subclientName);",
+							"",
+							"pm.test(\"Validate backup is enabled\", function () {",
+							"    ",
+							"    pm.expect(jsonData.subClientProperties[0].commonProperties.enableBackupAfterDelay).to.eql(false);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Subclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"tests[\"SubClient deleted successfully\"] = jsonData.response[0].errorCode == 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"    ",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0));  ",
+							"        console.log(\"ErrorCode validated\");",
+							"        ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Backupset/{{backupsetId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset",
+						"{{backupsetId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

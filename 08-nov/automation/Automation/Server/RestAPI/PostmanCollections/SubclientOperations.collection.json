@@ -1,0 +1,2067 @@
+{
+	"info": {
+		"_postman_id": "8c181b51-4e7e-455c-8a87-a8ab2a50c1c0",
+		"name": "Subclient Operations",
+		"description": "######",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"######\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Invalid Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;",
+							"",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validate Error Message\"] = jsonData.errList[0].errLogMessage === \"Username/Password are incorrect\";",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password2}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Client name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"pm.environment.set(\"clientName\", jsonData.clientProperties[0].client.clientEntity.clientName);",
+							"",
+							"var osName = (jsonData.clientProperties[0].client.osInfo.OsDisplayInfo.OSName).toLowerCase();",
+							"if(osName.includes(\"windows\")){",
+							"    postman.setEnvironmentVariable(\"Path\",\"C:\\\\\\\\Windows\\\\\\\\System32\\\\\\\\drivers\\\\\\\\etc\")",
+							"}",
+							"else{",
+							"    postman.setEnvironmentVariable(\"Path\",\"/var/path2\")",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);",
+							"postman.setEnvironmentVariable(\"clientId\", 2)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Client/{{clientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"{{clientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Subclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"",
+							"if (jsonData.errorMessage && jsonData.errorMessage.includes(\"duplicate content\")) {",
+							"    console.log(\"Duplicate subclient with same content present\");",
+							"    ",
+							"} ",
+							"else{",
+							"    console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"    console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"    postman.setEnvironmentVariable(\"subclientId\", jsonData.response.entity.subclientId);",
+							"    ",
+							"    pm.execution.setNextRequest('POST Subclient Properties');",
+							"",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);",
+							"",
+							"postman.setEnvironmentVariable(\"subclientName\", \"postman_sub\" + new Date().getTime());",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"subClientProperties\": {\r\n    \"contentOperationType\": 2,\r\n    \"subClientEntity\": {\r\n      \"clientId\": {{clientId}},\r\n      \"instanceName\": \"DefaultInstanceName\",\r\n      \"appName\": \"File System\",\r\n      \"backupsetName\": \"DefaultBackupset\",\r\n      \"subclientName\": \"{{subclientName}}\"\r\n    },\r\n    \"content\": [\r\n      {\r\n        \"path\": \"{{Path}}\"\r\n      }\r\n    ],\r\n    \"commonProperties\": {\r\n      \"enableBackup\": true\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Duplicate subclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var subClientProperties = jsonData.subClientProperties;",
+							"var flag=0",
+							"subClientProperties.forEach(function(subClientProperty) {",
+							"    ",
+							"    //finding the duplicate subclient by the name postman",
+							"    if (subClientProperty.subClientEntity.subclientName.includes(\"postman_\")) {",
+							"        var subclientName = subClientProperty.subClientEntity.subclientName;",
+							"        var subclientId = subClientProperty.subClientEntity.subclientId;",
+							"        pm.environment.set(\"duplicateSubclientName\",subclientName)",
+							"        pm.environment.set(\"duplicateSubclientId\",subclientId)",
+							"        flag=1",
+							"    }",
+							"})",
+							"if (flag==0){",
+							"    pm.test(\"Remove the subclient of having same content manually\", function () {",
+							"        pm.expect(flag).not.to.equal(0);",
+							"    });",
+							"    pm.execution.setNextRequest('Logout')",
+							"",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient?clientName={{clientName}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient"
+					],
+					"query": [
+						{
+							"key": "clientName",
+							"value": "{{clientName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Active Jobs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var jobs = jsonData.jobs;",
+							"var duplicateSubclientname = pm.environment.get('duplicateSubclientName');",
+							"var jobIdToStore = null;",
+							"",
+							"for (var i = 0; i < jobs.length; i++) {",
+							"    var job = jobs[i];",
+							"    if (job.jobSummary.subclientName === duplicateSubclientname) {",
+							"        jobIdToStore = job.jobSummary.jobId;",
+							"        break;",
+							"    }",
+							"}",
+							"",
+							"if (jobIdToStore !== null) {",
+							"    pm.environment.set('storedJobId', jobIdToStore.toString());",
+							"    console.log(\"Duplicate suclient's active Job ID:\", jobIdToStore);",
+							"} else {",
+							"    console.log('No active job found with subclient Name matching:', duplicateSubclientname);",
+							"    pm.execution.setNextRequest('DELETE Duplicate Subclient')",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"subClientProperties\": {\r\n    \"contentOperationType\": 2,\r\n    \"subClientEntity\": {\r\n      \"clientId\": {{clientId}},\r\n      \"instanceName\": \"DefaultInstanceName\",\r\n      \"appName\": \"File System\",\r\n      \"backupsetName\": \"DefaultBackupset\",\r\n      \"subclientName\": \"{{subclientName}}\"\r\n    },\r\n    \"content\": [\r\n      {\r\n        \"path\": \"{{Path}}\"\r\n      }\r\n    ],\r\n    \"commonProperties\": {\r\n      \"enableBackup\": true\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Jobs/active",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Jobs",
+						"active"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Duplicate Subclient's Job Kill",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"10s sleep\");",
+							"},10000);",
+							"console.log(\"Killed active job\")",
+							"pm.execution.setNextRequest('GET Active Jobs')"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"1s sleep\");",
+							"},1200);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{storedJobId}}/action/kill",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{storedJobId}}",
+						"action",
+						"kill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Duplicate Subclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Deleting duplicate subclient\");",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"pm.execution.setNextRequest('POST Subclient')",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"",
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"6s sleep\");",
+							"},6000);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{duplicateSubclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{duplicateSubclientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Subclient Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"subClientProperties\":\r\n    {\r\n    \"contentOperationType\": 2,\r\n    \"content\": [\r\n      {\r\n        \"Path\": \"{{Path}}\"\r\n      }\r\n    ],\r\n    \"commonProperties\": {\r\n    \"storageDevice\": {\r\n      \"dataBackupStoragePolicy\": {\r\n          \"_type_\": 17,\r\n            \"storagePolicyName\": \"{{plan}}\"\r\n    }\r\n  }\r\n  }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient by Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"//for (i = 0; i < jsonData.subClientProperties.length; i++) {",
+							"//    tests[\"Validate clientName of subclients\"] = jsonData.subClientProperties[i].subClientEntity.clientName === postman.getEnvironmentVariable(\"clientName\");      //validate subclients tag",
+							"//}",
+							"",
+							"checkForSubclient = false;",
+							"",
+							"for (i = 0; i < jsonData.subClientProperties.length; i++) {",
+							"    if(jsonData.subClientProperties[i].subClientEntity.subclientId == postman.getEnvironmentVariable(\"subclientId\")) {",
+							"        checkForSubclient = true;",
+							"        break;",
+							"    }    //validate subclients id",
+							"}",
+							"",
+							"if(tests[\"Input subclient exists in the JSON\"] = checkForSubclient);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient?clientId={{clientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{clientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient by id 0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient?clientId=0",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient by name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"        ",
+							"if((tests[\"Validate subClientProperties tag\"] = responseBody.has(\"subClientProperties\")));",
+							"        console.log(\"subClientProperties tag is present\");",
+							"",
+							"if((tests[\"Validate filterQueryCount tag\"] = responseBody.has(\"filterQueryCount\")));",
+							"        console.log(\"subClientProperties tag is present\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient?clientName={{clientName}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient"
+					],
+					"query": [
+						{
+							"key": "clientName",
+							"value": "{{clientName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient by invalid name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(tests[\"Status code is 404\"] = responseCode.code === 404);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient?clientName=invalidclientnamexyz123",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient"
+					],
+					"query": [
+						{
+							"key": "clientName",
+							"value": "invalidclientnamexyz123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validate subClientProperties tag\"] = responseBody.has(\"subClientProperties\")));",
+							"        console.log(\"subClientProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validate subClientEntity tag\"] = responseBody.has(\"subClientEntity\")));",
+							"        console.log(\"subClientEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validate clientId tag\"] = responseBody.has(\"clientId\")));",
+							"        console.log(\"clientId tag is present\");",
+							"        ",
+							"if((tests[\"Validate fsSubClientProp tag\"] = responseBody.has(\"fsSubClientProp\")));",
+							"        console.log(\"fsSubClientProp tag is present\");",
+							"        ",
+							"if((tests[\"Validate content tag\"] = responseBody.has(\"content\")));",
+							"        console.log(\"content tag is present\");",
+							"        ",
+							"if((tests[\"Validate securityAssociations tag\"] = responseBody.has(\"securityAssociations\")));",
+							"        console.log(\"securityAssociations tag is present\");",
+							"        ",
+							"if((tests[\"Validate security tag\"] = responseBody.has(\"security\")));",
+							"        console.log(\"security tag is present\");",
+							"        ",
+							"if((tests[\"Validate appname tag\"] = responseBody.has(\"appName\"))); {",
+							"        console.log(\"security tag is present\");",
+							"        tests[\"Validate appName\"] = jsonData.subClientProperties[0].subClientEntity.appName === \"File System\";",
+							"}",
+							"//tests[\"Validate clientName of subclient\"] = jsonData.subClientProperties[0].subClientEntity.clientName === postman.getEnvironmentVariable(\"clientName\");",
+							"",
+							"var subclientName = postman.getEnvironmentVariable(\"subclientName\");",
+							"",
+							"postman.setEnvironmentVariable(\"subclientName\", jsonData.subClientProperties[0].subClientEntity.subclientName);",
+							"",
+							"console.log(subclientName);"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_subclient_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Subclient Backup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if (\"jobIds\" in jsonData)",
+							"    postman.setEnvironmentVariable(\"jobId\", parseInt(jsonData.jobIds[0]));",
+							"    ",
+							"postman.setEnvironmentVariable(\"jobCounter\", 0)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/action/backup?backupLevel=Full",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"action",
+						"backup"
+					],
+					"query": [
+						{
+							"key": "backupLevel",
+							"value": "Full"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient_backup.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Job Summary",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"if (postman.getEnvironmentVariable(\"jobCounter\") < 20) {",
+							"    if (jsonData.jobs[0].jobSummary.status == \"Waiting\" || jsonData.jobs[0].jobSummary.status == \"Pending\" || jsonData.jobs[0].jobSummary.status == \"Running\") {",
+							"        postman.setEnvironmentVariable(\"jobCounter\", parseInt(postman.getEnvironmentVariable(\"jobCounter\")) + 1);",
+							"        setTimeout(function(){//put your code in here to be delayed",
+							"            console.log(\"15s sleep\");",
+							"            console.log(\"Looping\")",
+							"        postman.setNextRequest(\"Job Summary\");",
+							"        },15000);",
+							"    }",
+							"    else{",
+							"        tests[\"Job successful\"] = jsonData.jobs[0].jobSummary.status == \"Completed\";",
+							"        setTimeout(function(){//put your code in here to be delayed",
+							"            console.log(\"Completed\")",
+							"            postman.setNextRequest(\"POST Subclient Backup Incremental\");",
+							"        },5000);",
+							"        ",
+							"    }",
+							"}",
+							"else {",
+							"    tests[\"Job status\"] = jsonData.jobs[0].jobSummary.status == \"Completed\";",
+							"    setTimeout(function(){//put your code in here to be delayed",
+							"        console.log(\"Completed\")",
+							"        postman.setNextRequest(\"POST Subclient Backup Incremental\");",
+							"    },5000);",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns the summary for a specific job.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_job_summary.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Subclient Backup Incremental",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if (\"jobIds\" in jsonData)",
+							"    postman.setEnvironmentVariable(\"jobId\", parseInt(jsonData.jobIds[0]));",
+							"    ",
+							"postman.setEnvironmentVariable(\"jobCounter\", 0)"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/action/backup?backupLevel=Incremental",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"action",
+						"backup"
+					],
+					"query": [
+						{
+							"key": "backupLevel",
+							"value": "Incremental"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_subclient_backup.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Job Summary Incremental",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"if (postman.getEnvironmentVariable(\"jobCounter\") < 20) {",
+							"    if (jsonData.jobs[0].jobSummary.status == \"Waiting\" || jsonData.jobs[0].jobSummary.status == \"Pending\" || jsonData.jobs[0].jobSummary.status == \"Running\") {",
+							"        postman.setEnvironmentVariable(\"jobCounter\", parseInt(postman.getEnvironmentVariable(\"jobCounter\")) + 1);",
+							"        setTimeout(function(){//put your code in here to be delayed",
+							"            console.log(\"15s sleep\");",
+							"            console.log(\"Looping\")",
+							"        postman.setNextRequest(\"Job Summary Incremental\");",
+							"        },15000);",
+							"    }",
+							"    else",
+							"        tests[\"Job successful\"] = jsonData.jobs[0].jobSummary.status == \"Completed\";",
+							"        postman.setNextRequest(\"Synth Full\");",
+							"}",
+							"else {",
+							"    tests[\"Job status\"] = jsonData.jobs[0].jobSummary.status == \"Completed\";",
+							"    postman.setNextRequest(\"Synth Full\");",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns the summary for a specific job.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_job_summary.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Job Kill",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"10s sleep\");",
+							"},5000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"120s sleep\");",
+							"},120000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}/action/kill",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}",
+						"action",
+						"kill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Synth Full",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if (\"jobIds\" in jsonData) {",
+							"    tests[\"Job triggered\"]",
+							"    postman.setEnvironmentVariable(\"jobId\", parseInt(jsonData.jobIds[0]));",
+							"}",
+							"",
+							"if (\"taskId\" in jsonData)",
+							"    tests[\"Task created\"]"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed",
+							"    console.log(\"60s sleep\");",
+							"},60000);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/action/backup?backupLevel=Synthetic_Full",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"action",
+						"backup"
+					],
+					"query": [
+						{
+							"key": "backupLevel",
+							"value": "Synthetic_Full"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job Summary 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"if (postman.getEnvironmentVariable(\"jobCounter\") < 20) {",
+							"    if (jsonData.jobs[0].jobSummary.status == \"Waiting\" || jsonData.jobs[0].jobSummary.status == \"Pending\" || jsonData.jobs[0].jobSummary.status == \"Running\") {",
+							"        postman.setEnvironmentVariable(\"jobCounter\", parseInt(postman.getEnvironmentVariable(\"jobCounter\")) + 1);",
+							"        setTimeout(function(){//put your code in here to be delayed",
+							"            console.log(\"15s sleep\");",
+							"            console.log(\"Looping\")",
+							"        postman.setNextRequest(\"Job Summary 1\");",
+							"        },15000);",
+							"    }",
+							"    else",
+							"        tests[\"Job successful\"] = jsonData.jobs[0].jobSummary.status == \"Completed\";",
+							"        postman.setEnvironmentVariable(\"jobCounter\", 0)",
+							"}",
+							"else {",
+							"    tests[\"Job status\"] = jsonData.jobs[0].jobSummary.status == \"Completed\";",
+							"    postman.setEnvironmentVariable(\"jobCounter\", 0)",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"10s sleep\");",
+							"},10000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns the summary for a specific job.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_job_summary.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Synth Full Incremental-False",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 500);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"// if (\"jobIds\" in jsonData) {",
+							"//     tests[\"Job triggered\"]",
+							"//     postman.setEnvironmentVariable(\"jobId\", parseInt(jsonData.jobIds[0]));",
+							"// }",
+							"",
+							"// if (\"taskId\" in jsonData)",
+							"//     tests[\"Task created\"]",
+							"if (jsonData['errorCode'] == 2)",
+							"    tests[\"Expected error returned\"] = true",
+							"else",
+							"    tests[\"Expected error returned\"] = false"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed",
+							"    console.log(\"60s sleep\");",
+							"},60000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/action/backup?backupLevel=Synthetic_Full&runIncrementalBackup=False",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"action",
+						"backup"
+					],
+					"query": [
+						{
+							"key": "backupLevel",
+							"value": "Synthetic_Full"
+						},
+						{
+							"key": "runIncrementalBackup",
+							"value": "False"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Synth Full Incremental-True",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Incremental level for backup needs to be passed when runIncrementalBackup flag is set to true in backup request\");",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed",
+							"    console.log(\"60s sleep\");",
+							"},60000);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/action/backup?backupLevel=Synthetic_Full&runIncrementalBackup=True",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"action",
+						"backup"
+					],
+					"query": [
+						{
+							"key": "backupLevel",
+							"value": "Synthetic_Full"
+						},
+						{
+							"key": "runIncrementalBackup",
+							"value": "True"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Synth Full Incremental-True AFTER_SYNTH",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if (\"jobIds\" in jsonData) {",
+							"    tests[\"Job triggered\"]",
+							"    postman.setEnvironmentVariable(\"jobId\", parseInt(jsonData.jobIds[0]));",
+							"}",
+							"",
+							"if (\"taskId\" in jsonData)",
+							"    tests[\"Task created\"]"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}/action/backup?backupLevel=Synthetic_Full&runIncrementalBackup=True&incrementalLevel=BEFORE_SYNTH",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}",
+						"action",
+						"backup"
+					],
+					"query": [
+						{
+							"key": "backupLevel",
+							"value": "Synthetic_Full"
+						},
+						{
+							"key": "runIncrementalBackup",
+							"value": "True"
+						},
+						{
+							"key": "incrementalLevel",
+							"value": "BEFORE_SYNTH"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job Summary 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"if (postman.getEnvironmentVariable(\"jobCounter\") < 20) {",
+							"    if (jsonData.jobs[0].jobSummary.status == \"Waiting\" || jsonData.jobs[0].jobSummary.status == \"Pending\" || jsonData.jobs[0].jobSummary.status == \"Running\") {",
+							"        postman.setEnvironmentVariable(\"jobCounter\", parseInt(postman.getEnvironmentVariable(\"jobCounter\")) + 1);",
+							"        setTimeout(function(){//put your code in here to be delayed",
+							"            console.log(\"15s sleep\");",
+							"            console.log(\"Looping\")",
+							"        postman.setNextRequest(\"Job Summary 3\");",
+							"        },15000);",
+							"    }",
+							"    else",
+							"        tests[\"Job successful\"] = jsonData.jobs[0].jobSummary.status == \"Completed\";",
+							"        postman.setNextRequest(\"DELETE Subclient\");",
+							"}",
+							"else {",
+							"    tests[\"Job status\"] = jsonData.jobs[0].jobSummary.status == \"Completed\";",
+							"    postman.setNextRequest(\"DELETE Subclient\");",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"10s sleep\");",
+							"},10000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns the summary for a specific job.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_job_summary.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Job Kill copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"5s sleep\");",
+							"},5000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"5s sleep\");",
+							"},5000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Job/{{jobId}}/action/kill",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"{{jobId}}",
+						"action",
+						"kill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Subclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"tests[\"Client deleted successfully\"] = jsonData.response[0].errorCode == 0;"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);",
+							"",
+							"setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"    console.log(\"60s sleep\");",
+							"},60000);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

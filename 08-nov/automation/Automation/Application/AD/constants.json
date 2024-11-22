@@ -1,0 +1,212 @@
+{
+"AD_TYPE_MAPPER"    :  {    "User" : "AD_USER_MAPPER",
+                            "Group" : "AD_GROUP_MAPPER",
+                            "OU" : "AD_OU_MAPPER"},
+                            
+"AD_GROUP_MAPPER"   :   {   "dn" : "distinguishedName",
+                            "cn" : "cn",
+                            "name" : "name",
+                            "guid" : "ObjectGUID",
+                            "classname" : "objectClass",
+                            "type" : "groupType",
+                            "usncreated" : "uSNCreated",
+                            "usnchanged" : "uSNChanged",
+                            "sid" : "objectSid"},
+                            
+"AD_OU_MAPPER"      : {  "dn" : "distinguishedName",
+                         "ou" : "ou",
+                         "name" : "name",
+                         "guid" : "ObjectGUID",
+                         "classname" : "objectClass",
+                         "type" : "instanceType",
+                         "usncreated" : "uSNCreated",
+                         "usnchanged" : "uSNChanged"},
+                          
+"AD_USER_MAPPER"    :  {   "dn" : "distinguishedName",
+                           "cn" : "cn",
+                           "name" : "name",
+                           "guid" : "ObjectGUID",
+                           "classname" : "objectClass",
+                           "type" : "instanceType",
+                           "usncreated" : "uSNCreated",
+                           "usnchanged" : "uSNChanged"},
+
+"AD_CATEGORY_TYPES" :   {      "Group"  :   "Group",
+                               "User"   :   "Person",
+                               "OU"     :   "Organizational-Unit",
+                               "Computer"   :   "Computer"},
+                               
+"AD_OBJECT_CLASS_MAPPER"    :  {    "OU"    : "organizationalUnit",
+                                    "User"  : "person",
+                                    "Group" : "group",
+                                    "InterUser" : "inetOrgPerson",
+                                    "OrgUser"   : "organizationalPerson"},
+"AD_OBJECT_CLASS_PRE_MAPPER" : {        "OU"    : "ou",
+                                        "User"  : "cn",
+                                        "Group" : "cn",
+                                        "InterUser" : "cn",
+                                        "OrgUser"   : "cn"},
+"AD_UGO_ATTRIBUTELIST"  :   ["distinguishedName", "objectGUID", "objectClass"],
+"AD_USER_OBJECT_CLASS"  :   ["top", "person", "organizationalPerson", "user"],
+
+"AadTypeAttribute" : {"user" : { "other" :  ["city", "companyName", "department","givenName","jobTitle"],
+                                   "new" : ["userPrincipalName", "displayName","mailNickname"],
+                                   "readonly" : ["id"]},
+                          "group" : {"other" :  ["description"],
+                                     "new" :  ["displayName", "mailNickname"],
+                                     "readonly" :  ["id"]},
+                        "reg_app" : { "other": ["notes"],
+                                      "new" : ["displayName"],
+                                      "readonly" : ["id"]},
+                        "ent_app" : {"other" :  ["appDescription","description", "notes"],
+                                     "new" :  ["displayName"],
+                                     "readonly" :  ["id"]},
+                        "ca_policy" : { "other" : [],
+                                        "new" : ["displayName","state", "conditions", "grantControls"],
+                                        "readonly" : ["id"]},
+                        "ca_name_location" : { "other" : [],
+                                              "new" : ["displayName", "@data.type"],
+                                              "readonly" : ["id"]},
+                        "ca_auth_context" : { "other" : ["description"],
+                                              "new" : ["displayName", "id"],
+                                              "readonly" : []},
+                        "ca_auth_strength" : { "other" : ["description"], 
+                                               "new" : ["displayName", "policyType", "allowedCombinations"],
+                                               "readonly" : ["id"]},
+                        "role" : { "other" : ["description"],
+                                   "new" : ["displayName", "isEnabled", "rolePermissions"],
+                                   "readonly" : ["id"]},
+                        "admin_unit" : { "other" : ["description"],
+                                         "new" : ["displayName"],
+                                         "readonly" : ["id"]}
+  } ,
+"AadTypeRelationship" : { "user" : {},
+                            "group" : {}
+  },
+"AadIndexMeta" :   { "user" : 2,
+                  "group" : 3,
+                  "reg_app" : 5,
+                  "ent_app" : 6,
+                  "ca_policy" :  11,
+                  "ca_name_location" :  12,
+                  "ca_auth_context" :  13,
+                  "ca_auth_strength" :  14,
+                  "role" :  15,
+                  "admin_unit" :  16} ,
+"AadGraphTypeUrl" : {
+    "user" : {
+      "count" :  "/users/$count",
+      "base" : "/users",
+      "deletelist" : "/directory/deletedItems/microsoft.graph.user",
+      "harddelete" : "/directory/deletedItems",
+      "delta" : "/users/delta?$deltatoken="
+    },
+    "group" : {
+      "count" : "/groups/$count",
+      "base" : "/groups",
+      "deletelist" : "/directory/deletedItems/microsoft.graph.group",
+      "harddelete" : "/directory/deletedItems",
+      "delta" : "/groups/delta?$deltatoken="
+    },
+    "reg_app" : {
+      "count" : "/applications/$count",
+      "base" : "/applications",
+      "deletelist" : "/directory/deletedItems/microsoft.graph.application",
+      "harddelete" : "/directory/deletedItems",
+      "delta" : "/applications/delta?$deltatoken="
+    },
+    "ent_app" : {
+      "count" : "/serviceprincipals/$count",
+      "base" : "/serviceprincipals",
+      "deletelist" :  "/directory/deletedItems/microsoft.graph.serviceprincipal",
+      "harddelete" : "/directory/deletedItems",
+      "delta" : "/serviceprincipals/delta?$deltatoken="
+    },
+    "domain" : {
+      "list" : "/domains"
+    },
+    "ca_policy" : {
+      "base" :  "/identity/conditionalAccess/policies"
+    },
+    "ca_name_location" : {
+      "base" : "/identity/conditionalAccess/namedLocations"
+    },
+    "ca_auth_context" : {
+      "base" : "/identity/conditionalAccess/authenticationContextClassReferences"
+    },
+    "ca_auth_strength" : {
+      "base" : "/policies/authenticationStrengthPolicies"    
+    },
+    "role": {
+      "base" : "/roleManagement/directory/roleDefinitions"
+    },
+    "admin_unit" : {
+      "base" : "/directory/administrativeUnits",
+      "count" : "/directory/administrativeUnits/$count",
+      "deletelist" :  "/directory/deletedItems/microsoft.graph.administrativeUnit"
+    }
+  },
+  "AZUREAD_TYPE_CREATE_PARANAME": {
+    "user": "UserCreateParameters",
+    "group": "GroupCreateParameters",
+    "reg_app": "ApplicationCreateParameters",
+    "ent_app": "ServicePrincipalCreateParameters"
+  },
+  "AZUREAD_TYPE_CREATE_ENTRIES": {
+    "user": {
+      "username": "user_principal_name",
+      "displayname": "display_name",
+      "nickname": "mail_nickname"
+    },
+    "group": {
+      "displayname": "display_name",
+      "nickname": "mail_nickname"
+    },
+    "reg_app": {
+      "displayname": "display_name",
+      "uri": "identifier_uris"
+    },
+    "ent_app": {
+      "displayname": "displayname"
+    }
+  },
+  "AZUREAD_TYPE_CREATE_KEYNAME": {
+    "user": "user_principal_name",
+    "group": "display_name"
+  },
+  "AZUREAD_INDEX_META_MAPPER": {
+    "user": 2,
+    "group": 3,
+    "reg_app": 5,
+    "ent_app": 6
+  },
+  "AZUREAD_DELETED_URL": {
+    "reg_app": "/{tenantID}/deletedApplications"
+  },
+  "AZUREAD_TYPE_ATTRIBUTES": {
+    "user": [
+      "display_name",
+      "given_name",
+      "mail",
+      "mail_nickname",
+      "surname",
+      "usage_location"
+    ],
+    "group": [
+      "display_name",
+      "description",
+      "mail"
+    ],
+    "reg_app": [
+      "display_name",
+      "www_homepage",
+      "reply_urls",
+      "homepage",
+      "app_logo_url"
+    ],
+    "ent_app": [
+      "display_name",
+      "homepage"
+    ]
+  }
+}

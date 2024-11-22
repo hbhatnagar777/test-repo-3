@@ -1,0 +1,1036 @@
+{
+	"info": {
+		"_postman_id": "9a186189-aeaf-406f-a097-92ed1fd984d3",
+		"name": "Search Operations",
+		"description": "API testing for Global Search",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"######\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK 376d3218e0d7d94d0c7f2cd3e6087055b94d9fd96505441323fe3010e0dd1aaf03a8ed0d1f7854f11b0e1692fb58bd494f9f12f45c9123252b0145caf0c45f57b67c2381068c3e5500e5c41449a1ea0bb36c72e174a8306ad982e6974477aa6fdaf4ea270f9d946a970600765293113ae80f677bf635e0001464fff7b8fade7329366008da7b98d296179c71561b88c5027798004f19f92367e3a3c7cbf70b26c9c047a0b33eeb5a64da3db412ff38394b64cf70dcee06f1dc0a759f7f31845a05b6796ac4d6c620ab89aeac6d680cd5033d5f72627ac2e4f20f2f6e9189c2304cc7baaf755a06311b6c68f2755b1099a4f9e5169d3ff687691b66de7388fcdea2de5e0235dab1032968d2e141e8b2d8c\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Search Entity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"searchType is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"searchType\");\r",
+							"});\r",
+							"pm.test(\"entitySearchResultInfo provided is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entitySearchResultInfo\");\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"totalMatchingEntityCount is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"totalMatchingEntityCount\");\r",
+							"});\r",
+							"pm.test(\"entityInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityInfo\");\r",
+							"});\r",
+							"pm.test(\"displayName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"displayName\");\r",
+							"});\r",
+							"pm.test(\"name is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"name\");\r",
+							"});\r",
+							"pm.test(\"commcellGuid is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"commcellGuid\");\r",
+							"});\r",
+							"pm.test(\"id is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"});\r",
+							"pm.test(\"subtype_id is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"subtype_id\");\r",
+							"});\r",
+							"pm.test(\"detailedProperty is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detailedProperty\");\r",
+							"});\r",
+							"pm.test(\"serverProperty is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"serverProperty\");\r",
+							"});\r",
+							"pm.test(\"clientProperties is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientProperties\");\r",
+							"});\r",
+							"pm.test(\"client is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"client\");\r",
+							"});\r",
+							"pm.test(\"osInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"osInfo\");\r",
+							"});\r",
+							"pm.test(\"SubType is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"SubType\");\r",
+							"});\r",
+							"pm.test(\"idaList is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"idaList\");\r",
+							"});\r",
+							"pm.test(\"idaEntity is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"idaEntity\");\r",
+							"});\r",
+							"pm.test(\"applicationId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"applicationId\");\r",
+							"});\r",
+							"pm.test(\"clientEntity is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientEntity\");\r",
+							"});\r",
+							"pm.test(\"hostName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"hostName\");\r",
+							"});\r",
+							"pm.test(\"clientId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientId\");\r",
+							"});\r",
+							"pm.test(\"clientName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientName\");\r",
+							"});\r",
+							"pm.test(\"displayName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"displayName\");\r",
+							"});\r",
+							"pm.test(\"clientGUID is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientGUID\");\r",
+							"});\r",
+							"pm.test(\"entityInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityInfo\");\r",
+							"});\r",
+							"pm.test(\"companyId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"companyId\");\r",
+							"});\r",
+							"pm.test(\"companyName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"companyName\");\r",
+							"});\r",
+							"pm.test(\"multiCommcellId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"multiCommcellId\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Entities/Search?name=client&pageNum=1&pageSize=4&exactMatch=0",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Entities",
+						"Search"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "client"
+						},
+						{
+							"key": "pageNum",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "4"
+						},
+						{
+							"key": "exactMatch",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Basic search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"searchType is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"searchType\");\r",
+							"});\r",
+							"pm.test(\"entitySearchResultInfo provided is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entitySearchResultInfo\");\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"totalMatchingEntityCount is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"totalMatchingEntityCount\");\r",
+							"});\r",
+							"pm.test(\"entityInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityInfo\");\r",
+							"});\r",
+							"pm.test(\"displayName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"displayName\");\r",
+							"});\r",
+							"pm.test(\"name is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"name\");\r",
+							"});\r",
+							"pm.test(\"commcellGuid is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"commcellGuid\");\r",
+							"});\r",
+							"pm.test(\"id is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"});\r",
+							"pm.test(\"subtype_id is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"subtype_id\");\r",
+							"});\r",
+							"pm.test(\"detailedProperty is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detailedProperty\");\r",
+							"});\r",
+							"pm.test(\"serverProperty is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"serverProperty\");\r",
+							"});\r",
+							"pm.test(\"clientProperties is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientProperties\");\r",
+							"});\r",
+							"pm.test(\"client is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"client\");\r",
+							"});\r",
+							"pm.test(\"osInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"osInfo\");\r",
+							"});\r",
+							"pm.test(\"SubType is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"SubType\");\r",
+							"});\r",
+							"pm.test(\"idaList is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"idaList\");\r",
+							"});\r",
+							"pm.test(\"idaEntity is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"idaEntity\");\r",
+							"});\r",
+							"pm.test(\"applicationId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"applicationId\");\r",
+							"});\r",
+							"pm.test(\"clientEntity is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientEntity\");\r",
+							"});\r",
+							"pm.test(\"hostName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"hostName\");\r",
+							"});\r",
+							"pm.test(\"clientId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientId\");\r",
+							"});\r",
+							"pm.test(\"clientName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientName\");\r",
+							"});\r",
+							"pm.test(\"displayName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"displayName\");\r",
+							"});\r",
+							"pm.test(\"clientGUID is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientGUID\");\r",
+							"});\r",
+							"pm.test(\"entityInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityInfo\");\r",
+							"});\r",
+							"pm.test(\"companyId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"companyId\");\r",
+							"});\r",
+							"pm.test(\"companyName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"companyName\");\r",
+							"});\r",
+							"pm.test(\"multiCommcellId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"multiCommcellId\");\r",
+							"});\r",
+							"\r",
+							"for (let i = 0; i < jsonData.entitySearchResultInfo.length; i++) {\r",
+							"  if (jsonData.entitySearchResultInfo[i].searchType == \"FILESERVER\") {\r",
+							"      pm.environment.set(\"client_name\", jsonData.entitySearchResultInfo[i].entityInfo[0].name);\r",
+							"}\r",
+							"}\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "EnumNames",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "commcellGuid",
+						"value": "NotPopulated",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Entities/Search?name=client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Entities",
+						"Search"
+					],
+					"query": [
+						{
+							"key": "operationType",
+							"value": "Archive",
+							"disabled": true
+						},
+						{
+							"key": "detailedProperty",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "client"
+						}
+					]
+				},
+				"description": "Search basic"
+			},
+			"response": []
+		},
+		{
+			"name": "Checking for duplicate entries",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"entitySearchResultInfo provided is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entitySearchResultInfo\");\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"entitySearchResultInfo is an empty list\", function () {\r",
+							"        var jsonData = pm.response.json();\r",
+							"        pm.expect(jsonData.entitySearchResultInfo.length).to.eql(0);\r",
+							"    });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "EnumNames",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "commcellGuid",
+						"value": "NotPopulated",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Entities/Search?name= {{client_name}}&entityType=1",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Entities",
+						"Search"
+					],
+					"query": [
+						{
+							"key": "operationType",
+							"value": "Archive",
+							"disabled": true
+						},
+						{
+							"key": "detailedProperty",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "searchType",
+							"value": "FILESERVER",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": " {{client_name}}"
+						},
+						{
+							"key": "entityType",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Search basic"
+			},
+			"response": []
+		},
+		{
+			"name": "CommcellRedirect/Multicommcell",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"servicePackInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"servicePackInfo\");\r",
+							"});\r",
+							"pm.test(\"commcellHostname is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"commcellHostname\");\r",
+							"});\r",
+							"pm.test(\"commcellRole is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"commcellRole\");\r",
+							"});\r",
+							"pm.test(\"webUrl is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"webUrl\");\r",
+							"});\r",
+							"pm.test(\"commcell is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"commcell\");\r",
+							"});\r",
+							"pm.test(\"commCellName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"commCellName\");\r",
+							"});\r",
+							"pm.test(\"commCellId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"commCellId\");\r",
+							"});\r",
+							"pm.test(\"csGUID is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"csGUID\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "EnumNames",
+						"value": "1",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "commcellGuid",
+						"value": "NotPopulated",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommcellRedirect/Multicommcell",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommcellRedirect",
+						"Multicommcell"
+					],
+					"query": [
+						{
+							"key": "operationType",
+							"value": "Archive",
+							"disabled": true
+						},
+						{
+							"key": "detailedProperty",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Get multicommcellinfo.\r\n- Empty response if single CS\r\n- otherwise info about IDP commcell + service commcell"
+			},
+			"response": []
+		},
+		{
+			"name": "Search with detailedProperty",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"searchType is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"searchType\");\r",
+							"});\r",
+							"pm.test(\"entitySearchResultInfo provided is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entitySearchResultInfo\");\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"totalMatchingEntityCount is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"totalMatchingEntityCount\");\r",
+							"});\r",
+							"pm.test(\"entityInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityInfo\");\r",
+							"});\r",
+							"pm.test(\"displayName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"displayName\");\r",
+							"});\r",
+							"pm.test(\"name is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"name\");\r",
+							"});\r",
+							"pm.test(\"commcellGuid is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"commcellGuid\");\r",
+							"});\r",
+							"pm.test(\"id is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"});\r",
+							"pm.test(\"subtype_id is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"subtype_id\");\r",
+							"});\r",
+							"pm.test(\"detailedProperty is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detailedProperty\");\r",
+							"});\r",
+							"pm.test(\"serverProperty is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"serverProperty\");\r",
+							"});\r",
+							"pm.test(\"clientProperties is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientProperties\");\r",
+							"});\r",
+							"pm.test(\"client is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"client\");\r",
+							"});\r",
+							"pm.test(\"osInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"osInfo\");\r",
+							"});\r",
+							"pm.test(\"SubType is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"SubType\");\r",
+							"});\r",
+							"pm.test(\"idaList is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"idaList\");\r",
+							"});\r",
+							"pm.test(\"idaEntity is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"idaEntity\");\r",
+							"});\r",
+							"pm.test(\"applicationId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"applicationId\");\r",
+							"});\r",
+							"pm.test(\"clientEntity is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientEntity\");\r",
+							"});\r",
+							"pm.test(\"hostName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"hostName\");\r",
+							"});\r",
+							"pm.test(\"clientId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientId\");\r",
+							"});\r",
+							"pm.test(\"clientName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientName\");\r",
+							"});\r",
+							"pm.test(\"displayName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"displayName\");\r",
+							"});\r",
+							"pm.test(\"clientGUID is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientGUID\");\r",
+							"});\r",
+							"pm.test(\"entityInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityInfo\");\r",
+							"});\r",
+							"pm.test(\"companyId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"companyId\");\r",
+							"});\r",
+							"pm.test(\"companyName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"companyName\");\r",
+							"});\r",
+							"pm.test(\"multiCommcellId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"multiCommcellId\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "EnumNames",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "commcellGuid",
+						"value": "NotPopulated",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Entities/Search?operationType=Archive&name=client&detailedProperty=1",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Entities",
+						"Search"
+					],
+					"query": [
+						{
+							"key": "operationType",
+							"value": "Archive"
+						},
+						{
+							"key": "name",
+							"value": "client"
+						},
+						{
+							"key": "detailedProperty",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Here the search response contains \"detailedProperty\" - which contains complete info about the give search entity"
+			},
+			"response": []
+		},
+		{
+			"name": "MutliCommcell Search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"searchType is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"searchType\");\r",
+							"});\r",
+							"pm.test(\"entitySearchResultInfo provided is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entitySearchResultInfo\");\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.test(\"totalMatchingEntityCount is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"totalMatchingEntityCount\");\r",
+							"});\r",
+							"pm.test(\"entityInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityInfo\");\r",
+							"});\r",
+							"pm.test(\"displayName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"displayName\");\r",
+							"});\r",
+							"pm.test(\"name is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"name\");\r",
+							"});\r",
+							"pm.test(\"commcellGuid is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"commcellGuid\");\r",
+							"});\r",
+							"pm.test(\"id is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"});\r",
+							"pm.test(\"subtype_id is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"subtype_id\");\r",
+							"});\r",
+							"pm.test(\"detailedProperty is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"detailedProperty\");\r",
+							"});\r",
+							"pm.test(\"serverProperty is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"serverProperty\");\r",
+							"});\r",
+							"pm.test(\"clientProperties is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientProperties\");\r",
+							"});\r",
+							"pm.test(\"client is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"client\");\r",
+							"});\r",
+							"pm.test(\"osInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"osInfo\");\r",
+							"});\r",
+							"pm.test(\"SubType is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"SubType\");\r",
+							"});\r",
+							"pm.test(\"idaList is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"idaList\");\r",
+							"});\r",
+							"pm.test(\"idaEntity is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"idaEntity\");\r",
+							"});\r",
+							"pm.test(\"applicationId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"applicationId\");\r",
+							"});\r",
+							"pm.test(\"clientEntity is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientEntity\");\r",
+							"});\r",
+							"pm.test(\"hostName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"hostName\");\r",
+							"});\r",
+							"pm.test(\"clientId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientId\");\r",
+							"});\r",
+							"pm.test(\"clientName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientName\");\r",
+							"});\r",
+							"pm.test(\"displayName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"displayName\");\r",
+							"});\r",
+							"pm.test(\"clientGUID is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"clientGUID\");\r",
+							"});\r",
+							"pm.test(\"entityInfo is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityInfo\");\r",
+							"});\r",
+							"pm.test(\"companyId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"companyId\");\r",
+							"});\r",
+							"pm.test(\"companyName is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"companyName\");\r",
+							"});\r",
+							"pm.test(\"multiCommcellId is present\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"multiCommcellId\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "EnumNames",
+						"value": "1",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "commcellGuid",
+						"value": "NotPopulated",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Entities/Search?name=client&ismultiCommcellSearch=1",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Entities",
+						"Search"
+					],
+					"query": [
+						{
+							"key": "operationType",
+							"value": "Archive",
+							"disabled": true
+						},
+						{
+							"key": "detailedProperty",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "client"
+						},
+						{
+							"key": "ismultiCommcellSearch",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Search across multiple commcells.\r\n\r\nThe response will have different commcellGuid based on search query name."
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Status code has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"pm.test(\"Validate logout\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"User logged out\");",
+							"    console.log(\"Logout Validated\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

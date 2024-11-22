@@ -1,0 +1,2531 @@
+{
+	"info": {
+		"_postman_id": "ec752b80-d28f-4385-a251-54d777d2ec75",
+		"name": "REST API - JSON - Edge Drive Discussion Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Environment Setup",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"FolderName\", \"DemoFolder\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileData\", \"Demo File Content\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileSize\", \"17\");",
+							"",
+							"postman.setEnvironmentVariable(\"SecondFileSize\", \"34\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileModifiedtime\", \"1481595468\");",
+							"",
+							"postman.setEnvironmentVariable(\"ParentFolderPath\", \"XERlbW9Gb2xkZXI=\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName1\", \"RGVtb0ZpbGUxLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName2\", \"RGVtb0ZpbGUyLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"ShareParentFolderPath\", \"XA==\");"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/rest_api_authentication.htm"
+			},
+			"response": [
+				{
+					"name": "Environment Setup",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip",
+							"name": "Content-Encoding",
+							"description": "The type of encoding used on the data."
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 07:30:10 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=2F4B082F3DDD597732BF75F51CE32DB3; Path=/webconsole; HttpOnly",
+							"name": "Set-Cookie",
+							"description": "an HTTP cookie"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:13852720:1000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "2F4B082F3DDD597732BF75F51CE32DB3",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"aliasName\":\"4\",\"userGUID\":\"48BC72FB-D0D9-4029-87C6-D336531E32FC\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"edge@cv.com\",\"userName\":\"edgeuser\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Drive",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"RootGuid\", jsonData.edgeDriveInfo.rootGUID);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains clientName\"] = responseBody.has(\"clientName\");",
+							"",
+							"tests[\"Response Body contains rootGUID\"] = responseBody.has(\"rootGUID\");",
+							"",
+							"tests[\"Response Body contains subclientName\"] = responseBody.has(\"subclientName\");",
+							"",
+							"tests[\"Response Body contains backupsetName\"] = responseBody.has(\"backupsetName\");",
+							"",
+							"tests[\"Response Body contains instanceName\"] = responseBody.has(\"instanceName\");",
+							"",
+							"tests[\"Response Body contains syncWebFolderName\"] = responseBody.has(\"syncWebFolderName\");",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_drive.htm"
+			},
+			"response": [
+				{
+					"name": "Drive",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/drive",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip",
+							"name": "Content-Encoding",
+							"description": "The type of encoding used on the data."
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 07:30:31 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:13852720:2000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "2F4B082F3DDD597732BF75F51CE32DB3",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"response\":{\r\"errorString\":\"\",\"errorCode\":0,\"entity\":{\r\"subclientPolicyId\":15,\"subclientId\":40,\"applicationId\":33,\"clientName\":\"edgeclient\",\"backupsetId\":33,\"instanceId\":1,\"clientId\":8,\"userId\":4,\"subclientName\":\"edgeuser\",\"backupsetName\":\"edgeuser\",\"instanceName\":\"DefaultInstanceName\"\r}\r},\"edgeDriveInfo\":{\r\"contentIndexingEnabled\":true,\"hasSyncBlackListedLaptop\":false,\"capabilities\":4328650366975,\"driveType\":0,\"cloudId\":1,\"dirDelim\":\"\\\\\",\"rootGUID\":\"9a60feb0121a4f01b7b503e06fb35bbf\",\"hasEdgeDriveEnabledLaptop\":false\r},\"syncWebFolder\":{\r\"_type_\":111,\"syncWebFolderId\":510625,\"syncWebFolderName\":\"EdgeDrive\"\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Create Folder by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"FILE_GUID\", jsonData.fileResource.GUID);",
+							"",
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains folder name\"] = responseBody.has(\"name\");",
+							"",
+							"tests[\"Response Body contains folder path\"] = responseBody.has(\"path\");",
+							"",
+							"tests[\"Error code is 0\"] = jsonData.error.errorCode === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<App_FileResourceInfo name=\"{{FolderName}}\"/>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{RootGuid}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{RootGuid}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_folder_by_folderid.htm"
+			},
+			"response": [
+				{
+					"name": "Create Folder by ID",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<App_FileResourceInfo name=\"{{FolderName}}\"/>"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/drive/file/{{RootGuid}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive",
+								"file",
+								"{{RootGuid}}"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Length",
+							"value": "197",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 10:06:11 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:15828747:1000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "07CE96B465BE6FC0FCCA464759EFF718",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"fileResource\":{\r\"GUID\":\"dd6375be26a84248a5f609e5308c4243\",\"directory\":true,\"path\":\"\\\\DemoFolder\",\"parentGuid\":\"9a60feb0121a4f01b7b503e06fb35bbf\",\"name\":\"DemoFolder\"\r},\"error\":{\r\"errorCode\":0\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Create Discussion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"entityGUID\");",
+							"",
+							"tests[\"Response Body contains discussion ID\"] = responseBody.has(\"discussionId\");",
+							"",
+							"tests[\"Response Body contains content\"] = responseBody.has(\"content\");",
+							"",
+							"tests[\"Response Body content\"] = jsonData.discussion.comments[0].content == \"New discussion\";",
+							"",
+							"tests[\"Response Body contains commentId\"] = responseBody.has(\"commentId\");",
+							"",
+							"tests[\"Response Body contains owner\"] = responseBody.has(\"owner\");",
+							"",
+							"postman.setEnvironmentVariable(\"discussionId\", jsonData.discussion.discussionId);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"entityGUID\": \"{{FILE_GUID}}\",\n  \"comments\": [\n    {\n      \"content\": \"New discussion\"\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE_GUID}}",
+						"Discussion"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Create Discussion",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"entityGUID\": \"{{FILE_GUID}}\",\n  \"comments\": [\n    {\n      \"content\": \"New discussion\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive",
+								"file",
+								"{{FILE_GUID}}",
+								"Discussion"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Length",
+							"value": "444",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 10:08:44 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:15857337:1000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "07CE96B465BE6FC0FCCA464759EFF718",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"discussion\":{\r\"entityType\":136,\"discussionId\":2,\"created\":1535537324,\"entityGUID\":\"dd6375be26a84248a5f609e5308c4243\",\"modified\":1535537324,\"nbComments\":1,\"status\":1,\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r},\"comments\":[\r{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":2,\"created\":1535537324,\"commentId\":2,\"modified\":1535537324,\"content\":\"New discussion\",\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r}\r}\r]\r},\"error\":{\r\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Add a Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"",
+							"tests[\"Status code is 20\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains comment\"] = responseBody.has(\"comment\");",
+							"",
+							"tests[\"Response Body contains comment ID\"] = responseBody.has(\"commentId\");",
+							"",
+							"tests[\"Response Body contains content\"] = responseBody.has(\"content\");",
+							"",
+							"tests[\"Response Body contains depth\"] = responseBody.has(\"depth\");",
+							"",
+							"tests[\"Response Body contains owner\"] = responseBody.has(\"owner\");",
+							"",
+							"postman.setEnvironmentVariable(\"commentId\", jsonData.comment.commentId);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"content\": \"New comment\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}/Comment",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE_GUID}}",
+						"Discussion",
+						"{{discussionId}}",
+						"Comment"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Add a Comment",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"name": "Content-Type",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<comments> <content>\"New comment\"</content> </comments>"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}/Comment",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive",
+								"file",
+								"{{FILE_GUID}}",
+								"Discussion",
+								"{{discussionId}}",
+								"Comment"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Length",
+							"value": "214",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 10:23:05 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:16011931:1000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "07CE96B465BE6FC0FCCA464759EFF718",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"comment\":{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":2,\"created\":1535538185,\"commentId\":6,\"modified\":1535538185,\"content\":\"\\\"New comment\\\"\",\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r}\r},\"error\":{\r\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Discussion details using file GUID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"entityGUID\");",
+							"",
+							"tests[\"Response Body contains discussion ID\"] = responseBody.has(\"discussionId\");",
+							"",
+							"tests[\"Response Body contains content\"] = responseBody.has(\"content\");",
+							"",
+							"tests[\"Response Body contains comments\"] = responseBody.has(\"comments\");",
+							"",
+							"tests[\"Discussion Id matches\"] = jsonData.discussion.discussionId == postman.getEnvironmentVariable(\"discussionId\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion?depth=0",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE_GUID}}",
+						"Discussion"
+					],
+					"query": [
+						{
+							"key": "depth",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Discussion details using file GUID",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion?depth=0",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive",
+								"file",
+								"{{FILE_GUID}}",
+								"Discussion"
+							],
+							"query": [
+								{
+									"key": "depth",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip",
+							"name": "Content-Encoding",
+							"description": "The type of encoding used on the data."
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 10:26:45 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:16044288:1000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "07CE96B465BE6FC0FCCA464759EFF718",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"discussion\":{\r\"entityType\":136,\"discussionId\":2,\"created\":1535537324,\"entityGUID\":\"dd6375be26a84248a5f609e5308c4243\",\"modified\":1535537324,\"nbComments\":4,\"status\":1,\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r},\"comments\":[\r{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":2,\"created\":1535538377,\"commentId\":7,\"modified\":1535538377,\"content\":\"\\\"New comment\\\"\",\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":2,\"created\":1535537735,\"commentId\":4,\"modified\":1535537735,\"content\":\"hello\",\"owner\":{\r\"newName\":\"edgeuser\",\"userName\":\"edgeuser\",\"userId\":4\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":2,\"created\":1535537597,\"commentId\":3,\"modified\":1535537597,\"content\":\"hello\",\"owner\":{\r\"newName\":\"edgeuser\",\"userName\":\"edgeuser\",\"userId\":4\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":2,\"created\":1535537324,\"commentId\":2,\"modified\":1535537324,\"content\":\"New discussion\",\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r}\r}\r]\r},\"error\":{\r\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Discussion properties using discussion ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"entityGUID\");",
+							"",
+							"tests[\"Response Body contains discussion ID\"] = responseBody.has(\"discussionId\");",
+							"",
+							"tests[\"Response Body contains content\"] = responseBody.has(\"content\");",
+							"",
+							"tests[\"Response Body contains comments\"] = responseBody.has(\"comments\");",
+							"",
+							"tests[\"Response Body contains owner\"] = responseBody.has(\"owner\");",
+							"",
+							"tests[\"Discussion Id matches\"] = jsonData.discussion.discussionId == postman.getEnvironmentVariable(\"discussionId\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}?depth=0",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE_GUID}}",
+						"Discussion",
+						"{{discussionId}}"
+					],
+					"query": [
+						{
+							"key": "depth",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Discussion properties using discussion ID",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}?depth=0",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive",
+								"file",
+								"{{FILE_GUID}}",
+								"Discussion",
+								"{{discussionId}}"
+							],
+							"query": [
+								{
+									"key": "depth",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip",
+							"name": "Content-Encoding",
+							"description": "The type of encoding used on the data."
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 10:27:31 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:16053634:1000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "07CE96B465BE6FC0FCCA464759EFF718",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"discussion\":{\r\"entityType\":136,\"discussionId\":2,\"created\":1535537324,\"entityGUID\":\"dd6375be26a84248a5f609e5308c4243\",\"modified\":1535537324,\"nbComments\":4,\"status\":1,\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r},\"comments\":[\r{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":2,\"created\":1535538377,\"commentId\":7,\"modified\":1535538377,\"content\":\"\\\"New comment\\\"\",\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":2,\"created\":1535537735,\"commentId\":4,\"modified\":1535537735,\"content\":\"hello\",\"owner\":{\r\"newName\":\"edgeuser\",\"userName\":\"edgeuser\",\"userId\":4\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":2,\"created\":1535537597,\"commentId\":3,\"modified\":1535537597,\"content\":\"hello\",\"owner\":{\r\"newName\":\"edgeuser\",\"userName\":\"edgeuser\",\"userId\":4\r}\r},{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":2,\"created\":1535537324,\"commentId\":2,\"modified\":1535537324,\"content\":\"New discussion\",\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r}\r}\r]\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Comment details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains comment\"] = responseBody.has(\"comment\");",
+							"",
+							"tests[\"Response Body contains depth\"] = responseBody.has(\"depth\");",
+							"",
+							"tests[\"Response Body contains nbReplies\"] = responseBody.has(\"nbReplies\");",
+							"",
+							"tests[\"Response Body contains discussion ID\"] = responseBody.has(\"discussionId\");",
+							"",
+							"tests[\"Response Body contains created\"] = responseBody.has(\"created\");",
+							"",
+							"tests[\"Response Body contains commentId\"] = responseBody.has(\"commentId\");",
+							"",
+							"tests[\"Response Body contains modified\"] = responseBody.has(\"modified\");",
+							"",
+							"tests[\"Response Body contains content\"] = responseBody.has(\"content\");",
+							"",
+							"tests[\"Response Body contains owner\"] = responseBody.has(\"owner\");",
+							"",
+							"tests[\"Response Body contains newName\"] = responseBody.has(\"newName\");",
+							"",
+							"tests[\"Response Body contains userName\"] = responseBody.has(\"userName\");",
+							"",
+							"tests[\"Response Body contains userId\"] = responseBody.has(\"userId\");",
+							"",
+							"tests[\"Comment Id matches\"] = jsonData.comment.commentId == postman.getEnvironmentVariable(\"commentId\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE_GUID}}",
+						"Discussion",
+						"{{discussionId}}",
+						"Comment",
+						"{{commentId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Comment details",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive",
+								"file",
+								"{{FILE_GUID}}",
+								"Discussion",
+								"{{discussionId}}",
+								"Comment",
+								"{{commentId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Length",
+							"value": "201",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 10:29:06 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:16068450:2000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "07CE96B465BE6FC0FCCA464759EFF718",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"comment\":{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":2,\"created\":1535538377,\"commentId\":7,\"modified\":1535538377,\"content\":\"\\\"New comment\\\"\",\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r}\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Number of replies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains comment\"] = responseBody.has(\"comment\");",
+							"",
+							"tests[\"Response Body contains depth\"] = responseBody.has(\"depth\");",
+							"",
+							"tests[\"Response Body contains nbReplies\"] = responseBody.has(\"nbReplies\");",
+							"",
+							"tests[\"Response Body contains discussion ID\"] = responseBody.has(\"discussionId\");",
+							"",
+							"tests[\"Response Body contains created\"] = responseBody.has(\"created\");",
+							"",
+							"tests[\"Response Body contains commentId\"] = responseBody.has(\"commentId\");",
+							"",
+							"tests[\"Response Body contains modified\"] = responseBody.has(\"modified\");",
+							"",
+							"tests[\"Response Body contains content\"] = responseBody.has(\"content\");",
+							"",
+							"tests[\"Response Body contains owner\"] = responseBody.has(\"owner\");",
+							"",
+							"tests[\"Response Body contains newName\"] = responseBody.has(\"newName\");",
+							"",
+							"tests[\"Response Body contains userName\"] = responseBody.has(\"userName\");",
+							"",
+							"tests[\"Response Body contains userId\"] = responseBody.has(\"userId\");",
+							"",
+							"tests[\"Comment Id matches\"] = jsonData.comments[0].commentId == postman.getEnvironmentVariable(\"commentId\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}/Replies?depth=0",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE_GUID}}",
+						"Discussion",
+						"{{discussionId}}",
+						"Comment",
+						"{{commentId}}",
+						"Replies"
+					],
+					"query": [
+						{
+							"key": "depth",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Number of replies",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}/Replies?depth=0",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive",
+								"file",
+								"{{FILE_GUID}}",
+								"Discussion",
+								"{{discussionId}}",
+								"Comment",
+								"{{commentId}}",
+								"Replies"
+							],
+							"query": [
+								{
+									"key": "depth",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Length",
+							"value": "206",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 10:41:46 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:16106136:1000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "07CE96B465BE6FC0FCCA464759EFF718",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"comments\":[\r{\r\"depth\":0,\"nbReplies\":2,\"discussionId\":2,\"created\":1535538377,\"commentId\":7,\"modified\":1535538377,\"content\":\"\\\"New comment\\\"\",\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Edit Comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains comment\"] = responseBody.has(\"comment\");",
+							"",
+							"tests[\"Response Body contains depth\"] = responseBody.has(\"depth\");",
+							"",
+							"tests[\"Response Body contains nbReplies\"] = responseBody.has(\"nbReplies\");",
+							"",
+							"tests[\"Response Body contains discussion ID\"] = responseBody.has(\"discussionId\");",
+							"",
+							"tests[\"Response Body contains created\"] = responseBody.has(\"created\");",
+							"",
+							"tests[\"Response Body contains commentId\"] = responseBody.has(\"commentId\");",
+							"",
+							"tests[\"Response Body contains modified\"] = responseBody.has(\"modified\");",
+							"",
+							"tests[\"Response Body contains content\"] = responseBody.has(\"content\");",
+							"",
+							"tests[\"Response Body contains owner\"] = responseBody.has(\"owner\");",
+							"",
+							"tests[\"Response Body contains newName\"] = responseBody.has(\"newName\");",
+							"",
+							"tests[\"Response Body contains userName\"] = responseBody.has(\"userName\");",
+							"",
+							"tests[\"Response Body contains userId\"] = responseBody.has(\"userId\");",
+							"",
+							"tests[\"Comment Id matches\"] = jsonData.comment.commentId == postman.getEnvironmentVariable(\"commentId\");",
+							"",
+							"tests[\"Comment is modified\"] = jsonData.comment.content === \"Edited Comment\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"content\": \"Edited Comment\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE_GUID}}",
+						"Discussion",
+						"{{discussionId}}",
+						"Comment",
+						"{{commentId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Edit Comment",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"content\": \"Edited Comment\"\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive",
+								"file",
+								"{{FILE_GUID}}",
+								"Discussion",
+								"{{discussionId}}",
+								"Comment",
+								"{{commentId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Length",
+							"value": "214",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 10:52:29 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:16112462:1000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "07CE96B465BE6FC0FCCA464759EFF718",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"comment\":{\r\"depth\":0,\"nbReplies\":0,\"discussionId\":3,\"created\":1535539803,\"commentId\":13,\"modified\":1535539949,\"content\":\"Edited Comment\",\"owner\":{\r\"newName\":\"\",\"userName\":\"edgeuser\",\"userId\":4\r}\r},\"error\":{\r\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE_GUID}}",
+						"Discussion",
+						"{{discussionId}}",
+						"Comment",
+						"{{commentId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "comment",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}/Comment/{{commentId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive",
+								"file",
+								"{{FILE_GUID}}",
+								"Discussion",
+								"{{discussionId}}",
+								"Comment",
+								"{{commentId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Length",
+							"value": "16",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 10:52:39 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:16112462:2000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "07CE96B465BE6FC0FCCA464759EFF718",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"error\":{\r\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Discussion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE_GUID}}",
+						"Discussion",
+						"{{discussionId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Discussion",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}/Discussion/{{discussionId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive",
+								"file",
+								"{{FILE_GUID}}",
+								"Discussion",
+								"{{discussionId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Length",
+							"value": "4",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 10:52:55 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:16112462:3000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "07CE96B465BE6FC0FCCA464759EFF718",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\r}"
+				}
+			]
+		},
+		{
+			"name": "File",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"error code is 0\"] = jsonData.errorCode === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE_GUID}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "File",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/drive/file/{{FILE_GUID}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"drive",
+								"file",
+								"{{FILE_GUID}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 Aug 2018 10:53:08 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "RVBD-CSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-CSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "RVBD-SSH",
+							"value": "1.1.1.1",
+							"name": "RVBD-SSH",
+							"description": "Custom header"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						},
+						{
+							"key": "X-RBT-SCAR",
+							"value": "1.1.1.1:16112462:4000",
+							"name": "X-RBT-SCAR",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "07CE96B465BE6FC0FCCA464759EFF718",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

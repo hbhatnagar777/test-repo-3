@@ -1,0 +1,1556 @@
+{
+	"info": {
+		"_postman_id": "28ae100e-8736-4651-b7b6-7205fbc0b57e",
+		"name": "Client Group Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/rest_api_authentication.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Client Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains groups\"] = responseBody.has(\"groups\");",
+							"tests[\"Response Body contains isEDCInstanceDeleted tag\"] = responseBody.has(\"isEDCInstanceDeleted\");",
+							"tests[\"Response Body contains flag tag\"] = responseBody.has(\"flag\");",
+							"tests[\"Response Body contains activity tag\"] = responseBody.has(\"activity\");",
+							"tests[\"Response Body contains isDiscoveredClientGroup tag\"] = responseBody.has(\"isDiscoveredClientGroup\");",
+							"tests[\"Response Body contains isSmartClientGroup tag\"] = responseBody.has(\"isSmartClientGroup\");",
+							"tests[\"Response Body contains isAddinClientGroup tag\"] = responseBody.has(\"isAddinClientGroup\");",
+							"tests[\"Response Body contains revision tag\"] = responseBody.has(\"revision\");",
+							"tests[\"Response Body contains edcSupportedInstanceType tag\"] = responseBody.has(\"edcSupportedInstanceType\");",
+							"tests[\"Response Body contains isNetworkThrottleEnabled tag\"] = responseBody.has(\"isNetworkThrottleEnabled\");",
+							"tests[\"Response Body contains name tag\"] = responseBody.has(\"name\");",
+							"postman.setEnvironmentVariable(\"clientGroupName\",jsonData.groups[0].name);",
+							"postman.setEnvironmentVariable(\"clientGroupId\",jsonData.groups[0].clientGroupUniqueId);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup"
+					]
+				},
+				"description": "This operation returns a list of client computer groups.\n\nhttp://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client_group.htm"
+			},
+			"response": [
+				{
+					"name": "Client Group14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/ClientGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 09:58:02 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "16943"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"groups\": [\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 528384,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": true,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Infrastructure\",\n            \"Id\": 1,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 1052672,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": true,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Proxy Clients\",\n            \"Id\": 2,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 4096,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": true,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Media Agents\",\n            \"Id\": 3,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 4096,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": true,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Laptop Clients\",\n            \"Id\": 4,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Index Servers\",\n            \"Id\": 5,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_01\",\n            \"Id\": 6,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_02\",\n            \"Id\": 7,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_03\",\n            \"Id\": 8,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_04\",\n            \"Id\": 9,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_05\",\n            \"Id\": 10,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_06\",\n            \"Id\": 11,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_07\",\n            \"Id\": 12,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_08\",\n            \"Id\": 13,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_09\",\n            \"Id\": 14,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_10\",\n            \"Id\": 15,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 4096,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": true,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $ M<1562836227>\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"xAll_Clients\",\n            \"Id\": 16,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_01\",\n            \"Id\": 17,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_01\",\n            \"Id\": 18,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_01\",\n            \"Id\": 19,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_01\",\n            \"Id\": 20,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_02\",\n            \"Id\": 21,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_02\",\n            \"Id\": 22,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_02\",\n            \"Id\": 23,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_02\",\n            \"Id\": 24,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_03\",\n            \"Id\": 25,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_03\",\n            \"Id\": 26,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_03\",\n            \"Id\": 27,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_03\",\n            \"Id\": 28,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_04\",\n            \"Id\": 29,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_04\",\n            \"Id\": 30,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_04\",\n            \"Id\": 31,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_04\",\n            \"Id\": 32,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_05\",\n            \"Id\": 33,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_05\",\n            \"Id\": 34,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_05\",\n            \"Id\": 35,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_05\",\n            \"Id\": 36,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_06\",\n            \"Id\": 37,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_06\",\n            \"Id\": 38,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_06\",\n            \"Id\": 39,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_06\",\n            \"Id\": 40,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_07\",\n            \"Id\": 41,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_07\",\n            \"Id\": 42,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_07\",\n            \"Id\": 43,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_07\",\n            \"Id\": 44,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_08\",\n            \"Id\": 45,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_08\",\n            \"Id\": 46,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_08\",\n            \"Id\": 47,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_08\",\n            \"Id\": 48,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_09\",\n            \"Id\": 49,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_09\",\n            \"Id\": 50,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_09\",\n            \"Id\": 51,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_09\",\n            \"Id\": 52,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_10\",\n            \"Id\": 53,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_10\",\n            \"Id\": 54,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_10\",\n            \"Id\": 55,\n            \"isEDCInstanceAssociated\": false\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_10\",\n            \"Id\": 56,\n            \"isEDCInstanceAssociated\": false\n        }\n    ]\n}"
+				},
+				{
+					"name": "Client Group17",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/ClientGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Feb 2020 06:00:44 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"groups\": [\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 528384,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": true,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Infrastructure\",\n            \"Id\": 1,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 1052672,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": true,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Proxy Clients\",\n            \"Id\": 2,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 4096,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": true,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Media Agents\",\n            \"Id\": 3,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 4096,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": true,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Laptop Clients\",\n            \"Id\": 4,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Index Servers\",\n            \"Id\": 5,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_01\",\n            \"Id\": 6,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_02\",\n            \"Id\": 7,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_03\",\n            \"Id\": 8,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_04\",\n            \"Id\": 9,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_05\",\n            \"Id\": 10,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_06\",\n            \"Id\": 11,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_07\",\n            \"Id\": 12,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_08\",\n            \"Id\": 13,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_09\",\n            \"Id\": 14,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group07_10\",\n            \"Id\": 15,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 4096,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": true,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $ M<1562836227>\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"xAll_Clients\",\n            \"Id\": 16,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_01\",\n            \"Id\": 17,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_01\",\n            \"Id\": 18,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_01\",\n            \"Id\": 19,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_01\",\n            \"Id\": 20,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_02\",\n            \"Id\": 21,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_02\",\n            \"Id\": 22,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_02\",\n            \"Id\": 23,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_02\",\n            \"Id\": 24,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_03\",\n            \"Id\": 25,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_03\",\n            \"Id\": 26,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_03\",\n            \"Id\": 27,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_03\",\n            \"Id\": 28,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_04\",\n            \"Id\": 29,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_04\",\n            \"Id\": 30,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_04\",\n            \"Id\": 31,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_04\",\n            \"Id\": 32,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_05\",\n            \"Id\": 33,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_05\",\n            \"Id\": 34,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_05\",\n            \"Id\": 35,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_05\",\n            \"Id\": 36,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_06\",\n            \"Id\": 37,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_06\",\n            \"Id\": 38,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_06\",\n            \"Id\": 39,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_06\",\n            \"Id\": 40,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_07\",\n            \"Id\": 41,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_07\",\n            \"Id\": 42,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_07\",\n            \"Id\": 43,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_07\",\n            \"Id\": 44,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_08\",\n            \"Id\": 45,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_08\",\n            \"Id\": 46,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_08\",\n            \"Id\": 47,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_08\",\n            \"Id\": 48,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_09\",\n            \"Id\": 49,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_09\",\n            \"Id\": 50,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_09\",\n            \"Id\": 51,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_09\",\n            \"Id\": 52,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group08_10\",\n            \"Id\": 53,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group09_10\",\n            \"Id\": 54,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group10_10\",\n            \"Id\": 55,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"Group11_10\",\n            \"Id\": 56,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"d868dbea-a09b-4d91-8e5d-baa4ce9e7095\",\n            \"Id\": 57,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"a49ffe5a-b4f4-4495-a456-8ab56102598b\",\n            \"Id\": 58,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        },\n        {\n            \"isEDCInstanceDeleted\": false,\n            \"flag\": 0,\n            \"activity\": 0,\n            \"isDiscoveredClientGroup\": false,\n            \"isSmartClientGroup\": false,\n            \"isAddinClientGroup\": false,\n            \"revision\": \"$Revision: 1.4 $ M<1580897221>\",\n            \"edcSupportedInstanceType\": 0,\n            \"isNetworkThrottleEnabled\": false,\n            \"name\": \"da4ab658-f862-447a-87a7-1b38b054a2dc\",\n            \"Id\": 59,\n            \"isEDCInstanceAssociated\": false,\n            \"discoverRulesInfo\": {\n                \"syncStatus\": 0\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Client Group Prop List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"pm.test(\"Response Body contains funcName tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"funcName\");",
+							"});",
+							"pm.test(\"Response Body contains name tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"name\");",
+							"});",
+							"pm.test(\"Response Body contains id tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"id\");",
+							"});",
+							"pm.test(\"Response Body contains propType tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"propType\");",
+							"});",
+							"pm.test(\"Response Body contains label tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"label\");",
+							"});",
+							"pm.test(\"Response Body contains isComplex tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"isComplex\");",
+							"});",
+							"pm.test(\"Response Body contains props tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"props\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientGroupId = postman.getEnvironmentVariable(\"clientGroupId\");",
+							"postman.setEnvironmentVariable(\"clientGroupId\",clientGroupId);",
+							"var clientGroupName = postman.getEnvironmentVariable(\"clientGroupName\");",
+							"postman.setEnvironmentVariable(\"clientGroupName\", clientGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/PropList",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"PropList"
+					]
+				},
+				"description": "This operation returns the properties associated with a client computer group.\n\nhttp://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client_group_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Client Group Rule Values",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"pm.test(\"Response Body contains enumValues tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"enumValues\");",
+							"});",
+							"pm.test(\"Response Body contains label tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"label\");",
+							"});",
+							"pm.test(\"Response Body contains value tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"value\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientGroupId = postman.getEnvironmentVariable(\"clientGroupId\");",
+							"postman.setEnvironmentVariable(\"clientGroupId\",clientGroupId);",
+							"var clientGroupName = postman.getEnvironmentVariable(\"clientGroupName\");",
+							"postman.setEnvironmentVariable(\"clientGroupName\", clientGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "ruleName",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/RuleValues?ruleName=CLIENT_GROUP",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"RuleValues"
+					],
+					"query": [
+						{
+							"key": "ruleName",
+							"value": "CLIENT_GROUP"
+						}
+					]
+				},
+				"description": "This operation returns the properties associated with a client computer group.\n\nhttp://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client_group_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Client Group Filters",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"pm.test(\"Response Body contains filterID tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"filterID\");",
+							"});",
+							"pm.test(\"Response Body contains type tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"type\");",
+							"});",
+							"pm.test(\"Response Body contains label tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"label\");",
+							"});",
+							"pm.test(\"Response Body contains filters tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"filters\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientGroupId = postman.getEnvironmentVariable(\"clientGroupId\");",
+							"postman.setEnvironmentVariable(\"clientGroupId\",clientGroupId);",
+							"var clientGroupName = postman.getEnvironmentVariable(\"clientGroupName\");",
+							"postman.setEnvironmentVariable(\"clientGroupName\", clientGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/Filters",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"Filters"
+					]
+				},
+				"description": "This operation returns the properties associated with a client computer group.\n\nhttp://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client_group_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Client Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body has clientGroupDetail tag\"] = responseBody.has(\"clientGroupDetail\");",
+							"tests[\"Response Body has clientGroup tag\"] = responseBody.has(\"clientGroup\");",
+							"postman.setEnvironmentVariable(\"clientGroupId\", jsonData.clientGroupDetail.clientGroup.clientGroupId);",
+							"postman.setEnvironmentVariable(\"clientGroupName\", jsonData.clientGroupDetail.clientGroup.clientGroupName);",
+							"tests[\"Response Body contains clientGroupName\"] = responseBody.has(\"clientGroupName\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientGroupOperationType\": 1,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"This is a new client group\",\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"New Client Group{{$timestamp}}\"\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup"
+					]
+				},
+				"description": "This operation creates a client computer group.\n\nhttp://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_client_group.htm"
+			},
+			"response": [
+				{
+					"name": "Client Group17",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"clientGroupOperationType\": 1,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"client computer group description\",\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"{{$guid}}\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/ClientGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Feb 2020 06:02:53 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"clientGroup\": {\n            \"_type_\": 28,\n            \"clientGroupId\": 60,\n            \"clientGroupName\": \"49580ccc-ac7d-4ac3-910f-e48226a63331\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Client Group14",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"clientGroupOperationType\": 1,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"client computer group description\",\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"{{$guid}}\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/ClientGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 09:58:37 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "133"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"clientGroup\": {\n            \"_type_\": 28,\n            \"clientGroupId\": 57,\n            \"clientGroupName\": \"d868dbea-a09b-4d91-8e5d-baa4ce9e7095\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Client Group Quota",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if(tests[\"Response Body has errorMessage tag\"] = responseBody.has(\"errorMessage\"))",
+							"{",
+							"    console.log(jsonData.errorMessage);",
+							"}",
+							"if(tests[\"Response Body has errorCode tag\"] = responseBody.has(\"errorCode\"))",
+							"{",
+							"    console.log(\"The error code is: \"+jsonData.errorCode);",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientGroupId = postman.getEnvironmentVariable(\"clientGroupId\");",
+							"postman.setEnvironmentVariable(\"clientGroupId\",clientGroupId);",
+							"var clientGroupName = postman.getEnvironmentVariable(\"clientGroupName\");",
+							"postman.setEnvironmentVariable(\"clientGroupName\", clientGroupName);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"Quota\":5}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}/Quota",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"{{clientGroupId}}",
+						"Quota"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client Group Quota",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientGroupId = postman.getEnvironmentVariable(\"clientGroupId\");",
+							"postman.setEnvironmentVariable(\"clientGroupId\",clientGroupId);",
+							"var clientGroupName = postman.getEnvironmentVariable(\"clientGroupName\");",
+							"postman.setEnvironmentVariable(\"clientGroupName\", clientGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if(tests[\"Response Body has ConsumedQuota tag\"] = responseBody.has(\"ConsumedQuota\"))",
+							"{",
+							"    console.log(\"The consumed quota is: \"+jsonData.ConsumedQuota);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}/ConsumedQuota",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"{{clientGroupId}}",
+						"ConsumedQuota"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client Group Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if(tests[\"Response Body contains errorCode tag\"] = responseBody.has(\"errorCode\"))",
+							"{",
+							"    tests[\"errorCode is 0\"] = jsonData.errorCode === 0;",
+							"}",
+							"if(tests[\"Response Body contains errorMessage tag\"] = responseBody.has(\"errorMessage\"))",
+							"{",
+							"    console.log(jsonData.errorMessage);",
+							"}",
+							"postman.setEnvironmentVariable(\"jobStartTime\", 7200);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientGroupId = postman.getEnvironmentVariable(\"clientGroupId\");",
+							"postman.setEnvironmentVariable(\"clientGroupId\",clientGroupId);",
+							"var clientGroupName = postman.getEnvironmentVariable(\"clientGroupName\");",
+							"postman.setEnvironmentVariable(\"clientGroupName\", clientGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientGroupOperationType\": 2,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"client computer group description modified\",\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"{{clientGroupName}}\"\r\n    },\r\n    \"jobStartTime\":7200\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"{{clientGroupId}}"
+					]
+				},
+				"description": "Client Group Properties Description Modified\n\nhttp://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_client_group_properties.htm"
+			},
+			"response": [
+				{
+					"name": "Client Group Properties14",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"clientGroupOperationType\": 2,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"client computer group description modified\",\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"{{clientGroupName}}\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ClientGroup",
+								"{{clientGroupId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 10:07:01 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "68"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Client group updated successfully\",\n    \"errorCode\": 0\n}"
+				},
+				{
+					"name": "Client Group Properties17",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"clientGroupOperationType\": 2,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"client computer group description modified\",\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"{{clientGroupName}}\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ClientGroup",
+								"{{clientGroupId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Feb 2020 06:08:19 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"Client group updated successfully\",\n    \"errorCode\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Client Group Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Validate clientGroupId in the response\"] = jsonData.clientGroupDetail.clientGroup.clientGroupId === parseInt(postman.getEnvironmentVariable(\"clientGroupId\"));",
+							"var clientGroupName = postman.getEnvironmentVariable(\"clientGroupName\");",
+							"tests[\"Validate clientGroupName in the response\"] = jsonData.clientGroupDetail.clientGroup.clientGroupName == clientGroupName ;",
+							"tests[\"Validate the jobsStartTime in response\"] = jsonData.clientGroupDetail.jobStartTime == postman.getEnvironmentVariable(\"jobStartTime\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientGroupId = postman.getEnvironmentVariable(\"clientGroupId\");",
+							"postman.setEnvironmentVariable(\"clientGroupId\",clientGroupId);",
+							"var clientGroupName = postman.getEnvironmentVariable(\"clientGroupName\");",
+							"postman.setEnvironmentVariable(\"clientGroupName\", clientGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "EntitySecurityData",
+						"value": "true",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"{{clientGroupId}}"
+					],
+					"query": [
+						{
+							"key": "entitySecurityData",
+							"value": "true",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This operation returns the properties associated with a client computer group.\n\nhttp://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client_group_properties.htm"
+			},
+			"response": [
+				{
+					"name": "Client Group Properties17",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ClientGroup",
+								"{{clientGroupId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Feb 2020 06:04:21 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"isHtmlDescription\": false,\n        \"isAddinClientGroup\": false,\n        \"slaInterval\": 0,\n        \"isEDCInstanceDeleted\": false,\n        \"claQuota\": 0,\n        \"forceClientSideDownload\": 0,\n        \"revision\": \"$Revision: 1.4 $\",\n        \"isNetworkThrottleEnabled\": false,\n        \"enableClientSideCaching\": false,\n        \"rtoMinutes\": 0,\n        \"description\": \"client computer group description\",\n        \"isSmartClientGroup\": false,\n        \"queueConflictingJobsEnabledForCG\": false,\n        \"userHasAgentManagementPermission\": 1,\n        \"edcSupportedInstanceType\": 0,\n        \"rpoMinutes\": 0,\n        \"allowJobsToRunPastOperationWindowEnabled\": false,\n        \"isCommCellGroup\": false,\n        \"JobPriority\": 0,\n        \"isDiscoveredClientGroup\": false,\n        \"excludeFromSLA\": false,\n        \"slaCopyFallenBehindDays\": 0,\n        \"slaCopyRedundancy\": 0,\n        \"isEDCInstanceAssociated\": false,\n        \"networkThrottle\": {\n            \"enableThrottle\": false\n        },\n        \"securityAssociations\": {\n            \"associations\": [\n                {\n                    \"userOrGroup\": [\n                        {\n                            \"userGroupName\": \"master\",\n                            \"userGroupId\": 1,\n                            \"_type_\": 15\n                        }\n                    ],\n                    \"properties\": {\n                        \"isCreatorAssociation\": true,\n                        \"role\": {\n                            \"_type_\": 120,\n                            \"roleId\": 13,\n                            \"roleName\": \"Client Group Creator\"\n                        }\n                    }\n                }\n            ],\n            \"ownerAssociations\": {}\n        },\n        \"dlpPropertise\": {\n            \"dlpScanIntervalMins\": 0,\n            \"dlpStolen\": false,\n            \"dlpEnableAutomaticDecryption\": false,\n            \"dlpUnlockMethod\": 0,\n            \"enableDLP\": false,\n            \"dlpEnableClientKeys\": false,\n            \"dlpMinFileAgeMins\": 0,\n            \"dlpRMProperties\": {\n                \"enableRmDLP\": false,\n                \"dlpRmNow\": false,\n                \"dlpRmOfflineDays\": 0\n            }\n        },\n        \"appMgrServiceLiteNode\": {\n            \"hostName\": \"\",\n            \"clientId\": 0,\n            \"clientName\": \"\"\n        },\n        \"overrideHigherLevelSettings\": {\n            \"userAccount\": {}\n        },\n        \"clientGroup\": {\n            \"clientGroupId\": 60,\n            \"GUID\": \"62ABE0E9-86B4-49B5-B3A4-E5280BD171AE\",\n            \"clientGroupName\": \"49580ccc-ac7d-4ac3-910f-e48226a63331\"\n        },\n        \"firewallConfiguration\": {\n            \"configureFirewallSettings\": false,\n            \"isTrivialConfig\": true,\n            \"reachMeVia\": {},\n            \"fwTrivialConfig\": {\n                \"firewallTrivialDetailsCS\": {\n                    \"networkType\": 1,\n                    \"connectionType\": 1,\n                    \"proxyEntity\": {\n                        \"_type_\": 0\n                    }\n                },\n                \"firewallTrivialDetailsMA\": {\n                    \"networkType\": 1,\n                    \"connectionType\": 1,\n                    \"proxyEntity\": {\n                        \"_type_\": 0\n                    }\n                }\n            },\n            \"firewallOptions\": {\n                \"isRoamingClient\": false,\n                \"extendedProperties\": \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\" standalone=\\\"no\\\" ?><App_FirewallExtendedProperties configureAutomatically=\\\"1\\\" defaultOutgoingProtocol=\\\"0\\\"/>\",\n                \"tunnelconnectionPort\": 8403,\n                \"foreceSSL\": false,\n                \"tunnelInitSeconds\": 30,\n                \"lockdown\": false,\n                \"bindOpenPortsOnly\": false,\n                \"isDMZ\": false,\n                \"keepAliveSeconds\": 300\n            }\n        },\n        \"jobThrottleSettings\": {\n            \"isJobThrottleEnabled\": 0,\n            \"dataThreshold\": 0,\n            \"excludeImmidiateJobs\": 0,\n            \"logThreshold\": 0\n        },\n        \"clientGroupSecurity\": {\n            \"associatedUserGroups\": [\n                {\n                    \"userGroupId\": 1,\n                    \"_type_\": 15,\n                    \"userGroupName\": \"master\"\n                }\n            ],\n            \"advancedPrivacySettings\": {\n                \"authType\": 1,\n                \"passkeySettings\": {\n                    \"enableAuthorizeForRestore\": false,\n                    \"expirationTime\": {\n                        \"time\": 0\n                    }\n                }\n            },\n            \"ownerCapabilities\": {}\n        },\n        \"powerManagementInfo\": {\n            \"isPowerMgmtAllowed\": true,\n            \"isPowerMgmtSupported\": true\n        },\n        \"clientGroupActivityControl\": {\n            \"activityControlOptions\": [\n                {\n                    \"activityType\": 1,\n                    \"enableAfterADelay\": false,\n                    \"enableActivityType\": true\n                },\n                {\n                    \"activityType\": 2,\n                    \"enableAfterADelay\": false,\n                    \"enableActivityType\": true\n                },\n                {\n                    \"activityType\": 16,\n                    \"enableAfterADelay\": false,\n                    \"enableActivityType\": true\n                }\n            ]\n        },\n        \"globalFiltersInfo\": {\n            \"globalFiltersInfoList\": [\n                {\n                    \"operatingSystemType\": 1,\n                    \"globalFilters\": {}\n                },\n                {\n                    \"operatingSystemType\": 2,\n                    \"globalFilters\": {}\n                }\n            ]\n        },\n        \"createAs\": {\n            \"userGroup\": {\n                \"userGroupId\": 1,\n                \"userGroupName\": \"master\"\n            }\n        },\n        \"owner\": {\n            \"userId\": 0\n        }\n    }\n}"
+				},
+				{
+					"name": "Client Group Properties14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ClientGroup",
+								"{{clientGroupId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 10:06:17 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2585"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"isHtmlDescription\": false,\n        \"isAddinClientGroup\": false,\n        \"slaInterval\": 0,\n        \"isEDCInstanceDeleted\": false,\n        \"forceClientSideDownload\": 0,\n        \"revision\": \"$Revision: 1.4 $\",\n        \"isNetworkThrottleEnabled\": false,\n        \"enableClientSideCaching\": false,\n        \"rtoMinutes\": 0,\n        \"description\": \"client computer group description\",\n        \"isSmartClientGroup\": false,\n        \"queueConflictingJobsEnabledForCG\": false,\n        \"edcSupportedInstanceType\": 0,\n        \"rpoMinutes\": 0,\n        \"allowJobsToRunPastOperationWindowEnabled\": false,\n        \"isCommCellGroup\": false,\n        \"isDiscoveredClientGroup\": false,\n        \"excludeFromSLA\": false,\n        \"slaCopyFallenBehindDays\": 0,\n        \"slaCopyRedundancy\": 0,\n        \"isEDCInstanceAssociated\": false,\n        \"networkThrottle\": {\n            \"enableThrottle\": false\n        },\n        \"securityAssociations\": {\n            \"associations\": [\n                {\n                    \"userOrGroup\": [\n                        {\n                            \"userGroupName\": \"master\",\n                            \"userGroupId\": 1,\n                            \"_type_\": 15\n                        }\n                    ],\n                    \"properties\": {\n                        \"isCreatorAssociation\": true,\n                        \"role\": {\n                            \"_type_\": 120,\n                            \"roleId\": 13,\n                            \"roleName\": \"Client Group Creator\"\n                        }\n                    }\n                }\n            ],\n            \"ownerAssociations\": {}\n        },\n        \"dlpPropertise\": {\n            \"dlpRMProperties\": {}\n        },\n        \"appMgrServiceLiteNode\": {\n            \"hostName\": \"\",\n            \"clientId\": 0,\n            \"clientName\": \"\"\n        },\n        \"overrideHigherLevelSettings\": {\n            \"userAccount\": {\n                \"userName\": \"\"\n            }\n        },\n        \"clientGroup\": {\n            \"clientGroupId\": 59,\n            \"GUID\": \"00BE812A-B4B2-4255-AE1D-8A50CF67BA27\",\n            \"clientGroupName\": \"da4ab658-f862-447a-87a7-1b38b054a2dc\"\n        },\n        \"firewallConfiguration\": {\n            \"configureFirewallSettings\": false,\n            \"isTrivialConfig\": true,\n            \"reachMeVia\": {},\n            \"fwTrivialConfig\": {\n                \"firewallTrivialDetailsCS\": {\n                    \"networkType\": 1,\n                    \"connectionType\": 1,\n                    \"proxyEntity\": {\n                        \"_type_\": 0\n                    }\n                },\n                \"firewallTrivialDetailsMA\": {\n                    \"networkType\": 1,\n                    \"connectionType\": 1,\n                    \"proxyEntity\": {\n                        \"_type_\": 0\n                    }\n                }\n            },\n            \"firewallOptions\": {\n                \"isRoamingClient\": false,\n                \"extendedProperties\": \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\" standalone=\\\"no\\\" ?><App_FirewallExtendedProperties configureAutomatically=\\\"1\\\" defaultOutgoingProtocol=\\\"0\\\"/>\",\n                \"tunnelconnectionPort\": 8403,\n                \"foreceSSL\": false,\n                \"tunnelInitSeconds\": 30,\n                \"lockdown\": false,\n                \"bindOpenPortsOnly\": false,\n                \"isDMZ\": false,\n                \"keepAliveSeconds\": 300\n            }\n        },\n        \"clientGroupSecurity\": {\n            \"associatedUserGroups\": [\n                {\n                    \"userGroupId\": 1,\n                    \"_type_\": 15,\n                    \"userGroupName\": \"master\"\n                }\n            ],\n            \"ownerCapabilities\": {}\n        },\n        \"powerManagementInfo\": {\n            \"isPowerMgmtAllowed\": true,\n            \"isPowerMgmtSupported\": true\n        },\n        \"clientGroupActivityControl\": {\n            \"activityControlOptions\": [\n                {\n                    \"activityType\": 1,\n                    \"enableAfterADelay\": false,\n                    \"enableActivityType\": true\n                },\n                {\n                    \"activityType\": 2,\n                    \"enableAfterADelay\": false,\n                    \"enableActivityType\": true\n                },\n                {\n                    \"activityType\": 16,\n                    \"enableAfterADelay\": false,\n                    \"enableActivityType\": true\n                }\n            ]\n        },\n        \"globalFiltersInfo\": {},\n        \"createAs\": {\n            \"userGroup\": {\n                \"userGroupId\": 1,\n                \"userGroupName\": \"master\"\n            }\n        },\n        \"owner\": {\n            \"userId\": 0\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Client Group Installed Packages",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"pm.test(\"Response Body contains isPackagesExist tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"isPackagesExist\");",
+							"});",
+							"pm.test(\"Response Body contains excludePackages tag\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"excludePackages\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientGroupId = postman.getEnvironmentVariable(\"clientGroupId\");",
+							"postman.setEnvironmentVariable(\"clientGroupId\",clientGroupId);",
+							"var clientGroupName = postman.getEnvironmentVariable(\"clientGroupName\");",
+							"postman.setEnvironmentVariable(\"clientGroupName\", clientGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}/InstalledPackages",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"{{clientGroupId}}",
+						"InstalledPackages"
+					]
+				},
+				"description": "This operation returns the properties associated with a client computer group.\n\nhttp://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client_group_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "ClientGroup Scopes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"entityType\", jsonData.scopeEntities.entities[1].entityType);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/Scopes",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"Scopes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientGroup/Scopes/{{entityType}}/Entities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validating errorMessage and errorCode\", function () {\r",
+							"    pm.expect(jsonData.error.errorMessage).to.eql(\"Success\");\r",
+							"    pm.expect(jsonData.error.errorCode).to.eql(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"scopeEntities\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"entities\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"count\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityType\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityName\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"entityId\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/Scopes/{{entityType}}/Entities",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"Scopes",
+						"{{entityType}}",
+						"Entities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body has errorCode tag\"] = responseBody.has(\"errorCode\");",
+							"tests[\"errorCode is 0\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientGroupId = postman.getEnvironmentVariable(\"clientGroupId\");",
+							"postman.setEnvironmentVariable(\"clientGroupId\",clientGroupId);",
+							"var clientGroupName = postman.getEnvironmentVariable(\"clientGroupName\");",
+							"postman.setEnvironmentVariable(\"clientGroupName\", clientGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"{{clientGroupId}}"
+					]
+				},
+				"description": "This operation deletes a client computer group.\n\nhttp://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_client_group.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,1 @@
+powershell PS_WinUpdate > C:\temp\utils\op.log

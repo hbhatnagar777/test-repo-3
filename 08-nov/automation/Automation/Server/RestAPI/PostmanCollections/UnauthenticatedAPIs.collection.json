@@ -1,0 +1,4461 @@
+{
+	"info": {
+		"_postman_id": "095b7465-ea67-4eb2-a03b-48d92feaff9f",
+		"name": "UnauthenticatedAPIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "RenewLoginToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"sessionId\": \"QSDK XXXX\", \r\n\"deviceId\": \"XXX\"\r\n}\r\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/RenewLoginToken",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"RenewLoginToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDomains",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/getDomains",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getDomains"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDomains",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/getDomains",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getDomains"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":4,\r\n    \"domain\":\"\",\r\n    \"username\":\"XXXX\",\r\n    \"password\":\"XXXX\",\r\n    \"commserver\":\"\"\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SaveAsyncProcProgress",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/SaveAsyncProcProgress",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SaveAsyncProcProgress"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "isAwsSignatureValid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/isAwsSignatureValid",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"isAwsSignatureValid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOemId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getOemId",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getOemId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOemId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getOemId",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getOemId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RegisterUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/RegisterUser",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"RegisterUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "doWebSearch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/doWebSearch",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"doWebSearch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/Stream/doWebSearch/CaseManager",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Stream/doWebSearch/CaseManager",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Stream",
+						"doWebSearch",
+						"CaseManager"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUserNameForLegacyDN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getUserNameForLegacyDN",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getUserNameForLegacyDN"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCSVersion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/GetCSVersion",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"GetCSVersion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCSVersion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/GetCSVersion",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"GetCSVersion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangeExpiredPassword",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ChangeExpiredPassword",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ChangeExpiredPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recall",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Recall",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Recall"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stream/Recall",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Stream/Recall",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Stream",
+						"Recall"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SendEmail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Check status code is either 200 or 400', () => {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 400])\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"App_SendEmailReq\": {\r\n        \"emailInfo\": {\r\n            \"subject\": \"test\",\r\n            \"body\": \"test\",\r\n            \"copySender\": false,\r\n            \"isHTML\": false,\r\n            \"toEmail\": [\r\n                {\r\n                    \"emailAddress\": \"test@test.com\"\r\n                }\r\n            ]\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/SendEmail",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SendEmail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getComplianceSearchUrls",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getComplianceSearchUrls",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getComplianceSearchUrls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDocumentationLink",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getDocumentationLink",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getDocumentationLink"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserRegistrationFlag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/GetUserRegistrationFlag",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"GetUserRegistrationFlag"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetfeedbackURL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/GetfeedbackURL",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"GetfeedbackURL"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SetEULAFlag",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/SetEULAFlag",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SetEULAFlag"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getStats",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getStats",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getStats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FetchGUID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/FetchGUID",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"FetchGUID"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateItems",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/UpdateItems",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UpdateItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteItems",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/DeleteItems",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"DeleteItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InsertNewItems",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/InsertNewItems",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"InsertNewItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUserSmtp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getUserSmtp",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getUserSmtp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EraseItems",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/EraseItems",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"EraseItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PruneDeletedItems",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/PruneDeletedItems",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"PruneDeletedItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ProcessCollect",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ProcessCollect",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ProcessCollect"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteCollectResponse",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/DeleteCollectResponse",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"DeleteCollectResponse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PollCollectStatus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/PollCollectStatus",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"PollCollectStatus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RestoreDeletedItems",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/RestoreDeletedItems",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"RestoreDeletedItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/CloudConnector/Application/Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/CloudConnector/Application/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CloudConnector",
+						"Application",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CloudConnector/Application/Open",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/CloudConnector/Application/Open",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CloudConnector",
+						"Application",
+						"Open"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getWADomains",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getWADomains",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getWADomains"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getWAEngineURL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getWAEngineURL",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getWAEngineURL"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ThirdParty/SAML/App",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ThirdParty/SAML/App",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ThirdParty",
+						"SAML",
+						"App"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MobileDevices",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/MobileDevices",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"MobileDevices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MobileActions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/MobileActions",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"MobileActions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MobileActions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/MobileActions",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"MobileActions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addWAData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/addWAData",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"addWAData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CopyToRSolr",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/CopyToRSolr",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CopyToRSolr"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCommServTimeTimeZone",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getCommServTimeTimeZone",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getCommServTimeTimeZone"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCommServTimeTimeZone",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getCommServTimeTimeZone",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getCommServTimeTimeZone"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "isMetricsAccessible",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/isMetricsAccessible",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"isMetricsAccessible"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllowedAppTypesForAdminDelete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/GetAllowedAppTypesForAdminDelete",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"GetAllowedAppTypesForAdminDelete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ProcessRetentionRules",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ProcessRetentionRules",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ProcessRetentionRules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateMetadata",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/UpdateMetadata",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UpdateMetadata"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdatePath",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/UpdatePath",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UpdatePath"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getWebServiceMaxConnections",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getWebServiceMaxConnections",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getWebServiceMaxConnections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetFolders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/GetFolders",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"GetFolders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/Password/ForgotRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/user/Password/ForgotRequest",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"user",
+						"Password",
+						"ForgotRequest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user/Password/Forgot",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/user/Password/Forgot",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"user",
+						"Password",
+						"Forgot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cache/metaInfo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/cache/metaInfo",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"cache",
+						"metaInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cache/refresh",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/cache/refresh",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"cache",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cache/removekeys",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/cache/removekeys",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"cache",
+						"removekeys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cache/dump",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/cache/dump",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"cache",
+						"dump"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SoftwareStoreItem",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/SoftwareStoreItem",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SoftwareStoreItem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCustomerLicenseUsage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/GetCustomerLicenseUsage",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"GetCustomerLicenseUsage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RegisterProxy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/RegisterProxy",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"RegisterProxy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getADUsersOfGroup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/getADUsersOfGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"getADUsersOfGroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ProcessExchangeIdxRetentionRules",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ProcessExchangeIdxRetentionRules",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ProcessExchangeIdxRetentionRules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SubmitTransaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/SubmitTransaction",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SubmitTransaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteProperties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/DeleteProperties",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"DeleteProperties"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InsertExtents",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/InsertExtents",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"InsertExtents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "IndexContentForEdge",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/IndexContentForEdge",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"IndexContentForEdge"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetVersionInfo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/GetVersionInfo",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"GetVersionInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateCITask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/CreateCITask",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CreateCITask"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EndCITask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/EndCITask",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"EndCITask"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DoCITask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/DoCITask",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"DoCITask"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Commcell/SSO/OpenId/Redirect",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Commcell/SSO/OpenId/Redirect",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Commcell",
+						"SSO",
+						"OpenId",
+						"Redirect"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MQ/ConnectString",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/MQ/ConnectString",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"MQ",
+						"ConnectString"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Discussion/Enabled",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Discussion/Enabled",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Discussion",
+						"Enabled"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dblayer/GetDelimiter",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/dblayer/GetDelimiter",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"dblayer",
+						"GetDelimiter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dblayer/GetBulkDeleteThreshold",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/dblayer/GetBulkDeleteThreshold",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"dblayer",
+						"GetBulkDeleteThreshold"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dblayer/GetEdgeDriveSubClient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/dblayer/GetEdgeDriveSubClient",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"dblayer",
+						"GetEdgeDriveSubClient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dblayer/GetCaseSensitivity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/dblayer/GetCaseSensitivity",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"dblayer",
+						"GetCaseSensitivity"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dblayer/GetEnablePermissionCheck",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/dblayer/GetEnablePermissionCheck",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"dblayer",
+						"GetEnablePermissionCheck"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dblayer/GetIndexingClientType",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/dblayer/GetIndexingClientType",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"dblayer",
+						"GetIndexingClientType"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dblayer/GetCIServer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/dblayer/GetCIServer",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"dblayer",
+						"GetCIServer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dblayer/GetPublicSharingUserId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/dblayer/GetPublicSharingUserId",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"dblayer",
+						"GetPublicSharingUserId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dblayer/GetGroupIdsOfUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/dblayer/GetGroupIdsOfUser",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"dblayer",
+						"GetGroupIdsOfUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Commcell/CloudRegistration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Commcell/CloudRegistration",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Commcell",
+						"CloudRegistration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Commcell/CloudRegistration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Commcell/CloudRegistration",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Commcell",
+						"CloudRegistration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ProcessExchangeIdxReparation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ProcessExchangeIdxReparation",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ProcessExchangeIdxReparation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UsernameByEmail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/UsernameByEmail",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UsernameByEmail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dcube/syncdsstatus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/dcube/syncdsstatus",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"dcube",
+						"syncdsstatus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EraseByQuery",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/EraseByQuery",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"EraseByQuery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "indexing/uns/collection",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/indexing/uns/collection",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"indexing",
+						"uns",
+						"collection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "indexing/uns/role/collection",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/indexing/uns/role/collection",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"indexing",
+						"uns",
+						"role",
+						"collection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "indexing/uns/collection/batch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/indexing/uns/collection/batch",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"indexing",
+						"uns",
+						"collection",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stream/ExportSearchResults",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Stream/ExportSearchResults",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Stream",
+						"ExportSearchResults"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoginToWebClientUsingWebConsole",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/LoginToWebClientUsingWebConsole",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"LoginToWebClientUsingWebConsole"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "indexing/uns/import",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/indexing/uns/import",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"indexing",
+						"uns",
+						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "uns/DeleteDocuments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/uns/DeleteDocuments",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"uns",
+						"DeleteDocuments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Security/TwoFactorAuth/Pin?username=admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Security/TwoFactorAuth/Pin?username=admin",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Security",
+						"TwoFactorAuth",
+						"Pin"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Security/TwoFactorAuth/Status?username=admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Security/TwoFactorAuth/Status?username=admin",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Security",
+						"TwoFactorAuth",
+						"Status"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PopulateExchangeIdxStats",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/PopulateExchangeIdxStats",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"PopulateExchangeIdxStats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ThirdParty/CAS/App",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ThirdParty/CAS/App",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ThirdParty",
+						"CAS",
+						"App"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Office365/ProcessIdxRetentionRules",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Office365/ProcessIdxRetentionRules",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Office365",
+						"ProcessIdxRetentionRules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Office365/PopulateIdxStats",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Office365/PopulateIdxStats",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Office365",
+						"PopulateIdxStats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConvertBrowseRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ConvertBrowseRequest",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ConvertBrowseRequest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetReadmePreview",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/GetReadmePreview",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"GetReadmePreview"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RegisterClient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/RegisterClient",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"RegisterClient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ServiceCommcell/WebPackage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "HEAD",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ServiceCommcell/WebPackage",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ServiceCommcell",
+						"WebPackage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "multicommcell/CommcellType",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/multicommcell/CommcellType",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"multicommcell",
+						"CommcellType"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job/action/oncomplete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Job/action/oncomplete",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Job",
+						"action",
+						"oncomplete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ContentIndexing/ProcessPreviewRetention",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ContentIndexing/ProcessPreviewRetention",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ContentIndexing",
+						"ProcessPreviewRetention"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "indexing/OperationStatus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/indexing/OperationStatus",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"indexing",
+						"OperationStatus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CloudService/Routing?username=admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/CloudService/Routing?username=admin",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CloudService",
+						"Routing"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CommcellRedirect/isEnabled",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/CommcellRedirect/isEnabled",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommcellRedirect",
+						"isEnabled"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CommcellRedirect/RedirectListForUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/CommcellRedirect/RedirectListForUser",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommcellRedirect",
+						"RedirectListForUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CommcellRedirect/Multicommcell",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/CommcellRedirect/Multicommcell",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommcellRedirect",
+						"Multicommcell"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Status",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Status",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "WebServiceStatus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/WebServiceStatus",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"WebServiceStatus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "WebServiceStatus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/WebServiceStatus",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"WebServiceStatus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test/Echo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Test/Echo",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Test",
+						"Echo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CvaccountsUrl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/CvaccountsUrl",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CvaccountsUrl"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User/{{userID}}/ChangeExpiredPassword",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/User/7893/ChangeExpiredPassword",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"7893",
+						"ChangeExpiredPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangeExpiredPassword",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ChangeExpiredPassword",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ChangeExpiredPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ShareFolderStatus/XXXX",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/ShareFolderStatus/33546",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ShareFolderStatus",
+						"33546"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CommServ/LongUrl/XXXXX",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/CommServ/LongUrl/XXXXX",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommServ",
+						"LongUrl",
+						"XXXXX"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test/EchoString/helloworld",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Test/EchoString/helloworld",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Test",
+						"EchoString",
+						"helloworld"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/stream/publicshare/xxxx",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/stream/publicshare/33546/action/download",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"stream",
+						"publicshare",
+						"33546",
+						"action",
+						"download"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "publicshare/xxxx",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/publicshare/7777/action/Preview",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"publicshare",
+						"7777",
+						"action",
+						"Preview"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "drive/publicshare/xxx",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/drive/publicshare/1234/file/3544/properties",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"publicshare",
+						"1234",
+						"file",
+						"3544",
+						"properties"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "contentstore/publicshare/345",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/publicshare/436575/file/version/535/action/download",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"publicshare",
+						"436575",
+						"file",
+						"version",
+						"535",
+						"action",
+						"download"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "publicshare/345",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/publicshare/345/file/action/upload",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"publicshare",
+						"345",
+						"file",
+						"action",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "drive/publicshare/ttt",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/drive/publicshare/125/tags/common",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"publicshare",
+						"125",
+						"tags",
+						"common"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "contentstore/publicshare/wwww",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/publicshare/1234/tags/common",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"publicshare",
+						"1234",
+						"tags",
+						"common"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cvauth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/cvauth/123",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"cvauth",
+						"123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cvauth/ldap",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/cvauth/ldap",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"cvauth",
+						"ldap"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test/Echo with /Help",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/Test/Echo/Help",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Test",
+						"Echo",
+						"Help"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cvauth/ldap/search/users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/cvauth/ldap/search/users",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"cvauth",
+						"ldap",
+						"search",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "drive/publicshare/12234/file/action/upload",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/drive/publicshare/12234/file/action/upload",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"publicshare",
+						"12234",
+						"file",
+						"action",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "contentstore/publicshare/1234/file/action/upload",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/publicshare/1234/file/action/upload",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"publicshare",
+						"1234",
+						"file",
+						"action",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cvauth/ldap/filter/users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/cvauth/ldap/filter/users",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"cvauth",
+						"ldap",
+						"filter",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cvauth/ldap/filter/groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/cvauth/ldap/filter/groups",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"cvauth",
+						"ldap",
+						"filter",
+						"groups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cvauth/ldap/search/servers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ServerURL}}/cvauth/ldap/search/servers",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"cvauth",
+						"ldap",
+						"search",
+						"servers"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

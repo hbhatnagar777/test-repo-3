@@ -1,0 +1,24 @@
+# Please read cxunix/source/makefiles/Makefile.prj.doc
+
+PROMOTE_WARNINGS_TO_ERRORS="yes"
+
+INC="include/CvLib common/CvDataPipe/perf/h common/CvDataPipe/modules/h
+	\$(XERCES_DIR)/include CommClient"
+
+CODE="
+all::\$(CVBIN)/cvpysdk.tar
+
+\$(CVBIN)/cvpysdk.tar:changes
+	rm -rf \$(CVBIN)/PythonSDK
+	tar -cvf \$(CVBIN)/cvpysdk.tar --exclude='*.pyc' --exclude='*.bat' --exclude='*akefile*' --exclude='PythonSDK' --exclude-vcs .
+	rm -rf PythonSDK
+clean::
+	rm -rf \$(CVBIN)/PythonSDK
+	rm -f \$(CVBIN)/cvpysdk.tar
+	rm -rf PythonSDK
+cleandeps::
+changes::
+	rm -rf PythonSDK
+	mkdir  PythonSDK
+"
+

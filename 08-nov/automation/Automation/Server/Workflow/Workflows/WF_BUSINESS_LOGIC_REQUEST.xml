@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" businessLogic="1" businessLogicExecutedBy="evmgrs,webserver" businessLogicMessage="App_CreateUserRequest" businessLogicProcessing="Request" config="&lt;configuration />" description="Blocks App_CreateUserRequest message on evmgrs and webserver" executeOnWeb="0" inputs="&lt;inputs>&lt;requestXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/requestXML>&lt;processingInstruction class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/processingInstruction>&lt;responseXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/responseXML>&lt;/inputs>" interactive="0" isHtmlDescription="0" manualPercentageComplete="0" name="WF_BUSINESS_LOGIC_REQUEST" outputs="&lt;outputs>&lt;returnCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>&lt;/returnCode>&lt;returnString class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/returnString>&lt;outputXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/outputXML>&lt;/outputs>" revision="$Revision: 1.2 $" tags="" uniqueGuid="03cb01e0-0bc7-4ef4-9103-757612b570a5" variables="&lt;variables />" webHidden="0">
+    <schema>
+        <outputs className="" name="outputs" type="">
+            <children attribute="0" className="java.lang.Integer" defaultValue="" hidden="0" inputType="java.lang.Integer" listType="0" name="returnCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.String" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" name="returnString" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="workflow.types.XML" defaultValue="" displayName="" documentation="" hidden="0" inputType="workflow.types.XML" listType="0" name="outputXML" readOnly="0" type="{workflow.types}XML"/>
+        </outputs>
+        <variables className="" name="variables" type=""/>
+        <inputs className="" name="inputs" type="">
+            <children attribute="0" className="workflow.types.XML" defaultValue="" displayName="" hidden="0" inputType="workflow.types.XML" listType="0" name="requestXML" type="{workflow.types}XML"/>
+            <children attribute="0" className="workflow.types.XML" defaultValue="" displayName="" hidden="0" inputType="workflow.types.XML" listType="0" name="processingInstruction" type="{workflow.types}XML"/>
+            <children attribute="0" className="workflow.types.XML" defaultValue="" displayName="" hidden="0" inputType="workflow.types.XML" listType="0" name="responseXML" type="{workflow.types}XML"/>
+        </inputs>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start breakpoint="0" commented="0" continueOnFailure="0" created="0" description="" displayName="Start" height="36" interactive="0" jobMode="0" name="Start" originalStyle="" skipAttempt="0" style="image;image=/images/jgraphx/house.png" uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="WorkflowEnd_1" commented="0" originalStyle="" points="" sourceX="72" sourceY="59" status="0" style="defaultEdge" targetX="695" targetY="249" transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1581569471980" description="Ends the workflow" displayName="WorkflowEnd" height="34" interactive="0" jobMode="0" name="WorkflowEnd" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.EndActivity" uniqueName="WorkflowEnd_1" waitSetting="0" width="106" x="636" y="234">
+        <outputs outputs="&lt;outputs>&lt;returnCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>3&lt;/returnCode>&lt;returnString class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Blocked by workflow&lt;/returnString>&lt;outputXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&amp;lt;App_CreateUserResponse&amp;gt;  &amp;#xD;&#xd;&#xa;    &amp;lt;response&amp;gt; &amp;#xD;&#xd;&#xa;    &amp;lt;errorCode&amp;gt;1&amp;lt;/errorCode&amp;gt; &amp;#xD;&#xd;&#xa;    &amp;lt;errorString&amp;gt;Blocked by workflow&amp;lt;/errorString&amp;gt;  &amp;#xD;&#xd;&#xa;    &amp;lt;/response&amp;gt;  &amp;#xD;&#xd;&#xa;&amp;lt;/App_CreateUserResponse&amp;gt;&lt;/outputXML>&lt;/outputs>"/>
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot; />&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"/>
+    </Activity>
+</Workflow_WorkflowDefinition>

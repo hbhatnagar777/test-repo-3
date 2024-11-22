@@ -1,0 +1,162 @@
+terraform {
+  required_providers {
+    hyperv = {
+      source  = "taliesins/hyperv"
+      version = ">= 1.0.3"
+    }
+  }
+}
+
+provider "hyperv" {
+  host            = ""
+  port            = 5985
+  https           = false
+  insecure        = true
+  use_ntlm        = false
+  tls_server_name = ""
+  cacert_path     = ""
+  cert_path       = ""
+  key_path        = ""
+  script_path 	  = "C:/Temp/terraform_%RAND%.cmd"
+  timeout         = "500s"
+}
+
+resource "hyperv_machine_instance" "commserver01" {
+  name                   = ""
+  generation             = 1
+  processor_count        = 2
+  static_memory          = true
+  memory_startup_bytes   = 10536870912 #10GB
+  wait_for_state_timeout = 10
+  wait_for_ips_timeout   = 10
+
+  network_adaptors {
+    name         = "Network Adapter"
+    switch_name  = "vmswitch-02"
+    wait_for_ips = false
+  }
+
+  hard_disk_drives {
+    controller_type     = "Ide"
+    path                = ""
+    controller_number   = 0
+    controller_location = 0
+  }
+
+  dvd_drives {
+    controller_number   = 0
+    controller_location = 1
+  }
+}
+
+resource "hyperv_machine_instance" "mediaagent01" {
+  name                   = ""
+  generation             = 1
+  processor_count        = 2
+  static_memory          = true
+  memory_startup_bytes   = 10536870912 #10GB
+  wait_for_state_timeout = 10
+  wait_for_ips_timeout   = 10
+
+  network_adaptors {
+    name         = "Network Adapter"
+    switch_name  = "vmswitch-02"
+    wait_for_ips = false
+  }
+
+  hard_disk_drives {
+    controller_type     = "Ide"
+    path                = ""
+    controller_number   = 0
+    controller_location = 0
+  }
+
+  dvd_drives {
+    controller_number   = 0
+    controller_location = 1
+  }
+}
+
+resource "hyperv_machine_instance" "webserver01" {
+  name                   = ""
+  generation             = 1
+  processor_count        = 2
+  static_memory          = true
+  memory_startup_bytes   = 10536870912 #10GB
+  wait_for_state_timeout = 10
+  wait_for_ips_timeout   = 10
+
+  network_adaptors {
+    name         = "Network Adapter"
+    switch_name  = "vmswitch-02"
+    wait_for_ips = false
+  }
+
+  hard_disk_drives {
+    controller_type     = "Ide"
+    path                = ""
+    controller_number   = 0
+    controller_location = 0
+  }
+
+  dvd_drives {
+    controller_number   = 0
+    controller_location = 1
+  }
+}
+
+resource "hyperv_machine_instance" "commandcenter01" {
+  name                   = ""
+  generation             = 1
+  processor_count        = 2
+  static_memory          = true
+  memory_startup_bytes   = 10536870912 #10GB
+  wait_for_state_timeout = 10
+  wait_for_ips_timeout   = 10
+
+  network_adaptors {
+    name         = "Network Adapter"
+    switch_name  = "vmswitch-02"
+    wait_for_ips = false
+  }
+
+  hard_disk_drives {
+    controller_type     = "Ide"
+    path                = ""
+    controller_number   = 0
+    controller_location = 0
+  }
+
+  dvd_drives {
+    controller_number   = 0
+    controller_location = 1
+  }
+}
+
+resource "hyperv_machine_instance" "networkproxy01" {
+  name                   = ""
+  generation             = 1
+  processor_count        = 2
+  static_memory          = true
+  memory_startup_bytes   = 10536870912 #10GB
+  wait_for_state_timeout = 10
+  wait_for_ips_timeout   = 10
+
+  network_adaptors {
+    name         = "Network Adapter"
+    switch_name  = "vmswitch-02"
+    wait_for_ips = false
+  }
+
+  hard_disk_drives {
+    controller_type     = "Ide"
+    path                = ""
+    controller_number   = 0
+    controller_location = 0
+  }
+
+  dvd_drives {
+    controller_number   = 0
+    controller_location = 1
+  }
+}

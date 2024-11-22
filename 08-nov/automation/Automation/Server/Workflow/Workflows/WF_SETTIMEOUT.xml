@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />" description="" executeOnWeb="0" inputs="&lt;inputs />" interactive="0" isHtmlDescription="0" manualPercentageComplete="0" name="WF_SETTIMEOUT" outputs="&lt;outputs />" revision="$Revision: 1.2 $" tags="" uniqueGuid="c60c990f-f8e4-405c-bed8-d674daa3f284" variables="&lt;variables />" webHidden="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables className="" name="variables" type=""/>
+        <inputs className="" name="inputs" type=""/>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start breakpoint="0" commented="0" continueOnFailure="0" created="0" description="" displayName="Start" height="36" interactive="0" jobMode="0" name="Start" originalStyle="" skipAttempt="0" style="image;image=/images/jgraphx/house.png" uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="WaitForJobCompletion_1" commented="0" originalStyle="" points="" sourceX="72" sourceY="59" status="0" style="defaultEdge" targetX="450" targetY="59" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1574788948446" description="waits until the list of jobs completes" displayName="WaitForJobCompletion" height="34" interactive="0" jobMode="0" name="WaitForJobCompletion" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.WaitForJobCompletion" uniqueName="WaitForJobCompletion_1" waitSetting="0" width="159" x="407" y="42">
+        <inputs val="&lt;inputs>&lt;jobId class=&quot;java.lang.Integer&quot; _list_=&quot;true&quot;>22222&lt;/jobId>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+        <onEnter language="1" script="workflow.setTimeout(1);"/>
+    </Activity>
+</Workflow_WorkflowDefinition>

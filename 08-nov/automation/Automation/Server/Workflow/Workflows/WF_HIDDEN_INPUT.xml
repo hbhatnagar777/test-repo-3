@@ -1,0 +1,85 @@
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration /&gt;" description="&lt;html&gt;&lt;p&gt;&#xA;      Workflow to validate hidden input in UserInput/PopupInput activities&#xA;    &lt;/p&gt;&lt;/html&gt;" executeOnWeb="0" inputs="&lt;inputs&gt;&lt;INP_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot; /&gt;&lt;INP_HIDDEN_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot;&gt;WF_HIDDEN_INPUT&lt;/INP_HIDDEN_STRING&gt;&lt;/inputs&gt;" interactive="1" isHtmlDescription="1" name="WF_HIDDEN_INPUT" outputs="&lt;outputs /&gt;" revision="$Revision: 1.2 $" tags="" uniqueGuid="18109bcd-d525-4ad2-802b-257fbc9c9fb3" variables="&lt;variables /&gt;" webHidden="0" workflowId="0">
+  <onStart language="1" script="logger.info(&quot;***********************************************************************************************************************************************************************&quot;);&#xD;&#xA;logger.info(&quot;Execution of workflow [&quot;+xpath:{/workflow/system/workflow/workflowName}+&quot;] with JobId [&quot;+xpath:{/workflow/system/jobId}+&quot;] started&quot;);&#xD;&#xA;logger.info(&quot;***********************************************************************************************************************************************************************&quot;);" />
+  <onComplete language="1" script="logger.info(&quot;***********************************************************************************************************************************************************************&quot;);&#xD;&#xA;logger.info(&quot;Execution of workflow [&quot;+xpath:{/workflow/system/workflow/workflowName}+&quot;] with JobId [&quot;+xpath:{/workflow/system/jobId}+&quot;] completed&quot;);&#xD;&#xA;logger.info(&quot;***********************************************************************************************************************************************************************&quot;);" />
+  <schema>
+    <inputs attribute="0" className="" name="inputs" type="">
+      <children attribute="0" className="java.lang.String" controlHidden="0" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" maximumValue="" minimumValue="" name="INP_STRING" readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string" />
+      <children attribute="0" className="java.lang.String" controlHidden="1" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" maximumValue="" minimumValue="" name="INP_HIDDEN_STRING" readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string" />
+    </inputs>
+    <variables className="" name="variables" type="" />
+    <outputs className="" name="outputs" type="" />
+    <config className="" name="configuration" type="" />
+  </schema>
+  <formProperties css="" formVersion="0" javaScript="" pageMode="0">
+    <rules />
+  </formProperties>
+  <Start commented="0" continueOnFailure="0" created="0" description="" displayName="Start" height="36" interactive="0" jobMode="0" name="Start" originalStyle="" skipAttempt="0" style="image;image=/images/jgraphx/house.png" uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+    <onExit language="1" script="logger.info(&quot;Value provided in Input window&quot;);&#xD;&#xA;logger.info(&quot;Optional String : &quot;+xpath:{/workflow/inputs/INP_STRING});&#xD;&#xA;logger.info(&quot;Hidden String : &quot;+xpath:{/workflow/inputs/INP_HIDDEN_STRING});" />
+    <inputs val="&lt;inputs /&gt;" />
+    <transition activity="PopupInput_1" commented="0" originalStyle="" points="" sourceX="72" sourceY="59" status="0" style="defaultEdge" targetX="225" targetY="58" transitionIndex="0" x="0" y="0">
+      <condition language="1" script="/*&#xA;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xA;activity.exitCode==0;&#xA;*/&#xA;" />
+    </transition>
+  </Start>
+  <Activity commented="0" continueOnFailure="0" created="1557914551503" description="popups an input form for the user to fill out" displayName="PopupInput" height="34" interactive="0" jobMode="0" name="PopupInput" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.InteractiveInputActivity" uniqueName="PopupInput_1" waitSetting="0" width="100" x="175" y="41">
+    <activitySchema>
+      <inputs className="" defaultValue="" listType="0" name="inputs" type="">
+        <children attribute="0" className="java.lang.String" controlHidden="0" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" maximumValue="" minimumValue="" name="INP_POP_STRING" readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string" />
+        <children attribute="0" className="java.lang.String" controlHidden="1" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" maximumValue="" minimumValue="" name="INP_POP_HIDDEN_STRING" readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string" />
+      </inputs>
+      <outputs className="" defaultValue="" listType="0" name="outputs" type="">
+        <children attribute="0" className="java.lang.String" controlHidden="0" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" maximumValue="" minimumValue="" name="INP_POP_STRING" readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string" />
+        <children attribute="0" className="java.lang.String" controlHidden="1" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" maximumValue="" minimumValue="" name="INP_POP_HIDDEN_STRING" readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string" />
+        <children className="java.lang.Boolean" inputType="java.lang.Boolean" name="okClicked" type="{http://www.w3.org/2001/XMLSchema}boolean" />
+        <children className="java.lang.String" inputType="java.lang.String" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string" />
+      </outputs>
+    </activitySchema>
+    <onExit language="1" script="logger.info(&quot;Value provided in Popup window (Hidden Input Validation - 1 (Popup))&quot;);&#xD;&#xA;logger.info(&quot;Optional String value : &quot;+xpath:{/workflow/PopupInput_1/INP_POP_STRING});&#xD;&#xA;logger.info(&quot;Hidden String value : &quot;+xpath:{/workflow/PopupInput_1/INP_POP_HIDDEN_STRING});&#xD;&#xA;logger.info(&quot;okClicked ? &quot;+xpath:{/workflow/PopupInput_1/okClicked});" />
+    <inputs val="&lt;inputs&gt;&lt;inputs&gt;&lt;INP_POP_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot; /&gt;&lt;INP_POP_HIDDEN_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot;&gt;WF_HIDDEN_INPUT&lt;/INP_POP_HIDDEN_STRING&gt;&lt;/inputs&gt;&lt;subject&gt;Hidden Input Validation - 1 (Popup)&lt;/subject&gt;&lt;formProperties&gt;&amp;lt;?xml version='1.0' encoding='UTF-8'?&amp;gt;&amp;lt;Workflow_FormProperties css=&quot;&quot; javaScript=&quot;&quot; pageMode=&quot;0&quot; formVersion=&quot;0&quot;&amp;gt;&amp;lt;rules /&amp;gt;&amp;lt;/Workflow_FormProperties&amp;gt;&lt;/formProperties&gt;&lt;/inputs&gt;" />
+    <transition activity="InformationalMessage_1" commented="0" originalStyle="" points="" sourceX="225" sourceY="58" status="0" style="defaultEdge" targetX="229" targetY="127" transitionIndex="0" x="0" y="0">
+      <condition language="1" script="xpath:{/workflow/PopupInput_1/okClicked};" />
+    </transition>
+  </Activity>
+  <Activity commented="0" continueOnFailure="0" created="1557914559815" description="displays an informational message to the user" displayName="InformationalMessage" height="34" interactive="0" jobMode="0" name="InformationalMessage" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.InteractiveMessageActivity" uniqueName="InformationalMessage_1" waitSetting="0" width="157" x="151" y="110">
+    <activitySchema>
+      <inputs className="" defaultValue="" listType="0" name="inputs" type="" />
+      <outputs className="" defaultValue="" listType="0" name="outputs" type="">
+        <children attribute="0" className="java.lang.String" defaultValue="" hidden="0" inputType="java.lang.String" listType="0" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string" />
+      </outputs>
+    </activitySchema>
+    <inputs val="&lt;inputs&gt;&lt;message&gt;xpath:{/workflow/inputs/INP_HIDDEN_STRING}&lt;/message&gt;&lt;dialogType&gt;Popup&lt;/dialogType&gt;&lt;iconType&gt;Information&lt;/iconType&gt;&lt;title&gt;Hidden Input Validation - 2 (Info)&lt;/title&gt;&lt;html&gt;false&lt;/html&gt;&lt;formProperties /&gt;&lt;/inputs&gt;" />
+    <transition activity="EndUserSession_1" commented="0" originalStyle="" points="" sourceX="254" sourceY="152" status="0" style="defaultEdge" targetX="410" targetY="149" transitionIndex="0" x="0" y="0">
+      <condition language="1" script="/*&#xA;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xA;activity.exitCode==0;&#xA;*/&#xA;" />
+    </transition>
+  </Activity>
+  <Activity commented="0" continueOnFailure="0" created="1557914563110" description="" displayName="UserInput" height="34" interactive="1" jobMode="0" name="UserInput" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.WebFormActivity" uniqueName="UserInput_1" waitSetting="0" width="100" x="367" y="174">
+    <activitySchema>
+      <inputs className="" defaultValue="" listType="0" name="inputs" type="">
+        <children attribute="0" className="java.lang.String" controlHidden="0" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" maximumValue="" minimumValue="" name="INP_USER_STRING" readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string" />
+        <children attribute="0" className="java.lang.String" controlHidden="1" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" maximumValue="" minimumValue="" name="INP_USER_HIDDEN_STRING" readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string" />
+      </inputs>
+      <outputs className="" defaultValue="" listType="0" name="outputs" type="">
+        <children attribute="0" className="java.lang.String" controlHidden="0" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" maximumValue="" minimumValue="" name="INP_USER_STRING" readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string" />
+        <children attribute="0" className="java.lang.String" controlHidden="1" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" maximumValue="" minimumValue="" name="INP_USER_HIDDEN_STRING" readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string" />
+        <children className="commvault.msgs.CvEntities.UserEntity" inputType="commvault.msgs.CvEntities.UserEntity" name="completedBy" type="{commvault.msgs.CvEntities}UserEntity">
+          <children className="java.lang.String" inputType="java.lang.String" name="userName" type="{http://www.w3.org/2001/XMLSchema}string" />
+          <children className="java.lang.Integer" inputType="java.lang.Integer" name="userId" type="{http://www.w3.org/2001/XMLSchema}integer" />
+        </children>
+        <children className="java.lang.String" inputType="java.lang.String" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string" />
+      </outputs>
+    </activitySchema>
+    <onExit language="1" script="logger.info(&quot;Value provided in UserInput(Hidden Input Validation - 3 (UserInput))&quot;);&#xD;&#xA;logger.info(&quot;Optional String Value : &quot;+xpath:{/workflow/UserInput_1/INP_USER_STRING});&#xD;&#xA;logger.info(&quot;Hidden String : &quot;+xpath:{/workflow/UserInput_1/INP_USER_HIDDEN_STRING});&#xD;&#xA;logger.info(&quot;CompletedBy : &quot;+xpath:{/workflow/UserInput_1/completedBy/userName});&#xD;&#xA;logger.info(&quot;Action Selected : &quot;+xpath:{/workflow/UserInput_1/actionSelected});" />
+    <inputs val="&lt;inputs&gt;&lt;interactionUsers&gt;xpath:{/workflow/system/executor}&lt;/interactionUsers&gt;&lt;inputs&gt;&lt;INP_USER_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot; /&gt;&lt;INP_USER_HIDDEN_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot;&gt;WF_HIDDEN_INPUT&lt;/INP_USER_HIDDEN_STRING&gt;&lt;/inputs&gt;&lt;subject&gt;Hidden Input Validation - 3 (UserInput)&lt;/subject&gt;&lt;sendEmail&gt;true&lt;/sendEmail&gt;&lt;approvalEnabled&gt;false&lt;/approvalEnabled&gt;&lt;email&gt;&lt;from /&gt;&lt;to /&gt;&lt;cc /&gt;&lt;bcc /&gt;&lt;subject&gt;User Interaction Operation -Hidden String : Workflow [xpath:{/workflow/system/workflow}] executed as part of automation testing&lt;/subject&gt;&lt;attachments /&gt;&lt;repeatInterval /&gt;&lt;body&gt;&amp;lt;p&amp;gt;&#xD;&#xA;      Hi,&#xD;&#xA;    &amp;lt;/p&amp;gt;&#xD;&#xA;    &amp;lt;p&amp;gt;&#xD;&#xA;      As part of automation testing workflow &#xD;&#xA;      [xpath:{/workflow/system/workflow}] executed to validate searchable type &#xD;&#xA;      input operation in UserInput activity.&#xD;&#xA;    &amp;lt;/p&amp;gt;&#xD;&#xA;    &amp;lt;p&amp;gt;&#xD;&#xA;      Please ignore this mail.&#xD;&#xA;    &amp;lt;/p&amp;gt;&#xD;&#xA;    &amp;lt;p&amp;gt;&#xD;&#xA;      &#xD;&#xA;    &amp;lt;/p&amp;gt;&#xD;&#xA;    &amp;lt;p&amp;gt;&#xD;&#xA;      Thanks.&#xD;&#xA;    &amp;lt;/p&amp;gt;&lt;/body&gt;&lt;html&gt;true&lt;/html&gt;&lt;/email&gt;&lt;formProperties&gt;&amp;lt;?xml version='1.0' encoding='UTF-8'?&amp;gt;&amp;lt;Workflow_FormProperties css=&quot;&quot; javaScript=&quot;&quot; pageMode=&quot;0&quot; formVersion=&quot;0&quot; /&amp;gt;&lt;/formProperties&gt;&lt;/inputs&gt;" />
+    <transition activity="EndUserSession_2" commented="0" originalStyle="" points="" sourceX="417" sourceY="191" status="0" style="defaultEdge" targetX="573" targetY="190" transitionIndex="0" x="0" y="0">
+      <condition language="1" script="xpath:{/workflow/UserInput_1/actionSelected}.equals(&quot;OK&quot;);" />
+    </transition>
+  </Activity>
+  <Activity commented="0" continueOnFailure="0" created="1557914567478" description="ends the interactive user session" displayName="EndUserSession" height="34" interactive="0" jobMode="0" name="EndUserSession" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.InteractiveEndSessionActivity" uniqueName="EndUserSession_1" waitSetting="0" width="124" x="358" y="111">
+    <inputs val="&lt;inputs /&gt;" />
+    <transition activity="UserInput_1" commented="0" originalStyle="" points="" sourceX="420" sourceY="128" status="0" style="defaultEdge" targetX="429" targetY="202" transitionIndex="0" x="0" y="0">
+      <condition language="1" script="/*&#xA;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xA;activity.exitCode==0;&#xA;*/&#xA;" />
+    </transition>
+  </Activity>
+  <Activity commented="0" continueOnFailure="0" created="1557914584645" description="ends the interactive user session" displayName="EndUserSession" height="34" interactive="0" jobMode="0" name="EndUserSession" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.InteractiveEndSessionActivity" uniqueName="EndUserSession_2" waitSetting="0" width="124" x="503" y="174">
+    <inputs val="&lt;inputs /&gt;" />
+  </Activity>
+</Workflow_WorkflowDefinition>

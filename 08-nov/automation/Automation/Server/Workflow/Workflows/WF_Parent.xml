@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />"
+    description="" executeOnWeb="0" inputs="&lt;inputs />"
+    interactive="0" isHtmlDescription="0" manualPercentageComplete="0"
+    name="WF_Parent" outputs="&lt;outputs />"
+    revision="$Revision: M1.2 $" tags=""
+    uniqueGuid="1b099164-5103-4961-92b9-8a551b4b1e7a"
+    variables="&lt;variables />" webHidden="0" workflowId="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables className="" name="variables" type=""/>
+        <inputs className="" name="inputs" type=""/>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="Client_1" commented="0" description=""
+            originalStyle="" points="" sourceX="72" sourceY="59"
+            status="0" style="defaultEdge" targetX="174" targetY="141"
+            transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1575404943851" description=""
+        displayName="WF_EmbeddedScript" height="34" interactive="0"
+        jobMode="1" name="WF_EmbeddedScript"
+        namespaceUri="commvault.workflow.activities" originalStyle=""
+        skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ExecuteWorkflow"
+        uniqueName="WF_EmbeddedScript_1" waitSetting="0" width="149"
+        x="363" y="42">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="Script_1" commented="0" description=""
+            originalStyle="" points="" sourceX="437" sourceY="59"
+            status="0" style="defaultEdge" targetX="592" targetY="66"
+            transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1575404981445" description="" displayName="Client"
+        height="34" interactive="0" jobMode="0" name="Client"
+        namespaceUri="commvault.cte.workflow.activities.cmd.list"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.cmd.list.ListClient"
+        uniqueName="Client_1" waitSetting="0" width="100" x="165" y="42">
+        <inputs val="&lt;inputs>&#xd;&#xa;  &lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&#xd;&#xa;    &lt;useImpersonatedAccount>true&lt;/useImpersonatedAccount>&#xd;&#xa;    &lt;tokenFile />&#xd;&#xa;    &lt;token />&#xd;&#xa;  &lt;/sessionOptions>&#xd;&#xa;&lt;/inputs>"/>
+        <transition activity="WF_EmbeddedScript_1" commented="0"
+            description="" originalStyle="" points="" sourceX="215"
+            sourceY="59" status="0" style="defaultEdge" targetX="378"
+            targetY="72" transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1575408519555"
+        description="activity to execute code snippets in the selected language"
+        displayName="Script" height="34" interactive="0" jobMode="0"
+        name="Script" namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ScriptActivity"
+        uniqueName="Script_1" waitSetting="0" width="100" x="583" y="44">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;if (xpath:{/workflow/WF_EmbeddedScript_1/count} == 1)&amp;#xA;    return true;&amp;#xA;else&amp;#xA;    return false;&quot; />&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_1" commented="0"
+            description="" displayName="True" originalStyle="" points=""
+            sourceX="633" sourceY="61" status="0" style="defaultEdge"
+            targetX="829" targetY="67" transitionIndex="0" value="ANY"
+            x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/Script_1/output};&#xa;&#xa;"/>
+        </transition>
+        <transition activity="WorkflowEnd_2" commented="0"
+            description="" displayName="False" originalStyle=""
+            points="" sourceX="633" sourceY="61" status="0"
+            style="defaultEdge" targetX="787" targetY="150"
+            transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="!xpath:{/workflow/Script_1/output};"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1575484843108" description="Ends the workflow"
+        displayName="WorkflowEnd" height="34" interactive="0"
+        jobMode="0" name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.EndActivity"
+        uniqueName="WorkflowEnd_1" waitSetting="0" width="106" x="776" y="50">
+        <inputs val="&lt;inputs>&#xd;&#xa;  &lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>COMPLETED&lt;/completionStatus>&#xd;&#xa;  &lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>completed&lt;/failureMessage>&#xd;&#xa;&lt;/inputs>"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1575484846619" description="Ends the workflow"
+        displayName="WorkflowEnd" height="34" interactive="0"
+        jobMode="0" name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.EndActivity"
+        uniqueName="WorkflowEnd_2" waitSetting="0" width="106" x="734" y="133">
+        <inputs val="&lt;inputs>&#xd;&#xa;  &lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>FAILED&lt;/completionStatus>&#xd;&#xa;  &lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&#xd;&#xa;&lt;/inputs>"/>
+    </Activity>
+    <formProperties/>
+    <minCommCellVersion releaseID="16" servicePack="0"/>
+</Workflow_WorkflowDefinition>

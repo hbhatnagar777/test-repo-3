@@ -1,0 +1,1027 @@
+{
+	"info": {
+		"_postman_id": "20a22359-d257-4d87-9711-e6067e21024b",
+		"name": "Operation Window-Tenant Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Company",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var d = new Date();",
+							"var time = d.getTime();",
+							"postman.setEnvironmentVariable(\"adminEmail\", time);",
+							"organizationName = \"blackoutWindowTestCompany\"+Date.now();",
+							"pm.environment.set(\"organizationName\", organizationName);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains providerId\"] = responseBody.has(\"providerId\");",
+							"tests[\"Response Body contains providerDomainName\"] = responseBody.has(\"providerDomainName\");",
+							"",
+							"postman.setEnvironmentVariable(\"providerId\", jsonData.response.entity.providerId);",
+							"postman.setEnvironmentVariable(\"providerDomainName\", jsonData.response.entity.providerDomainName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"organizationInfo\": {\r\n    \"organization\": {\r\n      \"shortName\": {\r\n        \"domainName\": \"{{organizationName}}\"\r\n      },\r\n      \"connectName\": \"{{organizationName}}\"\r\n    },\r\n    \"organizationProperties\": {\r\n      \"agePasswordDays\": 0\r\n    }\r\n  },\r\n  \"sendEmail\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tenant Admin User Creation-V4 API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Request sent: \" ,pm.request.body.raw);\r",
+							"console.log(\"Response received: \" ,responseBody);\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"pm.environment.set(\"tenantAdminId\", jsonData.users[0].id);\r",
+							"pm.environment.set(\"tenantAdminName\", jsonData.users[0].name);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"companyName = pm.environment.get(\"providerDomainName\");\r",
+							"companyName = companyName.concat(\"\\\\\\\\Tenant Admin\");\r",
+							"console.log(companyName);\r",
+							"pm.environment.set(\"companyName\", companyName);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "authtoken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"users\": [\n    {\n      \"fullName\": \"blackoutWindowTestUser{{$timestamp}}\",\n      \"name\": \"blackoutWindowTestUser{{$timestamp}}\",\n      \"email\": \"blackoutWindowTestUser{{$timestamp}}@cv.com\",\n      \"company\": {\n        \"id\": {{providerId}},\n        \"name\": \"{{providerDomainName}}\"\n      },\n      \"userGroups\": [\n        {\n          \"name\": \"{{companyName}}\"\n        }\n      ],\n      \"useSystemGeneratePassword\": false,\n      \"password\": \"Q29tbVZhdWx0QEAxMjM0NTY=\",\n      \"inviteUser\": false\n    }\n  ]\n\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v4/user",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v4",
+						"user"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Requested Details not found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userType\": \"COMPANY\",\n    \"users\": [\n        {\n            \"email\": \"eiusmod amet sint cillum pariatur\",\n            \"fullName\": \"Excepteur proident non\",\n            \"name\": \"qui sit pariatur\",\n            \"userGroups\": [\n                {\n                    \"id\": 91533092,\n                    \"name\": \"deserunt consequat occaecat\"\n                },\n                {\n                    \"id\": -70459443,\n                    \"name\": \"veniam in non\"\n                }\n            ],\n            \"useSystemGeneratePassword\": false,\n            \"password\": \"qui laborum aute esse\",\n            \"inviteUser\": false\n        },\n        {\n            \"email\": \"dolor eiusmod\",\n            \"fullName\": \"ipsum cillum eiusmod exercitation\",\n            \"name\": \"ullamco est in veniam amet\",\n            \"userGroups\": [\n                {\n                    \"id\": -85906103,\n                    \"name\": \"non\"\n                },\n                {\n                    \"id\": 91386774,\n                    \"name\": \"sit\"\n                }\n            ],\n            \"useSystemGeneratePassword\": true,\n            \"password\": \"eu dolore et\",\n            \"inviteUser\": true\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userType\": \"COMPANY\",\n    \"users\": [\n        {\n            \"email\": \"eiusmod amet sint cillum pariatur\",\n            \"fullName\": \"Excepteur proident non\",\n            \"name\": \"qui sit pariatur\",\n            \"userGroups\": [\n                {\n                    \"id\": 91533092,\n                    \"name\": \"deserunt consequat occaecat\"\n                },\n                {\n                    \"id\": -70459443,\n                    \"name\": \"veniam in non\"\n                }\n            ],\n            \"useSystemGeneratePassword\": false,\n            \"password\": \"####\",\n            \"inviteUser\": false\n        },\n        {\n            \"email\": \"dolor eiusmod\",\n            \"fullName\": \"ipsum cillum eiusmod exercitation\",\n            \"name\": \"ullamco est in veniam amet\",\n            \"userGroups\": [\n                {\n                    \"id\": -85906103,\n                    \"name\": \"non\"\n                },\n                {\n                    \"id\": 91386774,\n                    \"name\": \"sit\"\n                }\n            ],\n            \"useSystemGeneratePassword\": true,\n            \"password\": \"eu dolore et\",\n            \"inviteUser\": true\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"users\": [\n  {\n   \"id\": -74116798,\n   \"GUID\": \"exercitation non ex qui\",\n   \"name\": \"officia enim amet incididunt\"\n  },\n  {\n   \"id\": 25515457,\n   \"GUID\": \"Duis fugiat mollit tempor adipisicing\",\n   \"name\": \"magna cupidatat dolore\"\n  }\n ]\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "<API Key>",
+								"description": "Added as a part of security scheme: apikey"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userType\": \"COMPANY\",\n    \"users\": [\n        {\n            \"email\": \"eiusmod amet sint cillum pariatur\",\n            \"fullName\": \"Excepteur proident non\",\n            \"name\": \"qui sit pariatur\",\n            \"userGroups\": [\n                {\n                    \"id\": 91533092,\n                    \"name\": \"deserunt consequat occaecat\"\n                },\n                {\n                    \"id\": -70459443,\n                    \"name\": \"veniam in non\"\n                }\n            ],\n            \"useSystemGeneratePassword\": false,\n            \"password\": \"qui laborum aute esse\",\n            \"inviteUser\": false\n        },\n        {\n            \"email\": \"dolor eiusmod\",\n            \"fullName\": \"ipsum cillum eiusmod exercitation\",\n            \"name\": \"ullamco est in veniam amet\",\n            \"userGroups\": [\n                {\n                    \"id\": -85906103,\n                    \"name\": \"non\"\n                },\n                {\n                    \"id\": 91386774,\n                    \"name\": \"sit\"\n                }\n            ],\n            \"useSystemGeneratePassword\": true,\n            \"password\": \"eu dolore et\",\n            \"inviteUser\": true\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Tenant Admin Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"tenantusername\");",
+							"console.log(username);               ",
+							"console.log(jsonData.userName);",
+							"tests[\"Logged in User\"] = jsonData.userName.replace(/\\\\/g, '\\\\\\\\') === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"username = pm.environment.get(\"tenantAdminName\")\r",
+							"pm.environment.set(\"tenantusername\", username.replace(/\\\\/g, '\\\\\\\\'));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{tenantusername}}\",\r\n    \"password\":\"Q29tbVZhdWx0QEAxMjM0NTY=\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"######\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Create a Blackout Window -V4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"pm.environment.set(\"blackoutWindowId\", jsonData.id);",
+							"pm.environment.set(\"blackoutWindowName\", jsonData.name);",
+							"backupOperations = [\"FULL\",\"INCREMENTAL_AND_DIFFERENTIAL\",\"TRANSACTION_LOG\"];",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"tenantAdminBlackoutWindow{{$timestamp}}\",\r\n    \"company\": {\r\n        \"id\": {{providerId}}\r\n    },\r\n    \"backupOperations\": [\"FULL\",\"INCREMENTAL_AND_DIFFERENTIAL\",\"TRANSACTION_LOG\"],\r\n    \"days\": [\"MONDAY\",\"WEDNESDAY\",\"FRIDAY\"],\r\n    \"weeks\": [\"FIRST\",\"SECOND\",\"THIRD\"],\r\n    \"time\": [\r\n        {\r\n            \"start\": 39600,\r\n            \"end\": 43200\r\n        }\r\n    ],\r\n    \"doNotSubmitJob\": true\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V4/blackoutWindow",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V4",
+						"blackoutWindow"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Blackout Window List -V4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Newly created Blackout Window is present\"] = (function() {",
+							"    for( i=0; i < jsonData.blackoutWindows.length; i++)",
+							"        if (jsonData.blackoutWindows[i].name == pm.environment.get(\"blackoutWindowName\"))",
+							"            return true;",
+							"    return false;",
+							"})();"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v4/blackoutWindow?companyId={{providerId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v4",
+						"blackoutWindow"
+					],
+					"query": [
+						{
+							"key": "companyId",
+							"value": "{{providerId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Blackout Window Details -V4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"tests[\"Response Body contains operations\"] = responseBody.has(\"company\");",
+							"tests[\"Response Body contains operationWindow\"] = responseBody.has(\"backupOperations\");",
+							"tests[\"Response Body contains ruleId\"] = responseBody.has(\"name\");",
+							"tests[\"Validating Backup Operations\"] = (function() {",
+							"if (jsonData.backupOperations[0] == \"FULL\" && jsonData.backupOperations[1] == \"INCREMENTAL_AND_DIFFERENTIAL\" && jsonData.backupOperations[2] == \"TRANSACTION_LOG\")",
+							"            return true;",
+							"    return false;",
+							"})();",
+							"tests[\"Validating Days\"] = (function() {",
+							"if (jsonData.days[0] == \"MONDAY\" && jsonData.days[1] == \"WEDNESDAY\" && jsonData.days[2] == \"FRIDAY\")",
+							"            return true;",
+							"    return false;",
+							"})();",
+							"tests[\"Validating Weeks\"] = (function() {",
+							"if (jsonData.weeks[0] == \"FIRST\" && jsonData.weeks[1] == \"SECOND\" && jsonData.weeks[2] == \"THIRD\")",
+							"            return true;",
+							"    return false;",
+							"})();",
+							"tests [\"Validating start time\"] = jsonData.time[0].start === 39600 ;",
+							"tests [\"Validating end time\"] = jsonData.time[0].end === 43200 ;",
+							"tests[\"Validating doNotSubmitJob\"] = jsonData.doNotSubmitJob === true ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V4/BlackoutWindow/{{blackoutWindowId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V4",
+						"BlackoutWindow",
+						"{{blackoutWindowId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Blackout Window -V4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"newName = \"modifiedBlackoutWindowName\"+Date.now();\r",
+							"pm.environment.set(\"newName\", newName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"newName\": \"{{newName}}\",\r\n    \"backupOperations\": [\r\n        \"INCREMENTAL_AND_DIFFERENTIAL\",\r\n        \"SYNTHETIC_FULL\"\r\n    ],\r\n    \"days\": [\r\n        \"SUNDAY\",\r\n        \"SATURDAY\",\r\n        \"TUESDAY\"\r\n    ],\r\n    \"weeks\": [\r\n        \"FIRST\",\r\n        \"SECOND\",\r\n        \"FOURTH\"\r\n    ],\r\n    \"time\": [\r\n        {\r\n            \"start\": 0,\r\n            \"end\": 39600\r\n        }\r\n    ],\r\n    \"doNotSubmitJob\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V4/blackoutWindow/{{blackoutWindowId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V4",
+						"blackoutWindow",
+						"{{blackoutWindowId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validating changes made to the blackout window",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"tests[\"Response Body contains operations\"] = responseBody.has(\"company\");",
+							"tests[\"Response Body contains operationWindow\"] = responseBody.has(\"backupOperations\");",
+							"tests[\"Response Body contains ruleId\"] = responseBody.has(\"name\");",
+							"tests[\"Validating name change\"] = jsonData.name === pm.environment.get(\"newName\");",
+							"tests[\"Validating Backup Operations\"] = (function() {",
+							"if (jsonData.backupOperations[0] == \"INCREMENTAL_AND_DIFFERENTIAL\" && jsonData.backupOperations[1] == \"SYNTHETIC_FULL\")",
+							"            return true;",
+							"    return false;",
+							"})();",
+							"tests[\"Validating Days\"] = (function() {",
+							"if (jsonData.days[0] == \"SUNDAY\" && jsonData.days[1] == \"TUESDAY\" && jsonData.days[2] == \"SATURDAY\")",
+							"            return true;",
+							"    return false;",
+							"})();",
+							"tests[\"Validating Weeks\"] = (function() {",
+							"if (jsonData.weeks[0] == \"FIRST\" && jsonData.weeks[1] == \"SECOND\" && jsonData.weeks[2] == \"FOURTH\")",
+							"            return true;",
+							"    return false;",
+							"})();",
+							"tests [\"Validating start time\"] = jsonData.time[0].start === 0 ;",
+							"tests [\"Validating end time\"] = jsonData.time[0].end === 39600 ;",
+							"tests[\"Validating doNotSubmitJob\"] = jsonData.doNotSubmitJob === false ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "enumNames",
+						"value": "true"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v4/blackoutWindow/{{blackoutWindowId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v4",
+						"blackoutWindow",
+						"{{blackoutWindowId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Blackout Window",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v4/blackoutWindow/{{blackoutWindowId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v4",
+						"blackoutWindow",
+						"{{blackoutWindowId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Re-login as admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Deactivation success\"] = jsonData.response.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"deactivateOptions\": {\n        \"disableBackup\": true,\n        \"disableRestore\": true,\n        \"disableLogin\": true\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}/action/deactivate",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}",
+						"action",
+						"deactivate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Organization/{{providerId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Organization",
+						"{{providerId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a org."
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

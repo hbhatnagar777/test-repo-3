@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration>&lt;stringval class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/stringval>&lt;intval class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>&lt;/intval>&lt;boolval class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>&lt;/boolval>&lt;dateval class=&quot;java.util.Date&quot; _list_=&quot;false&quot;>&lt;/dateval>&lt;calval class=&quot;java.util.Calendar&quot; _list_=&quot;false&quot;>&lt;/calval>&lt;doubleval class=&quot;java.lang.Double&quot; _list_=&quot;false&quot;>&lt;/doubleval>&lt;floatval class=&quot;java.lang.Float&quot; _list_=&quot;false&quot;>&lt;/floatval>&lt;longval class=&quot;java.lang.Long&quot; _list_=&quot;false&quot;>&lt;/longval>&lt;/configuration>" description="" executeOnWeb="0" inputs="&lt;inputs />" interactive="0" isHtmlDescription="0" manualPercentageComplete="0" name="WF_Configuration" outputs="&lt;outputs />" revision="$Revision: 1.2 $" tags="" uniqueGuid="02c6aa5e-a06d-4769-9bc5-31524b6b4615" variables="&lt;variables />" webHidden="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables className="" name="variables" type=""/>
+        <inputs className="" name="inputs" type=""/>
+        <config attribute="0" className="" name="configuration" type="">
+            <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" hidden="0" inputType="java.lang.String" listType="0" name="stringval" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Integer" controlType="0" defaultValue="" displayName="" hidden="0" inputType="java.lang.Integer" listType="0" name="intval" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.Boolean" controlType="5" defaultValue="" displayName="" hidden="0" inputType="java.lang.Boolean" listType="0" name="boolval" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.util.Date" controlType="6" defaultValue="" displayName="" hidden="0" inputType="java.util.Date" listType="0" name="dateval" type="{http://www.w3.org/2001/XMLSchema}date"/>
+            <children attribute="0" className="java.util.Calendar" controlType="8" defaultValue="" hidden="0" inputType="java.util.Calendar" listType="0" name="calval" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+            <children attribute="0" className="java.lang.Double" controlType="0" defaultValue="" hidden="0" inputType="java.lang.Double" listType="0" name="doubleval" type="{http://www.w3.org/2001/XMLSchema}double"/>
+            <children attribute="0" className="java.lang.Float" controlType="0" defaultValue="" hidden="0" inputType="java.lang.Float" listType="0" name="floatval" type="{http://www.w3.org/2001/XMLSchema}float"/>
+            <children attribute="0" className="java.lang.Long" controlType="0" defaultValue="" hidden="0" inputType="java.lang.Long" listType="0" name="longval" type="{http://www.w3.org/2001/XMLSchema}long"/>
+        </config>
+    </schema>
+    <Start breakpoint="0" commented="0" continueOnFailure="0" created="0" description="" displayName="Start" height="36" interactive="0" jobMode="0" name="Start" originalStyle="" skipAttempt="0" style="image;image=/images/jgraphx/house.png" uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="Script_1" commented="0" originalStyle="" points="" sourceX="72" sourceY="59" status="0" style="defaultEdge" targetX="214" targetY="61" transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1575487143368" description="activity to execute code snippets in the selected language" displayName="Script" height="34" interactive="0" jobMode="0" name="Script" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.ScriptActivity" uniqueName="Script_1" waitSetting="0" width="100" x="164" y="44">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;if (xpath:{/workflow/configuration/stringval}.equals(&amp;quot;Test&amp;quot;) &amp;amp;&amp;amp; (xpath:{/workflow/configuration/intval} == 1) &amp;amp;&amp;amp; (xpath:{/workflow/configuration/boolval} == true) &amp;amp;&amp;amp; xpath:{/workflow/configuration/dateval}.equals(&amp;quot;12/04/2019&amp;quot;) &amp;amp;&amp;amp; xpath:{/workflow/configuration/calval}.equals(&amp;quot;12/04/2019 12:00 AM&amp;quot;) &amp;amp;&amp;amp; (xpath:{/workflow/configuration/doubleval} == 1234) &amp;amp;&amp;amp; (xpath:{/workflow/configuration/floatval} == 1.234) &amp;amp;&amp;amp; (xpath:{/workflow/configuration/longval} == 1234567890))&amp;#xD;&amp;#xA;    return true;&amp;#xD;&amp;#xA;else&amp;#xD;&amp;#xA;    return false;&quot; />&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_1" commented="0" displayName="True" originalStyle="" points="" sourceX="214" sourceY="61" status="0" style="defaultEdge" targetX="424" targetY="59" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;&#xa;if (xpath:{/workflow/Script_1/output} == 'True')&#xa;"/>
+        </transition>
+        <transition activity="WorkflowEnd_2" commented="0" displayName="False" originalStyle="" points="" sourceX="214" sourceY="61" status="0" style="defaultEdge" targetX="429" targetY="136" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;if (xpath:{/workflow/Script_1/output} == 'False')&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1575487338096" description="Ends the workflow" displayName="WorkflowEnd" height="34" interactive="0" jobMode="0" name="WorkflowEnd" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.EndActivity" uniqueName="WorkflowEnd_1" waitSetting="0" width="106" x="371" y="42">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>COMPLETED&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"/>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1575487340562" description="Ends the workflow" displayName="WorkflowEnd" height="34" interactive="0" jobMode="0" name="WorkflowEnd" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.EndActivity" uniqueName="WorkflowEnd_2" waitSetting="0" width="106" x="376" y="119">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>FAILED&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"/>
+    </Activity>
+</Workflow_WorkflowDefinition>

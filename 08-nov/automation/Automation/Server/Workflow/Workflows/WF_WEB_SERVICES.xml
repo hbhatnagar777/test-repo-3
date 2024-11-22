@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />"
+    description="" executeOnWeb="0" inputs="&lt;inputs />"
+    interactive="0" isHtmlDescription="0" name="WF_WEB_SERVICES"
+    outputs="&lt;outputs />" revision="$Revision: 1.2 $" tags=""
+    uniqueGuid="b5d9d442-ac30-49a0-ae37-fb19cb062ebb"
+    variables="&lt;variables />" webHidden="0" workflowId="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables className="" name="variables" type=""/>
+        <inputs className="" name="inputs" type=""/>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="Add_1" commented="0" originalStyle=""
+            sourceX="72" sourceY="59" status="0" style="defaultEdge"
+            targetX="417" targetY="64" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1544640641448"
+        description="activity to execute code snippets in the selected language"
+        displayName="This is just for validating the basic functionality for Soap API's for WSDL documents&#xa;WSDL Location :  http://www.dneonline.com/calculator.asmx?WSDL  &#xa;Service URL :   http://www.dneonline.com/calculator.asmx"
+        height="128" interactive="0" jobMode="0" name="Script"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ScriptActivity"
+        uniqueName="Script_1" waitSetting="0" width="684" x="108" y="301">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;&quot; />&lt;/inputs>"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1544641527352" description="" displayName="Add"
+        height="34" interactive="0" jobMode="0" maxRestarts="0"
+        name="Add" namespaceUri="http://tempuri.org/activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.WebServiceActivity"
+        uniqueName="Add_1" waitSetting="0" width="100" x="127" y="42">
+        <onExit language="1" script="logger.info(&quot;AddResult : [&quot;+xpath:{/workflow/Add_1/AddResponse/AddResult}+&quot;]&quot;);"/>
+        <inputs val="&lt;inputs>&lt;Add _list_=&quot;false&quot;>&lt;intA class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>1&lt;/intA>&lt;intB class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>2&lt;/intB>&lt;/Add>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_1" commented="0"
+            originalStyle="" status="0" style="defaultEdge"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="!(xpath:{/workflow/Add_1/AddResponse/AddResult}.equals(&quot;3&quot;));"/>
+        </transition>
+        <transition activity="Divide_1" commented="0" originalStyle=""
+            status="0" style="defaultEdge" transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1544641619628" description="Ends the workflow"
+        displayName="WorkflowEnd" height="34" interactive="0"
+        jobMode="0" name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.EndActivity"
+        uniqueName="WorkflowEnd_1" waitSetting="0" width="106" x="154" y="146">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>FAILED&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Failed to execute Add Soap API &lt;/failureMessage>&lt;/inputs>"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1544642155300" description="" displayName="Divide"
+        height="34" interactive="0" jobMode="0" maxRestarts="0"
+        name="Divide" namespaceUri="http://tempuri.org/activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.WebServiceActivity"
+        uniqueName="Divide_1" waitSetting="0" width="100" x="268" y="42">
+        <onExit language="1" script="logger.info(&quot;DivideResult : [&quot;+xpath:{/workflow/Divide_1/DivideResponse/DivideResult}+&quot;]&quot;);"/>
+        <inputs val="&lt;inputs>&lt;Divide _list_=&quot;false&quot;>&lt;intA class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>27&lt;/intA>&lt;intB class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>9&lt;/intB>&lt;/Divide>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_2" commented="0"
+            originalStyle="" status="0" style="defaultEdge"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="!(xpath:{/workflow/Divide_1/DivideResponse/DivideResult}.equals(&quot;3&quot;));"/>
+        </transition>
+        <transition activity="Multiply_1" commented="0" originalStyle=""
+            status="0" style="defaultEdge" transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1544642204531" description="Ends the workflow"
+        displayName="WorkflowEnd" height="34" interactive="0"
+        jobMode="0" name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.EndActivity"
+        uniqueName="WorkflowEnd_2" waitSetting="0" width="106" x="307" y="144">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>FAILED&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Divide soap API failed&lt;/failureMessage>&lt;/inputs>"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1544642273200" description="" displayName="Multiply"
+        height="34" interactive="0" jobMode="0" name="Multiply"
+        namespaceUri="http://tempuri.org/activities" originalStyle=""
+        skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.WebServiceActivity"
+        uniqueName="Multiply_1" waitSetting="0" width="100" x="448" y="43">
+        <onExit language="1" script="logger.info(&quot;MultiplyResult : [&quot;+xpath:{/workflow/Multiply_1/MultiplyResponse/MultiplyResult}+&quot;]&quot;);"/>
+        <inputs val="&lt;inputs>&lt;Multiply _list_=&quot;false&quot;>&lt;intA class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>9&lt;/intA>&lt;intB class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>3&lt;/intB>&lt;/Multiply>&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_3" commented="0"
+            originalStyle="" status="0" style="defaultEdge"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="!(xpath:{/workflow/Multiply_1/MultiplyResponse/MultiplyResult}.equals(&quot;27&quot;));"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1544642276127" description="Ends the workflow"
+        displayName="WorkflowEnd" height="34" interactive="0"
+        jobMode="0" name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.EndActivity"
+        uniqueName="WorkflowEnd_3" waitSetting="0" width="106" x="448" y="145">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>FAILED&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Multiply soap API failed&lt;/failureMessage>&lt;/inputs>"/>
+    </Activity>
+</Workflow_WorkflowDefinition>

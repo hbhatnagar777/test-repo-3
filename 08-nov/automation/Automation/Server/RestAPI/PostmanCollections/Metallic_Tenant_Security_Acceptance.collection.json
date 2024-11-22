@@ -1,0 +1,1349 @@
+{
+	"info": {
+		"_postman_id": "4c270af0-a1e6-4e11-ad23-7586ce13cf35",
+		"name": "Metallic Tenant Security Acceptance",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"if (responseBody.has(\"token\"))\r",
+							"{    \r",
+							"    postman.setEnvironmentVariable(\"TOKEN\", jsonData.token);\r",
+							"    console.log(\"QSDK Token obtained is: \"+jsonData.token);\r",
+							"    tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"    pm.environment.set(\"CompanyName\", jsonData.providerOrganization.providerDomainName)\r",
+							"    pm.environment.set(\"CompanyId\", jsonData.providerOrganization.providerId)\r",
+							"    pm.environment.set(\"aliasName\", jsonData.aliasName)\r",
+							"}\r",
+							"else{\r",
+							"    if (responseBody.has(\"errLogMessage\")){\r",
+							"        tests[jsonData.errList[0]['errLogMessage']] = false\r",
+							"    }\r",
+							"    else{\r",
+							"        tests[\"Login Failed!\"] = false\r",
+							"    }\r",
+							"    console.log(\"User Login Failed\")\r",
+							"    postman.setNextRequest(null)\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"postman.setEnvironmentVariable(\"Accept\", \"application/json\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"password\": \"{{Password}}\",\r\n  \"username\": \"{{UserName}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user-inherited-associations",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"mapping = {\r",
+							"    3 : \"clientName\",\r",
+							"    28 : \"clientGroupName\",\r",
+							"    13 : \"userName\", \r",
+							"    15 : \"userGroupName\",\r",
+							"    61 : \"providerDomainName\", \r",
+							"    174 : \"credentialName\", \r",
+							"    64 : \"alertName\",\r",
+							"    17 : \"storagePolicyName\",\r",
+							"    158 : \"planName\",\r",
+							"    120 : \"roleName\",\r",
+							"    35 : \"schedulePolicyName\",\r",
+							"    7 : \"subclientName\",\r",
+							"    11 : \"mediaAgentName\",\r",
+							"    9 : \"libraryName\",\r",
+							"    62 : \"externalGroupName\",\r",
+							"    83 : \"workflowName\",\r",
+							"    129 : \"dataSetName\",\r",
+							"    1 : \"commCellName\",\r",
+							"    194 : \"entityName\",\r",
+							"    9520 : \"containerName\",\r",
+							"    9517 : \"containerName\",\r",
+							"    9516 : \"tagName\",\r",
+							"    131 : \"customReportName\",\r",
+							"    127 : \"smartFolderName\"\r",
+							"    }\r",
+							"\r",
+							"//client -- 3 | client group -- 28 | users -- 13 | user groups -- 15 |  identity servers -- 61 \r",
+							"// credentials -- 174 | alerts -- 64 | storage pool\\ storage policy -- 160\\17 | plan -- 158 | roles -- 120\r",
+							"\r",
+							"let entity_names = []\r",
+							"let entities = {\r",
+							"    \"clientName\" : {},\r",
+							"    \"clientGroupName\": {},\r",
+							"    \"userName\": {},\r",
+							"    \"userGroupName\": {},\r",
+							"    \"credentialName\": {},\r",
+							"    \"alertName\": {},\r",
+							"    \"planName\": {},\r",
+							"    \"roleName\": {},\r",
+							"    \"storagePolicyName\": {},\r",
+							"    \"mediaAgentName\": {},\r",
+							"    \"externalGroupName\": {}\r",
+							"}\r",
+							"\r",
+							"//console.log(jsonData.associations[0].entities.entity[0].alertName)\r",
+							"\r",
+							"if (responseBody.has(\"associations\")){\r",
+							"    for (let i in jsonData.associations){\r",
+							"        for (let j in jsonData.associations[i].entities.entity){\r",
+							"            sub_entity = jsonData.associations[i].entities.entity[j]\r",
+							"            //entity_name = mapping[sub_entity['_type_']]\r",
+							"\r",
+							"            if (\"entityType\" in sub_entity){\r",
+							"                type = sub_entity[\"entityType\"]\r",
+							"                entity_name = mapping[type]\r",
+							"                attribute = \"entityName\"\r",
+							"            }\r",
+							"            else{\r",
+							"                type = sub_entity[\"_type_\"]\r",
+							"                entity_name = mapping[type]\r",
+							"                attribute = entity_name\r",
+							"            }\r",
+							"\r",
+							"\r",
+							"\r",
+							"            if (! (entity_name in entities)){\r",
+							"                entities[entity_name] = {}\r",
+							"            }\r",
+							"\r",
+							"            if (attribute in sub_entity){\r",
+							"                temp = sub_entity[attribute]    \r",
+							"                entities[entity_name][temp] = temp\r",
+							"            }\r",
+							"            \r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"//console.log(entities)\r",
+							"\r",
+							"\r",
+							"if (responseBody.has(\"inheritedAssociations\") && responseBody.has('_type_')){\r",
+							"    for (let i in jsonData.inheritedAssociations){\r",
+							"        blob = jsonData.inheritedAssociations[i]\r",
+							"        entity_name = mapping[blob.parentEntity['_type_']]\r",
+							"        if (!(entity_name in entities)){\r",
+							"            entities[entity_name] = {}\r",
+							"        }\r",
+							"        temp = blob.parentEntity[entity_name]\r",
+							"        entities[entity_name][temp] = temp\r",
+							"\r",
+							"        for (let i in blob.association.entities.entity){\r",
+							"            sub_entity = blob.association.entities.entity[i]\r",
+							"            if (\"entityType\" in sub_entity){\r",
+							"                type = sub_entity[\"entityType\"]\r",
+							"                entity_name = mapping[type]\r",
+							"                attribute = \"entityName\"\r",
+							"            }\r",
+							"            else{\r",
+							"                type = sub_entity[\"_type_\"]\r",
+							"                entity_name = mapping[type]\r",
+							"                attribute = entity_name\r",
+							"            }\r",
+							"\r",
+							"            if (!(entity_name in entities)){\r",
+							"                entities[entity_name] = {}\r",
+							"            }\r",
+							"\r",
+							"            if (attribute in sub_entity){\r",
+							"                temp = sub_entity[attribute]\r",
+							"                entities[entity_name][temp] = temp\r",
+							"            }\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"console.log(entities)\r",
+							"\r",
+							"pm.environment.set(\"associated_entities\", JSON.stringify(entities))\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User/{{aliasName}}/security?filter=2",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{aliasName}}",
+						"security"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clients",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"if (responseBody.has(\"clientProperties\"))\r",
+							"{\r",
+							"for (let i in jsonData.clientProperties){\r",
+							"\r",
+							"    var client_name = jsonData.clientProperties[i].client.clientEntity.clientName\r",
+							"    var client_company_id = jsonData.clientProperties[i].client.clientEntity.entityInfo.companyId\r",
+							"\r",
+							"    console.log(\"Comparing company id of tenant = \" + pm.environment.get('UserName') + \" with company id of client = \" + client_name)\r",
+							"    if (client_company_id === pm.environment.get('CompanyId') || client_name in JSON.parse(pm.environment.get(\"associated_entities\"))[\"clientName\"] ||\r",
+							"    client_name in JSON.parse(pm.environment.get(\"associated_entities\"))[\"mediaAgentName\"]){\r",
+							"        console.log(\"Valid client\")\r",
+							"    }\r",
+							"    else{\r",
+							"        tests[\"Compare company Id of client = \" + client_name + \" with tenant company Id\"] = false\r",
+							"    }\r",
+							"    }\r",
+							"}\r",
+							"else{\r",
+							"    console.log(\"no Clients are configured\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientGroups",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							" //tests[\"Response Body contains groups\"] = responseBody.has(\"groups\");\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"if (responseBody.has(\"groups\")){\r",
+							"    for (let i in jsonData.groups){\r",
+							"    \r",
+							"        var clientgroup_name = jsonData.groups[i].name\r",
+							"        var clientgroup_company_id = jsonData.groups[i].clientGroup.entityInfo.companyId\r",
+							"\r",
+							"        console.log(\"Comparing company id of tenant = \" + pm.environment.get('UserName') + \" with company id of client group = \" + clientgroup_name)\r",
+							"\r",
+							"        if (clientgroup_company_id === pm.environment.get('CompanyId') || clientgroup_name in JSON.parse(pm.environment.get(\"associated_entities\"))[\"clientGroupName\"]){\r",
+							"            console.log(\"Valid Client group\")\r",
+							"        }\r",
+							"        else{\r",
+							"            tests[\"Compare company Id of client group = \" + clientgroup_name + \" with tenant company Id\"] = false\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"else{\r",
+							"    console.log(\"no Clients groups found\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"//tests[\"Response Body contains users\"] = responseBody.has(\"users\");\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"if (responseBody.has(\"users\")){\r",
+							"    for (let i in jsonData.users){\r",
+							"\r",
+							"        var user_name = jsonData.users[i].userEntity.userName\r",
+							"        var user_company_id = jsonData.users[i].userEntity.entityInfo.companyId\r",
+							"\r",
+							"        console.log(\"Comparing company id of tenant = \" + pm.environment.get('UserName') + \" with company id of user = \" + user_name)\r",
+							"\r",
+							"        if (user_company_id === pm.environment.get('CompanyId') || user_name in JSON.parse(pm.environment.get(\"associated_entities\"))[\"userName\"]){\r",
+							"            console.log(\"Valid user entity\")\r",
+							"        }\r",
+							"        else{\r",
+							"            tests[\"Compare company Id of user \" + jsonData.users[i].userEntity.userName + \" with tenant company Id\"] = false\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"else{\r",
+							"    console.log(\"no users found.\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UserGroups",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"\r",
+							"// tests[\"Response Body contains userGroups\"] = responseBody.has(\"userGroups\");\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"if (responseBody.has(\"userGroups\")){\r",
+							"    for (let i in jsonData.userGroups){\r",
+							"\r",
+							"        var usergroup_name = jsonData.userGroups[i].userGroupEntity.userGroupName\r",
+							"        var usergroup_company_id = jsonData.userGroups[i].userGroupEntity.entityInfo.companyId\r",
+							"\r",
+							"        console.log(\"Comparing company id of tenant = \" + pm.environment.get('UserName') + \" with company id of user group = \" + usergroup_name)\r",
+							"\r",
+							"        if (usergroup_company_id === pm.environment.get('CompanyId') || usergroup_name in JSON.parse(pm.environment.get(\"associated_entities\"))[\"userGroupName\"] \r",
+							"        || usergroup_name in JSON.parse(pm.environment.get(\"associated_entities\"))[\"externalGroupName\"]){\r",
+							"            console.log(\"Valid User group\")\r",
+							"        }\r",
+							"        else{\r",
+							"            tests[\"Compare company Id of userGroup = \" + usergroup_name + \" with tenant company Id\"] = false\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"else{\r",
+							"    console.log(\"no user groups found.\")\r",
+							"}\r",
+							"//console.log(\"UserGroup's companyid's are matched with tenant company id\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "IdentityServers",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"if (responseBody.has(\"identityServers\"))\r",
+							"{\r",
+							"    for (let i in jsonData.identityServers){\r",
+							"\r",
+							"        var domain_name = jsonData.identityServers[i].IdentityServerName\r",
+							"        var domain_company_id = jsonData.identityServers[i].ownerCompany.id\r",
+							"\r",
+							"        console.log(\"Comparing company id of tenant = \" + pm.environment.get('UserName') + \" with company id of domain = \" + domain_name)\r",
+							"\r",
+							"        if (domain_company_id === pm.environment.get('CompanyId') || domain_name in JSON.parse(pm.environment.get(\"associated_entities\"))[\"providerDomainName\"]){\r",
+							"            console.log(\"Valid identity server\")\r",
+							"        }\r",
+							"        else{\r",
+							"            tests[\"Compare company Id of Domain \" + domain_name + \" with tenant company Id\"] = false\r",
+							"        }\r",
+							"    }\r",
+							"    // console.log(\"Domain's companyid's are matched with tenant company id\")\r",
+							"}\r",
+							"else{\r",
+							"    console.log(\"no Domains are configured\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/IdentityServers",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"IdentityServers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Credentials",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"if (responseBody.has(\"credentialRecordInfo\"))\r",
+							"{\r",
+							"    for (let i in jsonData.credentialRecordInfo){\r",
+							"\r",
+							"        var credential_name = jsonData.credentialRecordInfo[i].credentialRecord.credentialName\r",
+							"        var credential_company_id = jsonData.credentialRecordInfo[i].credentialRecord.entityInfo.companyId\r",
+							"\r",
+							"        console.log(\"Comparing company id of tenant = \" + pm.environment.get('UserName') + \" with company id of credential account = \" + credential_name)\r",
+							"\r",
+							"        if (credential_company_id === pm.environment.get('CompanyId') || \r",
+							"            credential_name in JSON.parse(pm.environment.get(\"associated_entities\"))[\"credentialName\"]){\r",
+							"            console.log(\"Valid one\")\r",
+							"        }\r",
+							"        else{\r",
+							"            tests[\"Compare company Id of Credential = \" + credential_name + \" with tenant company Id\"] = false\r",
+							"        }\r",
+							"    }\r",
+							"    // console.log(\"Credentials 's companyid's are matched with tenant company id\")\r",
+							"}\r",
+							"else{\r",
+							"    console.log(\"no Credential accounts are configured\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/Credentials",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"Credentials"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alerts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"if (responseBody.has(\"alertList\"))\r",
+							"{\r",
+							"    for (let i in jsonData.alertList){\r",
+							"\r",
+							"        var alert_name = jsonData.alertList[i].alert.name\r",
+							"        var alert_company_id = jsonData.alertList[i].organization.companyId\r",
+							"\r",
+							"        console.log(\"Comparing company id of tenant = \" + pm.environment.get('UserName') + \" with company id of Alert = \" + alert_name)\r",
+							"\r",
+							"        if (alert_company_id === pm.environment.get('CompanyId') || jsonData.alertList[i].status === 2192 || alert_name in JSON.parse(pm.environment.get(\"associated_entities\"))[\"alertName\"]){\r",
+							"            console.log(\"Valid Alert\")\r",
+							"        }\r",
+							"        else{\r",
+							"            tests[\"Compare company Id of Alert = '\" + alert_name + \"' with tenant company Id\"] = false\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"else{\r",
+							"    console.log(\"no Alerts are configured\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AlertRule",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AlertRule"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "StoragePools",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"if (responseBody.has(\"storagePoolList\"))\r",
+							"{\r",
+							"    for (let i in jsonData.storagePoolList){\r",
+							"\r",
+							"        var storagepool_name = jsonData.storagePoolList[i].storagePoolEntity.storagePoolName\r",
+							"        var storagepool_company_id = jsonData.storagePoolList[i].storagePoolEntity.entityInfo.companyId\r",
+							"\r",
+							"        console.log(\"Comparing company id of tenant = \" + pm.environment.get('UserName') + \" with company id of Storage Pool = \" + storagepool_name)\r",
+							"\r",
+							"        if (storagepool_company_id === pm.environment.get('CompanyId') || storagepool_name in JSON.parse(pm.environment.get(\"associated_entities\"))[\"storagePolicyName\"]){\r",
+							"            console.log(\"Valid Strorage Pool\")\r",
+							"        }\r",
+							"        else{\r",
+							"            tests[\"Compare company Id of Storage Pool = '\" + storagepool_name + \"' with tenant company Id\"] = false\r",
+							"        }\r",
+							"    }\r",
+							"    // console.log(\"Alert's companyid's are matched with tenant company id\")\r",
+							"}\r",
+							"else{\r",
+							"    console.log(\"no Storage Pools are configured\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/StoragePool",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePool"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plans",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"var plan_ids = []\r",
+							"var plans = {}\r",
+							"\r",
+							"for (let i in jsonData.plans){\r",
+							"    plan_ids.push(jsonData.plans[i].plan.planId)\r",
+							"    plan_name = jsonData.plans[i].plan.planName\r",
+							"    plans[jsonData.plans[i].plan.planId] = plan_name\r",
+							"    if (!(plan_name in JSON.parse(pm.environment.get(\"associated_entities\"))[\"planName\"])){\r",
+							"        tests[\"Plan = \" + plan_name + \" association not found for user \"] = false\r",
+							"    }\r",
+							"\r",
+							"}\r",
+							"\r",
+							"pm.environment.set('plan_ids', JSON.stringify(plan_ids))\r",
+							"pm.environment.set(\"plans\", JSON.stringify(plans))\r",
+							"pm.environment.set('counter', plan_ids.length)\r",
+							"\r",
+							"if (plan_ids.length === 0){\r",
+							"    console.log(\"no plans are found.\")\r",
+							"    postman.setNextRequest('Roles')\r",
+							"}\r",
+							"\r",
+							"//console.log(\"Clients companyid's are matched with tenant company id\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/Plan",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"Plan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Plan-associated-entities",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"temp_counter = pm.environment.get('counter')\r",
+							"var temp = JSON.parse(pm.environment.get('plan_ids'))[temp_counter-1]\r",
+							"console.log(\"Plan id = \" + temp + \" counter = \" + temp_counter)\r",
+							"pm.environment.set('Plan_Id', temp)\r",
+							"pm.environment.set('counter', temp_counter-1)\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"tests[\"Response Body contains companies\"] = responseBody.has(\"companies\");\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"var found = false\r",
+							"for (let i in jsonData.companies){\r",
+							"    if (jsonData.companies[i].providerId === pm.environment.get('CompanyId'))\r",
+							"    {\r",
+							"        found = true\r",
+							"        break\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"if (! found){\r",
+							"    parsed_plans = JSON.parse(pm.environment.get('plans'))\r",
+							"    parsed_ids = JSON.parse(pm.environment.get('plan_ids'))\r",
+							"    tests[\"company id's are not matched for plan = \" + parsed_plans[parsed_ids[pm.environment.get('counter')]]] = false\r",
+							"}\r",
+							"\r",
+							"if (pm.environment.get('counter') > 0){\r",
+							"    postman.setNextRequest('Plan-associated-entities')\r",
+							"}\r",
+							"\r",
+							"//console.log(\"Client groups companyid's are matched with tenant company id\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/Plan/{{Plan_Id}}/AssociatedEntities/",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"Plan",
+						"{{Plan_Id}}",
+						"AssociatedEntities",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Roles",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"if (responseBody.has(\"roleProperties\"))\r",
+							"{\r",
+							"    var role_ids = []\r",
+							"    var roles = {}\r",
+							"\r",
+							"    for (let i in jsonData.roleProperties){\r",
+							"        role_ids.push(jsonData.roleProperties[i].role.roleId)\r",
+							"        roles[jsonData.roleProperties[i].role.roleId] = jsonData.roleProperties[i].role.roleName\r",
+							"    }\r",
+							"\r",
+							"    pm.environment.set('role_ids', JSON.stringify(role_ids))\r",
+							"    pm.environment.set(\"roles\", JSON.stringify(roles))\r",
+							"    pm.environment.set('counter', role_ids.length)\r",
+							"}\r",
+							"else{\r",
+							"    console.log(\"no roles are found.\")\r",
+							"    postman.setNextRequest(\"null\")\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Role",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Role-properties",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"temp_counter = pm.environment.get('counter')\r",
+							"var temp = JSON.parse(pm.environment.get('role_ids'))[temp_counter-1]\r",
+							"console.log(\"Role id = \" + temp + \" counter = \" + temp_counter)\r",
+							"pm.environment.set('Role_Id', temp)\r",
+							"pm.environment.set('counter', temp_counter-1)\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"tests[\"Response Body contains companies\"] = responseBody.has(\"roleProperties\");\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"var found = false\r",
+							"for (let i in jsonData.roleProperties){\r",
+							"    if (jsonData.roleProperties[i].role.entityInfo.companyId !== pm.environment.get('CompanyId'))\r",
+							"    {\r",
+							"        var parsed_roles = JSON.parse(pm.environment.get('roles'))\r",
+							"        var parsed_ids = JSON.parse(pm.environment.get('role_ids'))\r",
+							"        tests[\"Role = \" + parsed_roles[parsed_ids[pm.environment.get('counter')]] + \" is a public role\"] = jsonData.roleProperties[i].visibility === 1\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"if (pm.environment.get('counter') > 0){\r",
+							"    postman.setNextRequest('Role-properties')\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true,
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Role/{{Role_Id}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Role",
+						"{{Role_Id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

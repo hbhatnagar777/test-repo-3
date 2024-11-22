@@ -1,0 +1,722 @@
+{
+	"info": {
+		"_postman_id": "8c815a76-3808-4a15-8a98-c61446813c8f",
+		"name": "Administrative Operations with JSON",
+		"description": "######/50973",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Email Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains smtpServer\"] = responseBody.has(\"smtpServer\");",
+							"tests[\"Response Body contains smtpPort\"] = responseBody.has(\"smtpPort\");",
+							"tests[\"Response Body contains senderInfo\"] = responseBody.has(\"senderInfo\");",
+							"tests[\"Response Body contains senderAddress\"] = responseBody.has(\"senderAddress\");",
+							"",
+							"postman.setEnvironmentVariable(\"tempSmtpServer\", jsonData.smtpServer);",
+							"",
+							"postman.setEnvironmentVariable(\"tempSenderAddress\", jsonData.senderInfo.senderAddress);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/EmailServer",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"EmailServer"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns the configuration for the email server.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_email_server.htm)"
+			},
+			"response": [
+				{
+					"name": "GET EmailServer",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/EmailServer",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"EmailServer"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "245",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 00:56:44 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"enableSSL\": false,\n    \"smtpServer\": \"########\",\n    \"smtpPort\": 25,\n    \"useAuthentication\": false,\n    \"maxMailServerSize\": 0,\n    \"userInfo\": {\n        \"userName\": \"\"\n    },\n    \"senderInfo\": {\n        \"senderName\": \"Yash\",\n        \"senderAddress\": \"Commvault@######\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Modify Email Server",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"smtpServer\",\"ab@xyz.com\");",
+							"",
+							"postman.setEnvironmentVariable(\"senderAddress\",\"XXXXX@commvault.com\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"errorCode is 0\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"smtpInfo\": {\r\n    \"enableSSL\": false,\r\n    \"smtpServer\": \"{{smtpServer}}\",\r\n    \"smtpPort\": 25,\r\n    \"useAuthentication\": false,\r\n    \"maxMailServerSize\": 10240,\r\n    \"userInfo\": {\r\n      \"password\": \"\",\r\n      \"userName\": \"\"\r\n    },\r\n    \"senderInfo\": {\r\n      \"senderName\": \"Automation\",\r\n      \"senderAddress\": \"{{senderAddress}}\"\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/EmailServer",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"EmailServer"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation updates the configuration for the email server.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_email_server.htm)"
+			},
+			"response": [
+				{
+					"name": "POST EmailServer",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"description": "The mime type of this content",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"smtpInfo\": {\r\n        \"enableSSL\": false,\r\n        \"smtpServer\": \"#########\",\r\n        \"smtpPort\": 25,\r\n        \"useAuthentication\": false,\r\n        \"maxMailServerSize\": 10240,\r\n        \"userInfo\": {\r\n            \"password\": \"\",\r\n            \"userName\": \"\"\r\n        },\r\n        \"senderInfo\": {\r\n            \"senderName\": \"Software\",\r\n            \"senderAddress\": \"###########\"\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/EmailServer",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"EmailServer"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "34",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:12:30 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"errorString\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Email Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains smtpServer\"] = responseBody.has(\"smtpServer\");",
+							"tests[\"Response Body contains smtpPort\"] = responseBody.has(\"smtpPort\");",
+							"tests[\"Response Body contains senderInfo\"] = responseBody.has(\"senderInfo\");",
+							"tests[\"Response Body contains senderAddress\"] = responseBody.has(\"senderAddress\");",
+							"",
+							"tests[\"Validate smtpServer on response\"] = jsonData.smtpServer == postman.getEnvironmentVariable(\"smtpServer\");",
+							"",
+							"tests[\"Validate senderAddress on response\"] = jsonData.senderInfo.senderAddress == postman.getEnvironmentVariable(\"senderAddress\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/EmailServer",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"EmailServer"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns the configuration for the email server.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_email_server.htm)"
+			},
+			"response": [
+				{
+					"name": "GET EmailServer",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/EmailServer",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"EmailServer"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "245",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 00:56:44 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"enableSSL\": false,\n    \"smtpServer\": \"##########\",\n    \"smtpPort\": 25,\n    \"useAuthentication\": false,\n    \"maxMailServerSize\": 0,\n    \"userInfo\": {\n        \"userName\": \"\"\n    },\n    \"senderInfo\": {\n        \"senderName\": \"Yash\",\n        \"senderAddress\": \"Commvault@######\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Reset Email Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"errorCode is 0\"] = jsonData.errorCode === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"smtpInfo\": {\r\n    \"enableSSL\": false,\r\n    \"smtpServer\": \"{{tempSmtpServer}}\",\r\n    \"smtpPort\": 25,\r\n    \"useAuthentication\": false,\r\n    \"maxMailServerSize\": 10240,\r\n    \"userInfo\": {\r\n      \"password\": \"\",\r\n      \"userName\": \"\"\r\n    },\r\n    \"senderInfo\": {\r\n      \"senderName\": \"Automation\",\r\n      \"senderAddress\": \"{{tempSenderAddress}}\"\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/EmailServer",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"EmailServer"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation updates the configuration for the email server.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_email_server.htm)"
+			},
+			"response": [
+				{
+					"name": "POST EmailServer",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"description": "The mime type of this content",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"smtpInfo\": {\r\n        \"enableSSL\": false,\r\n        \"smtpServer\": \"#########\",\r\n        \"smtpPort\": 25,\r\n        \"useAuthentication\": false,\r\n        \"maxMailServerSize\": 10240,\r\n        \"userInfo\": {\r\n            \"password\": \"\",\r\n            \"userName\": \"\"\r\n        },\r\n        \"senderInfo\": {\r\n            \"senderName\": \"Software\",\r\n            \"senderAddress\": \"XXXX@commvault.com\"\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/EmailServer",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"EmailServer"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "34",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:12:30 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"errorString\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Email Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains smtpServer\"] = responseBody.has(\"smtpServer\");",
+							"tests[\"Response Body contains smtpPort\"] = responseBody.has(\"smtpPort\");",
+							"tests[\"Response Body contains senderInfo\"] = responseBody.has(\"senderInfo\");",
+							"tests[\"Response Body contains senderAddress\"] = responseBody.has(\"senderAddress\");",
+							"",
+							"tests[\"Validate smtpServer on response\"] = jsonData.smtpServer == postman.getEnvironmentVariable(\"tempSmtpServer\");",
+							"",
+							"tests[\"Validate senderAddress on response\"] = jsonData.senderInfo.senderAddress == postman.getEnvironmentVariable(\"tempSenderAddress\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/EmailServer",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"EmailServer"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns the configuration for the email server.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_email_server.htm)"
+			},
+			"response": [
+				{
+					"name": "GET EmailServer",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/EmailServer",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"EmailServer"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "245",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 00:56:44 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"enableSSL\": false,\n    \"smtpServer\": \"###########\",\n    \"smtpPort\": 25,\n    \"useAuthentication\": false,\n    \"maxMailServerSize\": 0,\n    \"userInfo\": {\n        \"userName\": \"\"\n    },\n    \"senderInfo\": {\n        \"senderName\": \"Yash\",\n        \"senderAddress\": \"Commvault@######\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

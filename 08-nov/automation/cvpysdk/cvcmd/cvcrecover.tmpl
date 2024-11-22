@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# Wrapper script for cvc commandline, which is supposed to set
+# PATH and PYTHONPATH variables for running simplified command line (cvc.py)
+CVREG="@@CVREG@@"
+INSTANCE="@@INSTANCE@@"
+GALDIR="@@GALDIR@@"
+. $GALDIR/galaxy_vm
+. "$GALDIR/Base/cvprofile"
+CVC_HTTPS=0
+CVC_CONFIGURE=0
+CVC_BACKUP=0
+CVC_RECOVER=1
+CVC_RESTORE_DEFAULT_OVERWRITE=0
+PYTHONPATH="$GALDIR/pythonsdk"
+if [ -f "$GALDIR/Base/root.crt" ]
+then
+	CVC_CA_BUNDLE="$GALDIR/Base/root.crt"
+	CVC_HTTPS=1
+fi
+export PYTHONPATH CVC_CONFIGURE CVC_BACKUP CVC_RECOVER CVC_RESTORE_DEFAULT_OVERWRITE CVC_HTTPS CVC_CA_BUNDLE
+exec $GALDIR/python/bin/python3 $GALDIR/pythonsdk/cvcmd/cvc.py "$@"
+
+

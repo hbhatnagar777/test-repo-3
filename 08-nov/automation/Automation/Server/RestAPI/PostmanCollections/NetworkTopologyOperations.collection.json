@@ -1,0 +1,3369 @@
+{
+	"info": {
+		"_postman_id": "f73d2290-7854-48ee-8e6d-90f8322f8409",
+		"name": "Network Topology Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4331195"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"TOKEN\", jsonData.token);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"tests[\"Logged in User\"] = jsonData.userName === username;",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"TOKEN\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client Group 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"clientGroupId1\", jsonData.clientGroupDetail.clientGroup.clientGroupId);",
+							"postman.setEnvironmentVariable(\"clientGroupName1\", jsonData.clientGroupDetail.clientGroup.clientGroupName);",
+							"",
+							"tests[\"Response Body contains clientGroupName\"] = responseBody.has(\"clientGroupName\");",
+							"tests[\"Response Body contains clientGroupDetail\"] = responseBody.has(\"clientGroupDetail\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"clientGroupName1 = \"Test Group 1\";",
+							"postman.setEnvironmentVariable(\"clientGroupName1\", clientGroupName1);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientGroupOperationType\": 1,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"client computer group description\",\r\n    \"claQuota\": 7,\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"{{clientGroupName1}}\"\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation creates a client computer group.\n\n<h2>Request Parameters</h2>\n<table class=\"tableintopic\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n<tbody>\n<tr align=\"left\" valign=\"top\">\n<td>\n<p class=\"tabletext\">Name</p>\n</td>\n<td>\n<p class=\"tabletext\">Description</p>\n</td>\n</tr>\n<tr align=\"left\" valign=\"top\">\n<td>\n<p class=\"tabletext\">discoverRulesInfo -&gt; virtualInstanceType</p>\n</td>\n<td>\n<p class=\"tabletext\">Ventory Type.</p>\n<p class=\"tabletext\">Valid values are:</p>\n<ul class=\"listbullet\">\n<li class=\"listbullet\">1, VMware</li>\n<li class=\"listbullet\">2, Microsoft Hyper-V</li>\n<li class=\"listbullet\">3,&nbsp;XenServer</li>\n<li class=\"listbullet\">4,&nbsp;Amazon</li>\n<li class=\"listbullet\">5,&nbsp;Microsoft Azure</li>\n<li class=\"listbullet\">6,&nbsp;Red Hat</li>\n<li class=\"listbullet\">7,&nbsp;Microsoft Azure Resource Manager</li>\n<li class=\"listbullet\">8,&nbsp;System Center Virtual Machine Manager</li>\n<li class=\"listbullet\">9,&nbsp;Nutanix</li>\n<li class=\"listbullet\">10,&nbsp;Oracle VM</li>\n<li class=\"listbullet\">11,&nbsp;Docker</li>\n<li class=\"listbullet\">12,&nbsp;OpenStack</li>\n<li class=\"listbullet\">13,&nbsp;Oracle Cloud</li>\n<li class=\"listbullet\">14,&nbsp;FusionCompute</li>\n<li class=\"listbullet\">15,&nbsp;vCloud Director</li>\n<li class=\"listbullet\">16,&nbsp;Google Cloud Platform</li>\n<li class=\"listbullet\">17,&nbsp;Microsoft Azure Stack</li>\n<li class=\"listbullet\">18,&nbsp;Alibaba Cloud</li>\n<li class=\"listbullet\">19,&nbsp;Oracle Cloud Infrastructure</li>\n<li class=\"listbullet\">20,&nbsp;Kubernetes</li>\n<li class=\"listbullet\">21,&nbsp;Red Hat OpenShift</li>\n</ul>\n</td>\n</tr>\n<tr align=\"left\" valign=\"top\">\n<td>\n<p class=\"tabletext\">discoverRulesInfo -&gt;&nbsp;associationRule -&gt;&nbsp;</p>\n<p class=\"tabletext\">children -&gt;&nbsp;type</p>\n</td>\n<td>\n<p class=\"tabletext\">Rule Type.</p>\n<p class=\"tabletext\">Valid values are:</p>\n<ul class=\"listbullet\">\n<li class=\"listbullet\">1,&nbsp;Server Host</li>\n<li class=\"listbullet\">2,&nbsp;Resource Pool</li>\n<li class=\"listbullet\">3,&nbsp;vApp</li>\n<li class=\"listbullet\">4,&nbsp;Datacenter</li>\n<li class=\"listbullet\">5,&nbsp;Folder</li>\n<li class=\"listbullet\">6,&nbsp;Cluster</li>\n<li class=\"listbullet\">7,&nbsp;Datastore</li>\n<li class=\"listbullet\">8,&nbsp;DatastoreCluster</li>\n<li class=\"listbullet\">9,&nbsp;VirtualMachine</li>\n<li class=\"listbullet\">10,&nbsp;VirtualMachine Name</li>\n<li class=\"listbullet\">11,&nbsp;VirtualMachine GuestOS</li>\n<li class=\"listbullet\">12,&nbsp;VirtualMachine Guest Host Name</li>\n<li class=\"listbullet\">13,&nbsp;Cluster Shared Volumes</li>\n<li class=\"listbullet\">14,&nbsp;Local Disk</li>\n<li class=\"listbullet\">15,&nbsp;Cluster Disk</li>\n<li class=\"listbullet\">16,&nbsp;UnprotectedVMs</li>\n<li class=\"listbullet\">17, Root/All</li>\n<li class=\"listbullet\">18,&nbsp;File Server</li>\n<li class=\"listbullet\">19,&nbsp;SMBShare</li>\n<li class=\"listbullet\">20, Types</li>\n<li class=\"listbullet\">21, VMs</li>\n<li class=\"listbullet\">22,&nbsp;Servers</li>\n<li class=\"listbullet\">23,&nbsp;Custom Templates</li>\n<li class=\"listbullet\">24,&nbsp;DataStoreList</li>\n<li class=\"listbullet\">25,&nbsp;vAppList</li>\n<li class=\"listbullet\">26,&nbsp;Datacenters</li>\n<li class=\"listbullet\">27,&nbsp;Clusters</li>\n<li class=\"listbullet\">28,&nbsp;Virtual Machine Power State</li>\n<li class=\"listbullet\">29,&nbsp;Virtual Machine Notes</li>\n<li class=\"listbullet\">30,&nbsp;Virtual Machine Custom Attribute</li>\n<li class=\"listbullet\">31,&nbsp;Network Adapter</li>\n<li class=\"listbullet\">32,&nbsp;User</li>\n<li class=\"listbullet\">33,&nbsp;Virual Machine Template</li>\n<li class=\"listbullet\">34,&nbsp;Tag</li>\n<li class=\"listbullet\">35,&nbsp;TagCategory</li>\n<li class=\"listbullet\">36,&nbsp;Subclient</li>\n<li class=\"listbullet\">37,&nbsp;ClientGroup</li>\n<li class=\"listbullet\">38,&nbsp;Protection Domain</li>\n<li class=\"listbullet\">39,&nbsp;Consistency Group</li>\n<li class=\"listbullet\">40,&nbsp;Instance Size</li>\n<li class=\"listbullet\">41,&nbsp;Organization</li>\n<li class=\"listbullet\">42,&nbsp;Images</li>\n<li class=\"listbullet\">43,&nbsp;Storage Policy</li>\n<li class=\"listbullet\">44,&nbsp;Database</li>\n<li class=\"listbullet\">45,&nbsp;Database Table</li>\n</ul>\n</td>\n</tr>\n</tbody>\n</table>\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_client_group.htm)"
+			},
+			"response": [
+				{
+					"name": "Smart Client Group - Files Agent Association",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"name": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\r\n<App_PerformClientGroupReq>\r\n\r\n  <clientGroupOperationType>Create</clientGroupOperationType>\r\n\r\n  <clientGroupDetail>\r\n    <clientGroup>\r\n      <clientGroupName>test_scg</clientGroupName>\r\n      <newName>test_scg</newName>\r\n    </clientGroup>\r\n    <description></description>\r\n    <isEDCInstanceAssociated>false</isEDCInstanceAssociated>\r\n    <isAddinClientGroup>false</isAddinClientGroup>\r\n    <isSmartClientGroup>true</isSmartClientGroup>\r\n    <associatedClients/>\r\n    <clientGroupActivityControl/>\r\n    <clientGroupSecurity/>\r\n    <firewallConfiguration/>\r\n    <overrideHigherLevelSettings>\r\n      <overrideGlobalAuthentication>false</overrideGlobalAuthentication>\r\n      <useLocalSystemAccount>true</useLocalSystemAccount>\r\n      <userAccount>\r\n        <userName></userName>\r\n      </userAccount>\r\n    </overrideHigherLevelSettings>\r\n    <scgRule>\r\n      <op>SCGP_AND</op>\r\n      <rules>\r\n        <rule>\r\n          <op>SCGP_AND</op>\r\n          <rules>\r\n            <rule>\r\n              <propID>3</propID>\r\n              <filterID>108</filterID>\r\n              <propType>SCGP_SELECTION</propType>\r\n              <value>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;TMMsg_AppGroupSelection&gt;&lt;appGroups appGroupId=\"5\" /&gt;&lt;appGroups appGroupId=\"1\" /&gt;&lt;/TMMsg_AppGroupSelection&gt;</value>\r\n              <secValue>Files;</secValue>\r\n            </rule>\r\n          </rules>\r\n        </rule>\r\n      </rules>\r\n    </scgRule>\r\n    <webSearchServer>\r\n      <clientName></clientName>\r\n    </webSearchServer>\r\n    <dlpPropertise>\r\n      <enableDLP>false</enableDLP>\r\n      <dlpEnableClientKeys>true</dlpEnableClientKeys>\r\n      <dlpStolen>false</dlpStolen>\r\n      <dlpContents></dlpContents>\r\n      <dlpFilters>**\\.edgedrive.cache</dlpFilters>\r\n      <dlpFilters>*.app</dlpFilters>\r\n      <dlpFilters>*.bat</dlpFilters>\r\n      <dlpFilters>*.conf</dlpFilters>\r\n      <dlpFilters>*.dll</dlpFilters>\r\n      <dlpFilters>*.dmg</dlpFilters>\r\n      <dlpFilters>*.exe</dlpFilters>\r\n      <dlpFilters>*.ini</dlpFilters>\r\n      <dlpFilters>*.lnk</dlpFilters>\r\n      <dlpFilters>*.plist</dlpFilters>\r\n      <dlpFilters>*.rc</dlpFilters>\r\n      <dlpFilters>*.tmp</dlpFilters>\r\n      <dlpFilters>.DS_Store</dlpFilters>\r\n      <dlpFilters>.localized</dlpFilters>\r\n      <dlpFilters>~$*</dlpFilters>\r\n      <dlpScanIntervalMins>15</dlpScanIntervalMins>\r\n      <dlpMinFileAgeMins>5</dlpMinFileAgeMins>\r\n      <dlpRMProperties>\r\n        <enableRmDLP>false</enableRmDLP>\r\n        <dlpRmOfflineDays>7</dlpRmOfflineDays>\r\n        <dlpRmNow>false</dlpRmNow>\r\n        <dlpRmContents></dlpRmContents>\r\n        <dlpRmFilters>*.app</dlpRmFilters>\r\n        <dlpRmFilters>*.bat</dlpRmFilters>\r\n        <dlpRmFilters>*.conf</dlpRmFilters>\r\n        <dlpRmFilters>*.dll</dlpRmFilters>\r\n        <dlpRmFilters>*.dmg</dlpRmFilters>\r\n        <dlpRmFilters>*.exe</dlpRmFilters>\r\n        <dlpRmFilters>*.ini</dlpRmFilters>\r\n        <dlpRmFilters>*.lnk</dlpRmFilters>\r\n        <dlpRmFilters>*.plist</dlpRmFilters>\r\n        <dlpRmFilters>*.rc</dlpRmFilters>\r\n        <dlpRmFilters>*.tmp</dlpRmFilters>\r\n        <dlpRmFilters>.DS_Store</dlpRmFilters>\r\n        <dlpRmFilters>.localized</dlpRmFilters>\r\n        <dlpRmFilters>~$*</dlpRmFilters>\r\n      </dlpRMProperties>\r\n      <dlpEnableAutomaticDecryption>false</dlpEnableAutomaticDecryption>\r\n      <dlpUnlockMethod>MANUAL_UNLOCK</dlpUnlockMethod>\r\n    </dlpPropertise>\r\n    <excludeFromSLA>false</excludeFromSLA>\r\n    <slaInterval>0</slaInterval>\r\n    <claQuota>0</claQuota>\r\n    <owner/>\r\n    <associatedStoragePolicies>\r\n      <storagePolicyName>SP1</storagePolicyName>\r\n    </associatedStoragePolicies>\r\n    <createAs>\r\n      <userGroup>\r\n        <userGroupName>master</userGroupName>\r\n      </userGroup>\r\n    </createAs>\r\n    <allowJobsToRunPastOperationWindowEnabled>false</allowJobsToRunPastOperationWindowEnabled>\r\n    <slaCopyRedundancy>0</slaCopyRedundancy>\r\n    <slaCopyFallenBehindDays>0</slaCopyFallenBehindDays>\r\n    <rpoMinutes>0</rpoMinutes>\r\n    <rtoMinutes>0</rtoMinutes>\r\n  </clientGroupDetail>\r\n\r\n</App_PerformClientGroupReq>\r\n"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true",
+							"name": "Access-Control-Allow-Credentials",
+							"description": "Indicates whether or not the response to the request can be exposed when the credentials flag is true. When used as part of a response to a preflight request, this indicates whether or not the actual request can be made using credentials."
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "OPTIONS, GET, POST, PUT, DELETE",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Content-Length",
+							"value": "105",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 10 May 2018 16:10:28 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"clientGroupDetail\":{\r\"clientGroup\":{\r\"_type_\":28,\"clientGroupId\":13,\"clientGroupName\":\"test_scg\"\r}\r}\r}"
+				},
+				{
+					"name": "Smart Client Group -  Clients discovered using VSA Subclient",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/xml",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<App_PerformClientGroupReq clientGroupOperationType=\"1\">\r\n    <clientGroupDetail isSmartClientGroup=\"1\" associatedClientsOperationType=\"1\">\r\n        <clientGroup clientGroupId=\"0\" clientGroupName=\"VSA\"/>\r\n        <scgRule>\r\n            <rules>\r\n                <rule op=\"0\">\r\n                    <rules>\r\n                        <rule propID=\"40\" filterID=\"108\" propType=\"6\" value=\"&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;App_Associations&gt;&lt;entity subclientId=&quot;25&quot; applicationId=&quot;106&quot; clientName=&quot;vsa-vc65&quot; backupsetId=&quot;16&quot; instanceId=&quot;8&quot; clientId=&quot;8&quot; subclientName=&quot;test&quot; entityTypeName=&quot;SUBCLIENT_ENTITY&quot; backupsetName=&quot;defaultBackupSet&quot; instanceName=&quot;VMware&quot; appName=&quot;Virtual Server&quot;/&gt;&lt;/App_Associations&gt;\"/>\r\n                    </rules>\r\n                </rule>\r\n            </rules>\r\n        </scgRule>\r\n    </clientGroupDetail>\r\n</App_PerformClientGroupReq>"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 08 Apr 2019 20:39:21 GMT"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "100"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"clientGroup\": {\n            \"_type_\": 28,\n            \"clientGroupId\": 18,\n            \"clientGroupName\": \"VSA\"\n        }\n    }\n}"
+				},
+				{
+					"name": "POST Client Group",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "The mime type of this content"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"clientGroupOperationType\": 1,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"client computer group description\",\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"{{$guid}}\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "133",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 31 May 2017 03:46:59 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"clientGroupDetail\":{\r\"clientGroup\":{\r\"_type_\":28,\"clientGroupId\":15,\"clientGroupName\":\"ecabc593-f808-4ec2-92c2-0fe5df8b026e\"\r}\r}\r}"
+				},
+				{
+					"name": "Client Group - Virtual Machine Association - With Tag Rule And Starts With Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientGroupOperationType\": 1,\n  \"clientGroupDetail\": {\n    \"associatedClientsOperationType\": 1,\n    \"isSmartClientGroup\": false,\n    \"isDiscoveredClientGroup\": true,\n    \"scgRule\": {},\n    \"clientGroup\": {\n      \"clientGroupId\": 0,\n      \"clientGroupName\": \"VMAssoc_CG\"\n    },\n    \"discoverRulesInfo\": {\n      \"virtualInstanceType\": 1,\n      \"associationRule\": {\n        \"children\": [\n          {\n            \"equalsOrNotEquals\": true,\n            \"path\": \"\",\n            \"displayName\": \"*bronze\",\n            \"name\": \"\",\n            \"allOrAnyChildren\": true,\n            \"type\": 34\n          }\n        ]\n      },\n      \"virtualClients\": {\n        \"clients\": [\n          {\n            \"clientId\": 19\n          }\n        ]\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000;includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2019 19:24:44 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "107"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"clientGroup\": {\n            \"_type_\": 28,\n            \"clientGroupId\": 43,\n            \"clientGroupName\": \"VMAssoc_CG\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Client Group - Virtual Machine Association - With Tag Rule",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientGroupOperationType\": 1,\n  \"clientGroupDetail\": {\n    \"associatedClientsOperationType\": 1,\n    \"isSmartClientGroup\": false,\n    \"isDiscoveredClientGroup\": true,\n    \"scgRule\": {},\n    \"clientGroup\": {\n      \"clientGroupId\": 0,\n      \"clientGroupName\": \"VMAssoc_CG\"\n    },\n    \"discoverRulesInfo\": {\n      \"virtualInstanceType\": 1,\n      \"associationRule\": {\n        \"children\": [\n          {\n            \"equalsOrNotEquals\": true,\n            \"path\": \"\",\n            \"displayName\": \"bronze\",\n            \"name\": \"\",\n            \"allOrAnyChildren\": true,\n            \"type\": 34\n          }\n        ]\n      },\n      \"virtualClients\": {\n        \"clients\": [\n          {\n            \"clientId\": 19\n          }\n        ]\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000;includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 May 2019 21:01:49 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "107"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"clientGroup\": {\n            \"_type_\": 28,\n            \"clientGroupId\": 40,\n            \"clientGroupName\": \"VMAssoc_CG\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Client Group 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"postman.setEnvironmentVariable(\"clientGroupId2\", jsonData.clientGroupDetail.clientGroup.clientGroupId);",
+							"postman.setEnvironmentVariable(\"clientGroupName2\", jsonData.clientGroupDetail.clientGroup.clientGroupName);",
+							"",
+							"tests[\"Response Body contains clientGroupName\"] = responseBody.has(\"clientGroupName\");",
+							"tests[\"Response Body contains clientGroupDetail\"] = responseBody.has(\"clientGroupDetail\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"clientGroupName2 = \"Test Group 2\";",
+							"postman.setEnvironmentVariable(\"clientGroupName2\", clientGroupName2);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientGroupOperationType\": 1,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"client computer group description\",\r\n    \"claQuota\": 7,\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"{{clientGroupName2}}\"\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation creates a client computer group.\n\n<h2>Request Parameters</h2>\n<table class=\"tableintopic\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n<tbody>\n<tr align=\"left\" valign=\"top\">\n<td>\n<p class=\"tabletext\">Name</p>\n</td>\n<td>\n<p class=\"tabletext\">Description</p>\n</td>\n</tr>\n<tr align=\"left\" valign=\"top\">\n<td>\n<p class=\"tabletext\">discoverRulesInfo -&gt; virtualInstanceType</p>\n</td>\n<td>\n<p class=\"tabletext\">Ventory Type.</p>\n<p class=\"tabletext\">Valid values are:</p>\n<ul class=\"listbullet\">\n<li class=\"listbullet\">1, VMware</li>\n<li class=\"listbullet\">2, Microsoft Hyper-V</li>\n<li class=\"listbullet\">3,&nbsp;XenServer</li>\n<li class=\"listbullet\">4,&nbsp;Amazon</li>\n<li class=\"listbullet\">5,&nbsp;Microsoft Azure</li>\n<li class=\"listbullet\">6,&nbsp;Red Hat</li>\n<li class=\"listbullet\">7,&nbsp;Microsoft Azure Resource Manager</li>\n<li class=\"listbullet\">8,&nbsp;System Center Virtual Machine Manager</li>\n<li class=\"listbullet\">9,&nbsp;Nutanix</li>\n<li class=\"listbullet\">10,&nbsp;Oracle VM</li>\n<li class=\"listbullet\">11,&nbsp;Docker</li>\n<li class=\"listbullet\">12,&nbsp;OpenStack</li>\n<li class=\"listbullet\">13,&nbsp;Oracle Cloud</li>\n<li class=\"listbullet\">14,&nbsp;FusionCompute</li>\n<li class=\"listbullet\">15,&nbsp;vCloud Director</li>\n<li class=\"listbullet\">16,&nbsp;Google Cloud Platform</li>\n<li class=\"listbullet\">17,&nbsp;Microsoft Azure Stack</li>\n<li class=\"listbullet\">18,&nbsp;Alibaba Cloud</li>\n<li class=\"listbullet\">19,&nbsp;Oracle Cloud Infrastructure</li>\n<li class=\"listbullet\">20,&nbsp;Kubernetes</li>\n<li class=\"listbullet\">21,&nbsp;Red Hat OpenShift</li>\n</ul>\n</td>\n</tr>\n<tr align=\"left\" valign=\"top\">\n<td>\n<p class=\"tabletext\">discoverRulesInfo -&gt;&nbsp;associationRule -&gt;&nbsp;</p>\n<p class=\"tabletext\">children -&gt;&nbsp;type</p>\n</td>\n<td>\n<p class=\"tabletext\">Rule Type.</p>\n<p class=\"tabletext\">Valid values are:</p>\n<ul class=\"listbullet\">\n<li class=\"listbullet\">1,&nbsp;Server Host</li>\n<li class=\"listbullet\">2,&nbsp;Resource Pool</li>\n<li class=\"listbullet\">3,&nbsp;vApp</li>\n<li class=\"listbullet\">4,&nbsp;Datacenter</li>\n<li class=\"listbullet\">5,&nbsp;Folder</li>\n<li class=\"listbullet\">6,&nbsp;Cluster</li>\n<li class=\"listbullet\">7,&nbsp;Datastore</li>\n<li class=\"listbullet\">8,&nbsp;DatastoreCluster</li>\n<li class=\"listbullet\">9,&nbsp;VirtualMachine</li>\n<li class=\"listbullet\">10,&nbsp;VirtualMachine Name</li>\n<li class=\"listbullet\">11,&nbsp;VirtualMachine GuestOS</li>\n<li class=\"listbullet\">12,&nbsp;VirtualMachine Guest Host Name</li>\n<li class=\"listbullet\">13,&nbsp;Cluster Shared Volumes</li>\n<li class=\"listbullet\">14,&nbsp;Local Disk</li>\n<li class=\"listbullet\">15,&nbsp;Cluster Disk</li>\n<li class=\"listbullet\">16,&nbsp;UnprotectedVMs</li>\n<li class=\"listbullet\">17, Root/All</li>\n<li class=\"listbullet\">18,&nbsp;File Server</li>\n<li class=\"listbullet\">19,&nbsp;SMBShare</li>\n<li class=\"listbullet\">20, Types</li>\n<li class=\"listbullet\">21, VMs</li>\n<li class=\"listbullet\">22,&nbsp;Servers</li>\n<li class=\"listbullet\">23,&nbsp;Custom Templates</li>\n<li class=\"listbullet\">24,&nbsp;DataStoreList</li>\n<li class=\"listbullet\">25,&nbsp;vAppList</li>\n<li class=\"listbullet\">26,&nbsp;Datacenters</li>\n<li class=\"listbullet\">27,&nbsp;Clusters</li>\n<li class=\"listbullet\">28,&nbsp;Virtual Machine Power State</li>\n<li class=\"listbullet\">29,&nbsp;Virtual Machine Notes</li>\n<li class=\"listbullet\">30,&nbsp;Virtual Machine Custom Attribute</li>\n<li class=\"listbullet\">31,&nbsp;Network Adapter</li>\n<li class=\"listbullet\">32,&nbsp;User</li>\n<li class=\"listbullet\">33,&nbsp;Virual Machine Template</li>\n<li class=\"listbullet\">34,&nbsp;Tag</li>\n<li class=\"listbullet\">35,&nbsp;TagCategory</li>\n<li class=\"listbullet\">36,&nbsp;Subclient</li>\n<li class=\"listbullet\">37,&nbsp;ClientGroup</li>\n<li class=\"listbullet\">38,&nbsp;Protection Domain</li>\n<li class=\"listbullet\">39,&nbsp;Consistency Group</li>\n<li class=\"listbullet\">40,&nbsp;Instance Size</li>\n<li class=\"listbullet\">41,&nbsp;Organization</li>\n<li class=\"listbullet\">42,&nbsp;Images</li>\n<li class=\"listbullet\">43,&nbsp;Storage Policy</li>\n<li class=\"listbullet\">44,&nbsp;Database</li>\n<li class=\"listbullet\">45,&nbsp;Database Table</li>\n</ul>\n</td>\n</tr>\n</tbody>\n</table>\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_client_group.htm)"
+			},
+			"response": [
+				{
+					"name": "POST Client Group",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "The mime type of this content"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"clientGroupOperationType\": 1,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"client computer group description\",\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"{{$guid}}\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "133",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 31 May 2017 03:46:59 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"clientGroupDetail\":{\r\"clientGroup\":{\r\"_type_\":28,\"clientGroupId\":15,\"clientGroupName\":\"ecabc593-f808-4ec2-92c2-0fe5df8b026e\"\r}\r}\r}"
+				},
+				{
+					"name": "Client Group - Virtual Machine Association - With Tag Rule And Starts With Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientGroupOperationType\": 1,\n  \"clientGroupDetail\": {\n    \"associatedClientsOperationType\": 1,\n    \"isSmartClientGroup\": false,\n    \"isDiscoveredClientGroup\": true,\n    \"scgRule\": {},\n    \"clientGroup\": {\n      \"clientGroupId\": 0,\n      \"clientGroupName\": \"VMAssoc_CG\"\n    },\n    \"discoverRulesInfo\": {\n      \"virtualInstanceType\": 1,\n      \"associationRule\": {\n        \"children\": [\n          {\n            \"equalsOrNotEquals\": true,\n            \"path\": \"\",\n            \"displayName\": \"*bronze\",\n            \"name\": \"\",\n            \"allOrAnyChildren\": true,\n            \"type\": 34\n          }\n        ]\n      },\n      \"virtualClients\": {\n        \"clients\": [\n          {\n            \"clientId\": 19\n          }\n        ]\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000;includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2019 19:24:44 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "107"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"clientGroup\": {\n            \"_type_\": 28,\n            \"clientGroupId\": 43,\n            \"clientGroupName\": \"VMAssoc_CG\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Smart Client Group -  Clients discovered using VSA Subclient",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/xml",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<App_PerformClientGroupReq clientGroupOperationType=\"1\">\r\n    <clientGroupDetail isSmartClientGroup=\"1\" associatedClientsOperationType=\"1\">\r\n        <clientGroup clientGroupId=\"0\" clientGroupName=\"VSA\"/>\r\n        <scgRule>\r\n            <rules>\r\n                <rule op=\"0\">\r\n                    <rules>\r\n                        <rule propID=\"40\" filterID=\"108\" propType=\"6\" value=\"&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;App_Associations&gt;&lt;entity subclientId=&quot;25&quot; applicationId=&quot;106&quot; clientName=&quot;vsa-vc65&quot; backupsetId=&quot;16&quot; instanceId=&quot;8&quot; clientId=&quot;8&quot; subclientName=&quot;test&quot; entityTypeName=&quot;SUBCLIENT_ENTITY&quot; backupsetName=&quot;defaultBackupSet&quot; instanceName=&quot;VMware&quot; appName=&quot;Virtual Server&quot;/&gt;&lt;/App_Associations&gt;\"/>\r\n                    </rules>\r\n                </rule>\r\n            </rules>\r\n        </scgRule>\r\n    </clientGroupDetail>\r\n</App_PerformClientGroupReq>"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 08 Apr 2019 20:39:21 GMT"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "100"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"clientGroup\": {\n            \"_type_\": 28,\n            \"clientGroupId\": 18,\n            \"clientGroupName\": \"VSA\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Smart Client Group - Files Agent Association",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"name": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\r\n<App_PerformClientGroupReq>\r\n\r\n  <clientGroupOperationType>Create</clientGroupOperationType>\r\n\r\n  <clientGroupDetail>\r\n    <clientGroup>\r\n      <clientGroupName>test_scg</clientGroupName>\r\n      <newName>test_scg</newName>\r\n    </clientGroup>\r\n    <description></description>\r\n    <isEDCInstanceAssociated>false</isEDCInstanceAssociated>\r\n    <isAddinClientGroup>false</isAddinClientGroup>\r\n    <isSmartClientGroup>true</isSmartClientGroup>\r\n    <associatedClients/>\r\n    <clientGroupActivityControl/>\r\n    <clientGroupSecurity/>\r\n    <firewallConfiguration/>\r\n    <overrideHigherLevelSettings>\r\n      <overrideGlobalAuthentication>false</overrideGlobalAuthentication>\r\n      <useLocalSystemAccount>true</useLocalSystemAccount>\r\n      <userAccount>\r\n        <userName></userName>\r\n      </userAccount>\r\n    </overrideHigherLevelSettings>\r\n    <scgRule>\r\n      <op>SCGP_AND</op>\r\n      <rules>\r\n        <rule>\r\n          <op>SCGP_AND</op>\r\n          <rules>\r\n            <rule>\r\n              <propID>3</propID>\r\n              <filterID>108</filterID>\r\n              <propType>SCGP_SELECTION</propType>\r\n              <value>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;TMMsg_AppGroupSelection&gt;&lt;appGroups appGroupId=\"5\" /&gt;&lt;appGroups appGroupId=\"1\" /&gt;&lt;/TMMsg_AppGroupSelection&gt;</value>\r\n              <secValue>Files;</secValue>\r\n            </rule>\r\n          </rules>\r\n        </rule>\r\n      </rules>\r\n    </scgRule>\r\n    <webSearchServer>\r\n      <clientName></clientName>\r\n    </webSearchServer>\r\n    <dlpPropertise>\r\n      <enableDLP>false</enableDLP>\r\n      <dlpEnableClientKeys>true</dlpEnableClientKeys>\r\n      <dlpStolen>false</dlpStolen>\r\n      <dlpContents></dlpContents>\r\n      <dlpFilters>**\\.edgedrive.cache</dlpFilters>\r\n      <dlpFilters>*.app</dlpFilters>\r\n      <dlpFilters>*.bat</dlpFilters>\r\n      <dlpFilters>*.conf</dlpFilters>\r\n      <dlpFilters>*.dll</dlpFilters>\r\n      <dlpFilters>*.dmg</dlpFilters>\r\n      <dlpFilters>*.exe</dlpFilters>\r\n      <dlpFilters>*.ini</dlpFilters>\r\n      <dlpFilters>*.lnk</dlpFilters>\r\n      <dlpFilters>*.plist</dlpFilters>\r\n      <dlpFilters>*.rc</dlpFilters>\r\n      <dlpFilters>*.tmp</dlpFilters>\r\n      <dlpFilters>.DS_Store</dlpFilters>\r\n      <dlpFilters>.localized</dlpFilters>\r\n      <dlpFilters>~$*</dlpFilters>\r\n      <dlpScanIntervalMins>15</dlpScanIntervalMins>\r\n      <dlpMinFileAgeMins>5</dlpMinFileAgeMins>\r\n      <dlpRMProperties>\r\n        <enableRmDLP>false</enableRmDLP>\r\n        <dlpRmOfflineDays>7</dlpRmOfflineDays>\r\n        <dlpRmNow>false</dlpRmNow>\r\n        <dlpRmContents></dlpRmContents>\r\n        <dlpRmFilters>*.app</dlpRmFilters>\r\n        <dlpRmFilters>*.bat</dlpRmFilters>\r\n        <dlpRmFilters>*.conf</dlpRmFilters>\r\n        <dlpRmFilters>*.dll</dlpRmFilters>\r\n        <dlpRmFilters>*.dmg</dlpRmFilters>\r\n        <dlpRmFilters>*.exe</dlpRmFilters>\r\n        <dlpRmFilters>*.ini</dlpRmFilters>\r\n        <dlpRmFilters>*.lnk</dlpRmFilters>\r\n        <dlpRmFilters>*.plist</dlpRmFilters>\r\n        <dlpRmFilters>*.rc</dlpRmFilters>\r\n        <dlpRmFilters>*.tmp</dlpRmFilters>\r\n        <dlpRmFilters>.DS_Store</dlpRmFilters>\r\n        <dlpRmFilters>.localized</dlpRmFilters>\r\n        <dlpRmFilters>~$*</dlpRmFilters>\r\n      </dlpRMProperties>\r\n      <dlpEnableAutomaticDecryption>false</dlpEnableAutomaticDecryption>\r\n      <dlpUnlockMethod>MANUAL_UNLOCK</dlpUnlockMethod>\r\n    </dlpPropertise>\r\n    <excludeFromSLA>false</excludeFromSLA>\r\n    <slaInterval>0</slaInterval>\r\n    <claQuota>0</claQuota>\r\n    <owner/>\r\n    <associatedStoragePolicies>\r\n      <storagePolicyName>SP1</storagePolicyName>\r\n    </associatedStoragePolicies>\r\n    <createAs>\r\n      <userGroup>\r\n        <userGroupName>master</userGroupName>\r\n      </userGroup>\r\n    </createAs>\r\n    <allowJobsToRunPastOperationWindowEnabled>false</allowJobsToRunPastOperationWindowEnabled>\r\n    <slaCopyRedundancy>0</slaCopyRedundancy>\r\n    <slaCopyFallenBehindDays>0</slaCopyFallenBehindDays>\r\n    <rpoMinutes>0</rpoMinutes>\r\n    <rtoMinutes>0</rtoMinutes>\r\n  </clientGroupDetail>\r\n\r\n</App_PerformClientGroupReq>\r\n"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true",
+							"name": "Access-Control-Allow-Credentials",
+							"description": "Indicates whether or not the response to the request can be exposed when the credentials flag is true. When used as part of a response to a preflight request, this indicates whether or not the actual request can be made using credentials."
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "OPTIONS, GET, POST, PUT, DELETE",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Content-Length",
+							"value": "105",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 10 May 2018 16:10:28 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"clientGroupDetail\":{\r\"clientGroup\":{\r\"_type_\":28,\"clientGroupId\":13,\"clientGroupName\":\"test_scg\"\r}\r}\r}"
+				},
+				{
+					"name": "Client Group - Virtual Machine Association - With Tag Rule",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientGroupOperationType\": 1,\n  \"clientGroupDetail\": {\n    \"associatedClientsOperationType\": 1,\n    \"isSmartClientGroup\": false,\n    \"isDiscoveredClientGroup\": true,\n    \"scgRule\": {},\n    \"clientGroup\": {\n      \"clientGroupId\": 0,\n      \"clientGroupName\": \"VMAssoc_CG\"\n    },\n    \"discoverRulesInfo\": {\n      \"virtualInstanceType\": 1,\n      \"associationRule\": {\n        \"children\": [\n          {\n            \"equalsOrNotEquals\": true,\n            \"path\": \"\",\n            \"displayName\": \"bronze\",\n            \"name\": \"\",\n            \"allOrAnyChildren\": true,\n            \"type\": 34\n          }\n        ]\n      },\n      \"virtualClients\": {\n        \"clients\": [\n          {\n            \"clientId\": 19\n          }\n        ]\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000;includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 May 2019 21:01:49 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "107"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"clientGroup\": {\n            \"_type_\": 28,\n            \"clientGroupId\": 40,\n            \"clientGroupName\": \"VMAssoc_CG\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Network Topology",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"topologyName = \"Test One-way\";",
+							"postman.setEnvironmentVariable(\"topologyName\", topologyName);",
+							"",
+							"topologyDescription = \"One-Way Topology\";",
+							"postman.setEnvironmentVariable(\"topologyDescription\", topologyDescription);",
+							"",
+							"topologyType = 2;",
+							"postman.setEnvironmentVariable(\"topologyType\", topologyType);",
+							"",
+							"displayType = 1;",
+							"postman.setEnvironmentVariable(\"displayType\", displayType);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response has no errors\"] = jsonData.error.errorCode === 0;",
+							"tests[\"Response Body Contains topology\"] = responseBody.has(\"topology\");",
+							"var topologyIdExists = jsonData.topology && jsonData.topology.topologyId? true : false;",
+							"tests[\"Response contains topologyId\"] = topologyIdExists;",
+							"if (topologyIdExists) {",
+							"    postman.setEnvironmentVariable(\"topologyId\", jsonData.topology.topologyId);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pushNWConfigOnTopology\": false,\r\n    \"firewallTopology\": {\r\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"{{displayType}}\\\" />\",\r\n        \"topologyType\": {{topologyType}},\r\n        \"description\": \"{{topologyDescription}}\",\r\n        \"isSmartTopology\": true,\r\n        \"firewallGroups\": [\r\n            {\r\n                \"fwGroupType\": 1,\r\n                \"isMnemonic\": false,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"{{clientGroupName1}}\"\r\n                }\r\n            },\r\n            {\r\n                \"fwGroupType\": 2,\r\n                \"isMnemonic\": false,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"{{clientGroupName2}}\"\r\n                }\r\n            }\r\n        ],\r\n        \"topologyEntity\": {\r\n            \"topologyName\": \"{{topologyName}}\"\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/FirewallTopology",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"FirewallTopology"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation creates a network topology.\n\n<h2>Request Body</h2>\n<table width=\"331\">\n<tbody>\n<tr>\n<td>Name</td>\n<td>Description</td>\n</tr>\n<tr>\n<td>topologyType</td>\n<td>\n<p>values:<br />- network gateway topology : 1<br />- one-way topology : 2<br />- two-way topology : 3<br />- cascading gateways topology : 4<br /></p>\n</td>\n</tr>\n<tr>\n<td>displayType</td>\n<td>\n<p>values:<br />- servers : 0<br />- laptops : 1<br /></p>\n</td>\n</tr>\n</tbody>\n</table>"
+			},
+			"response": [
+				{
+					"name": "Two-Way Topology",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pushNWConfigOnTopology\": false,\n    \"firewallTopology\": {\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\" />\",\n        \"topologyType\": 3,\n        \"description\": \"Two-Way Topology\",\n        \"isSmartTopology\": true,\n        \"firewallGroups\": [\n            {\n                \"fwGroupType\": 2,\n                \"isMnemonic\": true,\n                \"clientGroup\": {\n                    \"clientGroupName\": \"My CommServe Computer and MediaAgents\"\n                }\n            },\n            {\n                \"fwGroupType\": 1,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"clientGroupName\": \"T5\"\n                }\n            }\n        ],\n        \"topologyEntity\": {\n            \"topologyName\": \"Test Two-way\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 06:25:19 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"topology\": {\n        \"_type_\": 156,\n        \"topologyId\": 1086\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				},
+				{
+					"name": "Network Gateway Topology",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pushNWConfigOnTopology\": false,\n    \"firewallTopology\": {\n        \"useWildcardProxy\": true,\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\" />\",\n        \"topologyType\": 1,\n        \"description\": \"Network Gateway Topology\",\n        \"isSmartTopology\": true,\n        \"firewallGroups\": [\n            {\n                \"fwGroupType\": 2,\n                \"isMnemonic\": true,\n                \"clientGroup\": {\n                    \"clientGroupName\": \"My CommServe Computer\"\n                }\n            },\n            {\n                \"fwGroupType\": 1,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"clientGroupName\": \"T2\"\n                }\n            },\n            {\n                \"fwGroupType\": 3,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"clientGroupName\": \"T1\"\n                }\n            }\n        ],\n        \"topologyEntity\": {\n            \"topologyName\": \"TopoTest\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 06:18:02 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"topology\": {\n        \"_type_\": 156,\n        \"topologyId\": 1082\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				},
+				{
+					"name": "One-Way Topology (Client Type --- Servers)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pushNWConfigOnTopology\": false,\n    \"firewallTopology\": {\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\" />\",\n        \"topologyType\": 2,\n        \"description\": \"One-Way Topology\",\n        \"isSmartTopology\": false,\n        \"firewallGroups\": [\n            {\n                \"fwGroupType\": 2,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"clientGroupName\": \"T1\"\n                }\n            },\n            {\n                \"fwGroupType\": 1,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"clientGroupName\": \"T2\"\n                }\n            }\n        ],\n        \"topologyEntity\": {\n            \"topologyName\": \"Test One-way\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 06:26:26 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"topology\": {\n        \"_type_\": 156,\n        \"topologyId\": 1087\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				},
+				{
+					"name": "One-Way Topology (Client Type -- Laptops)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pushNWConfigOnTopology\": false,\n    \"firewallTopology\": {\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"1\\\" />\",\n        \"topologyType\": 2,\n        \"description\": \"One-Way Topology\",\n        \"isSmartTopology\": false,\n        \"firewallGroups\": [\n            {\n                \"fwGroupType\": 2,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"clientGroupName\": \"T1\"\n                }\n            },\n            {\n                \"fwGroupType\": 1,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"clientGroupName\": \"T2\"\n                }\n            }\n        ],\n        \"topologyEntity\": {\n            \"topologyName\": \"Test One-way\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 06:22:20 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"topology\": {\n        \"_type_\": 156,\n        \"topologyId\": 1084\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				},
+				{
+					"name": "Cascading Gateways Topology",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pushNWConfigOnTopology\": false,\r\n    \"firewallTopology\": {\r\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\" />\",\r\n        \"topologyType\": 4,\r\n        \"description\": \"Cascading Gateways Topology\",\r\n        \"isSmartTopology\": true,\r\n        \"firewallGroups\": [\r\n            {\r\n                \"fwGroupType\": 2,\r\n                \"isMnemonic\": false,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"T1\"\r\n                }\r\n            },\r\n            {\r\n                \"fwGroupType\": 1,\r\n                \"isMnemonic\": true,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"My CommServe Computer\"\r\n                }\r\n            },\r\n            {\r\n                \"fwGroupType\": 3,\r\n                \"isMnemonic\": false,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"T2\"\r\n                }\r\n            },\r\n            {\r\n                \"fwGroupType\": 4,\r\n                \"isMnemonic\": false,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"T3\"\r\n                }\r\n            }\r\n        ],\r\n        \"topologyEntity\": {\r\n            \"topologyName\": \"TestTopology\"\r\n        }\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 06:02:23 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"topology\": {\n        \"_type_\": 156,\n        \"topologyId\": 1080\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Network Topologies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response has no errors\"] = jsonData.error.errorCode === 0;",
+							"",
+							"tests[\"Response Body Contains firewallTopologies\"] = responseBody.has(\"firewallTopologies\");",
+							"if (responseBody.has(\"firewallTopologies\")) {",
+							"    createdTopology = jsonData.firewallTopologies.find( topology => {",
+							"        if (topology.topologyEntity) {",
+							"            if(topology.topologyEntity.topologyId == postman.getEnvironmentVariable(\"topologyId\")) {",
+							"                return true;",
+							"            }",
+							"        }",
+							"        return false;",
+							"    });",
+							"",
+							"    tests[\"Response contains created network topology\"] = createdTopology;",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/FirewallTopology",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"FirewallTopology"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns all the network topologies."
+			},
+			"response": [
+				{
+					"name": "Network Topologies",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 05:29:54 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"firewallTopologies\": [\n        {\n            \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n            \"topologyType\": 1,\n            \"isTopologyForCSFailover\": false,\n            \"flags\": 0,\n            \"description\": \"Network Gateway Topology\",\n            \"isSmartTopology\": false,\n            \"topologyEntity\": {\n                \"_type_\": 156,\n                \"topologyName\": \"Topo1\",\n                \"topologyId\": 1075\n            }\n        },\n        {\n            \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n            \"topologyType\": 2,\n            \"isTopologyForCSFailover\": false,\n            \"flags\": 1,\n            \"description\": \"One-Way Topology\",\n            \"isSmartTopology\": true,\n            \"topologyEntity\": {\n                \"_type_\": 156,\n                \"topologyName\": \"Topo2\",\n                \"topologyId\": 1076\n            }\n        },\n        {\n            \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n            \"topologyType\": 4,\n            \"isTopologyForCSFailover\": false,\n            \"flags\": 1,\n            \"description\": \"Cascading Gateways Topology\",\n            \"isSmartTopology\": true,\n            \"topologyEntity\": {\n                \"_type_\": 156,\n                \"topologyName\": \"Topo3\",\n                \"topologyId\": 1077\n            }\n        },\n        {\n            \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n            \"topologyType\": 3,\n            \"isTopologyForCSFailover\": false,\n            \"flags\": 1,\n            \"description\": \"Two-Way Topology\",\n            \"isSmartTopology\": true,\n            \"topologyEntity\": {\n                \"_type_\": 156,\n                \"topologyName\": \"Topo4\",\n                \"topologyId\": 1078\n            }\n        }\n    ],\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Network Topology properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response body has no errors\"] = jsonData.error.errorCode === 0;",
+							"tests[\"Response body has topologyInfo\"] = responseBody.has(\"topologyInfo\");",
+							"",
+							"var topologyPropsExists = jsonData.topologyInfo.topologyEntity ? true : false;",
+							"tests[\"Response has topologyEntity\"] = topologyPropsExists;",
+							"",
+							"if(topologyPropsExists) {",
+							"    tests[\"Topology name is correct\"] = jsonData.topologyInfo.topologyEntity.topologyName == postman.getEnvironmentVariable(\"topologyName\");",
+							"    tests[\"Topology description is correct\"] = jsonData.topologyInfo.description == postman.getEnvironmentVariable(\"topologyDescription\");",
+							"    tests[\"Topology type is correct\"] = jsonData.topologyInfo.topologyType == postman.getEnvironmentVariable(\"topologyType\");",
+							"    clientGroupInfo1 = jsonData.topologyInfo.firewallGroups.find( fwGroup => { return fwGroup.clientGroup && (fwGroup.clientGroup.clientGroupId == parseInt(postman.getEnvironmentVariable('clientGroupId1')))});",
+							"    clientGroupInfo2 = jsonData.topologyInfo.firewallGroups.find( fwGroup => { return fwGroup.clientGroup && (fwGroup.clientGroup.clientGroupId == parseInt(postman.getEnvironmentVariable('clientGroupId2')))});",
+							"    ",
+							"    tests[\"Correct client groups are in network topology\"] = clientGroupInfo1 && clientGroupInfo2 && jsonData.topologyInfo.firewallGroups.length == 2;",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/FirewallTopology/{{topologyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"FirewallTopology",
+						"{{topologyId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns details of a particular network topology."
+			},
+			"response": [
+				{
+					"name": "Network Topology properties ",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology/1075",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology",
+								"1075"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 05:32:42 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"topologyInfo\": {\n        \"useWildcardProxy\": true,\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n        \"topologyType\": 1,\n        \"description\": \"Network Gateway Topology\",\n        \"firewallGroups\": [\n            {\n                \"fwGroupType\": 2,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 348\n                }\n            },\n            {\n                \"fwGroupType\": 3,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 349\n                }\n            },\n            {\n                \"fwGroupType\": 1,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 350\n                }\n            }\n        ],\n        \"topologyEntity\": {\n            \"_type_\": 156,\n            \"topologyName\": \"Topo1\",\n            \"topologyId\": 1075\n        }\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				},
+				{
+					"name": "Network Topology properties",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology/1077",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology",
+								"1077"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 05:31:35 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"topologyInfo\": {\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n        \"topologyType\": 4,\n        \"description\": \"Cascading Gateways Topology\",\n        \"isSmartTopology\": true,\n        \"firewallGroups\": [\n            {\n                \"fwGroupType\": 1,\n                \"isMnemonic\": true,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": -2\n                }\n            },\n            {\n                \"fwGroupType\": 4,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 348\n                }\n            },\n            {\n                \"fwGroupType\": 3,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 349\n                }\n            },\n            {\n                \"fwGroupType\": 2,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 1694\n                }\n            }\n        ],\n        \"topologyEntity\": {\n            \"_type_\": 156,\n            \"topologyName\": \"Topo3\",\n            \"topologyId\": 1077\n        }\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Client Group 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"postman.setEnvironmentVariable(\"clientGroupId3\", jsonData.clientGroupDetail.clientGroup.clientGroupId);",
+							"postman.setEnvironmentVariable(\"clientGroupName3\", jsonData.clientGroupDetail.clientGroup.clientGroupName);",
+							"",
+							"tests[\"Response Body contains clientGroupName\"] = responseBody.has(\"clientGroupName\");",
+							"tests[\"Response Body contains clientGroupDetail\"] = responseBody.has(\"clientGroupDetail\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"clientGroupName3 = \"Test Group 3\";",
+							"postman.setEnvironmentVariable(\"clientGroupName3\", clientGroupName3);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clientGroupOperationType\": 1,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"client computer group description\",\r\n    \"claQuota\": 7,\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"{{clientGroupName3}}\"\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation creates a client computer group.\n\n<h2>Request Parameters</h2>\n<table class=\"tableintopic\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n<tbody>\n<tr align=\"left\" valign=\"top\">\n<td>\n<p class=\"tabletext\">Name</p>\n</td>\n<td>\n<p class=\"tabletext\">Description</p>\n</td>\n</tr>\n<tr align=\"left\" valign=\"top\">\n<td>\n<p class=\"tabletext\">discoverRulesInfo -&gt; virtualInstanceType</p>\n</td>\n<td>\n<p class=\"tabletext\">Ventory Type.</p>\n<p class=\"tabletext\">Valid values are:</p>\n<ul class=\"listbullet\">\n<li class=\"listbullet\">1, VMware</li>\n<li class=\"listbullet\">2, Microsoft Hyper-V</li>\n<li class=\"listbullet\">3,&nbsp;XenServer</li>\n<li class=\"listbullet\">4,&nbsp;Amazon</li>\n<li class=\"listbullet\">5,&nbsp;Microsoft Azure</li>\n<li class=\"listbullet\">6,&nbsp;Red Hat</li>\n<li class=\"listbullet\">7,&nbsp;Microsoft Azure Resource Manager</li>\n<li class=\"listbullet\">8,&nbsp;System Center Virtual Machine Manager</li>\n<li class=\"listbullet\">9,&nbsp;Nutanix</li>\n<li class=\"listbullet\">10,&nbsp;Oracle VM</li>\n<li class=\"listbullet\">11,&nbsp;Docker</li>\n<li class=\"listbullet\">12,&nbsp;OpenStack</li>\n<li class=\"listbullet\">13,&nbsp;Oracle Cloud</li>\n<li class=\"listbullet\">14,&nbsp;FusionCompute</li>\n<li class=\"listbullet\">15,&nbsp;vCloud Director</li>\n<li class=\"listbullet\">16,&nbsp;Google Cloud Platform</li>\n<li class=\"listbullet\">17,&nbsp;Microsoft Azure Stack</li>\n<li class=\"listbullet\">18,&nbsp;Alibaba Cloud</li>\n<li class=\"listbullet\">19,&nbsp;Oracle Cloud Infrastructure</li>\n<li class=\"listbullet\">20,&nbsp;Kubernetes</li>\n<li class=\"listbullet\">21,&nbsp;Red Hat OpenShift</li>\n</ul>\n</td>\n</tr>\n<tr align=\"left\" valign=\"top\">\n<td>\n<p class=\"tabletext\">discoverRulesInfo -&gt;&nbsp;associationRule -&gt;&nbsp;</p>\n<p class=\"tabletext\">children -&gt;&nbsp;type</p>\n</td>\n<td>\n<p class=\"tabletext\">Rule Type.</p>\n<p class=\"tabletext\">Valid values are:</p>\n<ul class=\"listbullet\">\n<li class=\"listbullet\">1,&nbsp;Server Host</li>\n<li class=\"listbullet\">2,&nbsp;Resource Pool</li>\n<li class=\"listbullet\">3,&nbsp;vApp</li>\n<li class=\"listbullet\">4,&nbsp;Datacenter</li>\n<li class=\"listbullet\">5,&nbsp;Folder</li>\n<li class=\"listbullet\">6,&nbsp;Cluster</li>\n<li class=\"listbullet\">7,&nbsp;Datastore</li>\n<li class=\"listbullet\">8,&nbsp;DatastoreCluster</li>\n<li class=\"listbullet\">9,&nbsp;VirtualMachine</li>\n<li class=\"listbullet\">10,&nbsp;VirtualMachine Name</li>\n<li class=\"listbullet\">11,&nbsp;VirtualMachine GuestOS</li>\n<li class=\"listbullet\">12,&nbsp;VirtualMachine Guest Host Name</li>\n<li class=\"listbullet\">13,&nbsp;Cluster Shared Volumes</li>\n<li class=\"listbullet\">14,&nbsp;Local Disk</li>\n<li class=\"listbullet\">15,&nbsp;Cluster Disk</li>\n<li class=\"listbullet\">16,&nbsp;UnprotectedVMs</li>\n<li class=\"listbullet\">17, Root/All</li>\n<li class=\"listbullet\">18,&nbsp;File Server</li>\n<li class=\"listbullet\">19,&nbsp;SMBShare</li>\n<li class=\"listbullet\">20, Types</li>\n<li class=\"listbullet\">21, VMs</li>\n<li class=\"listbullet\">22,&nbsp;Servers</li>\n<li class=\"listbullet\">23,&nbsp;Custom Templates</li>\n<li class=\"listbullet\">24,&nbsp;DataStoreList</li>\n<li class=\"listbullet\">25,&nbsp;vAppList</li>\n<li class=\"listbullet\">26,&nbsp;Datacenters</li>\n<li class=\"listbullet\">27,&nbsp;Clusters</li>\n<li class=\"listbullet\">28,&nbsp;Virtual Machine Power State</li>\n<li class=\"listbullet\">29,&nbsp;Virtual Machine Notes</li>\n<li class=\"listbullet\">30,&nbsp;Virtual Machine Custom Attribute</li>\n<li class=\"listbullet\">31,&nbsp;Network Adapter</li>\n<li class=\"listbullet\">32,&nbsp;User</li>\n<li class=\"listbullet\">33,&nbsp;Virual Machine Template</li>\n<li class=\"listbullet\">34,&nbsp;Tag</li>\n<li class=\"listbullet\">35,&nbsp;TagCategory</li>\n<li class=\"listbullet\">36,&nbsp;Subclient</li>\n<li class=\"listbullet\">37,&nbsp;ClientGroup</li>\n<li class=\"listbullet\">38,&nbsp;Protection Domain</li>\n<li class=\"listbullet\">39,&nbsp;Consistency Group</li>\n<li class=\"listbullet\">40,&nbsp;Instance Size</li>\n<li class=\"listbullet\">41,&nbsp;Organization</li>\n<li class=\"listbullet\">42,&nbsp;Images</li>\n<li class=\"listbullet\">43,&nbsp;Storage Policy</li>\n<li class=\"listbullet\">44,&nbsp;Database</li>\n<li class=\"listbullet\">45,&nbsp;Database Table</li>\n</ul>\n</td>\n</tr>\n</tbody>\n</table>\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_client_group.htm)"
+			},
+			"response": [
+				{
+					"name": "Smart Client Group -  Clients discovered using VSA Subclient",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/xml",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<App_PerformClientGroupReq clientGroupOperationType=\"1\">\r\n    <clientGroupDetail isSmartClientGroup=\"1\" associatedClientsOperationType=\"1\">\r\n        <clientGroup clientGroupId=\"0\" clientGroupName=\"VSA\"/>\r\n        <scgRule>\r\n            <rules>\r\n                <rule op=\"0\">\r\n                    <rules>\r\n                        <rule propID=\"40\" filterID=\"108\" propType=\"6\" value=\"&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;App_Associations&gt;&lt;entity subclientId=&quot;25&quot; applicationId=&quot;106&quot; clientName=&quot;vsa-vc65&quot; backupsetId=&quot;16&quot; instanceId=&quot;8&quot; clientId=&quot;8&quot; subclientName=&quot;test&quot; entityTypeName=&quot;SUBCLIENT_ENTITY&quot; backupsetName=&quot;defaultBackupSet&quot; instanceName=&quot;VMware&quot; appName=&quot;Virtual Server&quot;/&gt;&lt;/App_Associations&gt;\"/>\r\n                    </rules>\r\n                </rule>\r\n            </rules>\r\n        </scgRule>\r\n    </clientGroupDetail>\r\n</App_PerformClientGroupReq>"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 08 Apr 2019 20:39:21 GMT"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Pragma",
+							"value": "Private"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "private, must-revalidate"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "100"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"clientGroup\": {\n            \"_type_\": 28,\n            \"clientGroupId\": 18,\n            \"clientGroupName\": \"VSA\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Client Group - Virtual Machine Association - With Tag Rule",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientGroupOperationType\": 1,\n  \"clientGroupDetail\": {\n    \"associatedClientsOperationType\": 1,\n    \"isSmartClientGroup\": false,\n    \"isDiscoveredClientGroup\": true,\n    \"scgRule\": {},\n    \"clientGroup\": {\n      \"clientGroupId\": 0,\n      \"clientGroupName\": \"VMAssoc_CG\"\n    },\n    \"discoverRulesInfo\": {\n      \"virtualInstanceType\": 1,\n      \"associationRule\": {\n        \"children\": [\n          {\n            \"equalsOrNotEquals\": true,\n            \"path\": \"\",\n            \"displayName\": \"bronze\",\n            \"name\": \"\",\n            \"allOrAnyChildren\": true,\n            \"type\": 34\n          }\n        ]\n      },\n      \"virtualClients\": {\n        \"clients\": [\n          {\n            \"clientId\": 19\n          }\n        ]\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000;includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 29 May 2019 21:01:49 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "107"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"clientGroup\": {\n            \"_type_\": 28,\n            \"clientGroupId\": 40,\n            \"clientGroupName\": \"VMAssoc_CG\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Client Group - Virtual Machine Association - With Tag Rule And Starts With Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clientGroupOperationType\": 1,\n  \"clientGroupDetail\": {\n    \"associatedClientsOperationType\": 1,\n    \"isSmartClientGroup\": false,\n    \"isDiscoveredClientGroup\": true,\n    \"scgRule\": {},\n    \"clientGroup\": {\n      \"clientGroupId\": 0,\n      \"clientGroupName\": \"VMAssoc_CG\"\n    },\n    \"discoverRulesInfo\": {\n      \"virtualInstanceType\": 1,\n      \"associationRule\": {\n        \"children\": [\n          {\n            \"equalsOrNotEquals\": true,\n            \"path\": \"\",\n            \"displayName\": \"*bronze\",\n            \"name\": \"\",\n            \"allOrAnyChildren\": true,\n            \"type\": 34\n          }\n        ]\n      },\n      \"virtualClients\": {\n        \"clients\": [\n          {\n            \"clientId\": 19\n          }\n        ]\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000;includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Server",
+							"value": "Commvault WebServer"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2019 19:24:44 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "107"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"clientGroupDetail\": {\n        \"clientGroup\": {\n            \"_type_\": 28,\n            \"clientGroupId\": 43,\n            \"clientGroupName\": \"VMAssoc_CG\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Smart Client Group - Files Agent Association",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"name": "Content-Type",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\r\n<App_PerformClientGroupReq>\r\n\r\n  <clientGroupOperationType>Create</clientGroupOperationType>\r\n\r\n  <clientGroupDetail>\r\n    <clientGroup>\r\n      <clientGroupName>test_scg</clientGroupName>\r\n      <newName>test_scg</newName>\r\n    </clientGroup>\r\n    <description></description>\r\n    <isEDCInstanceAssociated>false</isEDCInstanceAssociated>\r\n    <isAddinClientGroup>false</isAddinClientGroup>\r\n    <isSmartClientGroup>true</isSmartClientGroup>\r\n    <associatedClients/>\r\n    <clientGroupActivityControl/>\r\n    <clientGroupSecurity/>\r\n    <firewallConfiguration/>\r\n    <overrideHigherLevelSettings>\r\n      <overrideGlobalAuthentication>false</overrideGlobalAuthentication>\r\n      <useLocalSystemAccount>true</useLocalSystemAccount>\r\n      <userAccount>\r\n        <userName></userName>\r\n      </userAccount>\r\n    </overrideHigherLevelSettings>\r\n    <scgRule>\r\n      <op>SCGP_AND</op>\r\n      <rules>\r\n        <rule>\r\n          <op>SCGP_AND</op>\r\n          <rules>\r\n            <rule>\r\n              <propID>3</propID>\r\n              <filterID>108</filterID>\r\n              <propType>SCGP_SELECTION</propType>\r\n              <value>&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;TMMsg_AppGroupSelection&gt;&lt;appGroups appGroupId=\"5\" /&gt;&lt;appGroups appGroupId=\"1\" /&gt;&lt;/TMMsg_AppGroupSelection&gt;</value>\r\n              <secValue>Files;</secValue>\r\n            </rule>\r\n          </rules>\r\n        </rule>\r\n      </rules>\r\n    </scgRule>\r\n    <webSearchServer>\r\n      <clientName></clientName>\r\n    </webSearchServer>\r\n    <dlpPropertise>\r\n      <enableDLP>false</enableDLP>\r\n      <dlpEnableClientKeys>true</dlpEnableClientKeys>\r\n      <dlpStolen>false</dlpStolen>\r\n      <dlpContents></dlpContents>\r\n      <dlpFilters>**\\.edgedrive.cache</dlpFilters>\r\n      <dlpFilters>*.app</dlpFilters>\r\n      <dlpFilters>*.bat</dlpFilters>\r\n      <dlpFilters>*.conf</dlpFilters>\r\n      <dlpFilters>*.dll</dlpFilters>\r\n      <dlpFilters>*.dmg</dlpFilters>\r\n      <dlpFilters>*.exe</dlpFilters>\r\n      <dlpFilters>*.ini</dlpFilters>\r\n      <dlpFilters>*.lnk</dlpFilters>\r\n      <dlpFilters>*.plist</dlpFilters>\r\n      <dlpFilters>*.rc</dlpFilters>\r\n      <dlpFilters>*.tmp</dlpFilters>\r\n      <dlpFilters>.DS_Store</dlpFilters>\r\n      <dlpFilters>.localized</dlpFilters>\r\n      <dlpFilters>~$*</dlpFilters>\r\n      <dlpScanIntervalMins>15</dlpScanIntervalMins>\r\n      <dlpMinFileAgeMins>5</dlpMinFileAgeMins>\r\n      <dlpRMProperties>\r\n        <enableRmDLP>false</enableRmDLP>\r\n        <dlpRmOfflineDays>7</dlpRmOfflineDays>\r\n        <dlpRmNow>false</dlpRmNow>\r\n        <dlpRmContents></dlpRmContents>\r\n        <dlpRmFilters>*.app</dlpRmFilters>\r\n        <dlpRmFilters>*.bat</dlpRmFilters>\r\n        <dlpRmFilters>*.conf</dlpRmFilters>\r\n        <dlpRmFilters>*.dll</dlpRmFilters>\r\n        <dlpRmFilters>*.dmg</dlpRmFilters>\r\n        <dlpRmFilters>*.exe</dlpRmFilters>\r\n        <dlpRmFilters>*.ini</dlpRmFilters>\r\n        <dlpRmFilters>*.lnk</dlpRmFilters>\r\n        <dlpRmFilters>*.plist</dlpRmFilters>\r\n        <dlpRmFilters>*.rc</dlpRmFilters>\r\n        <dlpRmFilters>*.tmp</dlpRmFilters>\r\n        <dlpRmFilters>.DS_Store</dlpRmFilters>\r\n        <dlpRmFilters>.localized</dlpRmFilters>\r\n        <dlpRmFilters>~$*</dlpRmFilters>\r\n      </dlpRMProperties>\r\n      <dlpEnableAutomaticDecryption>false</dlpEnableAutomaticDecryption>\r\n      <dlpUnlockMethod>MANUAL_UNLOCK</dlpUnlockMethod>\r\n    </dlpPropertise>\r\n    <excludeFromSLA>false</excludeFromSLA>\r\n    <slaInterval>0</slaInterval>\r\n    <claQuota>0</claQuota>\r\n    <owner/>\r\n    <associatedStoragePolicies>\r\n      <storagePolicyName>SP1</storagePolicyName>\r\n    </associatedStoragePolicies>\r\n    <createAs>\r\n      <userGroup>\r\n        <userGroupName>master</userGroupName>\r\n      </userGroup>\r\n    </createAs>\r\n    <allowJobsToRunPastOperationWindowEnabled>false</allowJobsToRunPastOperationWindowEnabled>\r\n    <slaCopyRedundancy>0</slaCopyRedundancy>\r\n    <slaCopyFallenBehindDays>0</slaCopyFallenBehindDays>\r\n    <rpoMinutes>0</rpoMinutes>\r\n    <rtoMinutes>0</rtoMinutes>\r\n  </clientGroupDetail>\r\n\r\n</App_PerformClientGroupReq>\r\n"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true",
+							"name": "Access-Control-Allow-Credentials",
+							"description": "Indicates whether or not the response to the request can be exposed when the credentials flag is true. When used as part of a response to a preflight request, this indicates whether or not the actual request can be made using credentials."
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "OPTIONS, GET, POST, PUT, DELETE",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Content-Length",
+							"value": "105",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 10 May 2018 16:10:28 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"clientGroupDetail\":{\r\"clientGroup\":{\r\"_type_\":28,\"clientGroupId\":13,\"clientGroupName\":\"test_scg\"\r}\r}\r}"
+				},
+				{
+					"name": "POST Client Group",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "The mime type of this content"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"clientGroupOperationType\": 1,\r\n  \"clientGroupDetail\": {\r\n    \"description\": \"client computer group description\",\r\n    \"clientGroup\": {\r\n      \"clientGroupName\": \"{{$guid}}\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "133",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 31 May 2017 03:46:59 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"clientGroupDetail\":{\r\"clientGroup\":{\r\"_type_\":28,\"clientGroupId\":15,\"clientGroupName\":\"ecabc593-f808-4ec2-92c2-0fe5df8b026e\"\r}\r}\r}"
+				}
+			]
+		},
+		{
+			"name": "Update Network Topology",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"updateTopologyName = \"TestTopology\";",
+							"postman.setEnvironmentVariable(\"updateTopologyName\", updateTopologyName);",
+							"",
+							"updateDescription = \"Updating Cascading Gateways Topology\";",
+							"postman.setEnvironmentVariable(\"updateDescription\", updateDescription);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response has no errors\"] = jsonData.errorCode === 0;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pushNWConfigOnTopology\": false,\r\n    \"firewallTopology\": {\r\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"{{displayType}}\\\" />\",\r\n        \"topologyType\": 1,\r\n        \"description\": \"{{updateDescription}}\",\r\n        \"isSmartTopology\": true,\r\n        \"firewallGroups\": [\r\n            {\r\n                \"fwGroupType\": 1,\r\n                \"isMnemonic\": false,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"{{clientGroupName1}}\"\r\n                }\r\n            },\r\n            {\r\n                \"fwGroupType\": 2,\r\n                \"isMnemonic\": false,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"{{clientGroupName2}}\"\r\n                }\r\n            },\r\n            {\r\n                \"fwGroupType\": 3,\r\n                \"isMnemonic\": false,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"{{clientGroupName3}}\"\r\n                }\r\n            }\r\n        ],\r\n        \"topologyEntity\": {\r\n            \"topologyName\": \"{{updateTopologyName}}\",\r\n            \"topologyId\": {{topologyId}}\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/FirewallTopology/{{topologyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"FirewallTopology",
+						"{{topologyId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation updates a network topology.\n\n<h2>Request Body</h2>\n<table width=\"331\">\n<tbody>\n<tr>\n<td>Name</td>\n<td>Description</td>\n</tr>\n<tr>\n<td>topologyType</td>\n<td>\n<p>values:<br />- network gateway topology : 1<br />- one-way topology : 2<br />- two-way topology : 3<br />- cascading gateways topology : 4<br /></p>\n</td>\n</tr>\n<tr>\n<td>displayType</td>\n<td>\n<p>values:<br />- servers : 0<br />- laptops : 1<br /></p>\n</td>\n</tr>\n</tbody>\n</table>"
+			},
+			"response": [
+				{
+					"name": "Update Network Topology",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pushNWConfigOnTopology\": false,\r\n    \"firewallTopology\": {\r\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\" />\",\r\n        \"topologyType\": 4,\r\n        \"description\": \"Updating Cascading Gateways Topology\",\r\n        \"isSmartTopology\": true,\r\n        \"firewallGroups\": [\r\n            {\r\n                \"fwGroupType\": 2,\r\n                \"isMnemonic\": false,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"T4\"\r\n                }\r\n            },\r\n            {\r\n                \"fwGroupType\": 1,\r\n                \"isMnemonic\": true,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"My CommServe Computer\"\r\n                }\r\n            },\r\n            {\r\n                \"fwGroupType\": 3,\r\n                \"isMnemonic\": false,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"T2\"\r\n                }\r\n            },\r\n            {\r\n                \"fwGroupType\": 4,\r\n                \"isMnemonic\": false,\r\n                \"clientGroup\": {\r\n                    \"clientGroupName\": \"T1\"\r\n                }\r\n            }\r\n        ],\r\n        \"topologyEntity\": {\r\n            \"topologyName\": \"TestTopology\",\r\n            \"topologyId\": 1080\r\n        }\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology/1080",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology",
+								"1080"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 06:08:07 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"\",\n    \"errorCode\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Network Topology properties updated",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response body has no errors\"] = jsonData.error.errorCode === 0;",
+							"tests[\"Response body has topologyInfo\"] = responseBody.has(\"topologyInfo\");",
+							"",
+							"var topologyPropsExists = jsonData.topologyInfo.topologyEntity ? true : false;",
+							"tests[\"Response has topologyEntity\"] = topologyPropsExists;",
+							"",
+							"if(topologyPropsExists) {",
+							"    tests[\"Topology name is updated\"] = jsonData.topologyInfo.topologyEntity.topologyName == postman.getEnvironmentVariable(\"updateTopologyName\");",
+							"    tests[\"Topology description is updated\"] = jsonData.topologyInfo.description == postman.getEnvironmentVariable(\"updateDescription\");",
+							"    ",
+							"    clientGroupInfo1 = jsonData.topologyInfo.firewallGroups.find( fwGroup => { return fwGroup.clientGroup && (fwGroup.clientGroup.clientGroupId == parseInt(postman.getEnvironmentVariable('clientGroupId1')))});",
+							"    clientGroupInfo2 = jsonData.topologyInfo.firewallGroups.find( fwGroup => { return fwGroup.clientGroup && (fwGroup.clientGroup.clientGroupId == parseInt(postman.getEnvironmentVariable('clientGroupId2')))});",
+							"    clientGroupInfo3 = jsonData.topologyInfo.firewallGroups.find( fwGroup => { return fwGroup.clientGroup && (fwGroup.clientGroup.clientGroupId == parseInt(postman.getEnvironmentVariable('clientGroupId3')))});",
+							"    ",
+							"    tests[\"Client groups are updated in network topology\"] = clientGroupInfo1 && clientGroupInfo2 && clientGroupInfo3 && jsonData.topologyInfo.firewallGroups.length == 3;",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/FirewallTopology/{{topologyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"FirewallTopology",
+						"{{topologyId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns details of a particular network topology."
+			},
+			"response": [
+				{
+					"name": "Network Topology properties ",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology/1075",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology",
+								"1075"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 05:32:42 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"topologyInfo\": {\n        \"useWildcardProxy\": true,\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n        \"topologyType\": 1,\n        \"description\": \"Network Gateway Topology\",\n        \"firewallGroups\": [\n            {\n                \"fwGroupType\": 2,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 348\n                }\n            },\n            {\n                \"fwGroupType\": 3,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 349\n                }\n            },\n            {\n                \"fwGroupType\": 1,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 350\n                }\n            }\n        ],\n        \"topologyEntity\": {\n            \"_type_\": 156,\n            \"topologyName\": \"Topo1\",\n            \"topologyId\": 1075\n        }\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				},
+				{
+					"name": "Network Topology properties",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology/1077",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology",
+								"1077"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 05:31:35 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"topologyInfo\": {\n        \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n        \"topologyType\": 4,\n        \"description\": \"Cascading Gateways Topology\",\n        \"isSmartTopology\": true,\n        \"firewallGroups\": [\n            {\n                \"fwGroupType\": 1,\n                \"isMnemonic\": true,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": -2\n                }\n            },\n            {\n                \"fwGroupType\": 4,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 348\n                }\n            },\n            {\n                \"fwGroupType\": 3,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 349\n                }\n            },\n            {\n                \"fwGroupType\": 2,\n                \"isMnemonic\": false,\n                \"clientGroup\": {\n                    \"_type_\": 28,\n                    \"clientGroupId\": 1694\n                }\n            }\n        ],\n        \"topologyEntity\": {\n            \"_type_\": 156,\n            \"topologyName\": \"Topo3\",\n            \"topologyId\": 1077\n        }\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Push Network Topology",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response has no errors\"] = jsonData.error.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{ServerURL}}/FirewallTopology/{{topologyId}}/Push",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"FirewallTopology",
+						"{{topologyId}}",
+						"Push"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation performs a push network configuration on the topology."
+			},
+			"response": [
+				{
+					"name": "Push Network Topology",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology/1080/Push",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology",
+								"1080",
+								"Push"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 06:09:55 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"errorString\": \"Push Network Configuration submitted successfully for Network Topology [TestTopology].\",\n        \"errorCode\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Network Topology",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Network Topology with: \"+postman.getEnvironmentVariable('topologyId')+\" deleted successfully\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{ServerURL}}/FirewallTopology/{{topologyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"FirewallTopology",
+						"{{topologyId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a network topology."
+			},
+			"response": [
+				{
+					"name": "Delete Network Topology",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology/1080",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology",
+								"1080"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 06:10:48 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorMessage\": \"\",\n    \"errorCode\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Network Topologies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response has no errors\"] = jsonData.error.errorCode === 0;",
+							"",
+							"if (responseBody.has('firewallTopologies')) {",
+							"",
+							"    tests[\"Response Body Contains firewallTopologies\"] = responseBody.has(\"firewallTopologies\");",
+							"    if (responseBody.has(\"firewallTopologies\")) {",
+							"        createdTopology = jsonData.firewallTopologies.find( topology => {",
+							"            if (topology.topologyEntity) {",
+							"                if(topology.topologyEntity.topologyId == postman.getEnvironmentVariable(\"topologyId\")) {",
+							"                    return true;",
+							"                }",
+							"            }",
+							"            return false;",
+							"        });",
+							"    ",
+							"        tests[\"Network Topology was deleted successfully\"] = !createdTopology;",
+							"    }",
+							"} else {",
+							"    tests[\"Network Topology was deleted successfully\"] = jsonData.error.errorCode === 0;",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/FirewallTopology",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"FirewallTopology"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns all the network topologies."
+			},
+			"response": [
+				{
+					"name": "Network Topologies",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/FirewallTopology",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"FirewallTopology"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jul 2019 05:29:54 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"firewallTopologies\": [\n        {\n            \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n            \"topologyType\": 1,\n            \"isTopologyForCSFailover\": false,\n            \"flags\": 0,\n            \"description\": \"Network Gateway Topology\",\n            \"isSmartTopology\": false,\n            \"topologyEntity\": {\n                \"_type_\": 156,\n                \"topologyName\": \"Topo1\",\n                \"topologyId\": 1075\n            }\n        },\n        {\n            \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n            \"topologyType\": 2,\n            \"isTopologyForCSFailover\": false,\n            \"flags\": 1,\n            \"description\": \"One-Way Topology\",\n            \"isSmartTopology\": true,\n            \"topologyEntity\": {\n                \"_type_\": 156,\n                \"topologyName\": \"Topo2\",\n                \"topologyId\": 1076\n            }\n        },\n        {\n            \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n            \"topologyType\": 4,\n            \"isTopologyForCSFailover\": false,\n            \"flags\": 1,\n            \"description\": \"Cascading Gateways Topology\",\n            \"isSmartTopology\": true,\n            \"topologyEntity\": {\n                \"_type_\": 156,\n                \"topologyName\": \"Topo3\",\n                \"topologyId\": 1077\n            }\n        },\n        {\n            \"extendedProperties\": \"<App_TopologyExtendedProperties displayType=\\\"0\\\"/>\",\n            \"topologyType\": 3,\n            \"isTopologyForCSFailover\": false,\n            \"flags\": 1,\n            \"description\": \"Two-Way Topology\",\n            \"isSmartTopology\": true,\n            \"topologyEntity\": {\n                \"_type_\": 156,\n                \"topologyName\": \"Topo4\",\n                \"topologyId\": 1078\n            }\n        }\n    ],\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Client Group 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response has no errors\"] = jsonData.errorCode === 0;",
+							"tests[\"Client Group: \"+postman.getEnvironmentVariable('clientGroupId1')+\" deleted successfully\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId1}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"{{clientGroupId1}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a client computer group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_client_group.htm)"
+			},
+			"response": [
+				{
+					"name": "DELETE Client Group",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup/{{clientGroupId}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup",
+								"{{clientGroupId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "35",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 31 May 2017 04:10:57 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"errorMessage\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Client Group 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response has no errors\"] = jsonData.errorCode === 0;",
+							"tests[\"Client Group: \"+postman.getEnvironmentVariable('clientGroupId2')+\" deleted successfully\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId2}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"{{clientGroupId2}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a client computer group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_client_group.htm)"
+			},
+			"response": [
+				{
+					"name": "DELETE Client Group",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup/{{clientGroupId}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup",
+								"{{clientGroupId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "35",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 31 May 2017 04:10:57 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"errorMessage\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Client Group 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response has no errors\"] = jsonData.errorCode === 0;",
+							"tests[\"Client Group: \"+postman.getEnvironmentVariable('clientGroupId3')+\" deleted successfully\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ClientGroup/{{clientGroupId3}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ClientGroup",
+						"{{clientGroupId3}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a client computer group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_client_group.htm)"
+			},
+			"response": [
+				{
+					"name": "DELETE Client Group",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/ClientGroup/{{clientGroupId}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"ClientGroup",
+								"{{clientGroupId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "35",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 31 May 2017 04:10:57 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"errorMessage\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"TOKEN\"); ",
+							"postman.setEnvironmentVariable(\"TOKEN\", token);",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

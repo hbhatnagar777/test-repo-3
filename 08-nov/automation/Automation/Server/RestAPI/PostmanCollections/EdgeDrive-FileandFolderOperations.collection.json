@@ -1,0 +1,2152 @@
+{
+	"info": {
+		"_postman_id": "54ffc85b-3474-44f1-ac11-68645400bfd5",
+		"name": "EdgeDrive-FileandFolderOperations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Environment Setup_",
+			"event": [
+				{
+					"listen": "test_",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"FolderName\", \"DemoFolder\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileData\", \"Demo File Content\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileSize\", \"17\");",
+							"",
+							"postman.setEnvironmentVariable(\"SecondFileSize\", \"34\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileModifiedtime\", \"1481595468\");",
+							"",
+							"postman.setEnvironmentVariable(\"ParentFolderPath\", \"XERlbW9Gb2xkZXI=\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName1\", \"RGVtb0ZpbGUxLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName2\", \"RGVtb0ZpbGUyLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"ShareParentFolderPath\", \"XA==\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);\r",
+							"\r",
+							"\r",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/rest_api_authentication.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Drive",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"RootGuid\", jsonData.edgeDriveInfo.rootGUID);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains clientName\"] = responseBody.has(\"clientName\");",
+							"",
+							"tests[\"Response Body contains rootGUID\"] = responseBody.has(\"rootGUID\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_drive.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Folder by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"FOLDER_GUID\", jsonData.fileResource.GUID);",
+							"",
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains folder name\"] = responseBody.has(\"name\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Validating error code\"] = jsonData.error.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<App_FileResourceInfo name=\"{{FolderName}}\"/>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{RootGuid}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{RootGuid}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_folder_by_folderid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Folder by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"SECONDFOLDER_GUID\", jsonData.fileResource.GUID);",
+							"",
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains folder name\"] = responseBody.has(\"name\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Validating error code\"] = jsonData.error.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\":\"DemoFolder2\",\n  \"parentPath\":\"\\\\\"\n}\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/action/createfolder",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"action",
+						"createfolder"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_folder_by_folderpath.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "View Folder Properties by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains folder name\"] = responseBody.has(\"name\");",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FOLDER_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FOLDER_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_drive_file_properties_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "View Folder Properties by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains folder name\"] = responseBody.has(\"name\");",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/action/metadata?path=%5C{{FolderName}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"action",
+						"metadata"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5C{{FolderName}}"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_drive_file_properties_by_filepath.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload a File",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"FILE1_GUID\", jsonData.fileGUID);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains fileGUID\"] = responseBody.has(\"fileGUID\");",
+							"",
+							"tests[\"Response Body contains requestId\"] = responseBody.has(\"requestId\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "FileName",
+						"value": "{{FileName1}}"
+					},
+					{
+						"key": "ParentFolderPath",
+						"value": "{{ParentFolderPath}}"
+					},
+					{
+						"key": "FileModifiedtime",
+						"value": "{{FileModifiedtime}}"
+					},
+					{
+						"key": "FileSize",
+						"value": "{{FileSize}}"
+					},
+					{
+						"key": "FileEOF",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{FileData}}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/action/upload?uploadType=fullFile",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"action",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "uploadType",
+							"value": "fullFile"
+						}
+					]
+				},
+				"description": "<h2>Description</h2> \n<p>This operation uploads a single file to Edge Drive. The API is used for uploading files that are relatively small in size.</p> \n\n<p>For larger files (greater than 4 MB), upload the files in multiple data chunks.\n\n<p><a href=\"http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_full_upload.htm\" data-internal=\"true\">More Info</a>.</p> "
+			},
+			"response": []
+		},
+		{
+			"name": "Upload a File in Chunks (1)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"RequestId\", jsonData.requestId);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains chunkOffset\"] = responseBody.has(\"chunkOffset\");",
+							"",
+							"tests[\"Response Body contains requestId\"] = responseBody.has(\"requestId\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "FileName",
+						"value": "{{FileName2}}"
+					},
+					{
+						"key": "ParentFolderPath",
+						"value": "{{ParentFolderPath}}"
+					},
+					{
+						"key": "FileModifiedtime",
+						"value": "{{FileModifiedtime}}"
+					},
+					{
+						"key": "FileSize",
+						"value": "{{SecondFileSize}}"
+					},
+					{
+						"key": "FileEOF",
+						"value": "0"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{FileData}}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/action/upload?uploadType=chunkedFile&forceRestart=true",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"action",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "uploadType",
+							"value": "chunkedFile"
+						},
+						{
+							"key": "forceRestart",
+							"value": "true"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_upload_header_request.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload a File in Chunks (2)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"FILE2_GUID\", jsonData.fileGUID);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains chunkOffset\"] = responseBody.has(\"chunkOffset\");",
+							"",
+							"tests[\"Response Body contains fileGUID\"] = responseBody.has(\"fileGUID\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "FileEOF",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{FileData}}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/action/upload?uploadType=chunkedFile&requestId={{RequestId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"action",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "uploadType",
+							"value": "chunkedFile"
+						},
+						{
+							"key": "requestId",
+							"value": "{{RequestId}}"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_upload_chunk_request.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload a File with Querystrings in Name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"FILE1_GUID1\", jsonData.fileGUID);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains fileGUID\"] = responseBody.has(\"fileGUID\");",
+							"",
+							"tests[\"Response Body contains requestId\"] = responseBody.has(\"requestId\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "FileName",
+						"value": "V1pOQ09BX0ZFTk5PU0lMKzk4NStCVUxLXzUxMDIwODA0MDc2MF80NTAyMjczMjgzXzIwMTkxMTA1MDYxMDU4LmRvYw=="
+					},
+					{
+						"key": "ParentFolderPath",
+						"value": "XA=="
+					},
+					{
+						"key": "FileModifiedtime",
+						"value": "{{FileModifiedtime}}"
+					},
+					{
+						"key": "FileSize",
+						"value": "{{FileSize}}"
+					},
+					{
+						"key": "FileEOF",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{FileData}}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/action/upload?uploadType=fullFile",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"action",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "uploadType",
+							"value": "fullFile"
+						}
+					]
+				},
+				"description": "<h2>Description</h2> \n<p>This operation uploads a single file to Edge Drive. The API is used for uploading files that are relatively small in size.</p> \n\n<p>For larger files (greater than 4 MB), upload the files in multiple data chunks.\n\n<p><a href=\"http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_full_upload.htm\" data-internal=\"true\">More Info</a>.</p> "
+			},
+			"response": []
+		},
+		{
+			"name": "Download filedata of filename having querystrings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"File Contents\"] = responseBody.has(postman.getEnvironmentVariable(\"FileData\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID1}}/action/download?path=%5CWZNCOA_FENNOSIL%2B985%2BBULK_510208040760_4502273283_20191105061058.doc",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID1}}",
+						"action",
+						"download"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5CWZNCOA_FENNOSIL%2B985%2BBULK_510208040760_4502273283_20191105061058.doc"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_drive_download_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Querystring File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID1}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID1}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_drive_folder.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Download a File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"File Contents\"] = responseBody.has(postman.getEnvironmentVariable(\"FileData\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID}}/action/download",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID}}",
+						"action",
+						"download"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_drive_download_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Download a File by ID - Referer1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"tests[\"File Contents\"] = responseBody.has(postman.getEnvironmentVariable(\"FileData\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Referer",
+						"value": "http://test.commvault.com",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID}}/action/download",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID}}",
+						"action",
+						"download"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download a File by ID - Referer2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"tests[\"File Contents\"] = responseBody.has(postman.getEnvironmentVariable(\"FileData\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Referer",
+						"value": "http://test.commvault.com/",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID}}/action/download",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID}}",
+						"action",
+						"download"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download a File by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"File Contents\"] = responseBody.has(postman.getEnvironmentVariable(\"FileData\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/action/download?path=%5CDemoFolder%5CDemoFile1.doc",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"action",
+						"download"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5CDemoFolder%5CDemoFile1.doc"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_drive_download_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Download a File by Path - Referer1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"tests[\"File Contents\"] = responseBody.has(postman.getEnvironmentVariable(\"FileData\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Referer",
+						"value": "http://test.commvault.com",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/action/download?path=%5CDemoFolder%5CDemoFile1.doc",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"action",
+						"download"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5CDemoFolder%5CDemoFile1.doc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download a File by Path - Referer2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"tests[\"File Contents\"] = responseBody.has(postman.getEnvironmentVariable(\"FileData\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Referer",
+						"value": "http://test.commvault.com/",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/action/download?path=%5CDemoFolder%5CDemoFile1.doc",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"action",
+						"download"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5CDemoFolder%5CDemoFile1.doc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Preview a File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"File Contents\"] = responseBody.has(postman.getEnvironmentVariable(\"FileData\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID}}/action/preview",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID}}",
+						"action",
+						"preview"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_drive_preview_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Rename a File by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"path\":\"\\\\DemoFolder\\\\DemoFile1.doc\",\n  \"name\":\"DemoFile1Renamed.doc\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/action/rename",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"action",
+						"rename"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_folder_rename.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Rename a File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\":\"DemoFile1Renamed.doc\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID}}/action/rename",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID}}",
+						"action",
+						"rename"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/put_drive_folder_rename.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Custom Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"customProps\":{\r\n      \"nameValues\":[\r\n         {\r\n            \"name\":\"testproperty1\",\r\n            \"value\":\"testvalue1\"\r\n         },\r\n         {\r\n            \"name\":\"testproperty2\",\r\n            \"value\":\"testvalue2\"\r\n         }\r\n      ]\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID}}/properties",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID}}",
+						"properties"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_custom_prop_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "View Custom Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body Contains Custom Property\"] = responseBody.has(\"testproperty1\");",
+							"",
+							"tests[\"Response Body contains Property Value\"] = responseBody.has(\"testvalue1\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID}}/properties?propertyFilter=testproperty1",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID}}",
+						"properties"
+					],
+					"query": [
+						{
+							"key": "propertyFilter",
+							"value": "testproperty1"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_drive_custom_prop_filter_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Custom Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"fileFolderInfo\":[\r\n      {\r\n         \"fileGUID\":\"{{FILE1_GUID}}\"\r\n      }\r\n   ],\r\n   \"customProps\":{\r\n      \"nameValues\":[\r\n         {\r\n            \"name\":\"testproperty1\",\r\n            \"value\":\"testvalue1\"\r\n         },\r\n         {\r\n            \"name\":\"testproperty2\",\r\n            \"value\":\"testvalue2\"\r\n         }\r\n      ]\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/properties",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"properties"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_drive_custom_property.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Tags",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"values\":\"gold,silver\",\r\n   \"fileFolderInfo\":[\r\n      {\r\n         \"fileGUID\":\"{{FILE1_GUID}}\"\r\n      }\r\n   ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/tags",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"tags"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_tag_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "List Tags",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body Contains Tags\"] = responseBody.has(\"tags\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID}}/tags",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID}}",
+						"tags"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_drive_tag_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Tags",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"values\":\"gold,silver\",\r\n   \"fileFolderInfo\":[\r\n      {\r\n         \"fileGUID\":\"{{FILE1_GUID}}\"\r\n      }\r\n   ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/tags",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"tags"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_drive_tag.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "View File Versions by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//var jsonData = JSON.parse(responseBody);",
+							"//postman.setEnvironmentVariable(\"versionId\", jsonData.fileResources[0].versionGUID);",
+							"",
+							"//tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"//tests[\"Response Body contains parentPath\"] = responseBody.has(\"\\\\DemoFolder\");",
+							"",
+							"//tests[\"Response Body contains parentGuid\"] = responseBody.has(\"parentGuid\");",
+							"",
+							"//tests[\"Response Body contains parentGuid\"] = responseBody.has(\"versionGUID\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID}}/versions",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID}}",
+						"versions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View File Versions by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//var jsonData = JSON.parse(responseBody);",
+							"//postman.setEnvironmentVariable(\"versionId\", jsonData.fileResources[0].versionGUID);",
+							"",
+							"//tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"//tests[\"Response Body contains parentPath\"] = responseBody.has(\"\\\\DemoFolder\");",
+							"",
+							"//tests[\"Response Body contains parentGuid\"] = responseBody.has(\"parentGuid\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/versions?path=%5C{{FolderName}}%5CDemoFile1Renamed.doc",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"versions"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5C{{FolderName}}%5CDemoFile1Renamed.doc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download a File Version",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/version/{{versionId}}/action/download",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"version",
+						"{{versionId}}",
+						"action",
+						"download"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_drive_download_version_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE1_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE1_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_drive_folder.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Move a File by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"path\":\"\\\\DemoFolder\\\\DemoFile2.doc\",\n  \"parentPath\":\"\\\\\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/action/move",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"action",
+						"move"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_folder_move.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Move a File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"parentGuid\":\"{{RootGuid}}\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE2_GUID}}/action/move",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE2_GUID}}",
+						"action",
+						"move"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/put_drive_folder_move.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Folder Contents by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains a File\"] = responseBody.has(\"DemoFile2.doc\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "text/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/folder/{{RootGuid}}/action/search",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"folder",
+						"{{RootGuid}}",
+						"action",
+						"search"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_search_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Folder Contents by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains a File\"] = responseBody.has(\"DemoFile2.doc\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "text/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/folder/{{RootGuid}}/action/search",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"folder",
+						"{{RootGuid}}",
+						"action",
+						"search"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_search_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "List Folder Contents by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains a File\"] = responseBody.has(\"DemoFile2.doc\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/folder/{{RootGuid}}/action/list",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"folder",
+						"{{RootGuid}}",
+						"action",
+						"list"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_list_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "List Folder Contents by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains a File\"] = responseBody.has(\"DemoFile2.doc\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/action/list?path=%5C",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"action",
+						"list"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5C"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_drive_list_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Folder by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"path\":\"\\\\DemoFolder2\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/action/delete",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"action",
+						"delete"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_drive_folder.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Folder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FOLDER_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FOLDER_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_drive_folder.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete File2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Validating error code\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/drive/file/{{FILE2_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"drive",
+						"file",
+						"{{FILE2_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_drive_folder.htm"
+			},
+			"response": []
+		}
+	]
+}

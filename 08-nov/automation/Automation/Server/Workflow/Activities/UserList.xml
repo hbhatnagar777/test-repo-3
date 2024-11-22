@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_SetActivityRequest>
+    <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+    <activity cellClass=""
+        className="commvault.cte.workflow.activities.CustomXMLOperationActivity"
+        definition="&lt;?xml version='1.0' encoding='UTF-8'?>&lt;Workflow_CustomOperationDefinition outputs=&quot;&amp;lt;outputs>&amp;lt;userName class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot;>xpath:{/App_GetUserPropertiesResponse/users/userEntity/@userName}&amp;lt;/userName>&amp;lt;/outputs>&quot; inputs=&quot;&amp;lt;inputs>&amp;lt;act_username class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;/inputs>&quot; operation=&quot;&amp;lt;App_GetUserPropertiesRequest>&amp;#xd;&amp;#xa;&amp;lt;user>&amp;#xd;&amp;#xa;&amp;lt;userName>java:{activity.getInput(&amp;amp;quot;act_username&amp;amp;quot;)}:java&amp;lt;/userName>&amp;#xd;&amp;#xa;&amp;lt;/user>&amp;#xd;&amp;#xa;&amp;lt;/App_GetUserPropertiesRequest>&quot;>&lt;script language=&quot;1&quot; script=&quot;/*&amp;#xa;to access xml response use: XML xml = activity.getXmlResponse();&amp;#xa;to retrieve values via xpath you can use: String value = xml.selectSingleNode(&amp;quot;string(/path/to/node)&amp;quot;);&amp;#xa;to set outputs of the activity use: activity.setOutput(&amp;quot;outputName&amp;quot;, value);&amp;#xa;*/&amp;#xa;&quot; />&lt;/Workflow_CustomOperationDefinition>"
+        description="List User Properties" displayName="" flags="0"
+        icon="" inbound="1" outbound="1" schema="">
+        <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+        <activity activityId="0" activityName="UserList" schemaId="0" schemaNamespace="commvault.cte.workflow.activities"/>
+        <activityLocation locationType="0">
+            <location schemaLocationId="1" schemaLocationUrl="workflow_activities.jar"/>
+        </activityLocation>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0" name="" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="userName" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs className="" defaultValue="" listType="0" name="" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    name="act_username" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+    </activity>
+</Workflow_SetActivityRequest>

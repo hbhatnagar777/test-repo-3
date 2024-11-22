@@ -1,0 +1,44 @@
+{
+	"commcell": [
+		{
+			"webconsoleHostname": "harshcs.testlab.commvault.com",
+			"commcellUsername": "admin",
+			"commcellPassword": "Commvault!12"
+		}
+	],
+	"email": {
+		"receiver": "hbhatnagar@commvault.com"
+	},
+	"testsetConfig": {
+		"THREADS": 1
+	},
+	"testsets": {
+		"Virtualization \\ GCP_AdminConsole": {
+			"TESTSET_PRODUCT_NAME": "Virtualization GCP",
+			"TESTSET_OS_TYPE": "NA",
+			"TESTSET_APPLICATION_VERSION": "",
+			"TESTSET_ADDITIONAL_PROP": "AdminConsole",
+			"testcaseConfig": {
+				"THREADS": 2,
+				"UpdateQA": false
+			},
+			"testCases": {
+				"0704": {
+					"ClientName": "VSA-HARSH-HV",
+					"AgentName": "Virtual Server",
+					"InstanceName": "google cloud platform",
+					"BackupsetName": "defaultBackupSet",
+					"SubclientName": "VSA-SUREKHA-ACTIVE-VMs",
+					"ProjectID": "vsa-surekha",
+					"NetworkNic": "https://compute.googleapis.com/compute/v1/projects/vsa-surekha/global/networks/",
+					"NetworkSubnetNic": "https://compute.googleapis.com/compute/v1/projects/vsa-surekha/regions/us-east1/subnetworks/",
+					"subnet": "default",
+					"Zone": "us-east1-b",
+                    "RestoreOptions": {
+						"hmmultinicdrvm": {}
+					}
+				}
+			}
+		}
+	}
+}

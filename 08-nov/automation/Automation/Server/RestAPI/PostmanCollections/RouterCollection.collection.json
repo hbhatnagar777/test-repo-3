@@ -1,0 +1,1011 @@
+{
+	"info": {
+		"_postman_id": "9d15b4dc-d7b6-41d4-8e1a-caed0c1b9923",
+		"name": "RouterCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login into IDP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Validating logged in username\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							"",
+							"",
+							"//tests[\"Validating if response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\") ;   //validate response time",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            ",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Register commcell for Routing",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"var errorCodeaftercreate = jsonData.resultCode;",
+							"",
+							"if((tests[\"validating service commcell registration for routing\"] = errorCodeaftercreate === 0))     ",
+							"            console.log(\"Service commcell is registered for routing successfully\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/xml"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " <EVGui_CN2CellRegReq>\r\n    <commcell ccClientName=\"{{SERVICECOMMCELL}}\" interfaceName=\"{{SERVICECOMMCELL}}\" adminUsr=\"{{SERVICEUNAME}}\" adminPwd=\"{{SERVICEPWD}}\" isRegisteredForRouting=\"1\" isGlobalIDPCommcell=\"0\">\r\n        <commCell commCellName=\"{{SERVICECOMMCELL}}\"/>\r\n    </commcell>\r\n</EVGui_CN2CellRegReq>\r\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/RegFrgnCell",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"RegFrgnCell"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Registered commcells",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"console.log(\"Verifying the registered commcell Info\");   ",
+							"if((tests[\"Validating registered commcell Info\"] = responseBody.has(\"csGUID\")))      ",
+							"            console.log(\"Registered commcell  Info is present\");",
+							"",
+							"var commcellname = postman.getEnvironmentVariable(\"SERVICECOMMCELL\");     ",
+							"jsonData.commcellsList.forEach(",
+							"   function(cc) {",
+							"      if(cc['interfaceName'] == commcellname) {",
+							"        console.log(\"ccClientId\");  ",
+							"        postman.setEnvironmentVariable(\"ccClientId\", cc['ccClientId']);",
+							"        postman.setEnvironmentVariable(\"ccClientName\", cc['ccClientName']);",
+							"        postman.setEnvironmentVariable(\"csGUID\", cc['commCell']['csGUID']);",
+							"        postman.setEnvironmentVariable(\"Type\", cc['commCell']['_type_']);",
+							"        postman.setEnvironmentVariable(\"commCellId\", cc['commCell']['commCellId']);",
+							"     }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/registered?getOnlyServiceCommcells=true",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"registered"
+					],
+					"query": [
+						{
+							"key": "getOnlyServiceCommcells",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login into Service registered for Routing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"SERVICETOKEN\", jsonData.token);",
+							"var username = postman.getEnvironmentVariable(\"SERVICEUNAME\");                  ",
+							"tests[\"Validating logged in username\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"SERVICETOKEN\"));",
+							"",
+							"",
+							"//tests[\"Validating if response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\") ;   //validate response time",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            ",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\n\t\"domain\": \"\",\n\t\"username\": \"{{SERVICEUNAME}}\",\n\t\"password\": \"{{SERVICEEPWD}}\",\n\t\"commserver\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/Login",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Create User on Service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"if((tests[\"Validating if user was created successfully\"] = jsonData.response[0].errorString === \"Successful\"))",
+							"    console.log(\"User was created successfully\");",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"if((tests[\"Validating username of created user\"] = responseBody.has(postman.getEnvironmentVariable(\"userName\"))))      ",
+							"            console.log(\"User Name of created user is present\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"userName\", \"NewUser\" + new Date().getTime());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"description\": \"backup admin user\",\r\n      \"agePasswordDays\": 10,\r\n      \"password\": \"{{Password}}\",\r\n      \"email\": \"test@company.com\",\r\n      \"fullName\": \"{{$randomFullName}}\",\r\n      \"enableUser\": true,\r\n      \"userEntity\": {\r\n        \"userName\": \"{{userName}}\"\r\n      }\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/User",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check for user on service commcell",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/ServiceCommcell/IsUserPresent?userName={{userName}}",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"ServiceCommcell",
+						"IsUserPresent"
+					],
+					"query": [
+						{
+							"key": "userName",
+							"value": "{{userName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get redirect rules for user on IDP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"if ((tests[\"Validating if redirect rules are returned successfully\"] = jsonData.error.errorMessage === \"SUCCESS\"))",
+							"    console.log(\"Redirect rules returned successfully\");",
+							"var redirectp1 = \"http://\";",
+							"var servicename = postman.getEnvironmentVariable(\"SERVICECOMMCELL\");",
+							"var redirectp2 = \":80/webconsole\";",
+							"var redirecturl1 = redirectp1+servicename+redirectp2;",
+							"console.log(\"RedirectURL:\",redirecturl1);",
+							"var commcellname = postman.getEnvironmentVariable(\"ccClientName\");",
+							"jsonData.AvailableRedirects.forEach(",
+							"    function (cc) {",
+							"        if (cc['commcellName'] == commcellname) {",
+							"            postman.setEnvironmentVariable(\"SERVICEWEBURL\", cc['redirectUrl']);",
+							"            if ((tests[\"Validating if redirect rules are returned successfully\"] = cc['redirectUrl'] === redirecturl1))",
+							"                console.log(\"Redirect rules returned successfully\");",
+							"",
+							"        }",
+							"    });",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){\r",
+							"    console.log(\"10s sleep\");\r",
+							"},10000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommcellRedirect/RedirectListforUser?user={{userName}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommcellRedirect",
+						"RedirectListforUser"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "{{userName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Create organization",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"companyname\", \"CompanyName\" + new Date().getTime());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains providerId\"] = responseBody.has(\"providerId\");",
+							"tests[\"Response Body contains providerDomainName\"] = responseBody.has(\"providerDomainName\");",
+							"",
+							"postman.setEnvironmentVariable(\"providerId\", jsonData.response.entity.providerId);",
+							"postman.setEnvironmentVariable(\"providerDomainName\", jsonData.response.entity.providerDomainName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"organizationInfo\": {\r\n    \"organization\": {\r\n      \"shortName\": {\r\n        \"domainName\": \"{{companyname}}\"\r\n      },\r\n      \"connectName\": \"{{companyname}}\",\r\n      \"emailDomainNames\": [\r\n        \"t1.com\"\r\n      ]\r\n    },\r\n    \"organizationProperties\": {\r\n      \"primaryDomain\": \"\",\r\n      \"primaryContacts\": [\r\n        {\r\n          \"fullName\": \"{{companyname}}\",\r\n          \"email\": \"{{companyname}}@{{companyname}}.com\"\r\n        }\r\n      ],\r\n      \"enableAutoDiscovery\": false\r\n    }\r\n  },\r\n  \"sendEmail\": true\r\n}\r\n"
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/Organization",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"Organization"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check for user on service commcell Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/ServiceCommcell/IsUserPresent?email={{companyname}}@{{companyname}}.com",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"ServiceCommcell",
+						"IsUserPresent"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "{{companyname}}@{{companyname}}.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get redirect rules for user on IDP using email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"if ((tests[\"Validating if redirect rules are returned successfully\"] = jsonData.error.errorMessage === \"SUCCESS\"))",
+							"    console.log(\"Redirect rules returned successfully\");",
+							"var redirectp1 = \"http://\";",
+							"var servicename = postman.getEnvironmentVariable(\"SERVICECOMMCELL\");",
+							"var redirectp2 = \":80/webconsole\";",
+							"var redirecturl1 = redirectp1+servicename+redirectp2;",
+							"console.log(\"RedirectURL:\",redirecturl1);",
+							"var commcellname = postman.getEnvironmentVariable(\"ccClientName\");",
+							"jsonData.AvailableRedirects.forEach(",
+							"    function (cc) {",
+							"        if (cc['commcellName'] == commcellname) {",
+							"            postman.setEnvironmentVariable(\"SERVICEWEBURL\", cc['redirectUrl']);",
+							"            if ((tests[\"Validating if redirect rules are returned successfully\"] = cc['redirectUrl'] === redirecturl1))",
+							"                console.log(\"Redirect rules returned successfully\");",
+							"",
+							"        }",
+							"    });",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){\r",
+							"    console.log(\"10s sleep\");\r",
+							"},10000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommcellRedirect/RedirectListforUser?user=\"{{companyname}}@{{companyname}}.com\"",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommcellRedirect",
+						"RedirectListforUser"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "\"{{companyname}}@{{companyname}}.com\""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unregister commcell for Routing",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){\r",
+							"    console.log(\"10s sleep\");\r",
+							"},10000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Unregistration\"] = jsonData.resultCode === 0))     ",
+							"            console.log(\"Unregistration is done successfully\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<EVGui_CN2RemoveCellRegReq>\r\n    <commcell ccClientId=\"{{ccClientId}}\" ccClientName=\"{{ccClientName}}\" interfaceName=\"{{SERVICECOMMCELL}}\">\r\n        <commCell _type_=\"{{Type}}\" commCellId=\"{{commCellId}}\" csGUID=\"csGUID\"/>\r\n    </commcell>\r\n</EVGui_CN2RemoveCellRegReq>\r\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UnRegisterCommCell",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UnRegisterCommCell"
+					]
+				},
+				"description": "Creates a Monitoring policy"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout on Service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<DM2ContentIndexing_CheckCredentialReq hostName=\"1.1.1.1\" username=\"\" password=\"xxxxx\" mode=\"4\" flags=\"0\" clientType=\"19\" timeout=\"20160\">\r\n    <autoLogin autoLoginType=\"5\" encryptedMessage=\"{{SAMLTOKEN}}\" />\r\n</DM2ContentIndexing_CheckCredentialReq>\r\n\r\n"
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/Logout",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Logout on IDP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<DM2ContentIndexing_CheckCredentialReq hostName=\"1.1.1.1\" username=\"\" password=\"xxxxx\" mode=\"4\" flags=\"0\" clientType=\"19\" timeout=\"20160\">\r\n    <autoLogin autoLoginType=\"5\" encryptedMessage=\"{{SAMLTOKEN}}\" />\r\n</DM2ContentIndexing_CheckCredentialReq>\r\n\r\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

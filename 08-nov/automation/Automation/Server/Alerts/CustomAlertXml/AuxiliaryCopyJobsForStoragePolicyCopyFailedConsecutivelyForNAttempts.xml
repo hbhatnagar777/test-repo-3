@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<App_SetCustomRuleRequest>
+    <queryDetail doesQuerySupportOutputFilter="1" frequency="86400"
+        isDisabled="0" isOverwriteAssociationAtAlertAllowed="1"
+        isPrimaryKeyPresent="0" isQueryModifyEnabled="1"
+        isRuleAssociatedWithAlert="1" isSystemCreated="0"
+        queryCriteriaName="Auxiliary Copy jobs for storage policy copy failed consecutively for N attempts"
+        queryDescription="Custom alert to be trigerred when N Auxiliary copy jobs failed consecutively for a storage policy copy."
+        sqlQuery="SET NOCOUNT ON&#xa;&#xa;IF OBJECT_ID('tempdb.dbo.#archGroups') IS NOT NULL&#xa;     DROP TABLE #archGroups&#xa;IF OBJECT_ID('tempdb.dbo.#archGrpIDsToDelete') IS NOT NULL&#xa;     DROP TABLE #archGrpIDsToDelete&#xa;&#xa;CREATE TABLE #archGroups (rowNo INT, jobId INT, status INT, archGrpId INT, archgrpCopyId INT, failureReason VARCHAR(256))&#xa;CREATE TABLE #archGrpIDsToDelete(archGrpId INT, archGrpCopyId INT)&#xa;&#xa;INSERT INTO #archGroups&#xa;SELECT ROW_NUMBER() OVER (PARTITION BY archGrpID, archGrpCopyID order by jobid DESC), jobId, status, archGrpID, archGrpCopyID, failureReason FROM JMAdminJobStatsTable WITH(NOLOCK) WHERE opType=104&#xa;&#xa;DELETE from #archGroups WHERE rowNo > @noOfJobs OR status &lt;> 2&#xa;&#xa;INSERT INTO #archGrpIDsToDelete&#xa;&#x9;SELECT archGrpId,archgrpCopyId FROM #archGroups GROUP BY archGrpId, archgrpCopyId HAVING count(0) &lt; @noOfJobs&#xa;&#xa;DELETE AG from #archGroups AG INNER JOIN #archGrpIDsToDelete AGD ON AG.archGrpId = AGD.archGrpId AND AG.archgrpCopyId = AGD.archGrpCopyId&#xa;&#xa;SELECT &#xa;SUBSTRING((&#xa;    SELECT ',' + CAST(jobId AS NVARCHAR(32)) AS 'data()'&#xa;        FROM #archGroups AG2&#xa;&#x9;&#x9;WHERE AG1.archGrpId = AG2.archGrpId AND AG1.archgrpCopyId = AG2.archgrpCopyId&#xa;        FOR XML PATH('')&#xa;), 2 , 9999) As jobIDList,&#xa;storagePolicyName = CASE&#xa;             WHEN archGrpID = 0 THEN ''&#xa;             WHEN archGrpID = 1 THEN ''&#xa;             ELSE ISNULL((SELECT name FROM archGroup WITH (READUNCOMMITTED) WHERE id = archGrpID),'Unavailable')&#xa;             END,&#xa;copyName = CASE&#xa;             WHEN archGrpCopyID = 0 THEN 'All Copies'&#xa;             ELSE ISNULL((SELECT name FROM archGroupCopy WITH (READUNCOMMITTED) WHERE id = archGrpCopyID),'Unavailable')&#xa;             END,&#xa;dbo.JMGetLocalizedMessageFunc(0, SUBSTRING((&#xa;    SELECT ',' + failureReason AS 'data()'&#xa;        FROM #archGroups AG2&#xa;&#x9;&#x9;WHERE AG1.archGrpId = AG2.archGrpId AND AG1.archgrpCopyId = AG2.archgrpCopyId&#xa;        FOR XML PATH('')&#xa;), 2 , 9999)) As failureReason&#xa;FROM #archGroups AG1 GROUP BY archGrpId, archgrpCopyId&#xa;&#xa;IF OBJECT_ID('tempdb.dbo.#archGroups') IS NOT NULL&#xa;&#x9;DROP TABLE #archGroups&#xa;&#xa;IF OBJECT_ID('tempdb.dbo.#archGrpIDsToDelete') IS NOT NULL&#xa;&#x9;DROP TABLE #archGrpIDsToDelete&#xa;&#xa;SET NOCOUNT OFF&#xa;"
+        taskInfoXml="&lt;?xml version='1.0' encoding='UTF-8'?>&lt;TMMsg_TaskInfo>&lt;task description=&quot;&quot; ownerId=&quot;1&quot; runUserId=&quot;1&quot; taskType=&quot;2&quot; ownerName=&quot;Administrator&quot; alertId=&quot;0&quot; GUID=&quot;75eb11c1-4468-4a16-a784-d18313b06189&quot; policyType=&quot;10&quot; associatedObjects=&quot;0&quot; taskName=&quot;&quot; taskId=&quot;0&quot;>&lt;securityAssociations>&lt;ownerAssociations />&lt;/securityAssociations>&lt;originalCC commCellId=&quot;2&quot; />&lt;taskSecurity>&lt;associatedUserGroups userGroupId=&quot;1&quot; _type_=&quot;15&quot; userGroupName=&quot;master&quot; />&lt;associatedUserGroups userGroupId=&quot;3&quot; _type_=&quot;15&quot; userGroupName=&quot;View All&quot; />&lt;ownerCapabilities />&lt;/taskSecurity>&lt;createAs>&lt;user>&lt;user userName=&quot;admin&quot; userId=&quot;1&quot; />&lt;/user>&lt;/createAs>&lt;taskFlags isEdgeDrive=&quot;0&quot; isEZOperation=&quot;0&quot; forDDB=&quot;0&quot; uninstalled=&quot;0&quot; isSystem=&quot;0&quot; disabled=&quot;0&quot; />&lt;task taskName=&quot;&quot; taskId=&quot;9617&quot; />&lt;/task>&lt;appGroup />&lt;subTasks>&lt;subTask subTaskOrder=&quot;0&quot; subTaskName=&quot;&quot; subTaskType=&quot;1&quot; flags=&quot;0&quot; operationType=&quot;5014&quot; subTaskId=&quot;0&quot;>&lt;subTask subtaskId=&quot;9619&quot; subtaskName=&quot;&quot; />&lt;/subTask>&lt;pattern active_end_occurence=&quot;0&quot; freq_subday_interval=&quot;900&quot; freq_type=&quot;2048&quot; patternId=&quot;50&quot; flags=&quot;0&quot; description=&quot;Every week on Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday at 0:00  starting 29 August, 2018 and repeats every 0 hr(s) 15 min(s) until 23:59 &quot; active_end_time=&quot;86340&quot; active_end_date=&quot;0&quot; skipOccurence=&quot;0&quot; skipDayNumber=&quot;0&quot; active_start_time=&quot;0&quot; freq_restart_interval=&quot;0&quot; active_start_date=&quot;1535500800&quot; freq_interval=&quot;127&quot; freq_relative_interval=&quot;0&quot; name=&quot;&quot; freq_recurrence_factor=&quot;1&quot;>&lt;daysToRun week=&quot;0&quot; Monday=&quot;1&quot; Thursday=&quot;1&quot; Friday=&quot;1&quot; Sunday=&quot;1&quot; Wednesday=&quot;1&quot; Tuesday=&quot;1&quot; day=&quot;0&quot; Saturday=&quot;1&quot; />&lt;calendar calendarName=&quot;Standard&quot; calendarId=&quot;1&quot; />&lt;timeZone TimeZoneID=&quot;1000&quot; />&lt;/pattern>&lt;options>&lt;backupOpts backupLevel=&quot;2&quot;>&lt;dataOpt autoCopy=&quot;0&quot; />&lt;/backupOpts>&lt;/options>&lt;/subTasks>&lt;/TMMsg_TaskInfo>" visibility="0">
+        <creator userId="1" userName="admin"/>
+        <securityAssociations>
+            <ownerAssociations/>
+        </securityAssociations>
+        <commcellAssociation>
+            <entity _type_="124" commCellId="2"/>
+        </commcellAssociation>
+        <additionalQueryDetails alertCriteria="0" alertType="0"
+            isHealthParam="0" querySeverity="1">
+            <scriptDescription
+                description="Custom alert to be trigerred when N Auxiliary copy jobs failed consecutively for a storage policy copy"
+                guid="8680E218-D90F-4790-A577-9EA9A0215F27"
+                reportName="Auxiliary Copy jobs for storage policy copy failed consecutively for N attempts " revision="$Revision: 1.1.2.4 $"/>
+        </additionalQueryDetails>
+        <queryEntity queryId="0" queryName="Auxiliary Copy jobs for storage policy copy failed consecutively for N attempts "/>
+        <queryParamsList>
+            <queryParamsList alignment="0" attribute="0"
+                className="java.lang.Integer" controlHidden="0"
+                controlType="0" defaultValue="3"
+                displayName="Threadhold for Number Of jobs failed consecutively"
+                documentation="" hidden="0" inputName="noOfJobs"
+                inputType="java.lang.Integer" listType="0"
+                maximumValue="" minimumValue="" name="noOfJobs"
+                readOnly="0" required="1" searchable="0" type="{http://www.w3.org/2001/XMLSchema}integer">
+                <defaultValues val="3"/>
+            </queryParamsList>
+        </queryParamsList>
+        <queryOutputColumns columnFriendlyName="Failed jobs list"
+            columnName="jobIDList" isColumnFilterable="1"
+            isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Storage Policy"
+            columnName="storagePolicyName" isColumnFilterable="1"
+            isPrimaryKey="1" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Storage Policy Copy"
+            columnName="copyName" isColumnFilterable="1"
+            isPrimaryKey="1" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Failure Reason"
+            columnName="failureReason" isColumnFilterable="1"
+            isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+    </queryDetail>
+</App_SetCustomRuleRequest>

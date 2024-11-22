@@ -1,0 +1,2547 @@
+{
+	"info": {
+		"_postman_id": "96c9bcfa-3e31-4ce6-a38d-ef9ded69c998",
+		"name": "SAML_Cases_Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "0 - Setup",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"postman.setEnvironmentVariable(\"Accept\", \"application/json\");\r",
+									"\r",
+									"let ServerURL = pm.environment.get(\"ServerURL\");\r",
+									"pm.environment.set(\"ServerUrl\", ServerURL);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(\"resp : \" + JSON.stringify(jsonData));\r",
+									"\r",
+									"pm.environment.set(\"TOKEN\", jsonData.token);\r",
+									"\r",
+									"console.log(\"QSDK Token obtained is: \"+jsonData.token);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"userName Validation\"] = jsonData.userName === postman.getEnvironmentVariable(\"UserName\");\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{UserName}}\",\r\n    \"password\": \"{{Password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Login",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create UserGroup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Response Body contains User group id\"] = responseBody.has(\"id\");\r",
+									"\r",
+									"tests[\"Response Body contains User group name\"] = responseBody.has(\"name\");\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"pgroupId\", jsonData.id);\r",
+									"postman.setEnvironmentVariable(\"pgroupName\", jsonData.name);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"pgroup\",\r\n  \"enforceFSQuota\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/UserGroup",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"UserGroup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validating error code\"] = jsonData.response.errorCode === 0;\r",
+									"\r",
+									"postman.setEnvironmentVariable(\"pc1Id\", jsonData.response.entity.providerId);\r",
+									"postman.setEnvironmentVariable(\"pc1Name\", jsonData.response.entity.providerDomainName);\r",
+									"\r",
+									"tests[\"Validating company name\"] = postman.getEnvironmentVariable(\"pc1Name\") === \"pc1\";"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "\n",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"organizationInfo\": {\r\n    \"organization\": {\r\n      \"connectName\": \"pc1\",\r\n      \"emailDomainNames\": [\r\n\r\n      ],\r\n      \"shortName\": {\r\n        \"domainName\": \"pc1\"\r\n      }\r\n    },\r\n    \"organizationProperties\": {\r\n      \"primaryDomain\": \"\"\r\n    }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Organization",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Organization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create AD",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"let domain = pm.environment.get(\"netBiosName\") + \".in\"\r",
+									"pm.environment.set(\"domain\", domain);\r",
+									"\r",
+									"// log variables\r",
+									"console.log(\"adminUser, pass, netBiosName, domain\");\r",
+									"console.log(pm.variables.get(\"adminUser\"));\r",
+									"console.log(pm.variables.get(\"pass\"));\r",
+									"\r",
+									"console.log(pm.environment.get(\"netBiosName\"));\r",
+									"console.log(pm.environment.get(\"domain\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validate error code\"] = jsonData.errorCode === 0;\r",
+									"\r",
+									"tests[\"Validate errorString\"] = jsonData.errorMessage === \"\";\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"useSecureLDAP\": false,\r\n\"enableSSO\": true,\r\n\"directoryType\": \"ACTIVE_DIRECTORY\",\r\n\"NETBIOSName\": \"{{netBiosName}}\",\r\n\"name\": \"{{domain}}\",\r\n\"username\": \"{{adminUser}}\",\r\n\"password\": \"{{pass}}\",\r\n\"accessViaClient\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/LDAP",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"LDAP"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"\r",
+									"tests[\"Validate AD\"] = false;\r",
+									"for(let i=0; i < jsonData.identityServers.length; i++){\r",
+									"    let identityServers = jsonData.identityServers[i];\r",
+									"    if(identityServers.type == 2 && identityServers.IdentityServerName == postman.getEnvironmentVariable(\"netBiosName\")){\r",
+									"        postman.setEnvironmentVariable(\"domainId\", identityServers.IdentityServerId);\r",
+									"        tests[\"Validate AD\"] = true;\r",
+									"    }\r",
+									"}\r",
+									"tests[\"Validate AD\"] === true;\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/IdentityServers",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"IdentityServers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let users = [{\r",
+									"    \"id\": -1,\r",
+									"    \"email\": \"local1@suff1.com\",\r",
+									"    \"provider\" : \"\",\r",
+									"    \"userGroups\" : []\r",
+									"},\r",
+									"{\r",
+									"    \"id\": -1,\r",
+									"    \"email\": \"local2@suff1.com\",\r",
+									"    \"provider\" : \"pc1\",\r",
+									"    \"userGroups\" : []\r",
+									"},\r",
+									"{\r",
+									"    \"id\": -1,\r",
+									"    \"email\": \"local3@suff2.com\",\r",
+									"    \"provider\" : \"\",\r",
+									"    \"userGroups\" : []\r",
+									"},\r",
+									"{\r",
+									"    \"id\": -1,\r",
+									"    \"email\": \"local4@suff2.com\",\r",
+									"    \"provider\" : \"pc1\",\r",
+									"    \"userGroups\" : []\r",
+									"},\r",
+									"{\r",
+									"    \"id\": -1,\r",
+									"    \"email\": \"local5@suff3.com\",\r",
+									"    \"provider\" : \"\",\r",
+									"    \"userGroups\" : [\"pgroup\"]\r",
+									"},\r",
+									"{\r",
+									"    \"id\": -1,\r",
+									"    \"email\": \"local6@suff3.com\",\r",
+									"    \"provider\" : \"pc1\",\r",
+									"    \"userGroups\" : []\r",
+									"},\r",
+									"{\r",
+									"    \"id\": -1,\r",
+									"    \"email\": \"local7@suff4.com\",\r",
+									"    \"provider\": \"\",\r",
+									"    \"userGroups\": []\r",
+									"}];\r",
+									"let p = pm.environment.get(\"Password\");\r",
+									"let req = [];\r",
+									"for (let i = 0; i < 6; i++){\r",
+									"    if (i == 4) continue;\r",
+									"    let uname  = users[i].email.substring(0, users[i].email.indexOf('@'));\r",
+									"    let company = {}\r",
+									"    if(users[i].provider != \"\"){\r",
+									"        company = {\r",
+									"        \"id\": pm.environment.get(\"pc1Id\"),\r",
+									"        \"name\": pm.environment.get(\"pc1Name\")\r",
+									"      }\r",
+									"    }\r",
+									"    \r",
+									"\r",
+									"    req[i] = {\r",
+									"    \"password\": p,\r",
+									"    \"email\": users[i].email,\r",
+									"    \"useSystemGeneratePassword\": false,\r",
+									"    \"name\": uname,\r",
+									"    \"company\": company\r",
+									"    }\r",
+									"}\r",
+									"req[4] = {\r",
+									"    \"password\": p,\r",
+									"    \"email\": users[4].email,\r",
+									"    \"useSystemGeneratePassword\": false,\r",
+									"    \"userGroups\": [\r",
+									"        {\r",
+									"          \"id\": pm.environment.get(\"pgroupId\"),\r",
+									"          \"name\": pm.environment.get(\"pgroupName\")\r",
+									"        }\r",
+									"      ],\r",
+									"    \"name\": users[4].email.substring(0, users[4].email.indexOf('@'))\r",
+									"}\r",
+									"let last_idx = users.length-1;\r",
+									"req.push({\r",
+									"    \"password\": p,\r",
+									"    \"email\": users[last_idx].email,\r",
+									"    \"useSystemGeneratePassword\": false,\r",
+									"    \"name\": users[last_idx].email.substring(0, users[last_idx].email.indexOf('@'))\r",
+									"})\r",
+									"pm.variables.set(\"users\", users);\r",
+									"pm.variables.set(\"req\", JSON.stringify(req));\r",
+									"\r",
+									"\r",
+									"\r",
+									"// No clear error when a user creation fails, only it's id is a neagative value.\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"let users = pm.variables.get(\"users\");\r",
+									"for(let i=0; i < 7; i++){\r",
+									"    \r",
+									"    let uname = \"\";\r",
+									"    if(users[i].provider != \"\"){\r",
+									"        uname = users[i].provider + \"\\\\\" + users[i].email.substring(0, users[i].email.indexOf('@'));\r",
+									"    }\r",
+									"    else uname = users[i].email.substring(0, users[i].email.indexOf('@'));\r",
+									"\r",
+									"    tests[\"Validate user creation for \" + uname] = true;\r",
+									"    if(jsonData.users[i].id < 0){\r",
+									"        tests[\"Validate user creation for \" + uname] = false;\r",
+									"    }\r",
+									"\r",
+									"    tests[\"Validate user creation for \" + uname] === true;\r",
+									"    tests[\"Validate username for \" + uname] = jsonData.users[i].name === uname;\r",
+									"\r",
+									"    users[i].id = jsonData.users[i].id;\r",
+									"} \r",
+									"\r",
+									"pm.environment.set(\"Users\", users);\r",
+									"console.log(\"first list of users : \");\r",
+									"console.log(pm.environment.get(\"Users\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"users\": {{req}}\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/User",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create AD user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let ADUser = {\r",
+									"    \"id\": -1,\r",
+									"    \"email\": \"t1@mario.in\",\r",
+									"    \"provider\": \"mario\",\r",
+									"    \"userGroups\": []\r",
+									"}\r",
+									"\r",
+									"let email = ADUser.email;\r",
+									"let uname = email.substring(0, email.indexOf('@'));\r",
+									"\r",
+									"pm.variables.set(\"email\", email);\r",
+									"pm.variables.set(\"uname\", uname);\r",
+									"pm.variables.set(\"ADUser\", ADUser);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"let ADUser = pm.variables.get(\"ADUser\");\r",
+									"let uname = ADUser.provider + \"\\\\\" + ADUser.email.substring(0, ADUser.email.indexOf('@'));\r",
+									"\r",
+									"let Users = pm.environment.get(\"Users\");\r",
+									"tests[\"Validate username\"] = jsonData.users[0].name === uname;\r",
+									"\r",
+									"\r",
+									"ADUser.id = jsonData.users[0].id;\r",
+									"\r",
+									"Users.push(ADUser);\r",
+									"\r",
+									"pm.environment.set(\"Users\", Users);\r",
+									"\r",
+									"console.log(\"List of users after creating AD user: \");\r",
+									"console.log(pm.environment.get(\"Users\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"users\": [\r\n{\r\n\"inviteSent\": false,\r\n\"enableUser\": true,\r\n\"userEntity\": {\r\n\"userName\": \"{{uname}}\",\r\n\"newName\": \"{{uname}}\"\r\n},\r\n\"email\": \"{{email}}\",\r\n\"associatedExternalUserGroupsOperationType\": 2,\r\n\"associatedUserGroupsOperationType\": 2,\r\n\"associatedUserGroups\": [],\r\n\"associatedExternalUserGroups\": [],\r\n\"company\": {\r\n\"providerDomainName\": \"{{netBiosName}}\"\r\n}\r\n}\r\n]\r\n}\r\n\r\n\r\n// {\r\n//     \"users\": {{req}}\r\n// }\r\n/*\r\n{\r\n\"users\": [\r\n{\r\n\"inviteSent\": false,\r\n\"enableUser\": true,\r\n\"userEntity\": {\r\n\"userName\": \"{{uname}}\",\r\n\"newName\": \"{{uname}}\"\r\n},\r\n\"email\": \"{{t1@mario.in}}\",\r\n\"fullName\": \"mario\\\\t1\",\r\n\"associatedExternalUserGroupsOperationType\": 2,\r\n\"associatedUserGroupsOperationType\": 2,\r\n\"associatedUserGroups\": [],\r\n\"associatedExternalUserGroups\": [],\r\n\"company\": {\r\n\"providerDomainName\": \"mario\"\r\n}\r\n}\r\n]\r\n}\r\n*/"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/User",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"User"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "1  - Add SAML app",
+			"item": [
+				{
+					"name": "SAML",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"postman.setEnvironmentVariable(\"appName\", \"samlApp\");\r",
+									"postman.setEnvironmentVariable(\"desc\", \"desc from postman\");\r",
+									"\r",
+									"let idpMetadata = {\r",
+									"    \"entityId\": \"http://supermario.mario.in/adfs/services/trust\",\r",
+									"    \"redirectUrl\": \"https://supermario.mario.in/adfs/ls/\",\r",
+									"    \"logoutUrl\": \"https://supermario.mario.in/adfs/ls/\",\r",
+									"    \"certificateData\": \"\",\r",
+									"    \"SAMLProtocolVersion\": \"urn:oasis:names:tc:SAML:2.0:metadata\"\r",
+									"  }\r",
+									"postman.setEnvironmentVariable(\"idpMetadata\", JSON.stringify(idpMetadata));\r",
+									"\r",
+									"let spMetadata = {\r",
+									"    \"serviceProviderEndpoint\": \"https://test.test.loc:443/webconsole\",\r",
+									"    \"autoGenerateSPMetaData\": true,\r",
+									"    \"jksFileContents\":[]\r",
+									"  }\r",
+									"postman.setEnvironmentVariable(\"spMetadata\", JSON.stringify(spMetadata));\r",
+									"postman.setEnvironmentVariable(\"suff1\", \"suff1.com\");\r",
+									"postman.setEnvironmentVariable(\"suff2\", \"suff2.com\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"errorMessage is empty\"] = jsonData.errorMessage === \"\"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Acce",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{appName}}\",\r\n  \"description\": \"{{desc}}\",\r\n  \"identityProviderMetaData\": {{idpMetadata}},\r\n  \"serviceProviderMetaData\": {{spMetadata}},\r\n  \"associations\": {\r\n    \"emailSuffixes\": [\r\n      \"{{suff1}}\"\r\n    ],\r\n    \"companies\": [\r\n    ],\r\n    \"domains\": [\r\n    ],\r\n    \"userGroups\": [\r\n    ]\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"name\"] = jsonData.name === postman.getEnvironmentVariable(\"appName\");\r",
+									"\r",
+									"tests[\"Validate desc\"] = jsonData.description === postman.getEnvironmentVariable(\"desc\");\r",
+									"\r",
+									"tests[\"Validate enabled flag\"] = jsonData.enabled === true;\r",
+									"tests[\"Validate auto create user flag\"] = jsonData.autoCreateUser === true;\r",
+									"tests[\"Validate NameId attribute\"] = jsonData.nameIDAttribute === \"User Principal Name\";\r",
+									"\r",
+									"let resIdp = jsonData.identityProviderMetaData;\r",
+									"let Idp = JSON.parse(postman.getEnvironmentVariable(\"idpMetadata\"));\r",
+									"if(JSON.stringify(resIdp.entityId) != JSON.stringify(Idp.entityId) || JSON.stringify(resIdp.redirectUrl) != JSON.stringify(Idp.redirectUrl) || JSON.stringify(resIdp.logoutUrl) != JSON.stringify(Idp.logoutUrl) ) {\r",
+									"    tests[\"Validate Idp Metadata\"] = false;\r",
+									"}\r",
+									"else tests[\"Validate Idp Metadata\"] = true;\r",
+									"\r",
+									"let resSp = jsonData.serviceProviderMetaData;\r",
+									"let Sp = JSON.parse(postman.getEnvironmentVariable(\"spMetadata\"));\r",
+									"\r",
+									"\r",
+									"if(JSON.stringify(resSp.entityId) != JSON.stringify(Sp.serviceProviderEndpoint) || !resSp.singleSignOnUrl.startsWith(resSp.entityId) || !resSp.singleLogoutUrl.startsWith(resSp.entityId)) {\r",
+									"    tests[\"Validate Sp metadata\"] = false\r",
+									"}\r",
+									"else tests[\"Validate Sp metadata\"] = true;\r",
+									"\r",
+									"tests[\"Validate Idp Metadata\"] === true;\r",
+									"tests[\"Validate Sp metadata\"] === true\r",
+									"\r",
+									"\r",
+									"tests[\"email suff\"] = jsonData.associations.emailSuffixes[0] === postman.getEnvironmentVariable(\"suff1\");\r",
+									"\r",
+									"\r",
+									"// fomatting issue in response body if saml app is not present\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2 - Edit Sp and IDP Metadata",
+			"item": [
+				{
+					"name": "Edit SAML App",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"let idpMetadata = {\r",
+									"    \"entityId\": \"http://koletivm.colors.in/adfs/services/trust\",\r",
+									"    \"redirectUrl\": \"https://koletivm.colors.in/adfs/ls/\",\r",
+									"    \"logoutUrl\": \"https://koletivm.colors.in/adfs/ls/\",\r",
+									"    \"certificateData\": \"\",\r",
+									"    \"SAMLProtocolVersion\": \"urn:oasis:names:tc:SAML:2.0:metadata\"\r",
+									"  }\r",
+									"postman.setEnvironmentVariable(\"idpMetadata\", JSON.stringify(idpMetadata));\r",
+									"\r",
+									"\r",
+									"let spMetadata = {\r",
+									"    \"serviceProviderEndpoint\": \"https://july.test.loc:443/webconsole\",\r",
+									"    \"autoGenerateSPMetaData\": true,\r",
+									"    \"jksFileContents\":[]\r",
+									"  }\r",
+									"postman.setEnvironmentVariable(\"spMetadata\", JSON.stringify(spMetadata));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"errorMessage is empty\"] = jsonData.errorMessage === \"\"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Acce",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"identityProviderMetaData\": {{idpMetadata}},\r\n  \"serviceProviderMetaData\": {{spMetadata}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"\r",
+									"let resIdp = jsonData.identityProviderMetaData;\r",
+									"let Idp = JSON.parse(postman.getEnvironmentVariable(\"idpMetadata\"));\r",
+									"if(JSON.stringify(resIdp.entityId) != JSON.stringify(Idp.entityId) || JSON.stringify(resIdp.redirectUrl) != JSON.stringify(Idp.redirectUrl) || JSON.stringify(resIdp.logoutUrl) != JSON.stringify(Idp.logoutUrl) ) {\r",
+									"    tests[\"Validate Idp Metadata\"] = false;\r",
+									"}\r",
+									"else tests[\"Validate Idp Metadata\"] = true;\r",
+									"\r",
+									"let resSp = jsonData.serviceProviderMetaData;\r",
+									"let Sp = JSON.parse(postman.getEnvironmentVariable(\"spMetadata\"));\r",
+									"// console.log(resSp)\r",
+									"// console.log(Sp)\r",
+									"\r",
+									"if(JSON.stringify(resSp.entityId) != JSON.stringify(Sp.serviceProviderEndpoint) || !resSp.singleSignOnUrl.startsWith(resSp.entityId) || !resSp.singleLogoutUrl.startsWith(resSp.entityId)) {\r",
+									"    tests[\"Validate Sp metadata\"] = false\r",
+									"}\r",
+									"else tests[\"Validate Sp metadata\"] = true;\r",
+									"\r",
+									"tests[\"Validate Idp Metadata\"] === true;\r",
+									"tests[\"Validate Sp metadata\"] === true\r",
+									"\r",
+									"// fomatting issue in response body if saml app is not present\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3 - General tile",
+			"item": [
+				{
+					"name": "Edit SAML App",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let attMappings = [\r",
+									"    {\r",
+									"      \"customAttribute\": \"Email\",\r",
+									"      \"SAMLAttribute\": \"email\"\r",
+									"    },\r",
+									"    {\r",
+									"      \"customAttribute\": \"user name\",\r",
+									"      \"SAMLAttribute\": \"uname\"\r",
+									"    },\r",
+									"    {\r",
+									"      \"customAttribute\": \"full name\",\r",
+									"      \"SAMLAttribute\": \"fname\"\r",
+									"    },\r",
+									"    {\r",
+									"      \"customAttribute\": \"User Principal Name\",\r",
+									"      \"SAMLAttribute\": \"upn\"\r",
+									"    },\r",
+									"    {\r",
+									"      \"customAttribute\": \"user guid\",\r",
+									"      \"SAMLAttribute\": \"guid\"\r",
+									"    },\r",
+									"    {\r",
+									"      \"customAttribute\": \"user groups\",\r",
+									"      \"SAMLAttribute\": \"grps\"\r",
+									"    },\r",
+									"    {\r",
+									"      \"customAttribute\": \"company name\",\r",
+									"      \"SAMLAttribute\": \"company\"\r",
+									"    }\r",
+									"]\r",
+									"postman.setEnvironmentVariable(\"mappings\", JSON.stringify(attMappings));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"enabled is\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"errorMessage is empty\"] = jsonData.errorMessage === \"\"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"New Description\",\r\n  \"enabled\": false,\r\n  \"autoCreateUser\": false,\r\n  \"nameIDAttribute\": \"Email\",\r\n  \"attributeMappings\": {{mappings}}\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validation",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validate enabled flag\"] = jsonData.enabled === false;\r",
+									"\r",
+									"tests[\"Validate Auto Create User Flag\"] = jsonData.autoCreateUser === false;\r",
+									"\r",
+									"tests[\"Validate Attribute Mappings\"] = JSON.stringify(jsonData.attributeMappings) === postman.getEnvironmentVariable(\"mappings\")\r",
+									"\r",
+									"//Add default user group"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit SAML App",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Validate response code\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"errorMessage is empty\"] = jsonData.errorMessage === \"\"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"New Description\",\r\n  \"enabled\": true,\r\n  \"autoCreateUser\": true,\r\n  \"userGroups\": [\r\n    {\r\n      \"companyInfo\": {\r\n        \"id\": 0,\r\n        \"name\": \"Commcell\"\r\n      },\r\n      \"userGroupInfo\": {\r\n        \"id\": 1,\r\n        \"name\": \"master\"\r\n      }\r\n    }\r\n  ],\r\n  \"nameIDAttribute\": \"User Principal Name\"\r\n}\r\n\r\n/*\r\n{\r\n      \"companyInfo\": {\r\n        \"id\": {{pc1Id}},\r\n        \"name\": \"{{pc1Name}}\"\r\n      },\r\n      \"userGroupInfo\": {\r\n        \"id\": -1,\r\n        \"name\": \"Tenant Admin\"\r\n      }\r\n    }\r\nOn giving incorrect user group id, first Tenant Admin group from umgroups table is getting added\r\n*/"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validation",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validate enabled flag\"] = jsonData.enabled === true;\r",
+									"\r",
+									"tests[\"Validate Auto Create User Flag\"] = jsonData.autoCreateUser === true;\r",
+									"\r",
+									"\r",
+									"//Add default user group\r",
+									"tests[\"Validate default userGroup\"] = false;\r",
+									"let userGroups = jsonData.userGroups[0];\r",
+									"\r",
+									"if (userGroups.companyInfo.id == 0 && userGroups.companyInfo.name == \"Commcell\" &&\r",
+									"    userGroups.userGroupInfo.id == 1 && userGroups.userGroupInfo.name == \"master\"){\r",
+									"        tests[\"Validate default userGroup\"] = true;\r",
+									"    }\r",
+									"\r",
+									"tests[\"Validate default userGroup\"] === true;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4 - Associations",
+			"item": [
+				{
+					"name": "SAML",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"Validate errorMessage\"] = jsonData.errorMessage === \"\";\r",
+									"tests[\"Validate errorCode\"] = jsonData.errorCode === 0;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"associations\": {\r\n   \"emailSuffixes\": [\r\n        \"{{suff1}}\",\r\n        \"{{suff2}}\"\r\n    ],\r\n    \"companies\": [\r\n      {\r\n        \"id\": {{pc1Id}},\r\n        \"name\": \"{{pc1Name}}\"\r\n      }\r\n    ],\r\n    \"domains\": [\r\n      {\r\n          \"id\": {{domainId}},\r\n        \"name\": \"{{netBiosName}}\"\r\n      }\r\n    ],\r\n    \"userGroups\": [\r\n        {\r\n            \"id\": \"{{pgroupId}}\",\r\n            \"name\": \"{{pgroupName}}\"\r\n        }\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validate AD association\"] = false;\r",
+									"\r",
+									"if(jsonData.associations.domains.length == 1 && \r",
+									"    JSON.stringify(jsonData.associations.domains[0].id) == postman.getEnvironmentVariable(\"domainId\") &&\r",
+									"    jsonData.associations.domains[0].name == postman.getEnvironmentVariable(\"netBiosName\")){\r",
+									"        tests[\"Validate AD association\"] = true;\r",
+									"    }\r",
+									"\r",
+									"tests[\"Validate AD\"] === true;\r",
+									"\r",
+									"\r",
+									"\r",
+									"let resSuff = jsonData.associations.emailSuffixes;\r",
+									"\r",
+									"if(resSuff[0] != postman.getEnvironmentVariable(\"suff1\") ||\r",
+									"    resSuff[1] != postman.getEnvironmentVariable(\"suff2\")){\r",
+									"        tests[\"Validate Email Suff\"] = false\r",
+									"    }\r",
+									"    else tests[\"Validate Email Suff\"] = true;\r",
+									"\r",
+									"if(resSuff.length > 2) tests[\"Validate Email Suff\"] = false;\r",
+									"\r",
+									"tests[\"Validate Email Suff\"] === true;\r",
+									"\r",
+									"tests[\"Validating company id\"] = String(jsonData.associations.companies[0].id) === postman.getEnvironmentVariable(\"pc1Id\")\r",
+									"\r",
+									"tests[\"Validating company name\"] = jsonData.associations.companies[0].name === postman.getEnvironmentVariable(\"pc1Name\")\r",
+									"\r",
+									"tests[\"Validating usergoup id\"] = String(jsonData.associations.userGroups[0].id) === postman.getEnvironmentVariable(\"pgroupId\")\r",
+									"\r",
+									"tests[\"Validating company name\"] = jsonData.associations.userGroups[0].name === postman.getEnvironmentVariable(\"pgroupName\")\r",
+									"\r",
+									"\r",
+									"let redirectUrl = jsonData.identityProviderMetaData.redirectUrl;\r",
+									"let suffixes = jsonData.associations.emailSuffixes;\r",
+									"let companies = jsonData.associations.companies;\r",
+									"let domains = jsonData.associations.domains;\r",
+									"let usergroups = jsonData.associations.userGroups;\r",
+									"\r",
+									"let saml = {\r",
+									"    \"redirectUrl\": redirectUrl,\r",
+									"    \"suffixes\": suffixes,\r",
+									"    \"companies\": companies,\r",
+									"    \"domains\":  domains,\r",
+									"    \"usergroups\": usergroups\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"saml\", saml);\r",
+									"\r",
+									"console.log(\"Saml app props : \");\r",
+									"console.log(pm.environment.get(\"saml\"));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5 - Validate Redirect Rules",
+			"item": [
+				{
+					"name": "Create Users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let users = [{\r",
+									"    \"id\" : -1,\r",
+									"    \"email\": \"local10@suff1.com\",\r",
+									"    \"provider\" : \"\",\r",
+									"    \"userGroups\" : []\r",
+									"},\r",
+									"{\r",
+									"    \"id\" : -1,\r",
+									"    \"email\": \"local11@suff1.com\",\r",
+									"    \"provider\" : \"pc1\",\r",
+									"    \"userGroups\" : []\r",
+									"},\r",
+									"{\r",
+									"    \"id\" : -1,\r",
+									"    \"email\": \"local12@suff2.com\",\r",
+									"    \"provider\" : \"\",\r",
+									"    \"userGroups\" : []\r",
+									"},\r",
+									"{\r",
+									"    \"id\" : -1,\r",
+									"    \"email\": \"local13@suff2.com\",\r",
+									"    \"provider\" : \"pc1\",\r",
+									"    \"userGroups\" : []\r",
+									"},\r",
+									"{\r",
+									"    \"id\" : -1,\r",
+									"    \"email\": \"local14@suff3.com\",\r",
+									"    \"provider\" : \"\",\r",
+									"    \"userGroups\" : [\"pgroup\"]\r",
+									"},\r",
+									"{\r",
+									"    \"id\" : -1,\r",
+									"    \"email\": \"local15@suff3.com\",\r",
+									"    \"provider\" : \"pc1\",\r",
+									"    \"userGroups\" : []\r",
+									"}];\r",
+									"let p = pm.environment.get(\"Password\");\r",
+									"let req = [];\r",
+									"for (let i = 0; i < 6; i++){\r",
+									"    if (i == 4) continue;\r",
+									"    let uname = users[i].email.substring(0, users[i].email.indexOf('@'));\r",
+									"    let company = {}\r",
+									"    if(users[i].provider != \"\"){\r",
+									"        company = {\r",
+									"        \"id\": pm.environment.get(\"pc1Id\"),\r",
+									"        \"name\": pm.environment.get(\"pc1Name\")\r",
+									"      }\r",
+									"    }\r",
+									"    req[i] = {\r",
+									"    \"password\": p,\r",
+									"    \"email\": users[i].email,\r",
+									"    \"useSystemGeneratePassword\": false,\r",
+									"    \"name\": uname,\r",
+									"    \"company\": company\r",
+									"    }\r",
+									"}\r",
+									"req[4] = {\r",
+									"    \"password\": p,\r",
+									"    \"email\": users[4].email,\r",
+									"    \"useSystemGeneratePassword\": false,\r",
+									"    \"userGroups\": [\r",
+									"        {\r",
+									"          \"id\": pm.environment.get(\"pgroupId\"),\r",
+									"          \"name\": pm.environment.get(\"pgroupName\")\r",
+									"        }\r",
+									"      ],\r",
+									"    \"name\": users[4].email.substring(0, users[4].email.indexOf('@'))\r",
+									"}\r",
+									"\r",
+									"\r",
+									"pm.variables.set(\"users\", users)\r",
+									"\r",
+									"pm.variables.set(\"req\", JSON.stringify(req));\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"let users = pm.variables.get(\"users\");\r",
+									"for(let i=0; i < 6; i++){\r",
+									"\r",
+									"    let uname = \"\";\r",
+									"    if(users[i].provider != \"\"){\r",
+									"        uname = users[i].provider + \"\\\\\" + users[i].email.substring(0, users[i].email.indexOf('@'));\r",
+									"    }\r",
+									"    else uname = users[i].email.substring(0, users[i].email.indexOf('@'));\r",
+									"\r",
+									"    tests[\"Validate username for \" + uname] = jsonData.users[i].name === uname;\r",
+									"\r",
+									"    users[i].id = jsonData.users[i].id;\r",
+									"} \r",
+									"\r",
+									"let Users = pm.environment.get(\"Users\");\r",
+									"Users = [...Users, ...users]\r",
+									"pm.environment.set(\"Users\", Users);\r",
+									"\r",
+									"console.log(\"Final set of Users : \")\r",
+									"console.log(pm.environment.get(\"Users\"));\r",
+									"\r",
+									"// set cnt variable for running redirectRule recursively\r",
+									"pm.environment.set(\"cnt\", 0);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"users\": {{req}}\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/User",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "redirectUrl",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"Validate error msg\"] = jsonData.error.errorMessage === \"SUCCESS\";\r",
+									"tests[\"Validate error code\"] = jsonData.error.errorCode === 0;\r",
+									"\r",
+									"let cnt = pm.environment.get(\"cnt\");\r",
+									"let Users = pm.environment.get(\"Users\");\r",
+									"let saml = pm.environment.get(\"saml\");\r",
+									"console.log(\"saml app is : \");\r",
+									"console.log(saml);\r",
+									"\r",
+									"let user_suffix = Users[cnt-1].email.substring(Users[cnt-1].email.indexOf('@') + 1);\r",
+									"\r",
+									"// if users email suffix matches with any smtp in saml app\r",
+									"let flag = false; \r",
+									"for (let i in saml.suffixes){\r",
+									"    if(user_suffix === saml.suffixes[i]){\r",
+									"        console.log(\"user suffix : \" + user_suffix);\r",
+									"        console.log(\"saml smtp : \" + saml.suffixes[i]);\r",
+									"        flag = true;\r",
+									"        break;\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"// if user is a company user and the company is associated to saml app\r",
+									"if (Users[cnt-1].provider != \"\"){\r",
+									"    // Check for company\r",
+									"    for (let i in saml.companies){\r",
+									"        if(Users[cnt-1].provider === saml.companies[i].name){\r",
+									"            console.log(\"user provider : \" + Users[cnt-1].provider);\r",
+									"            console.log(\"saml companies : \" + saml.companies[i].name);\r",
+									"            flag = true;\r",
+									"            break;\r",
+									"        }\r",
+									"    }\r",
+									"\r",
+									"    // Check for AD\r",
+									"    for (let i in saml.domains){\r",
+									"        if(Users[cnt-1].provider === saml.domains[i].name){\r",
+									"            console.log(\"user provider : \" + Users[cnt-1].provider);\r",
+									"            console.log(\"saml domains : \" + saml.domains[i].name);\r",
+									"            flag = true;\r",
+									"            break;\r",
+									"        }\r",
+									"    }\r",
+									"\r",
+									"}\r",
+									"\r",
+									"//is user belongs to a userGroup and the userGroup is assoiciated to saml app\r",
+									"if (Users[cnt-1].userGroups.length > 0 &&\r",
+									"    saml.usergroups.length > 0){\r",
+									"    if (Users[cnt-1].userGroups[0] === saml.usergroups[0].name) {\r",
+									"        console.log(\"user group : \" + Users[cnt-1].userGroups[0]);\r",
+									"        console.log(\"saml group : \" + saml.usergroups[0].name);\r",
+									"        flag = true;\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if (flag === true){\r",
+									"    let redirectUrl = jsonData.AvailableRedirects[0].redirectUrl;\r",
+									"    tests[\"Validate redirect rule\"] = redirectUrl === saml.redirectUrl;\r",
+									"}\r",
+									"else{\r",
+									"    if((\"AvailableRedirects\" in jsonData) == false){\r",
+									"        tests[\"Validate redirect enabled\"] = true;\r",
+									"    }else{\r",
+									"        tests[\"Validate redirect enabled\"] = false;\r",
+									"    }\r",
+									"    tests[\"Validate redirect enabled\"] == true;\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(cnt < Users.length){\r",
+									"    postman.setNextRequest(\"redirectUrl\");\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let cnt = pm.environment.get(\"cnt\");\r",
+									"// Do not forget to remove this line\r",
+									"// cnt = 4;\r",
+									"let Users = pm.environment.get(\"Users\")\r",
+									"if(cnt < Users.length){\r",
+									"    pm.variables.set(\"email\", Users[cnt].email);\r",
+									"}\r",
+									"\r",
+									"cnt++;\r",
+									"pm.environment.set(\"cnt\", cnt);\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/CommcellRedirect/RedirectListforUser?user={{email}}&getDistinctSAMLAppType=true",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"CommcellRedirect",
+								"RedirectListforUser"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "{{email}}"
+								},
+								{
+									"key": "getDistinctSAMLAppType",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "6 - Disassociatie & Validate redirectRule",
+			"item": [
+				{
+					"name": "SAML",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"Validate errorMessage\"] = jsonData.errorMessage === \"\";\r",
+									"tests[\"Validate errorCode\"] = jsonData.errorCode === 0;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"associations\": {\r\n   \"emailSuffixes\": [\r\n        \r\n    ],\r\n    \"companies\": [\r\n      \r\n    ],\r\n    \"domains\": [\r\n      \r\n    ],\r\n    \"userGroups\": [\r\n        \r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validate email suffixes\"] = jsonData.associations.emailSuffixes.length === 0;\r",
+									"\r",
+									"tests[\"Validate companies\"] = jsonData.associations.companies.length === 0;\r",
+									"\r",
+									"\r",
+									"tests[\"Validate domains\"] = jsonData.associations.domains.length === 0;\r",
+									"\r",
+									"tests[\"Validate userGroups\"] = jsonData.associations.userGroups.length === 0;\r",
+									"\r",
+									"let redirectUrl = jsonData.identityProviderMetaData.redirectUrl;\r",
+									"let suffixes = jsonData.associations.emailSuffixes;\r",
+									"let companies = jsonData.associations.companies;\r",
+									"let domains = jsonData.associations.domains;\r",
+									"let usergroups = jsonData.associations.userGroups;\r",
+									"\r",
+									"let saml = {\r",
+									"    \"redirectUrl\": redirectUrl,\r",
+									"    \"suffixes\": suffixes,\r",
+									"    \"companies\": companies,\r",
+									"    \"domains\":  domains,\r",
+									"    \"usergroups\": usergroups\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"saml\", saml);\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"cnt\", 0);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "redirectRule",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"Validate error msg\"] = jsonData.error.errorMessage === \"SUCCESS\";\r",
+									"tests[\"Validate error code\"] = jsonData.error.errorCode === 0;\r",
+									"\r",
+									"let cnt = pm.environment.get(\"cnt\");\r",
+									"let Users = pm.environment.get(\"Users\");\r",
+									"let saml = pm.environment.get(\"saml\");\r",
+									"\r",
+									"\r",
+									"let user_suffix = Users[cnt-1].email.substring(Users[cnt-1].email.indexOf('@') + 1);\r",
+									"\r",
+									"// if users email suffix matches with any smtp in saml app\r",
+									"let flag = false; \r",
+									"for (let i in saml.suffixes){\r",
+									"    if(user_suffix === saml.suffixes[i]){\r",
+									"        console.log(\"user suffix : \" + user_suffix);\r",
+									"        console.log(\"saml smtp : \" + saml.suffixes[i]);\r",
+									"        flag = true;\r",
+									"        break;\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"// if user is a company user and the company is associated to saml app\r",
+									"if (Users[cnt-1].provider != \"\"){\r",
+									"    // Check for company\r",
+									"    for (let i in saml.companies){\r",
+									"        if(Users[cnt-1].provider === saml.companies[i].name){\r",
+									"            console.log(\"user provider : \" + Users[cnt-1].provider);\r",
+									"            console.log(\"saml companies : \" + saml.companies[i].name);\r",
+									"            flag = true;\r",
+									"            break;\r",
+									"        }\r",
+									"    }\r",
+									"\r",
+									"    // Check for AD\r",
+									"    for (let i in saml.domains){\r",
+									"        if(Users[cnt-1].provider === saml.domains[i].name){\r",
+									"            console.log(\"user provider : \" + Users[cnt-1].provider);\r",
+									"            console.log(\"saml domains : \" + saml.domains[i].name);\r",
+									"            flag = true;\r",
+									"            break;\r",
+									"        }\r",
+									"    }\r",
+									"\r",
+									"}\r",
+									"\r",
+									"//is user belongs to a userGroup and the userGroup is assoiciated to saml app\r",
+									"if (Users[cnt-1].userGroups.length > 0 &&\r",
+									"    saml.usergroups.length > 0){\r",
+									"    if (Users[cnt-1].userGroups[0] === saml.usergroups[0].name) {\r",
+									"        console.log(\"user group : \" + Users[cnt-1].userGroups[0]);\r",
+									"        console.log(\"saml group : \" + saml.usergroups[0].name);\r",
+									"        flag = true;\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if (flag === true){\r",
+									"    let redirectUrl = jsonData.AvailableRedirects[0].redirectUrl;\r",
+									"    tests[\"Validate redirect rule\"] = redirectUrl === saml.redirectUrl;\r",
+									"}\r",
+									"else{\r",
+									"    if((\"AvailableRedirects\" in jsonData) == false){\r",
+									"        tests[\"Validate redirect enabled\"] = true;\r",
+									"    }else{\r",
+									"        tests[\"Validate redirect enabled\"] = false;\r",
+									"    }\r",
+									"    tests[\"Validate redirect enabled\"] == true;\r",
+									"}\r",
+									"\r",
+									"\r",
+									"if(cnt < Users.length){\r",
+									"    postman.setNextRequest(\"redirectRule\");\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let cnt = JSON.parse(postman.getEnvironmentVariable(\"cnt\"));\r",
+									"// Do not forget to remove this line\r",
+									"// cnt = 4;\r",
+									"let Users = pm.environment.get(\"Users\")\r",
+									"if(cnt < Users.length){\r",
+									"    pm.variables.set(\"email\", Users[cnt].email);\r",
+									"}\r",
+									"\r",
+									"cnt++;\r",
+									"pm.environment.set(\"cnt\", cnt);\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/CommcellRedirect/RedirectListforUser?user={{email}}&getDistinctSAMLAppType=true",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"CommcellRedirect",
+								"RedirectListforUser"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "{{email}}"
+								},
+								{
+									"key": "getDistinctSAMLAppType",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "7 - Delete associated entites",
+			"item": [
+				{
+					"name": "SAML",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"Validate errorMessage\"] = jsonData.errorMessage === \"\";\r",
+									"tests[\"Validate errorCode\"] = jsonData.errorCode === 0;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"associations\": {\r\n   \"emailSuffixes\": [\r\n        \"{{suff1}}\",\r\n        \"{{suff2}}\"\r\n    ],\r\n    \"companies\": [\r\n      {\r\n        \"id\": {{pc1Id}},\r\n        \"name\": \"{{pc1Name}}\"\r\n      }\r\n    ],\r\n    \"domains\": [\r\n      {\r\n          \"id\": {{domainId}},\r\n        \"name\": \"{{netBiosName}}\"\r\n      }\r\n    ],\r\n    \"userGroups\": [\r\n        {\r\n            \"id\": \"{{pgroupId}}\",\r\n            \"name\": \"{{pgroupName}}\"\r\n        }\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validate AD association\"] = false;\r",
+									"\r",
+									"if(jsonData.associations.domains.length == 1 && \r",
+									"    JSON.stringify(jsonData.associations.domains[0].id) == postman.getEnvironmentVariable(\"domainId\") &&\r",
+									"    jsonData.associations.domains[0].name == postman.getEnvironmentVariable(\"netBiosName\")){\r",
+									"        tests[\"Validate AD association\"] = true;\r",
+									"    }\r",
+									"\r",
+									"tests[\"Validate AD\"] === true;\r",
+									"\r",
+									"\r",
+									"\r",
+									"let resSuff = jsonData.associations.emailSuffixes;\r",
+									"\r",
+									"if(resSuff[0] != postman.getEnvironmentVariable(\"suff1\") ||\r",
+									"    resSuff[1] != postman.getEnvironmentVariable(\"suff2\")){\r",
+									"        tests[\"Validate Email Suff\"] = false\r",
+									"    }\r",
+									"    else tests[\"Validate Email Suff\"] = true;\r",
+									"\r",
+									"if(resSuff.length > 2) tests[\"Validate Email Suff\"] = false;\r",
+									"\r",
+									"tests[\"Validate Email Suff\"] === true;\r",
+									"\r",
+									"tests[\"Validating company id\"] = String(jsonData.associations.companies[0].id) === postman.getEnvironmentVariable(\"pc1Id\")\r",
+									"\r",
+									"tests[\"Validating company name\"] = jsonData.associations.companies[0].name === postman.getEnvironmentVariable(\"pc1Name\")\r",
+									"\r",
+									"tests[\"Validating usergoup id\"] = String(jsonData.associations.userGroups[0].id) === postman.getEnvironmentVariable(\"pgroupId\")\r",
+									"\r",
+									"tests[\"Validating company name\"] = jsonData.associations.userGroups[0].name === postman.getEnvironmentVariable(\"pgroupName\")\r",
+									"\r",
+									"//set cnt to 0 for deleting users reccursively\r",
+									"pm.environment.set(\"cnt\", 0);\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"let cnt = pm.environment.get(\"cnt\");\r",
+									"let Users = pm.environment.get(\"Users\");\r",
+									"if(cnt < Users.length){\r",
+									"    pm.environment.set(\"userId\",Users[cnt].id);\r",
+									"    console.log(\"Delete : \" + Users[cnt].email);\r",
+									"}\r",
+									"cnt++;\r",
+									"pm.environment.set(\"cnt\", cnt);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validate error msg\"] = jsonData.errorString === \"\";\r",
+									"\r",
+									"tests[\"Validate error code\"] = jsonData.errorCode == 0;\r",
+									"\r",
+									"let cnt = pm.environment.get(\"cnt\");\r",
+									"let Users = pm.environment.get(\"Users\");\r",
+									"\r",
+									"if(cnt < Users.length){\r",
+									"    postman.setNextRequest(\"Delete Users\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/User/{{userId}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"User",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserGroup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"\r",
+									"\r",
+									"tests[\"Response Body contains errorString\"] = responseBody.has(\"errorString\");\r",
+									"\r",
+									"tests[\"Response Body contains errorCode\"] = responseBody.has(\"errorCode\");\r",
+									"\r",
+									"tests[\"Validate error msg\"] = jsonData.errorString === \"Successful\";\r",
+									"\r",
+									"tests[\"Validate error code\"] = jsonData.errorCode === 0;\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/UserGroup/{{pgroupId}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"UserGroup",
+								"{{pgroupId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validate error code\"] = jsonData.response.errorCode === 0;\r",
+									"\r",
+									"tests[\"Validating company name\"] = jsonData.response.entity.providerDomainName === postman.getEnvironmentVariable(\"pc1Name\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"deactivateOptions\": {\r\n    \"disableBackup\": true,\r\n    \"disableRestore\": true,\r\n    \"disableLogin\": true\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Organization/{{pc1Id}}/action/deactivate",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Organization",
+								"{{pc1Id}}",
+								"action",
+								"deactivate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validate errorCode\"] = jsonData.errorCode === 0;\r",
+									"tests[\"Validate errorMsg\"] = jsonData.errorMessage === \"\";"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Organization/{{pc1Id}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Organization",
+								"{{pc1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete AD",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validate errorCode\"] = jsonData.errorCode === 0;\r",
+									"\r",
+									"tests[\"Validate error msg\"] = jsonData.errorMessage === \"Success\";\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/LDAP/{{domainId}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"LDAP",
+								"{{domainId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"\r",
+									"let a = jsonData.associations;\r",
+									"tests[\"Validate companies \"] = a.companies.length == 0;\r",
+									"tests[\"Validate domains \"] = a.domains == 0;\r",
+									"tests[\"Validate userGroups \"] = a.userGroups == 0;\r",
+									"tests[\"Validate users \"] = a.users == 0;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "8 - Delete SAML App",
+			"item": [
+				{
+					"name": "Delete SAML app",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"\r",
+									"tests[\"Validate errorCode\"] = jsonData.errorCode === 0;\r",
+									"\r",
+									"tests[\"Validate error msg\"] = jsonData.errorMessage === \"\";"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/v4/SAML/{{appName}}",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v4",
+								"SAML",
+								"{{appName}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

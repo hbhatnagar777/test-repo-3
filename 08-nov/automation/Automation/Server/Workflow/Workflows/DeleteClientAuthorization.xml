@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" businessLogic="1"
+    businessLogicExecutedBy="evmgrs,webserver"
+    businessLogicMessage="App_DeleteClientRequest"
+    businessLogicProcessing="Request"
+    config="&lt;configuration>&#xd;&#xa;  &lt;CONFIG_CLIENT_GROUP class=&quot;commvault.msgs.CvEntities.ClientGroupEntity&quot; _list_=&quot;true&quot;>&#xd;&#xa;    &lt;clientGroupName />&#xd;&#xa;    &lt;clientGroupId />&#xd;&#xa;  &lt;/CONFIG_CLIENT_GROUP>&#xd;&#xa;&lt;/configuration>"
+    description="Workflow to authenticate delete client request."
+    executeOnWeb="0"
+    inputs="&lt;inputs>&lt;requestXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/requestXML>&lt;processingInstruction class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/processingInstruction>&lt;responseXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/responseXML>&lt;/inputs>"
+    interactive="1" isHtmlDescription="0" manualPercentageComplete="0"
+    name="DeleteClientAuthorization"
+    outputs="&lt;outputs>&lt;returnCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>&lt;/returnCode>&lt;returnString class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/returnString>&lt;outputXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/outputXML>&lt;/outputs>"
+    revision="$Revision: M1.2 $" tags=""
+    uniqueGuid="18508721-ef6e-4e17-ba9e-f54f65a707b9"
+    variables="&lt;variables>&#xd;&#xa;  &lt;BL_PROCEED_WITH_INPUTXML class=&quot;java.lang.Integer&quot;>1&lt;/BL_PROCEED_WITH_INPUTXML>&#xd;&#xa;  &lt;BL_DO_NOT_PROCEED class=&quot;java.lang.Integer&quot;>3&lt;/BL_DO_NOT_PROCEED>&#xd;&#xa;  &lt;authCode class=&quot;java.lang.String&quot; />&#xd;&#xa;  &lt;strRequest class=&quot;java.lang.String&quot; />&#xd;&#xa;  &lt;VAR_REQUEST_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&#xd;&#xa;  &lt;errorCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot; />&#xd;&#xa;  &lt;VAR_MESSAGE_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&#xd;&#xa;  &lt;VAR_REQUEST_TYPE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&#xd;&#xa;  &lt;VAR_OBJECT_NAME class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&#xd;&#xa;  &lt;VAR_OBJECT_ID class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&#xd;&#xa;  &lt;VAR_OBJECT class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&#xd;&#xa;  &lt;VAR_ERROR_CODE class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>string(/App_DeleteClientResponse/response/errorCode)&lt;/VAR_ERROR_CODE>&#xd;&#xa;  &lt;VAR_ERROR_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>string(/App_DeleteClientResponse/response/errorString)&lt;/VAR_ERROR_STRING>&#xd;&#xa;  &lt;VAR_CLIENT_GROUPS class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&#xd;&#xa;  &lt;VAR_CG_LIST class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&#xd;&#xa;  &#xd;&#xa;&lt;esc class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>,+$&lt;/esc>&lt;/variables>"
+    webHidden="0" workflowId="0">
+    <schema>
+        <outputs attribute="0" className="" listType="0" name="outputs"
+            required="1" type="">
+            <children attribute="0" className="java.lang.Integer"
+                defaultValue="" hidden="0" inputType="java.lang.Integer"
+                listType="0" name="returnCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.String"
+                defaultValue="" hidden="0" inputType="java.lang.String"
+                listType="0" name="returnString" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="workflow.types.XML"
+                defaultValue="" hidden="0"
+                inputType="workflow.types.XML" listType="0"
+                name="outputXML" type="{workflow.types}XML"/>
+        </outputs>
+        <variables attribute="0" className="" listType="0"
+            name="variables" required="1" type="">
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" defaultValue="1" displayName=""
+                hidden="0" inputType="java.lang.Integer" listType="0"
+                name="BL_PROCEED_WITH_INPUTXML" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" defaultValue="3" displayName=""
+                hidden="0" inputType="java.lang.Integer" listType="0"
+                name="BL_DO_NOT_PROCEED" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="authCode" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="strRequest" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_REQUEST_STRING" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.Integer" listType="0"
+                name="errorCode" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_MESSAGE_STRING" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_REQUEST_TYPE" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_OBJECT_NAME" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_OBJECT_ID" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_OBJECT" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0"
+                defaultValue="string(/App_DeleteClientResponse/response/errorCode)"
+                displayName="" hidden="0" inputType="java.lang.String"
+                listType="0" name="VAR_ERROR_CODE" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0"
+                defaultValue="string(/App_DeleteClientResponse/response/errorString)"
+                displayName="" hidden="0" inputType="java.lang.String"
+                listType="0" name="VAR_ERROR_STRING" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_CLIENT_GROUPS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="1"
+                name="VAR_CG_LIST" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="esc" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </variables>
+        <inputs attribute="0" className="" listType="0" name="inputs"
+            required="1" type="">
+            <children attribute="0" className="workflow.types.XML"
+                defaultValue="" hidden="0"
+                inputType="workflow.types.XML" listType="0"
+                name="requestXML" type="{workflow.types}XML"/>
+            <children attribute="0" className="workflow.types.XML"
+                defaultValue="" hidden="0"
+                inputType="workflow.types.XML" listType="0"
+                name="processingInstruction" type="{workflow.types}XML"/>
+            <children attribute="0" className="workflow.types.XML"
+                defaultValue="" hidden="0"
+                inputType="workflow.types.XML" listType="0"
+                name="responseXML" type="{workflow.types}XML"/>
+        </inputs>
+        <config className="" name="configuration" type="">
+            <children attribute="0"
+                className="commvault.msgs.CvEntities.ClientGroupEntity"
+                controlHidden="0" controlType="2" defaultValue=""
+                displayName="Select client group(s) for which client deletion will need authorization:"
+                documentation="Client deletion authorization will only be needed if client exists in the selected client groups"
+                hidden="0"
+                inputType="commvault.msgs.CvEntities.ClientGroupEntity"
+                listType="1" maximumValue="" minimumValue=""
+                name="CONFIG_CLIENT_GROUP" readOnly="0" required="0"
+                searchable="0" type="{commvault.msgs.CvEntities}ClientGroupEntity">
+                <children attribute="0" className="java.lang.String"
+                    defaultValue="" inputType="java.lang.String"
+                    listType="0" name="clientGroupName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.Integer"
+                    defaultValue="" inputType="java.lang.Integer"
+                    listType="0" name="clientGroupId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            </children>
+        </config>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="61" x="7" y="26">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="Script_2" commented="0" description=""
+            originalStyle="" points="" sourceX="64" sourceY="69"
+            status="0" style="defaultEdge" targetX="199" targetY="67"
+            transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1445363271018" description="Ends the workflow"
+        displayName="Allow Server to process request" height="35"
+        interactive="0" jobMode="0" name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=WorkflowEnd"
+        uniqueName="AllowServertoprocessrequest" waitSetting="0"
+        width="255" x="630" y="151">
+        <outputs outputs="&lt;outputs>&#xd;&#xa;  &lt;returnCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/BL_PROCEED_WITH_INPUTXML}&lt;/returnCode>&#xd;&#xa;  &lt;returnString class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Success&lt;/returnString>&#xd;&#xa;&lt;/outputs>"/>
+        <inputs val="&lt;inputs>&#xd;&#xa;  &lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot;>COMPLETED&lt;/completionStatus>&#xd;&#xa;  &lt;failureMessage class=&quot;java.lang.String&quot; />&#xd;&#xa;&lt;/inputs>"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1445894442223"
+        description="activity to execute code snippets in the selected language"
+        displayName="Set Vars" height="34" interactive="0" jobMode="0"
+        name="Script" namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=Script"
+        uniqueName="Script_2" waitSetting="0" width="109" x="110" y="27">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;XML inXML = xpath:{/workflow/inputs/requestXML};&amp;#xA;XML reqXml = inXML.selectSingleNode(&amp;quot;/requestXML/*&amp;quot;);&amp;#xA;workflow.setVariable(&amp;quot;VAR_REQUEST_STRING&amp;quot;,&amp;quot;Delete Client&amp;quot;);&amp;#xA;workflow.setVariable(&amp;quot;strRequest&amp;quot;, reqXml.toString());&amp;#xA;workflow.setVariable(&amp;quot;VAR_REQUEST_TYPE&amp;quot;,reqXml.getName());&amp;#xA;workflow.setVariable(&amp;quot;VAR_MESSAGE_STRING&amp;quot;,&amp;quot;An email has been sent to the administrator to authorize the delete client request. The client will be automatically deleted once the request is accepted.&amp;quot;);&amp;#xA;workflow.setVariable(&amp;quot;VAR_OBJECT_ID&amp;quot;,reqXml.selectSingleNode(&amp;quot;string(//././entity/@clientId)&amp;quot;));&amp;#xA;&amp;#xA;&amp;#xA;logger.info(&amp;quot;INFO: Request XML : [&amp;quot; + xpath:{/workflow/inputs/requestXML} + &amp;quot;] &amp;quot;);&amp;#xA;logger.info(&amp;quot;INFO: Request singleNode reqXml : [&amp;quot; + reqXml + &amp;quot;] &amp;quot;);&amp;#xA;logger.info(&amp;quot;INFO: VAR_MESSAGE_STRING: &amp;quot;+workflow.getVariable(&amp;quot;VAR_MESSAGE_STRING&amp;quot;)+&amp;quot;&amp;quot;);&amp;#xA;logger.info(&amp;quot;INFO: strRequest: &amp;quot;+workflow.getVariable(&amp;quot;strRequest&amp;quot;)+&amp;quot;&amp;quot;); &amp;#xA;logger.info(&amp;quot;INFO: VAR_REQUEST_TYPE : [&amp;quot; + workflow.getVariable(&amp;quot;VAR_REQUEST_TYPE&amp;quot;) + &amp;quot;] &amp;quot;);&amp;#xA;logger.info(&amp;quot;INFO: VAR_OBJECT_ID : [&amp;quot; + workflow.getVariable(&amp;quot;VAR_OBJECT_ID&amp;quot;) + &amp;quot;]&amp;quot;); &amp;#xA;&amp;#xA;// Support for only running the workflow on certain client groups&amp;#xA;String clientGroups = &amp;quot;&amp;quot;;&amp;#xA;logger.info(&amp;quot;INFO: CONFIG_CLIENT_GROUP : [&amp;quot; + xpath:{/workflow/configuration/CONFIG_CLIENT_GROUP/clientGroupName} + &amp;quot;]&amp;quot;);&amp;#xA;if (xpath:{/workflow/configuration/CONFIG_CLIENT_GROUP/clientGroupName} != null &amp;amp;&amp;amp; xpath:{/workflow/configuration/CONFIG_CLIENT_GROUP/clientGroupName} != &amp;quot;&amp;quot;)&amp;#xA;{&amp;#xA;    workflow.setVariable(&amp;quot;VAR_CG_LIST&amp;quot;,xpath:{/workflow/configuration/CONFIG_CLIENT_GROUP/clientGroupName});&amp;#xA;    for (String clientGroup : workflow.getVariable(&amp;quot;VAR_CG_LIST&amp;quot;))&amp;#xA;    {&amp;#xA;        //clientGroups = clientGroups + &amp;quot;'&amp;quot; + clientGroup + &amp;quot;',&amp;quot;;            &amp;#xA;        clientGroups = clientGroups + clientGroup + &amp;quot;,&amp;quot;;&amp;#xA;    }&amp;#xA;    clientGroups = clientGroups.replaceAll(&amp;quot;^,+&amp;quot;, &amp;quot;&amp;quot;);&amp;#xA;    clientGroups = clientGroups.replaceAll(xpath:{/workflow/variables/esc}, &amp;quot;&amp;quot;);&amp;#xA;}    &amp;#xA;workflow.setVariable(&amp;quot;VAR_CLIENT_GROUPS&amp;quot;,clientGroups);&amp;#xA;logger.info(&amp;quot;INFO: VAR_CLIENT_GROUPS = [&amp;quot; + workflow.getVariable(&amp;quot;VAR_CLIENT_GROUPS&amp;quot;) + &amp;quot;]&amp;quot;);&quot; />&lt;/inputs>"/>
+        <transition activity="ImpersonateCreator_2" commented="0"
+            description="" originalStyle="" points="" sourceX="196"
+            sourceY="44" status="0" style="defaultEdge" targetX="87"
+            targetY="198" transitionIndex="0" value="ANY" x="0" y="0"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1452723299590"
+        description="ends the interactive user session"
+        displayName="EndUserSessionWithOutputs" height="34"
+        interactive="0" jobMode="0" name="EndUserSessionWithOutputs"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=EndUserSessionWithOutputs"
+        uniqueName="EndUserSessionWithOutputs_1" waitSetting="0"
+        width="195" x="622" y="26">
+        <inputs val="&lt;inputs>&#xd;&#xa;  &lt;returnCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/BL_DO_NOT_PROCEED}&lt;/returnCode>&#xd;&#xa;  &lt;returnString class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_MESSAGE_STRING}&lt;/returnString>&#xd;&#xa;&lt;/inputs>"/>
+        <activitySchema>
+            <outputs attribute="0" className="" listType="0"
+                name="outputs" required="1" type="">
+                <children attribute="0" className="java.lang.Integer"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.Integer" listType="0"
+                    name="returnCode" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="returnString" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+        </activitySchema>
+        <transition activity="GetAndProcessAuthorization_1"
+            commented="0" description="" originalStyle="" points=""
+            sourceX="719" sourceY="43" status="0" style="defaultEdge"
+            targetX="1106" targetY="55" transitionIndex="0" value="ANY"
+            x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1480695391511"
+        description="check if input request is signed"
+        displayName="IsRequestSigned" height="34" interactive="0"
+        jobMode="0" name="IsRequestSigned"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.IsRequestSigned"
+        uniqueName="IsRequestSigned_1" waitSetting="0" width="126"
+        x="292" y="29">
+        <inputs val="&lt;inputs>&#xd;&#xa;  &lt;request class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/strRequest}&lt;/request>&#xd;&#xa;&lt;/inputs>"/>
+        <transition activity="AllowServertoprocessrequest" commented="0"
+            description="" displayName="valid" originalStyle=""
+            points="" sourceX="243" sourceY="139" status="0"
+            style="defaultEdge" targetX="341" targetY="119"
+            transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="(xpath:{/workflow/IsRequestSigned_1/signed});"/>
+        </transition>
+        <transition activity="EndUserSessionWithOutputs_1" commented="0"
+            description="" displayName="need approval" originalStyle=""
+            points="" sourceX="208" sourceY="113" status="0"
+            style="defaultEdge" targetX="707" targetY="43"
+            transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="!(xpath:{/workflow/IsRequestSigned_1/signed});"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1481053699208"
+        description="Processes the XML requests based on authorization."
+        displayName="Call GetAndProcessAuthorization" height="34"
+        interactive="0" jobMode="0" name="GetAndProcessAuthorization"
+        namespaceUri="commvault.workflow.activities" originalStyle=""
+        skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ExecuteWorkflow"
+        uniqueName="GetAndProcessAuthorization_1" waitSetting="0"
+        width="243" x="1025" y="26">
+        <inputs val="&lt;inputs>&#xd;&#xa;  &lt;requestXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/requestXML}&lt;/requestXML>&#xd;&#xa;  &lt;RequestType class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_REQUEST_STRING}&lt;/RequestType>&#xd;&#xa;  &lt;INP_OBJECT class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_OBJECT}&lt;/INP_OBJECT>&#xd;&#xa;  &lt;INP_REQUEST_XML_TAG class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_REQUEST_TYPE}&lt;/INP_REQUEST_XML_TAG>&#xd;&#xa;  &lt;INP_ERROR_CODE_TO_CHECK class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_ERROR_CODE}&lt;/INP_ERROR_CODE_TO_CHECK>&#xd;&#xa;  &lt;INP_ERROR_STRING_TO_CHECK class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_ERROR_STRING}&lt;/INP_ERROR_STRING_TO_CHECK>&#xd;&#xa;  &lt;INP_CUSTOM_MESSAGE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&#xd;&#xa;&lt;/inputs>"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1505768580900"
+        description="executes queries against a commcell database"
+        displayName="Check Client " height="34" interactive="0"
+        jobMode="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.CommServDBQuery"
+        uniqueName="CommServDBQuery_1" waitSetting="0" width="143"
+        x="200" y="251">
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>select id from app_client where id=xpath:{/workflow/variables/VAR_OBJECT_ID}&amp;#xD;&amp;#xD;&#xd;&#xa;and id in (select clientId from APP_ClientGroupAssoc where clientGroupId in (select id from APP_ClientGroup where name in (select data from dbo.SplitString('xpath:{/workflow/variables/VAR_CLIENT_GROUPS}', ','))))&lt;/query>&lt;/inputs>"/>
+        <transition activity="ImpersonateExecutor_1" commented="0"
+            description="" originalStyle="" points="" sourceX="184"
+            sourceY="168" status="0" style="defaultEdge" targetX="303"
+            targetY="218" transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1521226085832"
+        description="impersonates the user who created the workflow"
+        displayName="ImpersonateCreator" height="34" interactive="0"
+        jobMode="0" name="ImpersonateCreator"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ImpersonateCreator"
+        uniqueName="ImpersonateCreator_2" waitSetting="0" width="145"
+        x="76" y="84">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="CommServDBQuery_2" commented="0"
+            description="" originalStyle="" points="" sourceX="183"
+            sourceY="104" status="0" style="defaultEdge" targetX="193"
+            targetY="160" transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1521226233905"
+        description="impersonates the user who executes the workflow"
+        displayName="ImpersonateExecutor" height="34" interactive="0"
+        jobMode="0" name="ImpersonateExecutor"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ImpersonateUser"
+        uniqueName="ImpersonateExecutor_1" waitSetting="0" width="153"
+        x="318" y="164">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="IsRequestSigned_1" commented="0"
+            description="" displayName="Client present in group"
+            originalStyle="" points="" sourceX="392" sourceY="239"
+            status="0" style="defaultEdge" targetX="407" targetY="48"
+            transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="(xpath:{/workflow/CommServDBQuery_1/resultSets/row/col} != null &amp;&amp; xpath:{/workflow/CommServDBQuery_1/resultSets/row/col} != &quot;&quot;);"/>
+        </transition>
+        <transition activity="AllowServertoprocessrequest" commented="0"
+            description="" displayName="Client not found in group"
+            originalStyle="" points="532.0,209.0" sourceX="392"
+            sourceY="239" status="0" style="defaultEdge" targetX="661"
+            targetY="161" transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="(xpath:{/workflow/CommServDBQuery_1/resultSets/row/col} == null || xpath:{/workflow/CommServDBQuery_1/resultSets/row/col} == &quot;&quot;);"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1558434323205"
+        description="executes queries against a commcell database"
+        displayName="Reference Copy Client?" height="34" interactive="0"
+        jobMode="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.CommServDBQuery"
+        uniqueName="CommServDBQuery_2" waitSetting="0" width="162"
+        x="87" y="150">
+        <onExit language="1" script="workflow.setVariable(&quot;VAR_OBJECT_NAME&quot;,xpath:{/workflow/CommServDBQuery_2/resultSets[2]/row/col});&#xd;&#xa;String myObject= &quot;&quot;+workflow.getVariable(&quot;VAR_OBJECT_NAME&quot;)+&quot;&quot;;&#xd;&#xa;workflow.setVariable(&quot;VAR_OBJECT&quot;,myObject);&#xd;&#xa;&#xd;&#xa;logger.info(&quot;INFO: VAR_OBJECT_NAME : [&quot; + workflow.getVariable(&quot;VAR_OBJECT_NAME&quot;) + &quot;]&quot;);&#xd;&#xa;logger.info(&quot;INFO: VAR_OBJECT = &quot;+ workflow.getVariable(&quot;VAR_OBJECT&quot;) +&quot;&quot;);&#xd;&#xa;&#xd;&#xa;if(xpath:{/workflow/CommServDBQuery_2/resultSets[1]/rowCount}>0)&#xd;&#xa;    logger.info(&quot;Client [&quot;+workflow.getVariable(&quot;VAR_OBJECT_NAME&quot;)+&quot;] is a reference copy client. So allowing to delete the client&quot;);&#xd;&#xa;else&#xd;&#xa;    logger.info(&quot;Client [&quot;+workflow.getVariable(&quot;VAR_OBJECT_NAME&quot;)+&quot;] is not a reference copy client.&quot;);"/>
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>SELECT C.id FROM APP_Client C WITH (NOLOCK) WHERE c.status &amp;amp; 67108864 &amp;gt; 0 and C.id=xpath:{/workflow/variables/VAR_OBJECT_ID}&amp;#xD;&amp;#xD;&#xd;&#xa;select name from APP_Client WITH (NOLOCK) where id=xpath:{/workflow/variables/VAR_OBJECT_ID} &lt;/query>&lt;/inputs>"/>
+        <transition activity="CommServDBQuery_1" commented="0"
+            description="" displayName="No" originalStyle="" points=""
+            sourceX="168" sourceY="167" status="0" style="defaultEdge"
+            targetX="175" targetY="235" transitionIndex="0" value="ANY"
+            x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/CommServDBQuery_2/resultSets[1]/rowCount}==0 &amp;&amp; (xpath:{/workflow/configuration/CONFIG_CLIENT_GROUP/clientGroupName} != null &amp;&amp; xpath:{/workflow/configuration/CONFIG_CLIENT_GROUP/clientGroupName} != &quot;&quot;);"/>
+        </transition>
+        <transition activity="AllowServertoprocessrequest" commented="0"
+            description="" originalStyle="" points="374.0,309.0"
+            sourceX="168" sourceY="167" status="0" style="defaultEdge"
+            targetX="664" targetY="180" transitionIndex="0" value="ANY"
+            x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/CommServDBQuery_2/resultSets[1]/rowCount}>0; //Reference copy Client (Case Manager Clients) "/>
+        </transition>
+        <transition activity="ImpersonateExecutor_2" commented="0"
+            description="" originalStyle="" points="272.0,134.0"
+            sourceX="168" sourceY="167" status="0" style="defaultEdge"
+            targetX="278" targetY="122" transitionIndex="0" value="ANY"
+            x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/CommServDBQuery_2/resultSets[1]/rowCount}==0 &amp;&amp; (xpath:{/workflow/configuration/CONFIG_CLIENT_GROUP/clientGroupName} == null || xpath:{/workflow/configuration/CONFIG_CLIENT_GROUP/clientGroupName} == &quot;&quot;);"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1558443103006"
+        description="impersonates the user who executes the workflow"
+        displayName="IE" height="34" interactive="0" jobMode="0"
+        name="ImpersonateExecutor"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ImpersonateUser"
+        uniqueName="ImpersonateExecutor_2" waitSetting="0" width="65"
+        x="246" y="105">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="IsRequestSigned_1" commented="0"
+            description="" originalStyle="" points="" sourceX="270"
+            sourceY="89" status="0" style="defaultEdge" targetX="341"
+            targetY="44" transitionIndex="0" value="ANY" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <formProperties css="" javaScript=""/>
+    <minCommCellVersion releaseID="16" servicePack="0"/>
+</Workflow_WorkflowDefinition>

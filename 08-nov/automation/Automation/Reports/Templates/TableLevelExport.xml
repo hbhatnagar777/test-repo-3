@@ -1,0 +1,310 @@
+<CustomReport>
+  <report>
+    <customReportName>TableLevelExport</customReportName>
+  </report>
+  <pages>
+    <Page>
+      <pageName>Page0</pageName>
+      <isDefault>true</isDefault>
+      <pageTitle>
+        <text>Page0</text>
+      </pageTitle>
+      <dataSets>
+        <dataSet>
+          <DataSet>
+            <dataSet>
+              <dataSetName>Automation Dataset 49989</dataSetName>
+              <dataSetGuid>6e86e7b2-37bb-4a47-eef1-dfba32a9d0c4</dataSetGuid>
+            </dataSet>
+            <endpoint>DATABASE</endpoint>
+            <shared>false</shared>
+            <dataSources>
+              <DataSource>
+                <connectionType>COMMCELL</connectionType>
+                <commCell>
+                  <commCellName>$LocalCommCell$</commCellName>
+                </commCell>
+              </DataSource>
+            </dataSources>
+            <allColumns>false</allColumns>
+            <fields>
+              <Column>
+                <name>sys_rowid</name>
+                <dataField>$row_number$</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>Data Source</name>
+                <dataField>Data Source</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>id</name>
+                <dataField>id</dataField>
+                <type>Integer</type>
+              </Column>
+              <Column>
+                <name>name</name>
+                <dataField>name</dataField>
+                <type>String</type>
+              </Column>
+              <Column>
+                <name>csHostName</name>
+                <dataField>csHostName</dataField>
+                <type>String</type>
+              </Column>
+            </fields>
+            <GetOperation>
+              <parameters/>
+              <sqlText>DECLARE  @UserId    INT
+SELECT  @UserId = id FROM UMUsers WHERE login = @sys_username
+
+IF object_id(&apos;tempdb.dbo.#idaListTemp&apos;) is not null DROP TABLE #idaListTemp
+ CREATE TABLE #idaListTemp
+    (
+        t_clientId INT, t_appTypeId INT, t_instanceId INT, t_backupsetId INT, t_subclientId INT
+    )
+
+EXEC sec_getIdaObjectsForUser @UserId, 3, 0, 0, &apos;#idaListTemp&apos;
+
+SELECT TOP 5 id, name, csHostName
+                FROM App_Client where id in (select t_clientId from #idaListTemp)</sqlText>
+              <timeout>5</timeout>
+              <postQueryFilter>true</postQueryFilter>
+              <rDataSetQuery></rDataSetQuery>
+              <rPlotQuery></rPlotQuery>
+            </GetOperation>
+            <description></description>
+            <databaseName>CommServ</databaseName>
+            <queryPlan>
+              <offline>false</offline>
+              <collectionType>HTTP</collectionType>
+              <retentionDays>1</retentionDays>
+              <versions>
+                <CommCellVersion>VERSION_11</CommCellVersion>
+              </versions>
+              <dynamicCollection>false</dynamicCollection>
+              <frequency>60</frequency>
+              <direct>false</direct>
+            </queryPlan>
+            <version>3</version>
+            <guid>6e86e7b2-37bb-4a47-eef1-dfba32a9d0c4</guid>
+            <revision></revision>
+            <computedColumns>
+              <scriptName>R</scriptName>
+              <script></script>
+              <columnList/>
+            </computedColumns>
+            <signature></signature>
+          </DataSet>
+        </dataSet>
+      </dataSets>
+      <inputs/>
+      <body>{
+    &quot;reportComponents&quot;: [
+        {
+            &quot;type&quot;: &quot;TABLE&quot;,
+            &quot;dataSet&quot;: {
+                &quot;dataSetName&quot;: &quot;Automation Dataset 49989&quot;,
+                &quot;dataSetGuid&quot;: &quot;6e86e7b2-37bb-4a47-eef1-dfba32a9d0c4&quot;,
+                &quot;originalDataSetName&quot;: &quot;&quot;
+            },
+            &quot;title&quot;: {
+                &quot;text&quot;: &quot;Automation Table&quot;
+            },
+            &quot;id&quot;: &quot;Table1679470878387&quot;,
+            &quot;pageSize&quot;: 20,
+            &quot;columns&quot;: [
+                {
+                    &quot;dataField&quot;: &quot;sys_rowid&quot;,
+                    &quot;displayName&quot;: &quot;sys_rowid&quot;,
+                    &quot;id&quot;: &quot;sys_rowid&quot;,
+                    &quot;type&quot;: &quot;Long&quot;,
+                    &quot;origType&quot;: &quot;String&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: true,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    }
+                },
+                {
+                    &quot;dataField&quot;: &quot;Data Source&quot;,
+                    &quot;displayName&quot;: &quot;CommCell&quot;,
+                    &quot;id&quot;: &quot;DataSource&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;String&quot;,
+                    &quot;visible&quot;: false,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    }
+                },
+                {
+                    &quot;dataField&quot;: &quot;id&quot;,
+                    &quot;displayName&quot;: &quot;id&quot;,
+                    &quot;id&quot;: &quot;id&quot;,
+                    &quot;type&quot;: &quot;Integer&quot;,
+                    &quot;origType&quot;: &quot;Integer&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    }
+                },
+                {
+                    &quot;dataField&quot;: &quot;name&quot;,
+                    &quot;displayName&quot;: &quot;name&quot;,
+                    &quot;id&quot;: &quot;name&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;String&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    }
+                },
+                {
+                    &quot;dataField&quot;: &quot;csHostName&quot;,
+                    &quot;displayName&quot;: &quot;csHostName&quot;,
+                    &quot;id&quot;: &quot;csHostName&quot;,
+                    &quot;type&quot;: &quot;String&quot;,
+                    &quot;origType&quot;: &quot;String&quot;,
+                    &quot;visible&quot;: true,
+                    &quot;hidden&quot;: false,
+                    &quot;aggrType&quot;: &quot;None&quot;,
+                    &quot;mobileOptions&quot;: {
+                        &quot;visible&quot;: true,
+                        &quot;viewOnList&quot;: true,
+                        &quot;viewOnDetail&quot;: true
+                    }
+                }
+            ],
+            &quot;allColumns&quot;: true,
+            &quot;dataSetName&quot;: &quot;&quot;,
+            &quot;styles&quot;: {
+                &quot;chartPlotOptions&quot;: {
+                    &quot;isShowGridlines&quot;: true,
+                    &quot;isSmoothLines&quot;: true,
+                    &quot;isShowLineMarkers&quot;: true,
+                    &quot;autoConvertYValues&quot;: true,
+                    &quot;isShowLabels&quot;: false,
+                    &quot;legendPosition&quot;: &quot;right&quot;
+                }
+            },
+            &quot;mobile&quot;: {
+                &quot;visible&quot;: &quot;On&quot;,
+                &quot;listItemClick&quot;: {},
+                &quot;customListLayout&quot;: null
+            },
+            &quot;hideComponent&quot;: false,
+            &quot;blankComponent&quot;: false,
+            &quot;filters&quot;: {
+                &quot;builder&quot;: {},
+                &quot;viewer&quot;: {}
+            },
+            &quot;showFilterByDefault&quot;: false,
+            &quot;visible&quot;: {},
+            &quot;orientation&quot;: &quot;vertical&quot;,
+            &quot;enableHorizontalScroll&quot;: false
+        }
+    ],
+    &quot;filters&quot;: {
+        &quot;builder&quot;: {},
+        &quot;viewer&quot;: {}
+    },
+    &quot;autoRefreshTime&quot;: 10,
+    &quot;reportLayout&quot;: {
+        &quot;gridsterOpts&quot;: {
+            &quot;columns&quot;: 12
+        },
+        &quot;Table1679470878387&quot;: {
+            &quot;mobile&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 4,
+                    &quot;y&quot;: 8
+                },
+                &quot;position&quot;: [
+                    null,
+                    null
+                ]
+            },
+            &quot;tablet&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 4,
+                    &quot;y&quot;: 8
+                },
+                &quot;position&quot;: [
+                    null,
+                    null
+                ]
+            },
+            &quot;desktop&quot;: {
+                &quot;size&quot;: {
+                    &quot;x&quot;: 12,
+                    &quot;y&quot;: 6
+                },
+                &quot;position&quot;: [
+                    0,
+                    0
+                ]
+            }
+        }
+    }
+}</body>
+    </Page>
+  </pages>
+  <reportVersion>3</reportVersion>
+  <deployedVersion>3</deployedVersion>
+  <reportDescription></reportDescription>
+  <guid>754fb83f-f456-411c-9f19-561445f1e461</guid>
+  <revision>$Revision:  $</revision>
+  <icon>data-table.png</icon>
+  <customIcon/>
+  <hidden>false</hidden>
+  <visibleAll>false</visibleAll>
+  <readOnly>false</readOnly>
+  <shareable>false</shareable>
+  <engineVersion>1</engineVersion>
+  <builderVersion>2</builderVersion>
+  <translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_TITLE</localeKey>
+      <localeValue>TableLevelExport</localeValue>
+    </Translations>
+    <Translations>
+      <locale>default</locale>
+      <localeKey>RPT_DESCRIPTION</localeKey>
+      <localeValue></localeValue>
+    </Translations>
+  </translations>
+  <cvTranslations/>
+  <minCommCellVersion>
+    <releaseID>16</releaseID>
+    <servicePack>0</servicePack>
+  </minCommCellVersion>
+  <maxCommCellVersion>
+    <releaseID>100</releaseID>
+    <servicePack>99</servicePack>
+  </maxCommCellVersion>
+  <userReportId>TableLevelExport</userReportId>
+  <uiTags/>
+  <type>STANDARD</type>
+  <canEdit>true</canEdit>
+  <visibleToTenantAdmins>false</visibleToTenantAdmins>
+  <builtIn>false</builtIn>
+  <systemReport>false</systemReport>
+  <isMetrics>false</isMetrics>
+</CustomReport>

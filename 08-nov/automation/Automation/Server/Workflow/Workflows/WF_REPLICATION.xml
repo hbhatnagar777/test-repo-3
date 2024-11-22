@@ -1,0 +1,1469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />"
+    description="Create replication set and pair&#xd;&#xa;&#xd;&#xa;"
+    inputs="&lt;inputs>&lt;INP_PAUSE_WF_START class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>false&lt;/INP_PAUSE_WF_START>&lt;IIIIIIIIIIII class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/IIIIIIIIIIII>&lt;INP_EMAIL_ID class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/INP_EMAIL_ID>&lt;INP_LOG_EVENT_MESSAGE class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Start Workflow&lt;/INP_LOG_EVENT_MESSAGE>&lt;INP_LOG_SEVERITY class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>INFO&lt;/INP_LOG_SEVERITY>&lt;IIIIIIIIIIIIIIIIIIII class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/IIIIIIIIIIIIIIIIIIII>&lt;INP_CREATE_REPLICATION_SET class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/INP_CREATE_REPLICATION_SET>&lt;INP_REPLICATION_SET_NAME class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/INP_REPLICATION_SET_NAME>&lt;INP_DATA_AGENT class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Q_FILE_REPLICATION&lt;/INP_DATA_AGENT>&lt;INP_DESTINATION_HOST class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>&lt;clientName>&lt;/clientName>&lt;clientId />&lt;/INP_DESTINATION_HOST>&lt;INP_ALLOOW_RECOVERY_POINT class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>yes&lt;/INP_ALLOOW_RECOVERY_POINT>&lt;INP_COMMON_BASE_FOLDER class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/INP_COMMON_BASE_FOLDER>&lt;INP_USE_COMMON_BASE_FOLDER class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>yes&lt;/INP_USE_COMMON_BASE_FOLDER>&lt;INP_CREATE_REPLICATION_PAIR class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/INP_CREATE_REPLICATION_PAIR>&lt;IIIIIIIIIIIIIIIIIIIIIII class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/IIIIIIIIIIIIIIIIIIIIIII>&lt;INP_SOURCE_PATH class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/INP_SOURCE_PATH>&lt;INP_PAUSE_WF_CREATE_REPSET class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>false&lt;/INP_PAUSE_WF_CREATE_REPSET>&lt;INP_PAUSE_WF_CREATE_REPPAIR class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>false&lt;/INP_PAUSE_WF_CREATE_REPPAIR>&lt;INP_REP_SOURCE_CLIENT class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>&lt;clientName>&lt;/clientName>&lt;clientId />&lt;/INP_REP_SOURCE_CLIENT>&lt;/inputs>"
+    interactive="0" isHtmlDescription="0" name="WF_REPLICATION"
+    outputs="&lt;outputs />" revision="$Revision: 1.2 $"
+    uniqueGuid="dcaf0b6f-1ebe-4a2b-bbd5-1e2ce3219362"
+    variables="&lt;variables>&lt;VAR_WORKFLOW_PHASE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_PAUSE_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>.&lt;/VAR_PAUSE_STRING>&lt;VAR_WF_STATUS class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>COMPLETED&lt;/VAR_WF_STATUS>&lt;VAR_WF_FAILIURE_MESSAGE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_DATE_STR class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_INP_REPLICATION_SET_NAME class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_INP_COMMON_BASE_FOLDER class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_INP_SOURCE_PATH class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/variables>"
+    webHidden="0" workflowId="0">
+    <schema>
+        <outputs attribute="0" className="" listType="0" name="outputs"
+            required="1" type=""/>
+        <variables attribute="0" className="" listType="0"
+            name="variables" required="1" type="">
+            <children attribute="0" className="java.lang.String"
+                controlType="0" hidden="0" inputType="java.lang.String"
+                listType="0" name="VAR_WORKFLOW_PHASE" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="." hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_PAUSE_STRING" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="COMPLETED" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_WF_STATUS" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" hidden="0" inputType="java.lang.String"
+                listType="0" name="VAR_WF_FAILIURE_MESSAGE" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" hidden="0" inputType="java.lang.String"
+                listType="0" name="VAR_DATE_STR" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" hidden="0" inputType="java.lang.String"
+                listType="0" name="VAR_INP_REPLICATION_SET_NAME"
+                required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" hidden="0" inputType="java.lang.String"
+                listType="0" name="VAR_INP_COMMON_BASE_FOLDER"
+                required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" hidden="0" inputType="java.lang.String"
+                listType="0" name="VAR_INP_SOURCE_PATH" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </variables>
+        <inputs attribute="0" className="" listType="0" name="inputs"
+            required="1" type="">
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0"
+                defaultValue="sgoswami@commvault.com"
+                displayName="Provide email id for sending reports"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_EMAIL_ID" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0"
+                defaultValue="Start Workflow"
+                displayName="Log event message" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_LOG_EVENT_MESSAGE" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="2" defaultValue="INFO"
+                displayName="Select log event severity" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="INP_LOG_SEVERITY"
+                readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string">
+                <options val="INFO"/>
+                <options val="MINOR"/>
+                <options val="MAJOR"/>
+                <options val="CRITICAL"/>
+            </children>
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="true"
+                displayName="======================================"
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                name="IIIIIIIIIIIIIIIIIIII" readOnly="1" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlHidden="0" controlType="5" defaultValue="true"
+                displayName="Create replication set?" documentation=""
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_CREATE_REPLICATION_SET" readOnly="0"
+                required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0"
+                className="commvault.msgs.CvEntities.ClientEntity"
+                controlHidden="0" controlType="2"
+                displayName="Select source client for replication set"
+                documentation="" hidden="0"
+                inputType="commvault.msgs.CvEntities.ClientEntity"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_REP_SOURCE_CLIENT" readOnly="0" required="0"
+                searchable="0" type="{commvault.msgs.CvEntities}ClientEntity">
+                <children attribute="0" className="java.lang.String"
+                    inputType="java.lang.String" listType="0"
+                    name="clientName" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.Integer"
+                    inputType="java.lang.Integer" listType="0"
+                    name="clientId" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            </children>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0"
+                defaultValue="random_date_string_unique_name"
+                displayName="Provide replication set name"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_REPLICATION_SET_NAME" readOnly="0"
+                required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0"
+                defaultValue="Q_FILESYSTEM"
+                displayName="Provide data agent for replication set"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_DATA_AGENT" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0"
+                className="commvault.msgs.CvEntities.ClientEntity"
+                controlHidden="0" controlType="2"
+                displayName="Select destination host for replication set"
+                documentation="" hidden="0"
+                inputType="commvault.msgs.CvEntities.ClientEntity"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_DESTINATION_HOST" readOnly="0" required="0"
+                searchable="0" type="{commvault.msgs.CvEntities}ClientEntity">
+                <children attribute="0" className="java.lang.String"
+                    inputType="java.lang.String" listType="0"
+                    name="clientName" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.Integer"
+                    inputType="java.lang.Integer" listType="0"
+                    name="clientId" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            </children>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="2" defaultValue="yes"
+                displayName="Allow recovery point?" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_ALLOOW_RECOVERY_POINT" readOnly="0"
+                required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string">
+                <options val="yes"/>
+                <options val="no"/>
+            </children>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0"
+                defaultValue="random_date_string_unique_name"
+                displayName="Provide common base folder location"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_COMMON_BASE_FOLDER" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlType="5" defaultValue="true"
+                displayName="======================================"
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                name="IIIIIIIIIIIIIIIIIIIIIII" readOnly="1" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlHidden="0" controlType="5" defaultValue="true"
+                displayName="Create replication pair ? "
+                documentation="" hidden="0"
+                inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_CREATE_REPLICATION_PAIR" readOnly="0"
+                required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="2" defaultValue="yes"
+                displayName="Use common base folder?" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_USE_COMMON_BASE_FOLDER" readOnly="0"
+                required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string">
+                <options val="yes"/>
+                <options val="no"/>
+            </children>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0"
+                defaultValue="random_date_string_unique_name"
+                displayName="Provide source path for replication pair"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_SOURCE_PATH" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlHidden="0" controlType="5" defaultValue="true"
+                displayName="======================================"
+                documentation="" hidden="0"
+                inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue="" name="IIIIIIIIIIII"
+                readOnly="1" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlHidden="0" controlType="5" defaultValue="false"
+                displayName="Pause workflow at start?" documentation=""
+                hidden="0" inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_PAUSE_WF_START" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlHidden="0" controlType="5" defaultValue="false"
+                displayName="Pause workflow at create replication pair process block?"
+                documentation="" hidden="0"
+                inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_PAUSE_WF_CREATE_REPPAIR" readOnly="0"
+                required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+            <children attribute="0" className="java.lang.Boolean"
+                controlHidden="0" controlType="5" defaultValue="false"
+                displayName="Pause workflow at create replication set process block?"
+                documentation="" hidden="0"
+                inputType="java.lang.Boolean" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_PAUSE_WF_CREATE_REPSET" readOnly="0"
+                required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+        </inputs>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="55" x="-2" y="37">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="ExecuteProcessBlock_9" commented="0"
+            originalStyle="" points="" sourceX="25" sourceY="25"
+            status="0" style="defaultEdge" targetX="78" targetY="144"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="xpath:{/workflow/inputs/INP_PAUSE_WF_START};"/>
+        </transition>
+        <transition activity="WF_LOG_EVENT_1" commented="0"
+            originalStyle="" points="" sourceX="25" sourceY="25"
+            status="0" style="defaultEdge" targetX="266" targetY="100"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="!xpath:{/workflow/inputs/INP_PAUSE_WF_START};"/>
+        </transition>
+        <onEnter language="1" script="workflow.setVariable(&quot;VAR_WORKFLOW_PHASE&quot;,&quot;PHASE START : [&quot; + xpath:{/workflow/system/jobId} + &quot;][&quot; + xpath:{/workflow/system/workflow/workflowName} + &quot;][&quot; + xpath:{/workflow/system/startTime} +&quot;] : START WORKFLOW &quot;);&#xd;&#xa;logger.info(&quot;INFO: VAR_WORKFLOW_PHASE : [&quot; + workflow.getVariable(&quot;VAR_WORKFLOW_PHASE&quot;) + &quot;]&quot;);&#xd;&#xa;&#xd;&#xa;import java.util.Calendar;&#xd;&#xa;import java.text.SimpleDateFormat;&#xd;&#xa;String date = new SimpleDateFormat(&quot;MM-DD-YYYY_HH_mm_ss&quot;).format(new Date());&#xd;&#xa;String newDate = date.trim().replaceAll(&quot;\\s&quot;, &quot;&quot;);&#xd;&#xa;workflow.setVariable(&quot;VAR_DATE_STR&quot;, newDate);&#xd;&#xa;logger.info(&quot;Setting VAR_DATE_STR: [&quot; + workflow.getVariable(&quot;VAR_DATE_STR&quot;) + &quot;]&quot;);&#xd;&#xa;&#xd;&#xa;if (xpath:{/workflow/inputs/INP_COMMON_BASE_FOLDER} == &quot;&quot; || xpath:{/workflow/inputs/INP_COMMON_BASE_FOLDER} == null)&#xd;&#xa;{&#xd;&#xa;    String str = &quot;C:\\WORKFLOW\\WF_COMMON_BASE_FOLDER_&quot; + workflow.getVariable(&quot;VAR_DATE_STR&quot;);&#xd;&#xa;    workflow.setVariable(&quot;VAR_INP_COMMON_BASE_FOLDER&quot;,str);&#xd;&#xa;}&#xd;&#xa;else&#xd;&#xa;{&#xd;&#xa;    workflow.setVariable(&quot;VAR_INP_COMMON_BASE_FOLDER&quot;,xpath:{/workflow/inputs/INP_COMMON_BASE_FOLDER});&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;if (xpath:{/workflow/inputs/INP_REPLICATION_SET_NAME} == &quot;&quot; || xpath:{/workflow/inputs/INP_REPLICATION_SET_NAME} == null)&#xd;&#xa;{&#xd;&#xa;    String str = &quot;WF_REPSET_&quot; + workflow.getVariable(&quot;VAR_DATE_STR&quot;);&#xd;&#xa;    workflow.setVariable(&quot;VAR_INP_REPLICATION_SET_NAME&quot;,str);&#xd;&#xa;}&#xd;&#xa;else&#xd;&#xa;{   &#xd;&#xa;    workflow.setVariable(&quot;VAR_INP_REPLICATION_SET_NAME&quot;,xpath:{/workflow/inputs/INP_REPLICATION_SET_NAME});&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;if (xpath:{/workflow/inputs/INP_SOURCE_PATH} == &quot;&quot; || xpath:{/workflow/inputs/INP_SOURCE_PATH} == null)&#xd;&#xa;{&#xd;&#xa;    String str = &quot;C:\\WF_SOURCE_PATH_&quot; + workflow.getVariable(&quot;VAR_DATE_STR&quot;);&#xd;&#xa;    workflow.setVariable(&quot;VAR_INP_SOURCE_PATH&quot;,str);&#xd;&#xa;}&#xd;&#xa;else&#xd;&#xa;{   &#xd;&#xa;    workflow.setVariable(&quot;VAR_INP_SOURCE_PATH&quot;,xpath:{/workflow/inputs/INP_SOURCE_PATH});&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;logger.info(&quot;Setting VAR_INP_COMMON_BASE_FOLDER: [&quot; + workflow.getVariable(&quot;VAR_INP_COMMON_BASE_FOLDER&quot;) + &quot;]&quot;);&#xd;&#xa;logger.info(&quot;Setting VAR_INP_REPLICATION_SET_NAME: [&quot; + workflow.getVariable(&quot;VAR_INP_REPLICATION_SET_NAME&quot;) + &quot;]&quot;);&#xd;&#xa;logger.info(&quot;Setting VAR_INP_SOURCE_PATH: [&quot; + workflow.getVariable(&quot;VAR_INP_SOURCE_PATH&quot;) + &quot;]&quot;);"/>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1453214228000"
+        description="executes a defined process block within the workflow"
+        displayName="Pause" height="21" interactive="0" jobMode="0"
+        name="ExecuteProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=ExecuteProcessBlock"
+        uniqueName="ExecuteProcessBlock_9" waitSetting="0" width="70"
+        x="50" y="91">
+        <inputs val="&lt;inputs>&lt;inputs>&lt;pb_CurrentState class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Phase - Workflow Start. &lt;/pb_CurrentState>&lt;/inputs>&lt;processBlock>ProcessBlock_7&lt;/processBlock>&lt;outputs />&lt;/inputs>"/>
+        <activitySchema>
+            <outputs name="ProcessBlock_7">
+                <children name="Start_8"/>
+                <children name="WF_PAUSE_1">
+                    <children name="workflow">
+                        <children attribute="0" className=""
+                            defaultValue="" listType="0" name="inputs"
+                            required="1" type="">
+                            <children attribute="0"
+                                className="java.lang.String"
+                                controlType="0" defaultValue=""
+                                hidden="0" inputType="java.lang.String"
+                                listType="0" name="INP_WORKFLOW_NAME"
+                                required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                            <children attribute="0"
+                                className="java.lang.Integer"
+                                controlType="0" defaultValue=""
+                                hidden="0" inputType="java.lang.Integer"
+                                listType="0" name="INP_JOBID"
+                                required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                            <children attribute="0"
+                                className="java.lang.String"
+                                controlType="0" defaultValue=""
+                                hidden="0" inputType="java.lang.String"
+                                listType="0" name="INP_START_TIME"
+                                required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                            <children attribute="0"
+                                className="java.lang.String"
+                                controlType="0" defaultValue=""
+                                hidden="0" inputType="java.lang.String"
+                                listType="0" name="INP_WORKFLOW_PHASE"
+                                required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                            <children attribute="0"
+                                className="java.lang.String"
+                                controlType="0" defaultValue=""
+                                hidden="0" inputType="java.lang.String"
+                                listType="0" name="INP_PAUSE_STRING"
+                                required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                        </children>
+                        <children attribute="0" className=""
+                            defaultValue="" listType="0"
+                            name="variables" required="1" type=""/>
+                    </children>
+                </children>
+            </outputs>
+            <inputs attribute="0" listType="0" name="inputs" required="1"/>
+        </activitySchema>
+        <transition activity="WF_LOG_EVENT_1" commented="0"
+            originalStyle="" points="" sourceX="89" sourceY="78"
+            status="0" style="defaultEdge" targetX="251" targetY="103"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1453293004947"
+        description="creates a super process group" displayName="Pause"
+        height="57" interactive="0" jobMode="0" name="ProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="swimlane"
+        uniqueName="ProcessBlock_7" waitSetting="0" width="223" x="251" y="223">
+        <inputs val="&lt;inputs>&lt;inputs />&lt;/inputs>"/>
+        <superProcess>
+            <Start commented="0" continueOnFailure="0"
+                created="1449333876061" description=""
+                displayName="Start" height="19" interactive="0"
+                jobMode="0" name="Start" originalStyle=""
+                skipAttempt="0"
+                style="label;fillColor=#FFFF33;gradientColor=#FFFF00"
+                uniqueName="Start_8" waitSetting="0" width="58" x="10" y="31">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="WF_PAUSE_1" commented="0"
+                    originalStyle="" points="" sourceX="39" sourceY="40"
+                    status="0" style="defaultEdge" targetX="140"
+                    targetY="43" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Start>
+            <Activity commented="0" continueOnFailure="0"
+                created="1456504316616" description=""
+                displayName="WF_PAUSE" height="19" interactive="0"
+                jobMode="0" name="WF_PAUSE"
+                namespaceUri="commvault.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=WF_PAUSE" uniqueName="WF_PAUSE_1"
+                waitSetting="0" width="94" x="102" y="30">
+                <inputs val="&lt;inputs>&lt;INP_WORKFLOW_NAME class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/system/workflow/workflowName}&lt;/INP_WORKFLOW_NAME>&lt;INP_JOBID class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/system/jobId}&lt;/INP_JOBID>&lt;INP_START_TIME class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/system/startTime}&lt;/INP_START_TIME>&lt;INP_WORKFLOW_PHASE class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_WORKFLOW_PHASE}&lt;/INP_WORKFLOW_PHASE>&lt;INP_PAUSE_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_PAUSE_STRING}&lt;/INP_PAUSE_STRING>&lt;/inputs>"/>
+            </Activity>
+        </superProcess>
+        <activitySchema>
+            <outputs attribute="0" listType="0" name="outputs" required="1"/>
+            <inputs attribute="0" listType="0" name="inputs" required="1"/>
+        </activitySchema>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1449248148429"
+        description="executes a set of activities when the workflow completes"
+        displayName="OnWorkflowComplete" height="55" interactive="0"
+        jobMode="0" name="OnWorkflowComplete"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="swimlane"
+        uniqueName="OnWorkflowComplete_1" waitSetting="0" width="236"
+        x="10" y="224">
+        <inputs val="&lt;inputs>&lt;inputs />&lt;/inputs>"/>
+        <superProcess>
+            <Start commented="0" continueOnFailure="0"
+                created="1449248148429" description=""
+                displayName="Start" height="19" interactive="0"
+                jobMode="0" name="Start" originalStyle=""
+                skipAttempt="0"
+                style="label;fillColor=#FFFF33;gradientColor=#FFFF00"
+                uniqueName="Start_3" waitSetting="0" width="58" x="4" y="28">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="WF_EMAIL_1" commented="0"
+                    originalStyle="" points="" sourceX="33" sourceY="37"
+                    status="0" style="defaultEdge" targetX="102"
+                    targetY="38" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Start>
+            <Activity commented="0" continueOnFailure="0"
+                created="1450366181754" description="Ends the workflow"
+                displayName="End" height="24" interactive="0"
+                jobMode="0" name="WorkflowEnd"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=WorkflowEnd"
+                uniqueName="WorkflowEnd_4" waitSetting="0" width="58"
+                x="172" y="26">
+                <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_WF_STATUS}&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_WF_FAILIURE_MESSAGE}&lt;/failureMessage>&lt;/inputs>"/>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1456503510459" description=""
+                displayName="WF_EMAIL" height="20" interactive="0"
+                jobMode="0" name="WF_EMAIL"
+                namespaceUri="commvault.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=WF_EMAIL" uniqueName="WF_EMAIL_1"
+                waitSetting="0" width="90" x="73" y="30">
+                <inputs val="&lt;inputs>&lt;INP_EMAIL_ID class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_EMAIL_ID}&lt;/INP_EMAIL_ID>&lt;INP_STATUS class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_WF_STATUS}&lt;/INP_STATUS>&lt;INP_JOBID class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/system/jobId}&lt;/INP_JOBID>&lt;INP_WORKFLOW_NAME class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/system/workflow/workflowName}&lt;/INP_WORKFLOW_NAME>&lt;INP_START_TIME class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/system/startTime}&lt;/INP_START_TIME>&lt;INP_FAILIURE_MESSAGE class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_WF_FAILIURE_MESSAGE}&lt;/INP_FAILIURE_MESSAGE>&lt;/inputs>"/>
+                <transition activity="WorkflowEnd_4" commented="0"
+                    originalStyle="" points="" sourceX="118"
+                    sourceY="40" status="0" style="defaultEdge"
+                    targetX="218" targetY="38" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+        </superProcess>
+        <activitySchema>
+            <outputs attribute="0" className="" defaultValue=""
+                listType="0" name="outputs" required="1" type=""/>
+            <inputs attribute="0" className="" defaultValue=""
+                listType="0" name="inputs" required="1" type=""/>
+        </activitySchema>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1450373419650"
+        description="creates a super process group"
+        displayName="Validate" height="59" interactive="0" jobMode="0"
+        name="ProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="swimlane"
+        uniqueName="ProcessBlock_5" waitSetting="0" width="254" x="479" y="222">
+        <inputs val="&lt;inputs>&lt;inputs>&lt;pb_status class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_failiure_message class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>&lt;/inputs>"/>
+        <superProcess>
+            <Start commented="0" continueOnFailure="0"
+                created="1450373419650" description=""
+                displayName="Start" height="17" interactive="0"
+                jobMode="0" name="Start" originalStyle=""
+                skipAttempt="0"
+                style="label;fillColor=#FFFF33;gradientColor=#FFFF00"
+                uniqueName="Start_11" waitSetting="0" width="58" x="3" y="28">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="Script_1" commented="0"
+                    originalStyle="" points="" sourceX="78" sourceY="45"
+                    status="0" style="defaultEdge" targetX="462"
+                    targetY="42" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Start>
+            <Activity commented="0" continueOnFailure="0"
+                created="1450373427291"
+                description="activity to execute code snippets in the selected language"
+                displayName="Update Workflow Status " height="17"
+                interactive="0" jobMode="0" name="Script"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=Script" uniqueName="Script_1"
+                waitSetting="0" width="171" x="76" y="27">
+                <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;logger.info(&amp;quot;INFO: pb_status : [&amp;quot; + xpath:{/workflow/ProcessBlock_5/pb_status} + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;if (!xpath:{/workflow/ProcessBlock_5/pb_status}.equals(&amp;quot;COMPLETED&amp;quot;))&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;VAR_WF_STATUS&amp;quot;, &amp;quot;FAILED&amp;quot;);&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;VAR_WF_FAILIURE_MESSAGE&amp;quot;, xpath:{/workflow/ProcessBlock_5/pb_failiure_message});&amp;#xD;&amp;#xA;    logger.info(&amp;quot;INFO: Setting VAR_WF_STATUS = [&amp;quot; + workflow.getVariable(&amp;quot;VAR_WF_STATUS&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;    logger.info(&amp;quot;INFO: Setting VAR_WF_FAILIURE_MESSAGE = [&amp;quot; + workflow.getVariable(&amp;quot;VAR_WF_FAILIURE_MESSAGE&amp;quot;) + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;}&quot; />&lt;/inputs>"/>
+            </Activity>
+        </superProcess>
+        <activitySchema>
+            <outputs attribute="0" listType="0" name="outputs"
+                required="1" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_status" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_failiure_message" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs attribute="0" listType="0" name="inputs"
+                required="1" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_status" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_failiure_message" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1454078515851" description=""
+        displayName="WF_LOG_EVENT" height="22" interactive="0"
+        jobMode="0" name="WF_LOG_EVENT"
+        namespaceUri="commvault.workflow.activities" originalStyle=""
+        skipAttempt="0" style="label;image=WF_LOG_EVENT"
+        uniqueName="WF_LOG_EVENT_1" waitSetting="0" width="123" x="112" y="44">
+        <inputs val="&lt;inputs>&lt;IIIIIIIIIIII class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/IIIIIIIIIIII}&lt;/IIIIIIIIIIII>&lt;INP_EMAIL_ID class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_EMAIL_ID}&lt;/INP_EMAIL_ID>&lt;INP_PAUSE_WF_START class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_PAUSE_WF_START}&lt;/INP_PAUSE_WF_START>&lt;INP_LOG_EVENT_MESSAGE class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_LOG_EVENT_MESSAGE}&lt;/INP_LOG_EVENT_MESSAGE>&lt;INP_LOG_SEVERITY class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_LOG_SEVERITY}&lt;/INP_LOG_SEVERITY>&lt;INP_SEND_EMAIL class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>false&lt;/INP_SEND_EMAIL>&lt;INP_CHECK class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>false&lt;/INP_CHECK>&lt;/inputs>"/>
+        <transition activity="ExecuteProcessBlock_18" commented="0"
+            originalStyle="" points="" sourceX="173" sourceY="55"
+            status="0" style="defaultEdge" targetX="425" targetY="107"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1454541916668"
+        description="creates a super process group"
+        displayName="Create Replication set" height="95" interactive="0"
+        jobMode="0" name="ProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="swimlane"
+        uniqueName="ProcessBlock_9" waitSetting="0" width="421" x="651" y="10">
+        <inputs val="&lt;inputs>&lt;inputs>&lt;pb_execute_pb class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;pb_pause_pb class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;pb_source_client class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_repset_name class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_dataagent class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_common_base_folder class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_dest_host class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_allow_recover_point class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>&lt;/inputs>"/>
+        <superProcess>
+            <Start commented="0" continueOnFailure="0"
+                created="1453241526174" description=""
+                displayName="Start" height="23" interactive="0"
+                jobMode="0" name="Start" originalStyle=""
+                skipAttempt="0"
+                style="label;fillColor=#FFFF33;gradientColor=#FFFF00"
+                uniqueName="Start_20" waitSetting="0" width="58" x="6" y="29">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="Decision_1" commented="0"
+                    originalStyle="" points="" sourceX="35" sourceY="40"
+                    status="0" style="defaultEdge" targetX="112"
+                    targetY="38" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+                <onEnter language="1" script="workflow.setVariable(&quot;VAR_WORKFLOW_PHASE&quot;,&quot;PHASE START: [&quot; + xpath:{/workflow/system/jobId} + &quot;][&quot; + xpath:{/workflow/system/workflow/workflowName} + &quot;][&quot; + xpath:{/workflow/system/startTime} +&quot;] :  CREATE REPLICATION SET&quot;);&#xd;&#xa;logger.info(&quot;INFO: VAR_WORKFLOW_PHASE : [&quot; + workflow.getVariable(&quot;VAR_WORKFLOW_PHASE&quot;) + &quot;]&quot;);"/>
+            </Start>
+            <Activity commented="0" continueOnFailure="0"
+                created="1453290176313"
+                description="activity to execute code snippets in the selected language"
+                displayName="SetVar" height="19" interactive="0"
+                jobMode="0" name="Script"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=Script" uniqueName="Script_45"
+                waitSetting="0" width="75" x="101" y="27">
+                <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;&quot; />&lt;/inputs>"/>
+                <transition activity="WorkflowEnd_6" commented="0"
+                    originalStyle="" points="" sourceX="162"
+                    sourceY="44" status="0" style="defaultEdge"
+                    targetX="195" targetY="100" transitionIndex="0"
+                    x="0" y="0">
+                    <condition language="1" script="!xpath:{/workflow/ProcessBlock_9/pb_execute_pb};"/>
+                </transition>
+                <transition activity="ReplicationSet_2" commented="0"
+                    originalStyle="" points="" sourceX="138"
+                    sourceY="36" status="0" style="defaultEdge"
+                    targetX="223" targetY="47" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="xpath:{/workflow/ProcessBlock_9/pb_execute_pb};"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1453290221256"
+                description="executes a defined process block within the workflow"
+                displayName="II" height="20" interactive="0" jobMode="0"
+                name="ExecuteProcessBlock"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=ExecuteProcessBlock"
+                uniqueName="ExecuteProcessBlock_15" waitSetting="0"
+                width="47" x="93" y="67">
+                <inputs val="&lt;inputs>&lt;inputs>&lt;pb_client class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_files_list class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;/inputs>&lt;processBlock>ProcessBlock_7&lt;/processBlock>&lt;outputs />&lt;/inputs>"/>
+                <activitySchema>
+                    <outputs name="ProcessBlock_7">
+                        <children name="Start_8"/>
+                        <children name="WF_PAUSE_1">
+                            <children name="workflow">
+                                <children attribute="0" className=""
+                                    defaultValue="" listType="0"
+                                    name="inputs" required="1" type="">
+                                    <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_WORKFLOW_NAME"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                    <children attribute="0"
+                                    className="java.lang.Integer"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.Integer"
+                                    listType="0" name="INP_JOBID"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                                    <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_START_TIME"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                    <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_WORKFLOW_PHASE"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                    <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_PAUSE_STRING"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                </children>
+                                <children attribute="0" className=""
+                                    defaultValue="" listType="0"
+                                    name="variables" required="1" type=""/>
+                            </children>
+                        </children>
+                    </outputs>
+                    <inputs attribute="0" listType="0" name="inputs" required="1"/>
+                </activitySchema>
+                <transition activity="Script_45" commented="0"
+                    originalStyle="" points="" sourceX="96" sourceY="84"
+                    status="0" style="defaultEdge" targetX="156"
+                    targetY="34" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1453293323096" description="Ends the workflow"
+                displayName="End" height="19" interactive="0"
+                jobMode="0" name="WorkflowEnd"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=WorkflowEnd"
+                uniqueName="WorkflowEnd_6" waitSetting="0" width="53"
+                x="154" y="68">
+                <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot; />&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"/>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1454593814211"
+                description="if/else based decision" displayName="?"
+                height="22" interactive="0" jobMode="0" name="Decision"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="rhombus;fontStyle=1" uniqueName="Decision_1"
+                waitSetting="0" width="37" x="11" y="66">
+                <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_9/pb_pause_pb}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+                <transition activity="ExecuteProcessBlock_15"
+                    commented="0" displayName="y" originalStyle=""
+                    points="" sourceX="115" sourceY="41" status="0"
+                    style="defaultEdge" targetX="128" targetY="80"
+                    transitionIndex="0" value="true" x="0" y="0">
+                    <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+                <transition activity="Script_45" commented="0"
+                    displayName="x" originalStyle="" points=""
+                    sourceX="29" sourceY="77" status="0"
+                    style="defaultEdge" targetX="98" targetY="44"
+                    transitionIndex="0" value="false" x="0" y="0">
+                    <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1454628514233" description=""
+                displayName="List RS" height="18" interactive="0"
+                jobMode="0" name="ReplicationSet"
+                namespaceUri="commvault.cte.workflow.activities.cmd.list"
+                originalStyle="" skipAttempt="0"
+                style="label;image=ReplicationSet"
+                uniqueName="ReplicationSet_2" waitSetting="0" width="70"
+                x="199" y="27">
+                <onExit language="1" script="if (xpath:{/workflow/ReplicationSet_2/commandOutput}.contains(xpath:{/workflow/ProcessBlock_9/pb_repset_name}))&#xd;&#xa;{&#xd;&#xa;    logger.info(&quot;INFO : Replication set already exists [&quot; + xpath:{/workflow/ProcessBlock_9/pb_repset_name} + &quot;]&quot;);&#xd;&#xa;}&#xd;&#xa;    "/>
+                <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_9/pb_source_client}&lt;/client>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+                <transition activity="WorkflowEnd_6" commented="0"
+                    originalStyle="" points="" sourceX="234"
+                    sourceY="36" status="0" style="defaultEdge"
+                    targetX="192" targetY="81" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="xpath:{/workflow/ReplicationSet_2/commandOutput}.contains(xpath:{/workflow/ProcessBlock_9/pb_repset_name});"/>
+                </transition>
+                <transition activity="ReplicationSet_1" commented="0"
+                    originalStyle="" points="" sourceX="234"
+                    sourceY="36" status="0" style="defaultEdge"
+                    targetX="346" targetY="36" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="!xpath:{/workflow/ReplicationSet_2/commandOutput}.contains(xpath:{/workflow/ProcessBlock_9/pb_repset_name});"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1454622850567" description=""
+                displayName="Create RS" height="19" interactive="0"
+                jobMode="0" name="ReplicationSet"
+                namespaceUri="commvault.cte.workflow.activities.cmd.create"
+                originalStyle="" skipAttempt="0"
+                style="label;image=ReplicationSet"
+                uniqueName="ReplicationSet_1" waitSetting="0"
+                width="112" x="290" y="27">
+                <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_9/pb_source_client}&lt;/client>&lt;dataAgent class=&quot;workflow.types.cmd.DataAgent&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_9/pb_dataagent}&lt;/dataAgent>&lt;replicationSetName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_9/pb_repset_name}&lt;/replicationSetName>&lt;replicationSetPolicy class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;destinationHost class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_9/pb_dest_host}&lt;/destinationHost>&lt;filterPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;allowRecoveryPoint class=&quot;workflow.types.cmd.Answer&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_9/pb_allow_recover_point}&lt;/allowRecoveryPoint>&lt;commonBaseFolder class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_9/pb_common_base_folder}&lt;/commonBaseFolder>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+                <transition activity="ReplicationSet_3" commented="0"
+                    originalStyle="" points="" sourceX="343"
+                    sourceY="42" status="0" style="defaultEdge"
+                    targetX="435" targetY="40" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1454681310314" description=""
+                displayName="List RS" height="18" interactive="0"
+                jobMode="0" name="ReplicationSet"
+                namespaceUri="commvault.cte.workflow.activities.cmd.list"
+                originalStyle="" skipAttempt="0"
+                style="label;image=ReplicationSet"
+                uniqueName="ReplicationSet_3" waitSetting="0" width="70"
+                x="337" y="66">
+                <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_9/pb_source_client}&lt;/client>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+                <transition activity="Script_47" commented="0"
+                    originalStyle="" points="" sourceX="372"
+                    sourceY="75" status="0" style="defaultEdge"
+                    targetX="289" targetY="73" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1454681933948"
+                description="activity to execute code snippets in the selected language"
+                displayName="O/P" height="20" interactive="0"
+                jobMode="0" name="Script"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=Script" uniqueName="Script_47"
+                waitSetting="0" width="50" x="258" y="65">
+                <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;if (xpath:{/workflow/ReplicationSet_1/commandOutput}.contains(&amp;quot;Created repset successfully.&amp;quot;) &amp;amp;&amp;amp; xpath:{/workflow/ReplicationSet_1/exitCode} == 0 &amp;amp;&amp;amp; xpath:{/workflow/ReplicationSet_2/commandOutput}.contains(xpath:{/workflow/ProcessBlock_9/pb_repset_name}))&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    return true;&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;else&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    return false;&amp;#xD;&amp;#xA;}        &amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;&quot; />&lt;/inputs>"/>
+            </Activity>
+        </superProcess>
+        <activitySchema>
+            <outputs attribute="0" className="" defaultValue=""
+                listType="0" name="outputs" required="1" type="">
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue="" hidden="0"
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_execute_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue="" hidden="0"
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_pause_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_source_client" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_repset_name" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_dataagent" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_common_base_folder" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_dest_host" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_allow_recover_point" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs attribute="0" className="" defaultValue=""
+                listType="0" name="inputs" required="1" type="">
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue="" hidden="0"
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_execute_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue="" hidden="0"
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_pause_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_source_client" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_repset_name" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_dataagent" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_common_base_folder" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_dest_host" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_allow_recover_point" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1454682224789"
+        description="creates a super process group"
+        displayName="Create Replication pair" height="95"
+        interactive="0" jobMode="0" name="ProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="swimlane"
+        uniqueName="ProcessBlock_11" waitSetting="0" width="421" x="648" y="114">
+        <inputs val="&lt;inputs>&lt;inputs>&lt;pb_execute_pb class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;pb_pause_pb class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot; />&lt;pb_source_client class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_repset_name class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_dataagent class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_source_path class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_use_common_base_folder class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>&lt;/inputs>"/>
+        <superProcess>
+            <Start commented="0" continueOnFailure="0"
+                created="1453241526174" description=""
+                displayName="Start" height="23" interactive="0"
+                jobMode="0" name="Start" originalStyle=""
+                skipAttempt="0"
+                style="label;fillColor=#FFFF33;gradientColor=#FFFF00"
+                uniqueName="Start_24" waitSetting="0" width="58" x="6" y="29">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="Decision_5" commented="0"
+                    originalStyle="" points="" sourceX="35" sourceY="40"
+                    status="0" style="defaultEdge" targetX="112"
+                    targetY="38" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+                <onEnter language="1" script="workflow.setVariable(&quot;VAR_WORKFLOW_PHASE&quot;,&quot;PHASE START: [&quot; + xpath:{/workflow/system/jobId} + &quot;][&quot; + xpath:{/workflow/system/workflow/workflowName} + &quot;][&quot; + xpath:{/workflow/system/startTime} +&quot;] :  CREATE REPLICATION SET&quot;);&#xd;&#xa;logger.info(&quot;INFO: VAR_WORKFLOW_PHASE : [&quot; + workflow.getVariable(&quot;VAR_WORKFLOW_PHASE&quot;) + &quot;]&quot;);"/>
+            </Start>
+            <Activity commented="0" continueOnFailure="0"
+                created="1453290176313"
+                description="activity to execute code snippets in the selected language"
+                displayName="SetVar" height="19" interactive="0"
+                jobMode="0" name="Script"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=Script" uniqueName="Script_50"
+                waitSetting="0" width="75" x="101" y="27">
+                <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;&quot; />&lt;/inputs>"/>
+                <transition activity="WorkflowEnd_8" commented="0"
+                    originalStyle="" points="" sourceX="162"
+                    sourceY="44" status="0" style="defaultEdge"
+                    targetX="195" targetY="100" transitionIndex="0"
+                    x="0" y="0">
+                    <condition language="1" script="!xpath:{/workflow/ProcessBlock_11/pb_execute_pb};"/>
+                </transition>
+                <transition activity="ReplicationPair_3" commented="0"
+                    originalStyle="" points="" sourceX="138"
+                    sourceY="36" status="0" style="defaultEdge"
+                    targetX="223" targetY="38" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="xpath:{/workflow/ProcessBlock_11/pb_execute_pb};"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1453290221256"
+                description="executes a defined process block within the workflow"
+                displayName="II" height="20" interactive="0" jobMode="0"
+                name="ExecuteProcessBlock"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=ExecuteProcessBlock"
+                uniqueName="ExecuteProcessBlock_17" waitSetting="0"
+                width="47" x="93" y="67">
+                <inputs val="&lt;inputs>&lt;inputs>&lt;pb_client class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;pb_files_list class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;/inputs>&lt;processBlock>ProcessBlock_7&lt;/processBlock>&lt;outputs />&lt;/inputs>"/>
+                <activitySchema>
+                    <outputs name="ProcessBlock_7">
+                        <children name="Start_8"/>
+                        <children name="WF_PAUSE_1">
+                            <children name="workflow">
+                                <children attribute="0" className=""
+                                    defaultValue="" listType="0"
+                                    name="inputs" required="1" type="">
+                                    <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_WORKFLOW_NAME"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                    <children attribute="0"
+                                    className="java.lang.Integer"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.Integer"
+                                    listType="0" name="INP_JOBID"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                                    <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_START_TIME"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                    <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_WORKFLOW_PHASE"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                    <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_PAUSE_STRING"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                </children>
+                                <children attribute="0" className=""
+                                    defaultValue="" listType="0"
+                                    name="variables" required="1" type=""/>
+                            </children>
+                        </children>
+                    </outputs>
+                    <inputs attribute="0" listType="0" name="inputs" required="1"/>
+                </activitySchema>
+                <transition activity="Script_50" commented="0"
+                    originalStyle="" points="" sourceX="96" sourceY="84"
+                    status="0" style="defaultEdge" targetX="156"
+                    targetY="34" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1453293323096" description="Ends the workflow"
+                displayName="End" height="19" interactive="0"
+                jobMode="0" name="WorkflowEnd"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=WorkflowEnd"
+                uniqueName="WorkflowEnd_8" waitSetting="0" width="53"
+                x="154" y="68">
+                <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot; />&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"/>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1454593814211"
+                description="if/else based decision" displayName="?"
+                height="22" interactive="0" jobMode="0" name="Decision"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="rhombus;fontStyle=1" uniqueName="Decision_5"
+                waitSetting="0" width="37" x="11" y="66">
+                <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_11/pb_pause_pb}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+                <transition activity="ExecuteProcessBlock_17"
+                    commented="0" displayName="y" originalStyle=""
+                    points="" sourceX="115" sourceY="41" status="0"
+                    style="defaultEdge" targetX="128" targetY="80"
+                    transitionIndex="0" value="true" x="0" y="0">
+                    <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+                <transition activity="Script_50" commented="0"
+                    displayName="x" originalStyle="" points=""
+                    sourceX="29" sourceY="77" status="0"
+                    style="defaultEdge" targetX="98" targetY="44"
+                    transitionIndex="0" value="false" x="0" y="0">
+                    <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1454681933948"
+                description="activity to execute code snippets in the selected language"
+                displayName="O/P" height="20" interactive="0"
+                jobMode="0" name="Script"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=Script" uniqueName="Script_51"
+                waitSetting="0" width="50" x="258" y="65">
+                <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;if (xpath:{/workflow/ReplicationPair_2/commandOutput}.contains(&amp;quot;Created  Replication Pair Successfully.&amp;quot;) &amp;amp;&amp;amp; xpath:{/workflow/ReplicationPair_2/exitCode} == 0)&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    return true;&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;else&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    return false;&amp;#xD;&amp;#xA;}        &amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;&quot; />&lt;/inputs>"/>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1454622911950" description=""
+                displayName="Create RP" height="20" interactive="0"
+                jobMode="0" name="ReplicationPair"
+                namespaceUri="commvault.cte.workflow.activities.cmd.create"
+                originalStyle="" skipAttempt="0"
+                style="label;image=ReplicationPair"
+                uniqueName="ReplicationPair_2" waitSetting="0"
+                width="87" x="277" y="28">
+                <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_11/pb_source_client}&lt;/client>&lt;dataAgent class=&quot;workflow.types.cmd.DataAgent&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_11/pb_dataagent}&lt;/dataAgent>&lt;replicationSetName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_11/pb_repset_name}&lt;/replicationSetName>&lt;sourcePath class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_11/pb_source_path}&lt;/sourcePath>&lt;destinationPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;useCommonBaseFolder class=&quot;workflow.types.cmd.Answer&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_USE_COMMON_BASE_FOLDER}&lt;/useCommonBaseFolder>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+                <transition activity="ReplicationPair_1" commented="0"
+                    originalStyle="" points="" sourceX="320"
+                    sourceY="38" status="0" style="defaultEdge"
+                    targetX="375" targetY="70" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1454628515643" description=""
+                displayName="List RP" height="23" interactive="0"
+                jobMode="0" name="ReplicationPair"
+                namespaceUri="commvault.cte.workflow.activities.cmd.list"
+                originalStyle="" skipAttempt="0"
+                style="label;image=ReplicationPair"
+                uniqueName="ReplicationPair_3" waitSetting="0"
+                width="70" x="192" y="27">
+                <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_11/pb_source_client}&lt;/client>&lt;replicationSet class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_11/pb_repset_name}&lt;/replicationSet>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+                <transition activity="ReplicationPair_2" commented="0"
+                    originalStyle="" points="" sourceX="227"
+                    sourceY="38" status="0" style="defaultEdge"
+                    targetX="316" targetY="43" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+                <transition activity="WorkflowEnd_8" commented="0"
+                    originalStyle="" points="" sourceX="227"
+                    sourceY="38" status="0" style="defaultEdge"
+                    targetX="193" targetY="73" transitionIndex="0" x="0" y="0"/>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1454682333702" description=""
+                displayName="List RP" height="23" interactive="0"
+                jobMode="0" name="ReplicationPair"
+                namespaceUri="commvault.cte.workflow.activities.cmd.list"
+                originalStyle="" skipAttempt="0"
+                style="label;image=ReplicationPair"
+                uniqueName="ReplicationPair_1" waitSetting="0"
+                width="70" x="331" y="62">
+                <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_11/pb_source_client}&lt;/client>&lt;replicationSet class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/ProcessBlock_11/pb_repset_name}&lt;/replicationSet>&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot; _list_=&quot;false&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;token class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/sessionOptions>&lt;/inputs>"/>
+                <transition activity="Script_51" commented="0"
+                    originalStyle="" points="" sourceX="366"
+                    sourceY="73" status="0" style="defaultEdge"
+                    targetX="281" targetY="73" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+        </superProcess>
+        <activitySchema>
+            <outputs attribute="0" listType="0" name="outputs"
+                required="1" type="">
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue=""
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_execute_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue=""
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_pause_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_source_client" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_repset_name" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_dataagent" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_source_path" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_use_common_base_folder" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs attribute="0" listType="0" name="inputs"
+                required="1" type="">
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue=""
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_execute_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue=""
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_pause_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_source_client" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_repset_name" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_dataagent" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_source_path" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_use_common_base_folder" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1454682752403"
+        description="executes a defined process block within the workflow"
+        displayName="Call create Repset" height="23" interactive="0"
+        jobMode="0" name="ExecuteProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=ExecuteProcessBlock"
+        uniqueName="ExecuteProcessBlock_18" waitSetting="0" width="134"
+        x="264" y="43">
+        <inputs val="&lt;inputs>&lt;inputs>&lt;pb_execute_pb class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_CREATE_REPLICATION_SET}&lt;/pb_execute_pb>&lt;pb_pause_pb class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_PAUSE_WF_CREATE_REPSET}&lt;/pb_pause_pb>&lt;pb_source_client class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_REP_SOURCE_CLIENT/clientName}&lt;/pb_source_client>&lt;pb_repset_name class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_INP_REPLICATION_SET_NAME}&lt;/pb_repset_name>&lt;pb_dataagent class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_DATA_AGENT}&lt;/pb_dataagent>&lt;pb_common_base_folder class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_INP_COMMON_BASE_FOLDER}&lt;/pb_common_base_folder>&lt;pb_dest_host class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_DESTINATION_HOST/clientName}&lt;/pb_dest_host>&lt;pb_allow_recover_point class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_ALLOOW_RECOVERY_POINT}&lt;/pb_allow_recover_point>&lt;/inputs>&lt;processBlock>ProcessBlock_9&lt;/processBlock>&lt;outputs />&lt;/inputs>"/>
+        <activitySchema>
+            <outputs name="ProcessBlock_9">
+                <children name="Start_20"/>
+                <children name="Script_45">
+                    <children className="java.lang.Object"
+                        inputType="java.lang.Object" name="output" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
+                </children>
+                <children name="ExecuteProcessBlock_15">
+                    <children name="Start_8"/>
+                    <children name="WF_PAUSE_1">
+                        <children name="workflow">
+                            <children attribute="0" className=""
+                                defaultValue="" listType="0"
+                                name="inputs" required="1" type="">
+                                <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_WORKFLOW_NAME"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                <children attribute="0"
+                                    className="java.lang.Integer"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.Integer"
+                                    listType="0" name="INP_JOBID"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                                <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0" name="INP_START_TIME"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_WORKFLOW_PHASE"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0" name="INP_PAUSE_STRING"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                            </children>
+                            <children attribute="0" className=""
+                                defaultValue="" listType="0"
+                                name="variables" required="1" type=""/>
+                        </children>
+                    </children>
+                </children>
+                <children name="WorkflowEnd_6"/>
+                <children name="Decision_1"/>
+                <children name="ReplicationSet_2">
+                    <children className="java.lang.String"
+                        inputType="java.lang.String" listType="1"
+                        name="replicationSet" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    <children className="java.lang.Integer"
+                        documentation="return code from the executable"
+                        inputType="java.lang.Integer" name="exitCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                    <children className="java.lang.String"
+                        documentation="command output"
+                        inputType="java.lang.String"
+                        name="commandOutput" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                </children>
+                <children name="ReplicationSet_1">
+                    <children className="java.lang.Integer"
+                        documentation="return code from the executable"
+                        inputType="java.lang.Integer" name="exitCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                    <children className="java.lang.String"
+                        documentation="command output"
+                        inputType="java.lang.String"
+                        name="commandOutput" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                </children>
+                <children name="ReplicationSet_3">
+                    <children className="java.lang.String"
+                        inputType="java.lang.String" listType="1"
+                        name="replicationSet" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    <children className="java.lang.Integer"
+                        documentation="return code from the executable"
+                        inputType="java.lang.Integer" name="exitCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                    <children className="java.lang.String"
+                        documentation="command output"
+                        inputType="java.lang.String"
+                        name="commandOutput" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                </children>
+                <children name="Script_47">
+                    <children className="java.lang.Object"
+                        inputType="java.lang.Object" name="output" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
+                </children>
+            </outputs>
+            <inputs attribute="0" className="" defaultValue=""
+                listType="0" name="inputs" required="1" type="">
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue="" hidden="0"
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_execute_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue="" hidden="0"
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_pause_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_source_client" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_repset_name" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_dataagent" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_common_base_folder" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_dest_host" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="pb_allow_recover_point" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+        <transition activity="ExecuteProcessBlock_19" commented="0"
+            originalStyle="" points="" sourceX="407" sourceY="102"
+            status="0" style="defaultEdge" targetX="513" targetY="180"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+        <transition activity="ExecuteProcessBlock_20" commented="0"
+            originalStyle="" points="" sourceX="331" sourceY="54"
+            status="0" style="defaultEdge" targetX="315" targetY="103"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="!xpath:{/workflow/ExecuteProcessBlock_18/Script_47/output};"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1454682761767"
+        description="executes a defined process block within the workflow"
+        displayName="Call create Reppair" height="23" interactive="0"
+        jobMode="0" name="ExecuteProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=ExecuteProcessBlock"
+        uniqueName="ExecuteProcessBlock_19" waitSetting="0" width="138"
+        x="423" y="43">
+        <inputs val="&lt;inputs>&lt;inputs>&lt;pb_execute_pb class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_CREATE_REPLICATION_PAIR}&lt;/pb_execute_pb>&lt;pb_pause_pb class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_PAUSE_WF_CREATE_REPPAIR}&lt;/pb_pause_pb>&lt;pb_source_client class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_REP_SOURCE_CLIENT/clientName}&lt;/pb_source_client>&lt;pb_repset_name class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_INP_REPLICATION_SET_NAME}&lt;/pb_repset_name>&lt;pb_dataagent class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_DATA_AGENT}&lt;/pb_dataagent>&lt;pb_source_path class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_INP_SOURCE_PATH}&lt;/pb_source_path>&lt;pb_use_common_base_folder class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_USE_COMMON_BASE_FOLDER}&lt;/pb_use_common_base_folder>&lt;/inputs>&lt;processBlock>ProcessBlock_11&lt;/processBlock>&lt;outputs />&lt;/inputs>"/>
+        <activitySchema>
+            <outputs name="ProcessBlock_11">
+                <children name="Start_24"/>
+                <children name="Script_50">
+                    <children className="java.lang.Object"
+                        inputType="java.lang.Object" name="output" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
+                </children>
+                <children name="ExecuteProcessBlock_17">
+                    <children name="Start_8"/>
+                    <children name="WF_PAUSE_1">
+                        <children name="workflow">
+                            <children attribute="0" className=""
+                                defaultValue="" listType="0"
+                                name="inputs" required="1" type="">
+                                <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_WORKFLOW_NAME"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                <children attribute="0"
+                                    className="java.lang.Integer"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.Integer"
+                                    listType="0" name="INP_JOBID"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                                <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0" name="INP_START_TIME"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0"
+                                    name="INP_WORKFLOW_PHASE"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                                <children attribute="0"
+                                    className="java.lang.String"
+                                    controlType="0" defaultValue=""
+                                    hidden="0"
+                                    inputType="java.lang.String"
+                                    listType="0" name="INP_PAUSE_STRING"
+                                    required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                            </children>
+                            <children attribute="0" className=""
+                                defaultValue="" listType="0"
+                                name="variables" required="1" type=""/>
+                        </children>
+                    </children>
+                </children>
+                <children name="WorkflowEnd_8"/>
+                <children name="Decision_5"/>
+                <children name="Script_51">
+                    <children className="java.lang.Object"
+                        inputType="java.lang.Object" name="output" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
+                </children>
+                <children name="ReplicationPair_2">
+                    <children className="java.lang.Integer"
+                        documentation="return code from the executable"
+                        inputType="java.lang.Integer" name="exitCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                    <children className="java.lang.String"
+                        documentation="command output"
+                        inputType="java.lang.String"
+                        name="commandOutput" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                </children>
+                <children name="ReplicationPair_3">
+                    <children className="java.lang.String"
+                        inputType="java.lang.String" listType="1"
+                        name="replicationPair" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    <children className="java.lang.Integer"
+                        documentation="return code from the executable"
+                        inputType="java.lang.Integer" name="exitCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                    <children className="java.lang.String"
+                        documentation="command output"
+                        inputType="java.lang.String"
+                        name="commandOutput" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                </children>
+                <children name="ReplicationPair_1">
+                    <children className="java.lang.String"
+                        inputType="java.lang.String" listType="1"
+                        name="replicationPair" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    <children className="java.lang.Integer"
+                        documentation="return code from the executable"
+                        inputType="java.lang.Integer" name="exitCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                    <children className="java.lang.String"
+                        documentation="command output"
+                        inputType="java.lang.String"
+                        name="commandOutput" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                </children>
+            </outputs>
+            <inputs attribute="0" listType="0" name="inputs"
+                required="1" type="">
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue=""
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_execute_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.Boolean"
+                    controlType="5" defaultValue=""
+                    inputType="java.lang.Boolean" listType="0"
+                    name="pb_pause_pb" required="0" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_source_client" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_repset_name" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_dataagent" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_source_path" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_use_common_base_folder" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+        <transition activity="ExecuteProcessBlock_22" commented="0"
+            originalStyle="" points="" sourceX="492" sourceY="54"
+            status="0" style="defaultEdge" targetX="476" targetY="108"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="!xpath:{/workflow/ExecuteProcessBlock_19/Script_51/output};"/>
+        </transition>
+        <transition activity="WorkflowEnd_9" commented="0"
+            originalStyle="" points="" sourceX="492" sourceY="54"
+            status="0" style="defaultEdge" targetX="514" targetY="197"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1454682778689"
+        description="executes a defined process block within the workflow"
+        displayName="Validate" height="20" interactive="0" jobMode="0"
+        name="ExecuteProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=ExecuteProcessBlock"
+        uniqueName="ExecuteProcessBlock_20" waitSetting="0" width="77"
+        x="267" y="79">
+        <inputs val="&lt;inputs>&lt;inputs>&lt;pb_status class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>FAILED&lt;/pb_status>&lt;pb_failiure_message class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Failed to create replication set [ xpath:{/workflow/variables/VAR_INP_REPLICATION_SET_NAME} ]&lt;/pb_failiure_message>&lt;/inputs>&lt;processBlock>ProcessBlock_5&lt;/processBlock>&lt;outputs />&lt;/inputs>"/>
+        <activitySchema>
+            <outputs name="ProcessBlock_5">
+                <children name="Start_11"/>
+                <children name="Script_1">
+                    <children className="java.lang.Object"
+                        inputType="java.lang.Object" name="output" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
+                </children>
+            </outputs>
+            <inputs attribute="0" listType="0" name="inputs"
+                required="1" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_status" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_failiure_message" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+        <transition activity="WorkflowEnd_9" commented="0"
+            originalStyle="" points="" sourceX="303" sourceY="101"
+            status="0" style="defaultEdge" targetX="446" targetY="225"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1454682790599"
+        description="executes a defined process block within the workflow"
+        displayName="Validate" height="20" interactive="0" jobMode="0"
+        name="ExecuteProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=ExecuteProcessBlock"
+        uniqueName="ExecuteProcessBlock_22" waitSetting="0" width="77"
+        x="423" y="81">
+        <inputs val="&lt;inputs>&lt;inputs>&lt;pb_status class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>FAILED&lt;/pb_status>&lt;pb_failiure_message class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Failed to create replication pair for replication set [ xpath:{/workflow/variables/VAR_INP_REPLICATION_SET_NAME} ]&lt;/pb_failiure_message>&lt;/inputs>&lt;processBlock>ProcessBlock_5&lt;/processBlock>&lt;outputs />&lt;/inputs>"/>
+        <activitySchema>
+            <outputs name="ProcessBlock_5">
+                <children name="Start_11"/>
+                <children name="Script_1">
+                    <children className="java.lang.Object"
+                        inputType="java.lang.Object" name="output" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
+                </children>
+            </outputs>
+            <inputs attribute="0" listType="0" name="inputs"
+                required="1" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_status" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue=""
+                    inputType="java.lang.String" listType="0"
+                    name="pb_failiure_message" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+        <transition activity="WorkflowEnd_9" commented="0"
+            originalStyle="" points="" sourceX="462" sourceY="100"
+            status="0" style="defaultEdge" targetX="481" targetY="218"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1454682799090" description="Ends the workflow"
+        displayName="die" height="24" interactive="0" jobMode="0"
+        name="WorkflowEnd"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="label;image=WorkflowEnd"
+        uniqueName="WorkflowEnd_9" waitSetting="0" width="58" x="485" y="182">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot; />&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"/>
+    </Activity>
+    <formProperties css="" formVersion="0" javaScript=""/>
+</Workflow_WorkflowDefinition>

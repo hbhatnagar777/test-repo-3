@@ -1,0 +1,39 @@
+# collections/ansible_collections/commvault/ansible/meta/runtime.yml
+galaxy_info:
+  author: Commvault Systems Inc.
+  description: Commvault's Ansible collection to help perform common administrative tasks.
+  license: Apache-2.0
+  min_ansible_version: 2.10
+  platforms:
+    - name: Linux
+      versions:
+        - all
+  readme: README.md
+  repository: https://github.com/Commvault/ansiblev2
+  
+requires_ansible: '>=2.10.0'
+
+action_groups:
+  session:
+    - login
+    - logout
+    - request
+    - deployment.download_software
+    - deployment.install_software
+    - deployment.push_updates
+    - file_servers.backup
+    - file_servers.manage_content
+    - file_servers.manage_plan
+    - file_servers.restore
+    - job.kill
+    - job.resume
+    - job.status
+    - job.suspend
+    - plans.add
+    - plans.delete
+    - storage.disk.add
+    - storage.disk.detail
+    - workflow.import
+    - workflow.deploy
+    - workflow.execute
+    - workflow.export

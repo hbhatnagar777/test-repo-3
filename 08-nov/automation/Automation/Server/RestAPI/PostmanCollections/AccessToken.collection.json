@@ -1,0 +1,1578 @@
+{
+	"info": {
+		"_postman_id": "ff88c47f-d02d-49d5-b17b-43cc8d38c2be",
+		"name": "Access Tokens",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"console.log(\"Response received:\", jsonData);",
+									"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+									"",
+									"",
+									"",
+									"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+									"",
+									"tests[\"Validating logged in username\"] = jsonData.userName === username;                //validate username of logged in user",
+									"",
+									"console.log(postman.getResponseHeader(\"Content-Type\"));",
+									"console.log(postman.getEnvironmentVariable(\"Token\"));",
+									"",
+									"",
+									"//tests[\"Validating if response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\") ;   //validate response time",
+									"",
+									"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+									"",
+									"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+									"",
+									"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mode\": \"{{Mode}}\",\r\n    \"domain\": \"\",\r\n    \"username\": \"{{UserName}}\",\r\n    \"password\": \"{{Password}}\",\r\n    \"commserver\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"Response Body contains sessionId\"] = responseBody.has(\"sessionId\");\r",
+									"tests[\"Response Body contains token\"] = responseBody.has(\"token\");\r",
+									"\r",
+									"pm.environment.set(\"BearerToken\", jsonData.token);\r",
+									"pm.environment.set(\"sessionId\", jsonData.sessionId);\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"var unix = Math.round(+new Date()/1000);\r",
+									"pm.environment.set(\"ExpireTime\", unix + 120);\r",
+									"\r",
+									"let tokenName = (Math.random() + 1).toString(36).substring(7);\r",
+									"pm.environment.set(\"TokenName\", \"token\"+ tokenName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scope\": 2,\r\n    \"tokenExpires\": {\"time\": {{ExpireTime}}}, \r\n    \"tokenName\":\"{{TokenName}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/ApiToken/User",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ApiToken",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List tokens",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"Response Body contains sessions\"] = responseBody.has(\"sessions\");\r",
+									"\r",
+									"tests[\"Newly created token is listed\"] = (function() {\r",
+									"    for( i=0; i < jsonData.sessions.length; i++)\r",
+									"        if (jsonData.sessions[i].tokenName == postman.getEnvironmentVariable(\"TokenName\"))\r",
+									"        {\r",
+									"            tests[\"token is set correctly with expiry time\"] = jsonData.sessions[i].tokenExpires.time == postman.getEnvironmentVariable(\"ExpireTime\");\r",
+									"            tests[\"token is set correctly with scope\"] = jsonData.sessions[i].tokenType == 2;\r",
+									"            return true;\r",
+									"        }\r",
+									"    return false;\r",
+									"})();\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/ApiToken/User/{{userId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ApiToken",
+								"User",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Response Body contains clientProperties\"] = responseBody.has(\"clientProperties\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Client",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Client"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of clients.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client.htm)"
+					},
+					"response": []
+				},
+				{
+					"name": "OperationWindow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+									" {",
+									"     console.log(\"Response time validated\");",
+									" }",
+									"*/",
+									"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+									"if (responseCode.code === 200) {",
+									"    pm.environment.set(\"opruleid\", jsonData.operationWindow.ruleId);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"operationWindow\": {\r\n    \"endDate\": 1687392000,\r\n    \"startDate\": 1687392000,\r\n    \"operations\": [\r\n      1,\r\n      2\r\n    ],\r\n    \"dayTime\": [{\r\n      \"startTime\": 46800,\r\n      \"endTime\": 50400,\r\n      \"dayOfWeek\": [\r\n        1,\r\n        2\r\n      ]\r\n    }]\r\n  },\r\n  \"entity\": {\r\n    \"clientGroupId\": 0,\r\n    \"clientId\": 2\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/OperationWindow",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"OperationWindow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OperationWindow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+									"pm.environment.unset(\"opruleid\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (!pm.environment.has(\"opruleid\")) {\r",
+									"    postman.setNextRequest(null);\r",
+									"}\r",
+									"let id = pm.environment.get(\"opruleid\");\r",
+									"pm.environment.set(\"opruleid\",id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerURL}}/OperationWindow/{{opruleid}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"OperationWindow",
+								"{{opruleid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"var unix = Math.round(+new Date()/1000);\r",
+									"pm.environment.set(\"NewExpireTime\", unix + 300);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"Response Body contains token name\"] = jsonData.tokenName == postman.getEnvironmentVariable(\"TokenName\");\r",
+									"tests[\"Response Body contains new Expiry time\"] = jsonData.tokenExpires.time == postman.getEnvironmentVariable(\"NewExpireTime\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "AuthToken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scope\": 2,\r\n    \"tokenExpires\": {\"time\": {{NewExpireTime}}}, \r\n    \"tokenName\":\"{{TokenName}}\",\r\n    \"apiEndpoints\":[\"\"]\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/ApiToken/User/Session/{{sessionId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ApiToken",
+								"User",
+								"Session",
+								"{{sessionId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"error code is not true\"] = jsonData.response[0].errorCode === 0;\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "AuthToken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/ApiToken/User/Session/{{sessionId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ApiToken",
+								"User",
+								"Session",
+								"{{sessionId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Client After delete token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 401 Access denied\"] = responseCode.code === 401;",
+									"tests[\"test Access denied error message\"] = responseBody.has(\"Access denied\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{Accept}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Client",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Client"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of clients.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client.htm)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Token - validate expiry time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"Response Body contains sessionId\"] = responseBody.has(\"sessionId\");\r",
+									"tests[\"Response Body contains token\"] = responseBody.has(\"token\");\r",
+									"\r",
+									"pm.environment.set(\"BearerToken\", jsonData.token);\r",
+									"pm.environment.set(\"sessionId\", jsonData.sessionId);\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"var unix = Math.round(+new Date()/1000);\r",
+									"var Expirydelta = 10\r",
+									"pm.environment.set(\"Expirydelta\", Expirydelta)\r",
+									"pm.environment.set(\"ExpireTime\", unix + Expirydelta);\r",
+									"\r",
+									"let tokenName = (Math.random() + 1).toString(36).substring(7);\r",
+									"pm.environment.set(\"TokenName\", \"token\"+ tokenName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scope\": 2,\r\n    \"tokenExpires\": {\"time\": {{ExpireTime}}}, \r\n    \"tokenName\":\"{{TokenName}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/ApiToken/User",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ApiToken",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Client - validate expiry",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(postman.getEnvironmentVariable(\"Expirydelta\"))\r",
+									"console.log(\"waiting for token to expire\");\r",
+									"\r",
+									"setTimeout(function(){\r",
+									"},postman.getEnvironmentVariable(\"Expirydelta\")*1000);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//var jsonData = JSON.parse(responseBody);",
+									"",
+									"//tests[\"Status code is 401\"] = responseCode.code === 401;",
+									"tests[\"client request returns empty once the token is expired\"] = (function() {",
+									"    if (responseBody.lenght != 0) {",
+									"        return true;",
+									"    }",
+									"    else {",
+									"        return false;",
+									"    }",
+									"})();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Client",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Client"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of clients.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client.htm)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Token -Expire time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 404;\r",
+									"tests[\"error code is not true\"] = jsonData.errorCode === 404;\r",
+									"tests[\"error message has expired message\"] = jsonData.errorMessage.has(\"does not exist or has already expired\");\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "AuthToken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/ApiToken/User/Session/{{sessionId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ApiToken",
+								"User",
+								"Session",
+								"{{sessionId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Custom Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"Response Body contains sessionId\"] = responseBody.has(\"sessionId\");\r",
+									"tests[\"Response Body contains token\"] = responseBody.has(\"token\");\r",
+									"\r",
+									"pm.environment.set(\"CustomBearerToken\", jsonData.token);\r",
+									"pm.environment.set(\"CustomsessionId\", jsonData.sessionId);\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"var unix = Math.round(+new Date()/1000);\r",
+									"pm.environment.set(\"ExpireTime\", unix + 3000);\r",
+									"\r",
+									"let tokenName = (Math.random() + 1).toString(36).substring(7);\r",
+									"pm.environment.set(\"CustomTokenName\", \"Customtoken\"+ tokenName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tokenExpires\": {\"time\": {{ExpireTime}}}, \r\n    \"tokenName\":\"{{CustomTokenName}}\",\r\n    \"apiEndpoints\":[\"/client\"]\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/ApiToken/User",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ApiToken",
+								"User"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List tokens -Custom token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"Response Body contains sessions\"] = responseBody.has(\"sessions\");\r",
+									"\r",
+									"tests[\"Newly created token is listed\"] = (function() {\r",
+									"    for( i=0; i < jsonData.sessions.length; i++)\r",
+									"        if (jsonData.sessions[i].tokenName == postman.getEnvironmentVariable(\"CustomTokenName\"))\r",
+									"        {\r",
+									"            return true;\r",
+									"        }\r",
+									"    return false;\r",
+									"})();\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CustomBearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/ApiToken/User/{{userId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ApiToken",
+								"User",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Client with Customtoken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Response Body contains clientProperties\"] = responseBody.has(\"clientProperties\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CustomBearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Client",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Client"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of clients.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client.htm)"
+					},
+					"response": []
+				},
+				{
+					"name": "OperationWindow With custom token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"console.log(tests[\"Status code is 401\"] = responseCode.code === 401);         //validate status code"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CustomBearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"operationWindow\": {\r\n    \"endDate\": 1733961600,\r\n    \"startDate\": 1733961600,\r\n    \"operations\": [\r\n      1,\r\n      2\r\n    ],\r\n    \"dayTime\": [{\r\n      \"startTime\": 46800,\r\n      \"endTime\": 50400,\r\n      \"dayOfWeek\": [\r\n        1,\r\n        2\r\n      ]\r\n    }]\r\n  },\r\n  \"entity\": {\r\n    \"clientGroupId\": 0,\r\n    \"clientId\": 2\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/OperationWindow",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"OperationWindow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Webserver2 Client with Customtoken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Response Body contains clientProperties\"] = responseBody.has(\"clientProperties\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"It needs maximum of 5 minutes to update other webservers. So we will wait for 5 minutes\");\r",
+									"\r",
+									"//setTimeout(function(){\r",
+									"//},300000);\r",
+									"\r",
+									"setTimeout(function(){\r",
+									"},300000);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CustomBearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL2}}/Client",
+							"host": [
+								"{{ServerURL2}}"
+							],
+							"path": [
+								"Client"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of clients.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client.htm)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Custom token - apiEndpoints",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "AuthToken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tokenExpires\": {\"time\": {{ExpireTime}}}, \r\n    \"tokenName\":\"{{CustomTokenName}}\",\r\n    \"apiEndpoints\":[\"/OperationWindow\"]\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/ApiToken/User/Session/{{CustomsessionId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ApiToken",
+								"User",
+								"Session",
+								"{{CustomsessionId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Webserver2 Client with Customtoken after update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"console.log(responseCode.code )",
+									"tests[\"Status code is 401\"] = responseCode.code === 401;"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"It needs maximum of 5 minutes to update other webservers. So we will wait for 5 minutes\");\r",
+									"\r",
+									"//setTimeout(function(){\r",
+									"//},300000);\r",
+									"\r",
+									"setTimeout(function(){\r",
+									"},300000);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CustomBearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL2}}/Client",
+							"host": [
+								"{{ServerURL2}}"
+							],
+							"path": [
+								"Client"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of clients.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client.htm)"
+					},
+					"response": []
+				},
+				{
+					"name": "Webserver2 OperationWindow With custom token after update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+									"if (responseCode.code === 200) {",
+									"    pm.environment.set(\"opruleid\", jsonData.operationWindow.ruleId);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"operationWindow\": {\r\n    \"endDate\": 1733961600,\r\n    \"startDate\": 1733961600,\r\n    \"operations\": [\r\n      1,\r\n      2\r\n    ],\r\n    \"dayTime\": [{\r\n      \"startTime\": 50000,\r\n      \"endTime\": 50400,\r\n      \"dayOfWeek\": [\r\n        1,\r\n        2\r\n      ]\r\n    }]\r\n  },\r\n  \"entity\": {\r\n    \"clientGroupId\": 0,\r\n    \"clientId\": 2\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL2}}/OperationWindow",
+							"host": [
+								"{{ServerURL2}}"
+							],
+							"path": [
+								"OperationWindow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Webserver2 OperationWindow With custom token after update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+									"pm.environment.unset(\"opruleid\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (!pm.environment.has(\"opruleid\")) {\r",
+									"    postman.setNextRequest(null);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerURL}}/OperationWindow/{{opruleid}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"OperationWindow",
+								"{{opruleid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Client with Customtoken after update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 401\"] = responseCode.code === 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CustomBearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Client",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Client"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of clients.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_client.htm)"
+					},
+					"response": []
+				},
+				{
+					"name": "OperationWindow With custom token after update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+									" {",
+									"     console.log(\"Response time validated\");",
+									" }",
+									"*/",
+									"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+									"if (responseCode.code === 200) {",
+									"    pm.environment.set(\"opruleid\", jsonData.operationWindow.ruleId);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{CustomBearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"operationWindow\": {\r\n    \"endDate\": 1733961600,\r\n    \"startDate\": 1733961600,\r\n    \"operations\": [\r\n      1,\r\n      2\r\n    ],\r\n    \"dayTime\": [{\r\n      \"startTime\": 50000,\r\n      \"endTime\": 50400,\r\n      \"dayOfWeek\": [\r\n        1,\r\n        2\r\n      ]\r\n    }]\r\n  },\r\n  \"entity\": {\r\n    \"clientGroupId\": 0,\r\n    \"clientId\": 2\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/OperationWindow",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"OperationWindow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete OperationWindow With custom token after update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+									"pm.environment.unset(\"opruleid\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (!pm.environment.has(\"opruleid\")) {\r",
+									"    postman.setNextRequest(null);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerURL}}/OperationWindow/{{opruleid}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"OperationWindow",
+								"{{opruleid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete token - Custom Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+									"tests[\"error code is not true\"] = jsonData.response[0].errorCode === 0;\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "AuthToken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/ApiToken/User/Session/{{CustomsessionId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"ApiToken",
+								"User",
+								"Session",
+								"{{CustomsessionId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

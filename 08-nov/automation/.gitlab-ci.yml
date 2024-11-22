@@ -1,0 +1,41 @@
+include:
+  - project: 'eng/dev-ops/ci-templates'
+    ref: sp22-6
+    file: '.base-template.yml'
+
+variables:
+  CV_OFFICIAL_PROJECT: 'eng/dev-tools/automationpackage'
+  # not needed with new debian image
+  # CV_PYTHON3: 'true'
+  KUBERNETES_MEMORY_REQUEST: 3Gi
+  KUBERNETES_MEMORY_LIMIT: 3Gi
+  IMAGE_PATH: "git.commvault.com:5005/eng/dev-ops/dev-ops-base/debian-base-automation"
+
+init-fr:
+  image: $IMAGE_PATH:$CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+
+init-of:
+  image: $IMAGE_PATH:$CI_COMMIT_BRANCH
+
+
+createModifyForm-fr:
+  image: $IMAGE_PATH:$CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+
+createModifyForm-of:
+  image: $IMAGE_PATH:$CI_COMMIT_BRANCH
+
+
+build-fr:
+  extends: .build-friendly
+  image: $IMAGE_PATH:$CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+  artifacts:
+    when: always
+    expose_as: 'Build Output'
+    paths:
+    - dist/
+    - jobDetails/
+
+build-of:
+  extends: .build-official
+  image: $IMAGE_PATH:$CI_COMMIT_BRANCH
+

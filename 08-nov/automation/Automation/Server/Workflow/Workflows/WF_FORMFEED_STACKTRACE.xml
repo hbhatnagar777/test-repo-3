@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />" description="Executes a cmd line command on a client and logs the output recieved" executeOnWeb="0" inputs="&lt;inputs>&lt;args class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;xml class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;client class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>" interactive="0" isHtmlDescription="0" manualPercentageComplete="0" name="WF_FORMFEED_STACKTRACE" outputs="&lt;outputs />" revision="$Revision: 1.2 $" tags="" uniqueGuid="6e70b662-643d-437c-a5a3-e489fcccb9c3" variables="&lt;variables />" webHidden="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables className="" name="variables" type=""/>
+        <inputs attribute="0" className="" name="inputs" type="">
+            <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" hidden="0" inputType="java.lang.String" listType="0" name="args" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" hidden="0" inputType="java.lang.String" listType="0" name="xml" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" hidden="0" inputType="java.lang.String" listType="0" name="client" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </inputs>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start breakpoint="0" commented="0" continueOnFailure="0" created="0" description="" displayName="Start" height="36" interactive="0" jobMode="0" name="Start" originalStyle="" skipAttempt="0" style="image;image=/images/jgraphx/house.png" uniqueName="Start_1" waitSetting="0" width="58" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="ExecuteCommand_1" commented="0" originalStyle="" points="" sourceX="74" sourceY="59" status="0" style="defaultEdge" targetX="320" targetY="169" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1583147692030" description="Execute a command on a remote machine" displayName="ExecuteCommand" height="34" interactive="0" jobMode="0" name="ExecuteCommand" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.ExecuteCommand" uniqueName="ExecuteCommand_1" waitSetting="0" width="134" x="350" y="41">
+        <onExit language="1" script="logger.info(xpath:{/workflow/ExecuteCommand_1/commandOutput});"/>
+        <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/client}&lt;/client>&lt;impersonateUserName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/impersonateUserName>&lt;impersonateUserPassword class=&quot;workflow.types.EncryptedString&quot; _list_=&quot;false&quot;>&lt;/impersonateUserPassword>&lt;startUpPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>C:\&lt;/startUpPath>&lt;command class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>ECHO&lt;/command>&lt;arguments class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/args}&lt;/arguments>&lt;waitForProcessCompletion class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/waitForProcessCompletion>&lt;/inputs>"/>
+        <transition activity="Script_1" commented="0" originalStyle="" points="" sourceX="329" sourceY="165" status="0" style="defaultEdge" targetX="597" targetY="284" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1583313640310" description="activity to execute code snippets in the selected language" displayName="Script" height="34" interactive="0" jobMode="0" name="Script" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.ScriptActivity" uniqueName="Script_1" waitSetting="0" width="100" x="618" y="41">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;import org.w3c.dom.*;&amp;#xD;&amp;#xA;import javax.xml.parsers.*;&amp;#xD;&amp;#xA;import java.io.*;&amp;#xD;&amp;#xA;import org.xml.sax.InputSource;&amp;#xD;&amp;#xA;DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();&amp;#xD;&amp;#xA;DocumentBuilder builder = factory.newDocumentBuilder();&amp;#xD;&amp;#xA;String xml = xpath:{/workflow/inputs/xml};&amp;#xD;&amp;#xA;try&amp;#xD;&amp;#xA;{   &amp;#xD;&amp;#xA;    InputSource is = new InputSource(new StringReader(xml));&amp;#xD;&amp;#xA;    Document doc = builder.parse(is);&amp;#xD;&amp;#xA;    doc.getDocumentElement().normalize();&amp;#xD;&amp;#xA;    String root = &amp;quot;Root element :&amp;quot; + doc.getDocumentElement().getNodeName();&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;catch(Exception e)&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    logger.info(e);&amp;#xD;&amp;#xA;}&quot; />&lt;/inputs>"/>
+        <transition activity="WorkflowEnd_2" commented="0" originalStyle="" points="" sourceX="496" sourceY="284" status="0" style="defaultEdge" targetX="792" targetY="376" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1583313644965" description="Ends the workflow" displayName="WorkflowEnd" height="34" interactive="0" jobMode="0" name="WorkflowEnd" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.EndActivity" uniqueName="WorkflowEnd_2" waitSetting="0" width="106" x="630" y="350">
+        <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot; />&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"/>
+    </Activity>
+</Workflow_WorkflowDefinition>

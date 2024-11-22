@@ -1,0 +1,1185 @@
+{
+	"info": {
+		"_postman_id": "20b98279-9175-4bc6-b70b-dd04dddec4fd",
+		"name": "VirtualizationOperations",
+		"description": "This takes care of virtualization operations ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"TOKEN\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"TOKEN\"));",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Virtualization Client properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\"); //validate content-type",
+							"",
+							"",
+							"if((tests[\"Validate clientProperties tag\"] = responseBody.has(\"clientProperties\")));",
+							"        console.log(\"clientProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validate pseudoClientInfo tag\"] = responseBody.has(\"pseudoClientInfo\")));",
+							"        console.log(\"pseudoClientInfo tag is present\");",
+							"        ",
+							"if((tests[\"Validate virtualServerClientProperties tag\"] = responseBody.has(\"virtualServerClientProperties\")));",
+							"        console.log(\"virtualServerClientProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validate clientProps tag\"] = responseBody.has(\"clientProps\")));",
+							"        console.log(\"clientProps tag is present\");",
+							"        ",
+							"if((tests[\"Validate client tag\"] = responseBody.has(\"client\")));",
+							"        console.log(\"content tag is present\");",
+							"        ",
+							"if((tests[\"Validate securityAssociations tag\"] = responseBody.has(\"securityAssociations\")));",
+							"        console.log(\"securityAssociations tag is present\");",
+							"        ",
+							"if((tests[\"Validate clientGUID tag\"] = responseBody.has(\"clientGUID\"))); {",
+							"        console.log(\"clientGUID tag is present\");",
+							"}",
+							"",
+							"var clientName = postman.getEnvironmentVariable(\"clientName\");",
+							"",
+							"postman.setEnvironmentVariable(\"clientName\", jsonData.clientProperties[0].client.displayName);",
+							"",
+							"console.log(clientName);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/hypervisors/{{clientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"hypervisors",
+						"{{clientId}}"
+					]
+				},
+				"description": "Get the VSA PseudoClient Properties provided the ID"
+			},
+			"response": []
+		},
+		{
+			"name": "DC Refresh",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\"); //validate content-type",
+							"",
+							"",
+							"if((tests[\"Validate inventoryInfo tag\"] = responseBody.has(\"inventoryInfo\")));",
+							"        console.log(\"inventoryInfo tag is present\");",
+							"        ",
+							"if((tests[\"Validate strGUID tag\"] = responseBody.has(\"strGUID\")));",
+							"        console.log(\"strGUID tag is present\");",
+							"        ",
+							"if((tests[\"Validate name tag\"] = responseBody.has(\"name\")));",
+							"        console.log(\"name tag is present\");",
+							"",
+							"        ",
+							"if((tests[\"Validate type tag\"] = responseBody.has(\"type\"))); {",
+							"        console.log(\"type tag is present\");",
+							"        tests[\"Validate type\"] = jsonData.inventoryInfo[0].type === 4;",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/hypervisors/{{clientId}}/refresh",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"hypervisors",
+						"{{clientId}}",
+						"refresh"
+					]
+				},
+				"description": "fetches all the datacenter for the provided pseudoclient"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Disks for VM",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\"); //validate content-type",
+							"        ",
+							"if((tests[\"Validate name tag\"] = responseBody.has(\"name\")));",
+							"        console.log(\"strGUID tag is present\");",
+							"        ",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/vm/{{vmGuid}}/disks?jobid={{jobid}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"vm",
+						"{{vmGuid}}",
+						"disks"
+					],
+					"query": [
+						{
+							"key": "jobid",
+							"value": "{{jobid}}"
+						}
+					]
+				},
+				"description": "get the disk for the VM provided"
+			},
+			"response": []
+		},
+		{
+			"name": "Get VM Nics",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\"); //validate content-type",
+							"",
+							"",
+							"if((tests[\"Validate nic tag\"] = responseBody.has(\"nic\")));",
+							"        console.log(\"nic tag is present\");",
+							"        ",
+							"if((tests[\"Validate label tag\"] = responseBody.has(\"label\")));",
+							"        console.log(\"label tag is present\");",
+							"        ",
+							"if((tests[\"Validate name tag\"] = responseBody.has(\"name\")));",
+							"        console.log(\"name tag is present\");",
+							"",
+							"        "
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/vm/{{vmGuid}}/nics",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"vm",
+						"{{vmGuid}}",
+						"nics"
+					]
+				},
+				"description": "Get Nics for the backed up VM provided the VM GUID"
+			},
+			"response": []
+		},
+		{
+			"name": "Get VM Jobs - Plain",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"tests[\"Response Body contains jobs\"] = responseBody.has(\"totalRecordsWithoutPaging\");",
+							"",
+							"postman.setEnvironmentVariable(\"jobId\", (function() {",
+							"    for (i = 0;  i < jsonData.jobs.length; i++)",
+							"        if (jsonData.jobs[i].jobSummary.jobType === \"Backup\" && jsonData.jobs[i].jobSummary.status === \"Completed\" || jsonData.jobs[i].jobSummary.status === \"Killed\")",
+							"            return jsonData.jobs[i].jobSummary.jobId;",
+							"})());",
+							"",
+							"console.log(postman.getEnvironmentVariable(\"jobId\"))"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/vm/{{vmGuid}}/Jobs",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"vm",
+						"{{vmGuid}}",
+						"Jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get VM Jobs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"tests[\"Response Body contains jobs\"] = responseBody.has(\"totalRecordsWithoutPaging\");",
+							"",
+							"postman.setEnvironmentVariable(\"jobId\", (function() {",
+							"    for (i = 0;  i < jsonData.jobs.length; i++)",
+							"        if (jsonData.jobs[i].jobSummary.jobType === \"Backup\" && jsonData.jobs[i].jobSummary.status === \"Completed\" || jsonData.jobs[i].jobSummary.status === \"Killed\")",
+							"            return jsonData.jobs[i].jobSummary.jobId;",
+							"})());",
+							"",
+							"console.log(postman.getEnvironmentVariable(\"jobId\"))"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/vm/{{vmGuid}}/Jobs?completedJobLookupTime=12960000&jobTypeList=backup&statusList=Completed,Killed&showAgedJobs=true&backupLevel=Full",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"vm",
+						"{{vmGuid}}",
+						"Jobs"
+					],
+					"query": [
+						{
+							"key": "completedJobLookupTime",
+							"value": "12960000"
+						},
+						{
+							"key": "jobTypeList",
+							"value": "backup"
+						},
+						{
+							"key": "statusList",
+							"value": "Completed,Killed"
+						},
+						{
+							"key": "showAgedJobs",
+							"value": "true"
+						},
+						{
+							"key": "backupLevel",
+							"value": "Full"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Virtualization Client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");",
+							"",
+							"console.log(tests[\"Validate response tag\"] = responseBody.has(\"response\"));",
+							"",
+							"if ('response' in jsonData) {",
+							"    console.log(tests[\"Error Code is 0\"] = (jsonData.response.errorCode === 0));",
+							"",
+							"    var clientName = postman.getEnvironmentVariable(\"clientName\");",
+							"    postman.setEnvironmentVariable(\"clientName\", jsonData.response.entity.clientName);",
+							"} else {",
+							"    console.log(tests[\"Error Code is 0\"] = false);",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"clientName\": \"{{newClientName}}\",\n\t\"vendor\": \"{{vendor}}\",\n\t\"clients\": {{clients}},\n\t\"clientGroups\": {{clientGroups}},\n\t\"hostname\": \"{{hostname}}\",\n\t\"username\": \"{{username}}\",\n\t\"password\": \"{{password}}\"\n}\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/hypervisors",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"hypervisors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Hypervisor Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");",
+							"",
+							"console.log(tests[\"Validate client id is present\"] = responseBody.has(\"clientId\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"hostname\": \"{{newHostname}}\",\n\t\"username\": \"{{newUsername}}\",\n\t\"password\": \"{{newPassword}}\"\n}\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/hypervisors?clientName={{clientName}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"hypervisors"
+					],
+					"query": [
+						{
+							"key": "clientName",
+							"value": "{{clientName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VMBrowse",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\"); //validate content-type",
+							"",
+							"",
+							"if((tests[\"Validate browseResult tag\"] = responseBody.has(\"browseResult\")));",
+							"        console.log(\"browseResult tag is present\");",
+							"        ",
+							"if((tests[\"Validate dataResultSet tag\"] = responseBody.has(\"dataResultSet\")));",
+							"        console.log(\"dataResultSet tag is present\");",
+							"        ",
+							"if((tests[\"Validate path tag\"] = responseBody.has(\"path\")));",
+							"        console.log(\"name tag  is present\");",
+							"",
+							"if((tests[\"Validate advancedData tag\"] = responseBody.has(\"advancedData\")));",
+							"        console.log(\"advancedData tag is present\");",
+							"",
+							"if((tests[\"Validate virtualServerMetaData tag\"] = responseBody.has(\"virtualServerMetaData\")));",
+							"        console.log(\"virtualServerMetaData tag is present\");",
+							"",
+							"        "
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/vm/{{jobid}}/browse",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"vm",
+						"{{jobid}}",
+						"browse"
+					]
+				},
+				"description": "Browse the VM for the particular job"
+			},
+			"response": []
+		},
+		{
+			"name": "VM Out Place Recover",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validate taskId tag\"] = responseBody.has(\"taskId\")));",
+							"        console.log(\"taskId tag is present\");",
+							"        ",
+							"if((tests[\"Validate jobIds tag\"] = responseBody.has(\"jobIds\")));",
+							"        console.log(\"jobIds tag is present\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<VMRestoreReq powerOnVmAfterRestore =\"true\" passUnconditionalOverride=\"true\" inPlaceRestore=\"false\">\n    <destinationClient clientName=\"{{clientName}}\" />\n    <destinationInfo>\n        <vmware esxHost=\"{{esxHost}}\" dataStore=\"{{DataStore}}\" resourcePool=\"{{resourcePool}}\" newName=\"{{newname}}\" />\n    </destinationInfo>\n</VMRestoreReq>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/vm/{{vmGuid}}/recover",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"vm",
+						"{{vmGuid}}",
+						"recover"
+					]
+				},
+				"description": "Recover the VM provided "
+			},
+			"response": []
+		},
+		{
+			"name": "VM File In Place Recover",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validate taskId tag\"] = responseBody.has(\"taskId\")));",
+							"        console.log(\"taskId tag is present\");",
+							"        ",
+							"if((tests[\"Validate jobIds tag\"] = responseBody.has(\"jobIds\")));",
+							"        console.log(\"jobIds tag is present\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<VMRestoreReq passUnconditionalOverride=\"true\" inPlaceRestore=\"true\">\r\n<vmFileLevelRestoreOptions>\r\n<sourcePath>{{sourcePath}}</sourcePath>\r\n<destPath>{{destinationPath}}</destPath>\r\n<guestCredentials userName=\"{{guestUName}}\" password=\"{{guestPass}}\"/>\r\n</vmFileLevelRestoreOptions>\r\n</VMRestoreReq>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/vm/{{vmGuid}}/recoverfile",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"vm",
+						"{{vmGuid}}",
+						"recoverfile"
+					]
+				},
+				"description": "Recover the VM provided in place"
+			},
+			"response": []
+		},
+		{
+			"name": "VM File Out Place (Diff VM)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validate taskId tag\"] = responseBody.has(\"taskId\")));",
+							"        console.log(\"taskId tag is present\");",
+							"        ",
+							"if((tests[\"Validate jobIds tag\"] = responseBody.has(\"jobIds\")));",
+							"        console.log(\"jobIds tag is present\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<VMRestoreReq passUnconditionalOverride=\"true\" inPlaceRestore=\"false\">\r\n<vmFileLevelRestoreOptions>\r\n<sourcePath>{{sourcePath}}</sourcePath>\r\n<destPath>{{destinationPath}}</destPath>\r\n<destinationVMGuid>{{destinationVMGuid}}</destinationVMGuid>\r\n<guestCredentials userName=\"{{guestUName}}\" password=\"{{guestPass}}\"/>\r\n</vmFileLevelRestoreOptions>\r\n<destinationClient clientName = \"{{destinationHyperVisor}}\"/>\r\n</VMRestoreReq>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/vm/{{vmGuid}}/recoverfile",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"vm",
+						"{{vmGuid}}",
+						"recoverfile"
+					]
+				},
+				"description": "Recover the VM provided in place"
+			},
+			"response": []
+		},
+		{
+			"name": "VM File Out Place (Simpana Client)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validate taskId tag\"] = responseBody.has(\"taskId\")));",
+							"        console.log(\"taskId tag is present\");",
+							"        ",
+							"if((tests[\"Validate jobIds tag\"] = responseBody.has(\"jobIds\")));",
+							"        console.log(\"jobIds tag is present\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<VMRestoreReq passUnconditionalOverride=\"true\" inPlaceRestore=\"false\">\r\n<vmFileLevelRestoreOptions>\r\n<sourcePath>{{sourcePath}}</sourcePath>\r\n<destPath>{{destinationPath}}</destPath>\r\n</vmFileLevelRestoreOptions>\r\n<destinationClient clientName = \"{{destinationClient}}\"/>\r\n</VMRestoreReq>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/vm/{{vmGuid}}/recoverfile",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"vm",
+						"{{vmGuid}}",
+						"recoverfile"
+					]
+				},
+				"description": "Recover the VM provided in place"
+			},
+			"response": []
+		},
+		{
+			"name": "VM In Place Recover",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validate taskId tag\"] = responseBody.has(\"taskId\")));",
+							"        console.log(\"taskId tag is present\");",
+							"        ",
+							"if((tests[\"Validate jobIds tag\"] = responseBody.has(\"jobIds\")));",
+							"        console.log(\"jobIds tag is present\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<VMRestoreReq powerOnVmAfterRestore =\"true\" passUnconditionalOverride=\"true\" />"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/vm/{{vmGuid}}/recover",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"vm",
+						"{{vmGuid}}",
+						"recover"
+					]
+				},
+				"description": "Recover the VM provided in place"
+			},
+			"response": []
+		},
+		{
+			"name": "VM Live Recovery ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validate taskId tag\"] = responseBody.has(\"taskId\")));",
+							"        console.log(\"taskId tag is present\");",
+							"        ",
+							"if((tests[\"Validate jobIds tag\"] = responseBody.has(\"jobIds\")));",
+							"        console.log(\"jobIds tag is present\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<VMRestoreReq powerOnVmAfterRestore =\"true\" passUnconditionalOverride=\"true\" inPlaceRestore=\"false\">\n    <destinationClient clientName=\"{{clientName}}\" />\n    <destinationInfo>\n        <vmware esxHost=\"{{esxHost}}\" dataStore=\"{{DataStore}}\" resourcePool=\"{{resourcePool}}\" newName=\"{{livenewname}}\" />\n    </destinationInfo>\n    <liveRecovery redirectWritesToDatastore = \"{{resirectwritesto}}\" delayMigrationMinutes = \"240\" />\n</VMRestoreReq>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/vsa/vm/{{vmGuid}}/recover",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"vsa",
+						"vm",
+						"{{vmGuid}}",
+						"recover"
+					]
+				},
+				"description": "Perform Live recovery of the VM Provided"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,838 @@
+{
+	"info": {
+		"_postman_id": "97b620ad-89d2-40f4-a5aa-157b341c5dc1",
+		"name": "WebhooksOperations",
+		"description": "This collection verifies basic functionality of User Operations using REST API for JSON requests and responses.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/rest_api_authentication.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Webhooks",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Webhook",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Webhook (SSL Enabled)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+							"tests[\"Validating response body is not empty\"] = (jsonData !== undefined || jsonData.length !== 0);\r",
+							"\r",
+							"postman.setEnvironmentVariable(\"webhookId\", jsonData.webhook.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "CometFirstLoadSubscriptionId",
+						"value": "170",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{$guid}}\",\r\n    \"url\": \"https://webhook.site/ca6d3b69-f37e-4936-a78a-ec6d9d370ce1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Webhook",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of agents for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_agent.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Webhook",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "CometFirstLoadSubscriptionId",
+						"value": "170",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Webhook/{{webhookId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook",
+						"{{webhookId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of agents for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_agent.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Webhook Copy (SSL Disabled)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+							"tests[\"Validating response body is not empty\"] = (jsonData !== undefined || jsonData.length !== 0);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "CometFirstLoadSubscriptionId",
+						"value": "170",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{$guid}}\",\r\n    \"url\": \"https://webhook.site/ca6d3b69-f37e-4936-a78a-ec6d9d370ce1\",\r\n    \"ssl\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Webhook",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of agents for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_agent.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Webhook (SSL Enabled, With Auth)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+							"tests[\"Validating response body is not empty\"] = (jsonData !== undefined || jsonData.length !== 0);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "CometFirstLoadSubscriptionId",
+						"value": "170",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{$guid}}\",\r\n    \"url\": \"https://webhook.site/ca6d3b69-f37e-4936-a78a-ec6d9d370ce1\",\r\n    \"hasSecret\": true,\r\n    \"secret\": \"1111\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Webhook",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of agents for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_agent.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Webhook (SSL Disabled, With Auth) Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+							"tests[\"Validating response body is not empty\"] = (jsonData !== undefined || jsonData.length !== 0);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "CometFirstLoadSubscriptionId",
+						"value": "170",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{$guid}}\",\r\n    \"url\": \"https://webhook.site/ca6d3b69-f37e-4936-a78a-ec6d9d370ce1\",\r\n    \"hasSecret\": true,\r\n    \"secret\": \"1111\",\r\n    \"ssl\": false\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Webhook",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of agents for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_agent.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Webhook (NAME, URL)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+							"tests[\"Validating response body is not empty\"] = (jsonData !== undefined || jsonData.length !== 0);\r",
+							"\r",
+							"var errorCode = jsonData.errorCode;\r",
+							"tests[\"Error code is 0\"] = errorCode === 0;\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "CometFirstLoadSubscriptionId",
+						"value": "170",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Webhook-Modified\",\r\n    \"url\": \"https://www.google.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Webhook/{{webhookId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook",
+						"{{webhookId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of agents for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_agent.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Webhook (ENABLE SSL)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+							"tests[\"Validating response body is not empty\"] = (jsonData !== undefined || jsonData.length !== 0);\r",
+							"\r",
+							"var errorCode = jsonData.errorCode;\r",
+							"tests[\"Error code is 0\"] = errorCode === 0;\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "CometFirstLoadSubscriptionId",
+						"value": "170",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ssl\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Webhook/{{webhookId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook",
+						"{{webhookId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of agents for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_agent.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Webhook (DISABLE SSL)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+							"tests[\"Validating response body is not empty\"] = (jsonData !== undefined || jsonData.length !== 0);\r",
+							"\r",
+							"var errorCode = jsonData.errorCode;\r",
+							"tests[\"Error code is 0\"] = errorCode === 0;\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "CometFirstLoadSubscriptionId",
+						"value": "170",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ssl\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Webhook/{{webhookId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook",
+						"{{webhookId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of agents for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_agent.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Webhook (ENABLE AUTH)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+							"tests[\"Validating response body is not empty\"] = (jsonData !== undefined || jsonData.length !== 0);\r",
+							"\r",
+							"var errorCode = jsonData.errorCode;\r",
+							"tests[\"Error code is 0\"] = errorCode === 0;\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "CometFirstLoadSubscriptionId",
+						"value": "170",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"hasSecret\": true,\r\n    \"secret\": \"{{$guid}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Webhook/{{webhookId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook",
+						"{{webhookId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of agents for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_agent.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Webhook (DISABLE AUTH)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+							"tests[\"Validating response body is not empty\"] = (jsonData !== undefined || jsonData.length !== 0);\r",
+							"\r",
+							"var errorCode = jsonData.errorCode;\r",
+							"tests[\"Error code is 0\"] = errorCode === 0;\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "CometFirstLoadSubscriptionId",
+						"value": "170",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"hasSecret\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Webhook/{{webhookId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook",
+						"{{webhookId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of agents for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_agent.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Webhook",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; \r",
+							"tests[\"Validating response body is not empty\"] = (jsonData !== undefined || jsonData.length !== 0);\r",
+							"\r",
+							"var errorCode = jsonData.errorCode;\r",
+							"tests[\"Error code is 0\"] = errorCode === 0;\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "CometFirstLoadSubscriptionId",
+						"value": "170",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Webhook/{{webhookId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Webhook",
+						"{{webhookId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of agents for a client.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_agent.htm)"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

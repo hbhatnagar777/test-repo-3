@@ -1,0 +1,2874 @@
+{
+	"info": {
+		"_postman_id": "2bcee28e-5c44-4560-9448-be9235a90df4",
+		"name": "AdditionalSettingsGlobalLevel",
+		"description": "This is a collection of all REST APIs used in the additional settings to Command Center project.\r\n\r\nEnvironment Variables used -\r\nServerUrl - url to the webservice\r\nuserName - username to login\r\npassword - password to login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"TOKEN\", jsonData.token);",
+							"",
+							"console.log(\"QSDK Token obtained is: \"+jsonData.token);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"password\": \"{{Password}}\",\n  \"username\": \"{{UserName}}\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				},
+				"description": "<h2>Description</h2>\n(starting with V11 RTM)\n\nCommvault REST APIs support token-based authentication via the Authtoken request header. The POST Login API is used to retrieve the authentication token. Once obtained, the authentication token must be inserted into the Authtoken header for all requests.\n\n<b>Note:</b> The authentication token expires after 30 minutes of inactivity.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/rest_api_authentication.htm)"
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"password\": \"{{password}}\",\n  \"username\": \"{{userName}}\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Login",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true",
+							"name": "Access-Control-Allow-Credentials",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*",
+							"name": "Access-Control-Allow-Headers",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "OPTIONS, GET, POST, PUT, DELETE",
+							"name": "Access-Control-Allow-Methods",
+							"description": ""
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": ""
+						},
+						{
+							"key": "Content-Length",
+							"value": "1043",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 Apr 2018 17:52:47 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\n    \"aliasName\": \"1\",\n    \"userGUID\": \"AC3E5333-4585-4EFD-B566-4654C5C88C27\",\n    \"loginAttempts\": 0,\n    \"remainingLockTime\": 0,\n    \"smtpAddress\": \"email@domain.com\",\n    \"userName\": \"admin\",\n    \"providerType\": 1,\n    \"ccn\": 0,\n    \"token\": \"QSDK ...\",\n    \"capability\": 4328650366975,\n    \"forcePasswordChange\": false,\n    \"isAccountLocked\": false,\n    \"ownerOrganization\": {\n        \"providerId\": 0,\n        \"providerDomainName\": \"Qinetix Commcell\"\n    },\n    \"providerOrganization\": {\n        \"providerId\": 0,\n        \"providerDomainName\": \"Qinetix Commcell\"\n    },\n    \"errList\": []\n}"
+				}
+			]
+		},
+		{
+			"name": "Global Settings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"allGlobalKeysPresent = false;\r",
+							"if( jsonData.KeyInfoList.length == 194)\r",
+							"    allGlobalKeysPresent = true;\r",
+							"if(tests[\"All 194 Global keys are present\"] = allGlobalKeysPresent);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/AdvanceKeyInfo?relativePath=CommServDB.GxGlobalParam",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"AdvanceKeyInfo"
+					],
+					"query": [
+						{
+							"key": "relativePath",
+							"value": "CommServDB.GxGlobalParam"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of all settings displayed in global settings tab.\nAll settings with relative path - CommServDB.GxGlobalParam."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Add Global Settings - AccountLockDuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"regKeys\": [\r\n        {\r\n            \"deleted\": 0,\r\n            \"relativepath\": \"CommServDB.GxGlobalParam\",\r\n            \"keyName\": \"AccountLockDuration\",\r\n            \"isInheritedFromClientGroup\": false,\r\n            \"type\": \"INTEGER\",\r\n            \"value\": \"1000\",\r\n            \"enabled\": 1\r\n        }\r\n    ],\r\n    \"client\": {\r\n        \"clientId\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation adds or modifies a global setting."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Global Settings - check addition of AccountLockDuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('regKeys'))\r",
+							"{\r",
+							"    for (i = 0; i < jsonData.regKeys.length; i++) {\r",
+							"        if(jsonData.regKeys[i].keyName == \"AccountLockDuration\")\r",
+							"        {\r",
+							"            keyValue = jsonData.regKeys[i].value;\r",
+							"            if(keyValue == 1000)\r",
+							"            {\r",
+							"                passed = true;\r",
+							"            }\r",
+							"            break;\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key 'AccountLockDuration' has been set to '1000'\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings?relativePath=CommServDB.GxGlobalParam",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					],
+					"query": [
+						{
+							"key": "relativePath",
+							"value": "CommServDB.GxGlobalParam"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of added or modified settings displayed in global settings tab.\nAdded or Modified settings with relative path - CommServDB.GxGlobalParam."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Edit Global Settings - AccountLockDuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"regKeys\": [\r\n        {\r\n            \"deleted\": 0,\r\n            \"relativepath\": \"CommServDB.GxGlobalParam\",\r\n            \"keyName\": \"AccountLockDuration\",\r\n            \"isInheritedFromClientGroup\": false,\r\n            \"type\": \"INTEGER\",\r\n            \"value\": \"2147483647\",\r\n            \"enabled\": 1\r\n        }\r\n    ],\r\n    \"client\": {\r\n        \"clientId\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation adds or modifies a global setting."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Global Settings - check edit of AccountLockDuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('regKeys'))\r",
+							"{\r",
+							"    for (i = 0; i < jsonData.regKeys.length; i++) {\r",
+							"        if(jsonData.regKeys[i].keyName == \"AccountLockDuration\")\r",
+							"        {\r",
+							"            keyValue = jsonData.regKeys[i].value;\r",
+							"            if(keyValue == 2147483647)\r",
+							"            {\r",
+							"                passed = true;\r",
+							"            }\r",
+							"            break;\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key 'AccountLockDuration' has been edited to '2147483647'\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings?relativePath=CommServDB.GxGlobalParam",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					],
+					"query": [
+						{
+							"key": "relativePath",
+							"value": "CommServDB.GxGlobalParam"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of added or modified settings displayed in global settings tab.\nAdded or Modified settings with relative path - CommServDB.GxGlobalParam."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Delete Global Settings - AccountLockDuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"regKeys\": [\r\n        {\r\n            \"deleted\": 1,\r\n            \"relativepath\": \"CommServDB.GxGlobalParam\",\r\n            \"keyName\": \"AccountLockDuration\",\r\n            \"isInheritedFromClientGroup\": false,\r\n            \"type\": \"INTEGER\",\r\n            \"value\": \"1000\",\r\n            \"enabled\": 1\r\n        }\r\n    ],\r\n    \"client\": {\r\n        \"clientId\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a global setting.\nAPI is same as Add Global Settings."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Global Settings - check deletion of AccountLockDuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"passed = true;\r",
+							"if(jsonData.hasOwnProperty('regKeys'))\r",
+							"{\r",
+							"    for (i = 0; i < jsonData.regKeys.length; i++) {\r",
+							"        if(jsonData.regKeys[i].keyName == \"AccountLockDuration\")\r",
+							"        {\r",
+							"            passed = false; // AccountLockDuration should not be present after deletion\r",
+							"            break;\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"else\r",
+							"{\r",
+							"    passed = true; // If 'regKeys' is not present also pass the testcase\r",
+							"}\r",
+							"if(tests[\"The key 'AccountLockDuration' has been deleted\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings?relativePath=CommServDB.GxGlobalParam",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					],
+					"query": [
+						{
+							"key": "relativePath",
+							"value": "CommServDB.GxGlobalParam"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of added or modified settings displayed in global settings tab.\nAdded or Modified settings with relative path - CommServDB.GxGlobalParam."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Add Global Settings - UseContentstoreAsEventSourceName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"regKeys\": [\r\n        {\r\n            \"deleted\": 0,\r\n            \"relativepath\": \"CommServDB.GxGlobalParam\",\r\n            \"keyName\": \"UseContentstoreAsEventSourceName\",\r\n            \"type\": \"BOOLEAN\",\r\n            \"value\": \"false\",\r\n            \"enabled\": 1\r\n        }\r\n    ],\r\n    \"client\": {\r\n        \"clientId\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation adds or modifies a global setting."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Global Settings - check addition of UseContentstoreAsEventSourceName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('regKeys'))\r",
+							"{\r",
+							"    for (i = 0; i < jsonData.regKeys.length; i++) {\r",
+							"        if(jsonData.regKeys[i].keyName == \"UseContentstoreAsEventSourceName\")\r",
+							"        {\r",
+							"            keyValue = jsonData.regKeys[i].value;\r",
+							"            if(keyValue == 'false')\r",
+							"            {\r",
+							"                passed = true;\r",
+							"            }\r",
+							"            break;\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key 'UseContentstoreAsEventSourceName' has been set to 'false'\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings?relativePath=CommServDB.GxGlobalParam",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					],
+					"query": [
+						{
+							"key": "relativePath",
+							"value": "CommServDB.GxGlobalParam"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of added or modified settings displayed in global settings tab.\nAdded or Modified settings with relative path - CommServDB.GxGlobalParam."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Edit Global Settings - UseContentstoreAsEventSourceName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"regKeys\": [\r\n        {\r\n            \"deleted\": 0,\r\n            \"relativepath\": \"CommServDB.GxGlobalParam\",\r\n            \"keyName\": \"UseContentstoreAsEventSourceName\",\r\n            \"isInheritedFromClientGroup\": false,\r\n            \"type\": \"BOOLEAN\",\r\n            \"value\": \"true\",\r\n            \"enabled\": 1\r\n        }\r\n    ],\r\n    \"client\": {\r\n        \"clientId\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation adds or modifies a global setting."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Global Settings - check edit of UseContentstoreAsEventSourceName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('regKeys'))\r",
+							"{\r",
+							"    for (i = 0; i < jsonData.regKeys.length; i++) {\r",
+							"        if(jsonData.regKeys[i].keyName == \"UseContentstoreAsEventSourceName\")\r",
+							"        {\r",
+							"            keyValue = jsonData.regKeys[i].value;\r",
+							"            if(keyValue == 'true')\r",
+							"            {\r",
+							"                passed = true;\r",
+							"            }\r",
+							"            break;\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key 'UseContentstoreAsEventSourceName' has been edited to 'true'\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings?relativePath=CommServDB.GxGlobalParam",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					],
+					"query": [
+						{
+							"key": "relativePath",
+							"value": "CommServDB.GxGlobalParam"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of added or modified settings displayed in global settings tab.\nAdded or Modified settings with relative path - CommServDB.GxGlobalParam."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Delete Global Settings - UseContentstoreAsEventSourceName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"regKeys\": [\r\n        {\r\n            \"deleted\": 1,\r\n            \"relativepath\": \"CommServDB.GxGlobalParam\",\r\n            \"keyName\": \"UseContentstoreAsEventSourceName\",\r\n            \"isInheritedFromClientGroup\": false,\r\n            \"type\": \"BOOLEAN\",\r\n            \"value\": \"true\",\r\n            \"enabled\": 1\r\n        }\r\n    ],\r\n    \"client\": {\r\n        \"clientId\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a global setting.\nAPI is same as Add Global Settings."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Global Settings - check deletion of UseContentstoreAsEventSourceName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"passed = true;\r",
+							"if(jsonData.hasOwnProperty('regKeys'))\r",
+							"{\r",
+							"    for (i = 0; i < jsonData.regKeys.length; i++) {\r",
+							"        if(jsonData.regKeys[i].keyName == \"UseContentstoreAsEventSourceName\")\r",
+							"        {\r",
+							"            passed = false; // UseContentstoreAsEventSourceName should not be present after deletion\r",
+							"            break;\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"else\r",
+							"{\r",
+							"    passed = true; // If 'regKeys' is not present also pass the testcase\r",
+							"}\r",
+							"if(tests[\"The key 'UseContentstoreAsEventSourceName' has been deleted\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings?relativePath=CommServDB.GxGlobalParam",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					],
+					"query": [
+						{
+							"key": "relativePath",
+							"value": "CommServDB.GxGlobalParam"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of added or modified settings displayed in global settings tab.\nAdded or Modified settings with relative path - CommServDB.GxGlobalParam."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Add Global Settings - AddNewComputerDownloadCenterOtherPlatformUrl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"regKeys\": [\r\n        {\r\n            \"deleted\": 0,\r\n            \"relativepath\": \"CommServDB.GxGlobalParam\",\r\n            \"keyName\": \"AddNewComputerDownloadCenterOtherPlatformUrl\",\r\n            \"type\": \"STRING\",\r\n            \"value\": \"https://testurl.com/test_test/#/%%^&$/test\",\r\n            \"enabled\": 1\r\n        }\r\n    ],\r\n    \"client\": {\r\n        \"clientId\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation adds or modifies a global setting."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Global Settings - check addition of AddNewComputerDownloadCenterOtherPlatformUrl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('regKeys'))\r",
+							"{\r",
+							"    for (i = 0; i < jsonData.regKeys.length; i++) {\r",
+							"        if(jsonData.regKeys[i].keyName == \"AddNewComputerDownloadCenterOtherPlatformUrl\")\r",
+							"        {\r",
+							"            keyValue = jsonData.regKeys[i].value;\r",
+							"            if(keyValue == 'https://testurl.com/test_test/#/%%^&$/test')\r",
+							"            {\r",
+							"                passed = true;\r",
+							"            }\r",
+							"            break;\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key 'AddNewComputerDownloadCenterOtherPlatformUrl' has been set to 'https://testurl.com/test_test/#/%%^&$/test'\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings?relativePath=CommServDB.GxGlobalParam",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					],
+					"query": [
+						{
+							"key": "relativePath",
+							"value": "CommServDB.GxGlobalParam"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of added or modified settings displayed in global settings tab.\nAdded or Modified settings with relative path - CommServDB.GxGlobalParam."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Edit Global Settings - AddNewComputerDownloadCenterOtherPlatformUrl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"regKeys\": [\r\n        {\r\n            \"deleted\": 0,\r\n            \"relativepath\": \"CommServDB.GxGlobalParam\",\r\n            \"keyName\": \"AddNewComputerDownloadCenterOtherPlatformUrl\",\r\n            \"isInheritedFromClientGroup\": false,\r\n            \"type\": \"STRING\",\r\n            \"value\": \"https://testurl.com/test_test/#/%%^&$/12124#%#$^!^*\",\r\n            \"enabled\": 1\r\n        }\r\n    ],\r\n    \"client\": {\r\n        \"clientId\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation adds or modifies a global setting."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Global Settings - - check edit of AddNewComputerDownloadCenterOtherPlatformUrl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"keyValue = \"\";\r",
+							"passed = false;\r",
+							"if(jsonData.hasOwnProperty('regKeys'))\r",
+							"{\r",
+							"    for (i = 0; i < jsonData.regKeys.length; i++) {\r",
+							"        if(jsonData.regKeys[i].keyName == \"AddNewComputerDownloadCenterOtherPlatformUrl\")\r",
+							"        {\r",
+							"            keyValue = jsonData.regKeys[i].value;\r",
+							"            if(keyValue == 'https://testurl.com/test_test/#/%%^&$/12124#%#$^!^*')\r",
+							"            {\r",
+							"                passed = true;\r",
+							"            }\r",
+							"            break;\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"if(tests[\"The key 'AddNewComputerDownloadCenterOtherPlatformUrl' has been edited to 'https://testurl.com/test_test/#/%%^&$/12124#%#$^!^*'\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings?relativePath=CommServDB.GxGlobalParam",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					],
+					"query": [
+						{
+							"key": "relativePath",
+							"value": "CommServDB.GxGlobalParam"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of added or modified settings displayed in global settings tab.\nAdded or Modified settings with relative path - CommServDB.GxGlobalParam."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Delete Global Settings - AddNewComputerDownloadCenterOtherPlatformUrl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"regKeys\": [\r\n        {\r\n            \"deleted\": 1,\r\n            \"relativepath\": \"CommServDB.GxGlobalParam\",\r\n            \"keyName\": \"AddNewComputerDownloadCenterOtherPlatformUrl\",\r\n            \"isInheritedFromClientGroup\": false,\r\n            \"type\": \"STRING\",\r\n            \"value\": \"https://testurl.com/test_test/#/%%^&$/12124#%#$^!^*\",\r\n            \"enabled\": 1\r\n        }\r\n    ],\r\n    \"client\": {\r\n        \"clientId\": 2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a global setting.\nAPI is same as Add Global Settings."
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get Added Global Settings - check deletion of AddNewComputerDownloadCenterOtherPlatformUrl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"\r",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200); //validate status code\r",
+							"\r",
+							"passed = true;\r",
+							"if(jsonData.hasOwnProperty('regKeys'))\r",
+							"{\r",
+							"    for (i = 0; i < jsonData.regKeys.length; i++)\r",
+							"    {\r",
+							"        if(jsonData.regKeys[i].keyName == \"AddNewComputerDownloadCenterOtherPlatformUrl\")\r",
+							"        {\r",
+							"            passed = false; // AddNewComputerDownloadCenterOtherPlatformUrl should not be present after deletion\r",
+							"            break;\r",
+							"        }\r",
+							"    }\r",
+							"}\r",
+							"else\r",
+							"{\r",
+							"    passed = true; // If 'regKeys' is not present also pass the testcase\r",
+							"}\r",
+							"if(tests[\"The key 'AddNewComputerDownloadCenterOtherPlatformUrl' has been deleted\"] = passed);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Client/2/AdditionalSettings?relativePath=CommServDB.GxGlobalParam",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Client",
+						"2",
+						"AdditionalSettings"
+					],
+					"query": [
+						{
+							"key": "relativePath",
+							"value": "CommServDB.GxGlobalParam"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET Agent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Agent?clientId=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Agent"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "443",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 01:13:24 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"agentProperties\":[\r{\r\"AgentProperties\":{\r\"installDate\":1486138489,\"agentVersion\":\"11(BUILD80)\",\"isMarkedDeleted\":false\r},\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":true\r},{\r\"activityType\":2,\"enableAfterADelay\":false,\"enableActivityType\":true\r}\r]\r},\"idaEntity\":{\r\"clientId\":2,\"clientName\":\"testcl\",\"appName\":\"File System\",\"commCellId\":2,\"applicationId\":33\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation ends the current session.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_logout.htm)"
+			},
+			"response": [
+				{
+					"name": "Logout",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Logout",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Logout"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "15",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 May 2017 00:49:22 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "User logged out"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,239 @@
+{
+  "Metallic": {
+    "hyperv": {
+      "credentials": {
+        "host": "{{hyper_host}}",
+        "domain": "{{hyperv_domain}}",
+        "user": "{{hyperv_username}}",
+        "password": "{{hyperv_password}}"
+      },
+      "options": {
+        "protocol": "winrm",
+        "ssh_port": "22",
+        "sync_interval": "4"
+      },
+      "disk_images" : {
+        "windows_os": {
+          "template": "{{windows_template_path}}",
+          "credentials": {
+            "username": "{{windows_template_username}}",
+            "password": "{{windows_template_password}}"
+          }
+        },
+        "RHEL_os": {
+          "template": "{{unix_template_path}}",
+          "credentials": {
+            "username": "{{unix_template_username}}",
+            "password": "{{unix_template_password}}"
+          }
+        }
+      },
+      "cloned_disk_path": "{{cloned_disk_path}}"
+    },
+    "snap_options": {
+      "take_snap": 0,
+      "rerun": 0
+    },
+    "ring": {
+      "status_url": "",
+      "hub_config": false,
+      "hub_info": {
+        "subnet_info": null
+      },
+      "unique_id": "{{unique_id}}",
+      "container_info": {
+        "tag": "{{container_tag}}",
+        "global_registry":"",
+        "namespace":"",
+        "suffix": "{{domain_suffix}}",
+        "context": "",
+        "subscription": "",
+        "helm_info": {
+          "repo_name": "",
+          "repo_url": ""
+        }
+      },
+      "provision_type": "{{provision_type}}",
+      "container_provision": "{{provision_containers}}",
+      "vm_provision": "{{provision_vm}}",
+      "name": "{{ring_name}}",
+      "id": "{{ring_id}}",
+      "custom_webconsole_url": "https://{{ring_name}}.{{domain_url_name}}",
+      "region": "{{region_name}}",
+      "install_options": {
+          "ServicePack": "{{service_pack}}",
+          "MediaPath": "{{media_path}}"
+      },
+      "certificate": {
+        "certificateKeystorePassword": ""
+      },
+      "hub_user": {
+        "domain": "{{domain_name}}",
+        "username": "{{hub_username}}",
+        "password": "{{hub_password}}"
+      },
+      "commserv": {
+        "client_name": "cms01{{ring_id}}c1us02",
+        "hostname": "cms01{{ring_id}}c1us02.{{domain_url_name}}",
+        "username": "{{commcell_username}}",
+        "password": "{{commcell_password}}",
+        "new_username": "{{commcell_username}}",
+        "new_password": "{{commcell_password}}",
+        "encrypted_password": "{{v3_commcell_encrypted_password}}",
+        "smtp_server": {
+          "server": "{{smtp_server_hostname}}",
+          "sender_email": "{{from_email_addr}}",
+          "sender_name": "{{sender_name}}"
+        },
+        "alert_notification_email": "{{notification_email}}",
+        "region": "c1us02"
+      },
+      "web_servers": [
+        {
+          "client_name": "wes01{{ring_id}}c1us02",
+          "region": "{{region_name}}"
+        }
+      ],
+      "media_agents": [
+        {
+          "client_name": "mas01{{ring_id}}c1us02",
+          "ddb_path": "c:\\Metallic_ring_automation\\{{ring_name}}\\cloud_ddb",
+          "mount_path": "c:\\Metallic_ring_automation\\{{ring_name}}\\storage",
+          "ddb_path_unix": "/Metallic_ring_automation/{{ring_name}}/cloud_ddb",
+          "mount_path_unix": "/Metallic_ring_automation/{{ring_name}}/storage",
+          "region": "{{region_name}}"
+        }
+      ],
+      "index_servers": [
+        {
+          "client_name": "",
+          "nodes": ["", ""],
+          "roles": ["", ""],
+          "index_directory": ["c:\\Metallic_ring_automation\\{{ring_name}}\\index_cache"],
+          "region": "{{region_name}}"
+        }
+      ],
+      "web_consoles": [
+        {
+          "client_name": "wec01{{ring_id}}c1us02",
+          "hostname": "wec01{{ring_id}}c1us02.testlab.commvault.com",
+          "region": "{{region_name}}"
+        }
+      ],
+      "network_proxies": [
+        {
+          "client_name": "nwp01{{ring_id}}c1us02",
+          "region": "{{region_name}}"
+        }
+      ],
+      "credential_manager": {
+        "credential_name": "",
+        "account_name": "",
+        "access_key": "",
+        "owner": "",
+        "is_user": 0
+      },
+      "storage": {
+        "container_name": "backup",
+        "username": "blob.core.windows.net@0//__CVCRED__",
+        "password": "",
+        "local_dr_path": "c:\\Metallic_ring_automation\\{{ring_name}}\\DR",
+        "local_dr_path_unix": "/opt/{{ring_name}}_DR"
+      },
+      "domain": {
+        "name": "{{domain_url_name}}",
+        "netbios_name": "{{domain_name}}",
+        "username": "{{domain_username}}",
+        "password": ""
+      },
+      "user_group": [
+        {
+          "tenant_operator": "{{tenant_operator}}",
+          "mapping": {
+            "domain": "{{domain_name}}",
+            "name": "{{domain_tenant_group}}"
+          }
+        },
+        {
+          "tenant_admin": "All Tenant Admin"
+        }
+      ],
+      "global_param": [
+        {
+          "key": "Patch Download Protocol",
+          "value": "HTTPS"
+        },
+        {
+          "key": "Patch HTTP Use Token",
+          "value": ""
+        },
+        {
+          "key": "Patch HTTP Site",
+          "value": ""
+        },
+        {
+          "key": "Patch Config URL Prefix",
+          "value": ""
+        },
+        {
+          "key": "PatchSPAdditionalDelayDays",
+          "value": ""
+        },
+        {
+          "key": "nUsePreReleaseFRInfo",
+          "value": ""
+        },
+        {
+          "key": "Patch HPK Download Delay Days",
+          "value": ""
+        },
+        {
+          "key": "PatchSPDownloadDelayDays",
+          "value": ""
+        },
+        {
+          "key": "Patch Visibility Level",
+          "value": ""
+        }
+      ],
+      "mm_configs": [
+        {
+          "param": "",
+          "min": 0,
+          "max": 0,
+          "value": 0
+        }
+      ],
+      "mm_configs_auth_code": 0
+    },
+    "metrics_commcell": {
+      "url": "",
+      "hostname": "",
+      "dev_metrics": "",
+      "username": "",
+      "password": ""
+    },
+    "exchange_azure_key_details": {
+      "azure_app_key_secret": "",
+      "azure_app_key_id": "",
+      "azure_tenant_name":""
+    },
+    "onedrive_azure_key_details": {
+      "azure_app_id": "",
+      "azure_app_key_id": "",
+      "azure_directory_id": ""
+    },
+    "sharepoint_azure_key_details": {
+      "azure_app_id": "",
+      "azure_app_key_id": "",
+      "azure_directory_id": ""
+    },
+    "mailing_info": {
+      "to_addr": "{{notification_email}}",
+      "from_addr": "{{from_addr}}",
+      "smtp_server": "",
+      "sre_team_to_mail": "",
+      "sre_team_cc_email": ""
+    }
+  }
+}

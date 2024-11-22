@@ -1,0 +1,1311 @@
+{
+	"info": {
+		"_postman_id": "0e2ba30b-1749-4008-ab01-bc77abc1a3f9",
+		"name": "BackupSetOperations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Validating logged in username\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							"",
+							"",
+							"tests[\"Validating if response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\") ;   //validate response time",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"ClientId\", jsonData.clientProperties[0].client.clientEntity.clientId);",
+							"console.log(\"Value of ClientId set to :\" ,postman.getEnvironmentVariable(\"ClientId\"));",
+							"postman.setEnvironmentVariable(\"ClientName\", jsonData.clientProperties[0].client.clientEntity.clientName);",
+							"console.log(\"Value of ClientName set to :\" ,postman.getEnvironmentVariable(\"ClientName\"));"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"client"
+					]
+				},
+				"description": "Get list of clients and set Client Id for next operation"
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set using Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating backupsetProperties tag\"] = responseBody.has(\"backupsetProperties\")))      //validate clientProperties tag",
+							"        console.log(\"backupsetProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validating modifiedTime tag\"] = responseBody.has(\"modifiedTime\")))      ",
+							"        console.log(\"modifiedTime tag is present\");",
+							"",
+							"// if((tests[\"Validating indexSettings tag\"] = responseBody.has(\"indexSettings\")))      ",
+							"//         console.log(\"indexSettings tag is present\");",
+							"        ",
+							"if((tests[\"Validating fsBackupSet tag\"] = responseBody.has(\"fsBackupSet\")))      ",
+							"        console.log(\"fsBackupSet tag is present\");",
+							"        ",
+							"if((tests[\"Validating planEntity tag\"] = responseBody.has(\"planEntity\")))      ",
+							"        console.log(\"planEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupSetEntity tag\"] = responseBody.has(\"backupSetEntity\")))      ",
+							"        console.log(\"backupSetEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceName tag\"] = responseBody.has(\"instanceName\")))      ",
+							"        console.log(\"instanceName tag is present\");",
+							"        ",
+							"if((tests[\"Validating appName tag\"] = responseBody.has(\"appName\")))      ",
+							"        console.log(\"appName tag is present\");",
+							"",
+							"if((tests[\"Validating backupsetId tag\"] = responseBody.has(\"backupsetId\")))      ",
+							"        console.log(\"backupsetId tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceId tag\"] = responseBody.has(\"instanceId\")))      ",
+							"        console.log(\"instanceId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetName tag\"] = responseBody.has(\"backupsetName\")))      ",
+							"        console.log(\"backupsetName tag is present\");",
+							"        ",
+							"if((tests[\"Validating applicationId tag\"] = responseBody.has(\"applicationId\")))      ",
+							"        console.log(\"applicationId tag is present\");",
+							"        ",
+							"if((tests[\"Validating client Id\"] = jsonData.backupsetProperties[0].backupSetEntity.clientId == postman.getEnvironmentVariable(\"ClientId\")))  ",
+							"        console.log(\"Client Id validated\");",
+							"        ",
+							"if((tests[\"Validating client name\"] = jsonData.backupsetProperties[0].backupSetEntity.clientName === postman.getEnvironmentVariable(\"ClientName\")))",
+							"        console.log(\"Client name validated\");",
+							"        ",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Backupset?clientId={{ClientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{ClientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set using client name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating backupsetProperties tag\"] = responseBody.has(\"backupsetProperties\")))      //validate clientProperties tag",
+							"        console.log(\"backupsetProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validating modifiedTime tag\"] = responseBody.has(\"modifiedTime\")))      ",
+							"        console.log(\"modifiedTime tag is present\");",
+							"",
+							"// if((tests[\"Validating indexSettings tag\"] = responseBody.has(\"indexSettings\")))      ",
+							"//         console.log(\"indexSettings tag is present\");",
+							"        ",
+							"if((tests[\"Validating fsBackupSet tag\"] = responseBody.has(\"fsBackupSet\")))      ",
+							"        console.log(\"fsBackupSet tag is present\");",
+							"        ",
+							"if((tests[\"Validating planEntity tag\"] = responseBody.has(\"planEntity\")))      ",
+							"        console.log(\"planEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupSetEntity tag\"] = responseBody.has(\"backupSetEntity\")))      ",
+							"        console.log(\"backupSetEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceName tag\"] = responseBody.has(\"instanceName\")))      ",
+							"        console.log(\"instanceName tag is present\");",
+							"        ",
+							"if((tests[\"Validating appName tag\"] = responseBody.has(\"appName\")))      ",
+							"        console.log(\"appName tag is present\");",
+							"",
+							"if((tests[\"Validating backupsetId tag\"] = responseBody.has(\"backupsetId\")))      ",
+							"        console.log(\"backupsetId tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceId tag\"] = responseBody.has(\"instanceId\")))      ",
+							"        console.log(\"instanceId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetName tag\"] = responseBody.has(\"backupsetName\")))      ",
+							"        console.log(\"backupsetName tag is present\");",
+							"        ",
+							"if((tests[\"Validating applicationId tag\"] = responseBody.has(\"applicationId\")))      ",
+							"        console.log(\"applicationId tag is present\");",
+							"        ",
+							"if((tests[\"Validating client Id\"] = jsonData.backupsetProperties[0].backupSetEntity.clientId == postman.getEnvironmentVariable(\"ClientId\")))  ",
+							"        console.log(\"Client Id validated\");        ",
+							"",
+							"if((tests[\"Validating client name\"] = jsonData.backupsetProperties[0].backupSetEntity.clientName === postman.getEnvironmentVariable(\"ClientName\")))",
+							"        console.log(\"Client name validated\");",
+							"        ",
+							"console.log(\"Setting value for backupsetId\");",
+							"postman.setEnvironmentVariable(\"backupsetId\", jsonData.backupsetProperties[1].backupSetEntity.backupsetId);",
+							"console.log(\"Value of backupsetId set to :\" ,postman.getEnvironmentVariable(\"backupsetId\"));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Backupset?clientName={{ClientName}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset"
+					],
+					"query": [
+						{
+							"key": "clientName",
+							"value": "{{ClientName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating backupsetProperties tag\"] = responseBody.has(\"backupsetProperties\")))      ",
+							"        console.log(\"backupsetProperties tag is present\");",
+							"",
+							"if((tests[\"Validating modifiedTime tag\"] = responseBody.has(\"modifiedTime\")))      ",
+							"        console.log(\"modifiedTime tag is present\");",
+							"        ",
+							"if((tests[\"Validating securityAssociations tag\"] = responseBody.has(\"securityAssociations\")))      ",
+							"        console.log(\"securityAssociations tag is present\");",
+							"        ",
+							"//if((tests[\"Validating indexSettings tag\"] = responseBody.has(\"indexSettings\")))      ",
+							"//        console.log(\"indexSettings tag is present\"); ",
+							"        ",
+							"if((tests[\"Validating backupsetSecurity tag\"] = responseBody.has(\"backupsetSecurity\")))      ",
+							"        console.log(\"backupsetSecurity tag is present\");",
+							"        ",
+							"",
+							"if((tests[\"Validating planEntity tag\"] = responseBody.has(\"planEntity\")))      ",
+							"        console.log(\"planEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating commonBackupSet tag\"] = responseBody.has(\"commonBackupSet\")))      ",
+							"        console.log(\"commonBackupSet tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupSetEntity tag\"] = responseBody.has(\"backupSetEntity\")))      ",
+							"        console.log(\"backupSetEntity tag is present\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Backupset/{{backupsetId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset",
+						"{{backupsetId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set --- for id validations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"    ",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0));  ",
+							"        console.log(\"ErrorCode validated\");",
+							"        ",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"        ",
+							"if((tests[\"Validating applicationId tag\"] = responseBody.has(\"applicationId\")))      ",
+							"        console.log(\"applicationId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetId tag\"] = responseBody.has(\"backupsetId\")))      ",
+							"        console.log(\"backupsetId tag is present\");",
+							"        ",
+							"if((tests[\"Validating clientId tag\"] = responseBody.has(\"clientId\")))      ",
+							"        console.log(\"clientId tag is present\");",
+							"",
+							"console.log(\"Setting the value of backupsetId with newly created backupsetId...\");",
+							"",
+							"postman.setEnvironmentVariable(\"backupsetId\", jsonData.response[0].entity.backupsetId);",
+							"console.log(\"Value of backupsetId set to :\" ,postman.getEnvironmentVariable(\"backupsetId\"));",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"backupsetName\", \"Test_Backupset\" + new Date().getTime());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"association\":{\r\n\"entity\":[\r\n{\r\n\"clientName\":\"{{ClientName}}\",\"subclientName\":\"{{subclientName}}\",\"backupsetName\":\"{{backupsetName}}\",\"instanceName\":\"DefaultInstanceName\",\"appName\":\"File System\"\r\n}\r\n]\r\n}\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Backupset",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set --- for name validations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"    ",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0));  ",
+							"        console.log(\"ErrorCode validated\");",
+							"        ",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"        ",
+							"if((tests[\"Validating applicationId tag\"] = responseBody.has(\"applicationId\")))      ",
+							"        console.log(\"applicationId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetId tag\"] = responseBody.has(\"backupsetId\")))      ",
+							"        console.log(\"backupsetId tag is present\");",
+							"        ",
+							"if((tests[\"Validating clientId tag\"] = responseBody.has(\"clientId\")))      ",
+							"        console.log(\"clientId tag is present\");",
+							"",
+							"console.log(\"Value of backupsetId for the newly created backupset:\" ,jsonData.response[0].entity.backupsetId);",
+							"",
+							"console.log(\"Setting the value of backupsetId_2 with newly created backupsetId...\");",
+							"",
+							"postman.setEnvironmentVariable(\"backupsetId_2\", jsonData.response[0].entity.backupsetId);",
+							"console.log(\"Value of backupsetId set to :\" ,postman.getEnvironmentVariable(\"backupsetId_2\"));",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"NewbackupsetName_2\", \"Test_Backupset_new\" + new Date().getTime());\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\"association\":{\r\"entity\":[\r{\r\"clientName\":\"{{ClientName}}\",\"subclientName\":\"{{subclientName}}\",\"backupsetName\":\"{{NewbackupsetName_2}}\",\"instanceName\":\"DefaultInstanceName\",\"appName\":\"File System\"\r}\r]\r}\r}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Backupset",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set Validate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating backupsetProperties tag\"] = responseBody.has(\"backupsetProperties\")))      ",
+							"        console.log(\"backupsetProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validating modifiedTime tag\"] = responseBody.has(\"modifiedTime\")))      ",
+							"        console.log(\"modifiedTime tag is present\");",
+							"",
+							"// if((tests[\"Validating indexSettings tag\"] = responseBody.has(\"indexSettings\")))      ",
+							"//         console.log(\"indexSettings tag is present\");",
+							"        ",
+							"if((tests[\"Validating fsBackupSet tag\"] = responseBody.has(\"fsBackupSet\")))      ",
+							"        console.log(\"fsBackupSet tag is present\");",
+							"        ",
+							"if((tests[\"Validating planEntity tag\"] = responseBody.has(\"planEntity\")))      ",
+							"        console.log(\"planEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupSetEntity tag\"] = responseBody.has(\"backupSetEntity\")))      ",
+							"        console.log(\"backupSetEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceName tag\"] = responseBody.has(\"instanceName\")))      ",
+							"        console.log(\"instanceName tag is present\");",
+							"        ",
+							"if((tests[\"Validating appName tag\"] = responseBody.has(\"appName\")))      ",
+							"        console.log(\"appName tag is present\");",
+							"",
+							"if((tests[\"Validating backupsetId tag\"] = responseBody.has(\"backupsetId\")))      ",
+							"        console.log(\"backupsetId tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceId tag\"] = responseBody.has(\"instanceId\")))      ",
+							"        console.log(\"instanceId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetName tag\"] = responseBody.has(\"backupsetName\")))      ",
+							"        console.log(\"backupsetName tag is present\");",
+							"        ",
+							"if((tests[\"Validating applicationId tag\"] = responseBody.has(\"applicationId\")))      ",
+							"        console.log(\"applicationId tag is present\");",
+							"        ",
+							"if((tests[\"Validating client Id\"] = jsonData.backupsetProperties[0].backupSetEntity.clientId == postman.getEnvironmentVariable(\"ClientId\")))  ",
+							"        console.log(\"Client Id validated\");",
+							"",
+							"if((tests[\"Validating client name\"] = jsonData.backupsetProperties[0].backupSetEntity.clientName === postman.getEnvironmentVariable(\"ClientName\")))",
+							"        console.log(\"Client name validated\");",
+							"        ",
+							"if((tests[\"Validating new backupset name created \"] = responseBody.has(postman.getEnvironmentVariable(\"backupsetName\"))))    ",
+							"        console.log(\"Backupset was created successfully\");",
+							"        ",
+							"if((tests[\"Validating new backupset id created \"] = responseBody.has(postman.getEnvironmentVariable(\"backupsetId\"))))      ",
+							"        console.log(\"Backupset was created successfully\");",
+							"        ",
+							"if((tests[\"Validating new backupset name created \"] = responseBody.has(postman.getEnvironmentVariable(\"NewbackupsetName_2\"))))    ",
+							"        console.log(\"Backupset was created successfully\");",
+							"        ",
+							"if((tests[\"Validating new backupset id created \"] = responseBody.has(postman.getEnvironmentVariable(\"backupsetId_2\"))))      ",
+							"        console.log(\"Backupset was created successfully\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Backupset?clientId={{ClientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{ClientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set Properties -- using id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"    ",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0));  ",
+							"        console.log(\"ErrorCode validated\");",
+							"        ",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"        ",
+							"if((tests[\"Validating applicationId tag\"] = responseBody.has(\"applicationId\")))      ",
+							"        console.log(\"applicationId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetId tag\"] = responseBody.has(\"backupsetId\")))      ",
+							"        console.log(\"backupsetId tag is present\");",
+							"        ",
+							"if((tests[\"Validating clientId tag\"] = responseBody.has(\"clientId\")))      ",
+							"        console.log(\"clientId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetId of the backupset that was modified...\"] = jsonData.response[0].entity.backupsetId == postman.getEnvironmentVariable(\"backupsetId\")))  ",
+							"        console.log(\"Backupset Id of modified backupset validated\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"NewbackupsetName\", \"New_Test_Backupset\" + new Date().getTime());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\"backupsetProperties\":{\r\"modifiedTime\":1491992009,\"indexSettings\":{\r\"currentIndexServer\":{\r\"clientName\":\"\"\r}\r},\"backupsetSecurity\":{\r\"clientOwners\":[\rnull\r],\"associatedUserGroups\":[\r{\r\"userGroupName\":\"master\"\r},{\r\"userGroupName\":\"View All\"\r}\r],\"ownerCapabilities\":{\r\r}\r},\"fsBackupSet\":{\r\"pre70SystemStateArchiveFilesExist\":false,\"useChangeJournal\":true,\"runTrueUpJobAfterDaysForOnePass\":0,\"isIndexingV2\":true,\"useArchiveBit\":false,\"isUseBlockLevelBackup\":false,\"flrRepSetName\":\"\",\"preserveFileAccessTimes\":false,\"netAppImageBackup\":false,\"customApplicationType\":0,\"isTrueUpOptionEnabledForOnePass\":false,\"useDCserviceForScan\":false,\"fLRrepSetId\":0\r},\"planEntity\":{\r\r},\"commonBackupSet\":{\r\"dataMigratorILMCLASS\":false,\"newBackupSetName\":\"{{NewbackupsetName}}\",\"onDemandBackupset\":false,\"isDeleted\":false,\"isFanInBackupSet\":false,\"isLegalHoldBackupset\":false,\"decompressData\":false,\"isNasTurboBackupSet\":false,\"isWildCardContentBackupSet\":false,\"cDRFSDMBackupset\":false,\"userDescription\":\"Modifying Backup Set Name\",\"associatedsubclientPolicy\":0,\"isDedupBackupset\":false,\"isMyBackupSet\":false,\"siloCopyId\":0,\"isDefaultBackupSet\":false,\"isHidden\":false,\"isMining\":false,\"isUSeDCForBackup\":false\r},\"backupSetEntity\":{\r\"clientName\":\"{{ClientName}}\",\"instanceName\":\"DefaultInstanceName\",\"appName\":\"File System\",\"backupsetName\":\"{{backupsetName}}\"\r}\r}\r}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Backupset/{{backupsetId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset",
+						"{{backupsetId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set Properties -- using name ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"    ",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0));  ",
+							"        console.log(\"ErrorCode validated\");",
+							"        ",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"        ",
+							"if((tests[\"Validating applicationId tag\"] = responseBody.has(\"applicationId\")))      ",
+							"        console.log(\"applicationId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetId tag\"] = responseBody.has(\"backupsetId\")))      ",
+							"        console.log(\"backupsetId tag is present\");",
+							"        ",
+							"if((tests[\"Validating clientId tag\"] = responseBody.has(\"clientId\")))      ",
+							"        console.log(\"clientId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetId of the backupset that was modified...\"] = jsonData.response[0].entity.backupsetId == postman.getEnvironmentVariable(\"backupsetId_2\")))  ",
+							"        console.log(\"Backupset Id of modified backupset validated\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\"backupsetProperties\":{\r\"modifiedTime\":1491992009,\"indexSettings\":{\r\"currentIndexServer\":{\r\"clientName\":\"\"\r}\r},\"backupsetSecurity\":{\r\"clientOwners\":[\rnull\r],\"associatedUserGroups\":[\r{\r\"userGroupName\":\"master\"\r},{\r\"userGroupName\":\"View All\"\r}\r],\"ownerCapabilities\":{\r\r}\r},\"fsBackupSet\":{\r\"pre70SystemStateArchiveFilesExist\":false,\"useChangeJournal\":true,\"runTrueUpJobAfterDaysForOnePass\":0,\"isIndexingV2\":true,\"useArchiveBit\":false,\"isUseBlockLevelBackup\":false,\"flrRepSetName\":\"\",\"preserveFileAccessTimes\":true,\"netAppImageBackup\":false,\"customApplicationType\":0,\"isTrueUpOptionEnabledForOnePass\":false,\"useDCserviceForScan\":true,\"fLRrepSetId\":0\r},\"planEntity\":{\r\r},\"commonBackupSet\":{\r\"dataMigratorILMCLASS\":false,\"newBackupSetName\":\"{{backupsetName}}\",\"onDemandBackupset\":false,\"isDeleted\":false,\"isFanInBackupSet\":false,\"isLegalHoldBackupset\":false,\"decompressData\":false,\"isNasTurboBackupSet\":false,\"isWildCardContentBackupSet\":false,\"cDRFSDMBackupset\":false,\"userDescription\":\"Modifying backupset name and setting it to previous original backupset name\",\"associatedsubclientPolicy\":0,\"isDedupBackupset\":false,\"isMyBackupSet\":false,\"siloCopyId\":0,\"isDefaultBackupSet\":false,\"isHidden\":false,\"isMining\":false,\"isUSeDCForBackup\":false\r},\"backupSetEntity\":{\r\"clientName\":\"{{ClientName}}\",\"instanceName\":\"DefaultInstanceName\",\"appName\":\"File System\",\"backupsetName\":\"{{NewbackupsetName_2}}\"\r}\r}\r}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/backupset/byName(clientName='{{ClientName}}',appName='File System',backupsetName='{{NewbackupsetName_2}}')",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"backupset",
+						"byName(clientName='{{ClientName}}',appName='File System',backupsetName='{{NewbackupsetName_2}}')"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set Validate modification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating backupsetProperties tag\"] = responseBody.has(\"backupsetProperties\")))      //validate clientProperties tag",
+							"        console.log(\"backupsetProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validating modifiedTime tag\"] = responseBody.has(\"modifiedTime\")))      ",
+							"        console.log(\"modifiedTime tag is present\");",
+							"",
+							"// if((tests[\"Validating indexSettings tag\"] = responseBody.has(\"indexSettings\")))      ",
+							"//         console.log(\"indexSettings tag is present\");",
+							"        ",
+							"if((tests[\"Validating fsBackupSet tag\"] = responseBody.has(\"fsBackupSet\")))      ",
+							"        console.log(\"fsBackupSet tag is present\");",
+							"        ",
+							"if((tests[\"Validating planEntity tag\"] = responseBody.has(\"planEntity\")))      ",
+							"        console.log(\"planEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupSetEntity tag\"] = responseBody.has(\"backupSetEntity\")))      ",
+							"        console.log(\"backupSetEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceName tag\"] = responseBody.has(\"instanceName\")))      ",
+							"        console.log(\"instanceName tag is present\");",
+							"        ",
+							"if((tests[\"Validating appName tag\"] = responseBody.has(\"appName\")))      ",
+							"        console.log(\"appName tag is present\");",
+							"",
+							"if((tests[\"Validating backupsetId tag\"] = responseBody.has(\"backupsetId\")))      ",
+							"        console.log(\"backupsetId tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceId tag\"] = responseBody.has(\"instanceId\")))      ",
+							"        console.log(\"instanceId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetName tag\"] = responseBody.has(\"backupsetName\")))      ",
+							"        console.log(\"backupsetName tag is present\");",
+							"        ",
+							"if((tests[\"Validating applicationId tag\"] = responseBody.has(\"applicationId\")))      ",
+							"        console.log(\"applicationId tag is present\");",
+							"        ",
+							"if((tests[\"Validating client Id\"] = jsonData.backupsetProperties[0].backupSetEntity.clientId == postman.getEnvironmentVariable(\"ClientId\")))  ",
+							"        console.log(\"Client Id validated\");",
+							"",
+							"if((tests[\"Validating client name\"] = jsonData.backupsetProperties[0].backupSetEntity.clientName === postman.getEnvironmentVariable(\"ClientName\")))",
+							"        console.log(\"Client name validated\");",
+							"        ",
+							"if((tests[\"Validating modified backupset name\"] = responseBody.has(postman.getEnvironmentVariable(\"NewbackupsetName\"))))      ",
+							"        console.log(\"Backupset was created successfully\");",
+							"        ",
+							"if((tests[\"Validating new backupset id of modified backupset created \"] = responseBody.has(postman.getEnvironmentVariable(\"backupsetId\"))))      ",
+							"        console.log(\"Backupset was created successfully\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Backupset?clientId={{ClientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{ClientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set -- using id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"    ",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0));  ",
+							"        console.log(\"ErrorCode validated\");",
+							"        ",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Backupset/{{backupsetId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset",
+						"{{backupsetId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set Validate deletion (id)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating backupsetProperties tag\"] = responseBody.has(\"backupsetProperties\")))      //validate clientProperties tag",
+							"        console.log(\"backupsetProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validating modifiedTime tag\"] = responseBody.has(\"modifiedTime\")))      ",
+							"        console.log(\"modifiedTime tag is present\");",
+							"",
+							"// if((tests[\"Validating indexSettings tag\"] = responseBody.has(\"indexSettings\")))      ",
+							"//         console.log(\"indexSettings tag is present\");",
+							"        ",
+							"if((tests[\"Validating fsBackupSet tag\"] = responseBody.has(\"fsBackupSet\")))      ",
+							"        console.log(\"fsBackupSet tag is present\");",
+							"        ",
+							"if((tests[\"Validating planEntity tag\"] = responseBody.has(\"planEntity\")))      ",
+							"        console.log(\"planEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupSetEntity tag\"] = responseBody.has(\"backupSetEntity\")))      ",
+							"        console.log(\"backupSetEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceName tag\"] = responseBody.has(\"instanceName\")))      ",
+							"        console.log(\"instanceName tag is present\");",
+							"        ",
+							"if((tests[\"Validating appName tag\"] = responseBody.has(\"appName\")))      ",
+							"        console.log(\"appName tag is present\");",
+							"",
+							"if((tests[\"Validating backupsetId tag\"] = responseBody.has(\"backupsetId\")))      ",
+							"        console.log(\"backupsetId tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceId tag\"] = responseBody.has(\"instanceId\")))      ",
+							"        console.log(\"instanceId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetName tag\"] = responseBody.has(\"backupsetName\")))      ",
+							"        console.log(\"backupsetName tag is present\");",
+							"        ",
+							"if((tests[\"Validating applicationId tag\"] = responseBody.has(\"applicationId\")))      ",
+							"        console.log(\"applicationId tag is present\");",
+							"        ",
+							"if((tests[\"Validating client Id\"] = jsonData.backupsetProperties[0].backupSetEntity.clientId == postman.getEnvironmentVariable(\"ClientId\")))  ",
+							"        console.log(\"Client Id validated\");",
+							"",
+							"if((tests[\"Validating client name\"] = jsonData.backupsetProperties[0].backupSetEntity.clientName === postman.getEnvironmentVariable(\"ClientName\")))",
+							"        console.log(\"Client name validated\");",
+							"        ",
+							"if((tests[\"Validating if backupset was deleted successfully (using backupset name)\"] = responseBody.has(postman.getEnvironmentVariable(\"NewbackupsetName\") === false)))      ",
+							"        console.log(\"Backupset was deleted successfully\");",
+							"        ",
+							"if((tests[\"Validating if backupset was deleted successfully (using backupset Id)\"] = responseBody.has(postman.getEnvironmentVariable(\"backupsetId\") === false)))      ",
+							"        console.log(\"Backupset was deleted successfully\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Backupset?clientId={{ClientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{ClientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set -- using name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"    ",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0));  ",
+							"        console.log(\"ErrorCode validated\");",
+							"        ",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Backupset/byName(clientName='{{ClientName}}',appName='File System',backupsetName='{{backupsetName}}')",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset",
+						"byName(clientName='{{ClientName}}',appName='File System',backupsetName='{{backupsetName}}')"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set Validate deletion (name)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating backupsetProperties tag\"] = responseBody.has(\"backupsetProperties\")))      //validate clientProperties tag",
+							"        console.log(\"backupsetProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validating modifiedTime tag\"] = responseBody.has(\"modifiedTime\")))      ",
+							"        console.log(\"modifiedTime tag is present\");",
+							"",
+							"// if((tests[\"Validating indexSettings tag\"] = responseBody.has(\"indexSettings\")))      ",
+							"//         console.log(\"indexSettings tag is present\");",
+							"        ",
+							"if((tests[\"Validating fsBackupSet tag\"] = responseBody.has(\"fsBackupSet\")))      ",
+							"        console.log(\"fsBackupSet tag is present\");",
+							"        ",
+							"if((tests[\"Validating planEntity tag\"] = responseBody.has(\"planEntity\")))      ",
+							"        console.log(\"planEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupSetEntity tag\"] = responseBody.has(\"backupSetEntity\")))      ",
+							"        console.log(\"backupSetEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceName tag\"] = responseBody.has(\"instanceName\")))      ",
+							"        console.log(\"instanceName tag is present\");",
+							"        ",
+							"if((tests[\"Validating appName tag\"] = responseBody.has(\"appName\")))      ",
+							"        console.log(\"appName tag is present\");",
+							"",
+							"if((tests[\"Validating backupsetId tag\"] = responseBody.has(\"backupsetId\")))      ",
+							"        console.log(\"backupsetId tag is present\");",
+							"        ",
+							"if((tests[\"Validating instanceId tag\"] = responseBody.has(\"instanceId\")))      ",
+							"        console.log(\"instanceId tag is present\");",
+							"        ",
+							"if((tests[\"Validating backupsetName tag\"] = responseBody.has(\"backupsetName\")))      ",
+							"        console.log(\"backupsetName tag is present\");",
+							"        ",
+							"if((tests[\"Validating applicationId tag\"] = responseBody.has(\"applicationId\")))      ",
+							"        console.log(\"applicationId tag is present\");",
+							"        ",
+							"if((tests[\"Validating client Id\"] = jsonData.backupsetProperties[0].backupSetEntity.clientId == postman.getEnvironmentVariable(\"ClientId\")))  ",
+							"        console.log(\"Client Id validated\");",
+							"",
+							"if((tests[\"Validating client name\"] = jsonData.backupsetProperties[0].backupSetEntity.clientName === postman.getEnvironmentVariable(\"ClientName\")))",
+							"        console.log(\"Client name validated\");",
+							"        ",
+							"if((tests[\"Validating if backupset was deleted successfully (using backupset name)\"] = responseBody.has(postman.getEnvironmentVariable(\"backupsetName\") === false)))      ",
+							"        console.log(\"Backupset was deleted successfully\");",
+							"        ",
+							"if((tests[\"Validating if backupset was deleted successfully (using backupset Id)\"] = responseBody.has(postman.getEnvironmentVariable(\"backupsetId_2\") === false)))      ",
+							"        console.log(\"Backupset was deleted successfully\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Backupset?clientId={{ClientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{ClientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Set Backup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Backupset/{{backupsetId}}/action/backup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Backupset",
+						"{{backupsetId}}",
+						"action",
+						"backup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

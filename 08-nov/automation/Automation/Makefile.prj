@@ -1,0 +1,125 @@
+# Please read cxunix/source/makefiles/Makefile.prj.doc
+
+PROMOTE_WARNINGS_TO_ERRORS="yes"
+
+case $TARGET in
+linux-glibc2.3-x86_64)
+
+CODE="
+all::\$(CVBIN)/cvautomationutils.tar \$(CVBIN)/cvautomation_coreutils.tar \$(CVBIN)/cvautomationmask.tar \$(CVBIN)/cvautomation_nas.tar \$(CVBIN)/cvautomation_fs.tar \$(CVBIN)/cvautomation_application.tar \$(CVBIN)/cvautomation_vsa.tar \$(CVBIN)/cvautomation_admin_console.tar \$(CVBIN)/cvautomation_web_console.tar \$(CVBIN)/cvautomation_database.tar \$(CVBIN)/cvautomation_server.tar \$(CVBIN)/cvautomation_ma.tar \$(CVBIN)/cvautomation_testcases.tar \$(CVBIN)/cvautomation_oracle.tar \$(CVBIN)/cvautomation_custom.tar \$(CVBIN)/cvautomation_indexing.tar \$(CVBIN)/cvautomation_install.tar \$(CVBIN)/cvautomation_laptop.tar \$(CVBIN)/cvautomation_trials.tar \$(CVBIN)/cvautomation_ediscovery.tar \$(CVBIN)/cvautomation_dynamicindex.tar
+
+\$(CVBIN)/cvautomationutils.tar:changes
+	rm -f \$(CVBIN)/cvautomationutils.tar
+	tar -cvf \$(CVBIN)/cvautomationutils.tar --exclude '*.pyc' --exclude-vcs AutomationUtils
+\$(CVBIN)/cvautomation_coreutils.tar:changes
+	rm -f \$(CVBIN)/cvautomation_coreutils.tar
+	tar -cvf \$(CVBIN)/cvautomation_coreutils.tar --exclude '*.pyc' --exclude-vcs CoreUtils
+\$(CVBIN)/cvautomationmask.tar:changes
+	rm -f \$(CVBIN)/cvautomationmask.tar
+	tar -cvf \$(CVBIN)/cvautomationmask.tar --exclude '*.pyc' --exclude-vcs cvautomationmask
+\$(CVBIN)/cvautomation_nas.tar:changes
+	rm -f \$(CVBIN)/cvautomation_nas.tar
+	tar -cvf \$(CVBIN)/cvautomation_nas.tar --exclude '*.pyc'--exclude-vcs NAS
+\$(CVBIN)/cvautomation_fs.tar:changes
+	rm -f \$(CVBIN)/cvautomation_fs.tar
+	tar -cvf \$(CVBIN)/cvautomation_fs.tar --exclude '*.pyc' --exclude-vcs FileSystem
+\$(CVBIN)/cvautomation_database.tar:changes
+	rm -f \$(CVBIN)/cvautomation_database.tar
+	tar -cvf \$(CVBIN)/cvautomation_database.tar --exclude '*.pyc' --exclude-vcs Database
+\$(CVBIN)/cvautomation_vsa.tar:changes
+	rm -f \$(CVBIN)/cvautomation_vsa.tar
+	tar -cvf \$(CVBIN)/cvautomation_vsa.tar --exclude '*.pyc' --exclude-vcs VirtualServer
+\$(CVBIN)/cvautomation_admin_console.tar:changes
+	rm -f \$(CVBIN)/cvautomation_admin_console.tar
+	tar -cvf \$(CVBIN)/cvautomation_admin_console.tar --exclude '*.pyc' --exclude-vcs Web/AdminConsole
+\$(CVBIN)/cvautomation_web_console.tar:changes
+	rm -f \$(CVBIN)/cvautomation_web_console.tar
+	tar -cvf \$(CVBIN)/cvautomation_web_console.tar --exclude '*.pyc' --exclude-vcs Web/WebConsole
+\$(CVBIN)/cvautomation_server.tar:changes
+	rm -f \$(CVBIN)/cvautomation_server.tar
+	tar -cvf \$(CVBIN)/cvautomation_server.tar --exclude '*.pyc' --exclude-vcs Server
+\$(CVBIN)/cvautomation_application.tar:changes
+	rm -f \$(CVBIN)/cvautomation_application.tar
+	tar -cvf \$(CVBIN)/cvautomation_application.tar --exclude '*.pyc' --exclude-vcs Application
+\$(CVBIN)/cvautomation_ma.tar:changes
+	rm -f \$(CVBIN)/cvautomation_ma.tar
+	tar -cvf \$(CVBIN)/cvautomation_ma.tar --exclude '*.pyc' --exclude-vcs MediaAgents
+\$(CVBIN)/cvautomation_testcases.tar:changes
+	rm -f \$(CVBIN)/cvautomation_testcases.tar
+	tar -cvf \$(CVBIN)/cvautomation_testcases.tar --exclude '*.pyc' --exclude-vcs Testcases
+\$(CVBIN)/cvautomation_oracle.tar:changes
+	rm -f \$(CVBIN)/cvautomation_oracle.tar
+	tar -cvf \$(CVBIN)/cvautomation_oracle.tar --exclude '*.pyc' --exclude-vcs Oracle
+\$(CVBIN)/cvautomation_custom.tar:changes
+	rm -f \$(CVBIN)/cvautomation_custom.tar
+	tar -cvf \$(CVBIN)/cvautomation_custom.tar --exclude '*.pyc' --exclude-vcs Custom
+\$(CVBIN)/cvautomation_indexing.tar:changes
+	rm -f \$(CVBIN)/cvautomation_indexing.tar
+	tar -cvf \$(CVBIN)/cvautomation_indexing.tar --exclude '*.pyc' --exclude-vcs Indexing
+\$(CVBIN)/cvautomation_install.tar:changes
+	rm -f \$(CVBIN)/cvautomation_install.tar
+	tar -cvf \$(CVBIN)/cvautomation_install.tar --exclude '*.pyc' --exclude-vcs Install
+\$(CVBIN)/cvautomation_laptop.tar:changes
+	rm -f \$(CVBIN)/cvautomation_laptop.tar
+	tar -cvf \$(CVBIN)/cvautomation_laptop.tar --exclude '*.pyc' --exclude-vcs Laptop
+\$(CVBIN)/cvautomation_trials.tar:changes
+	rm -f \$(CVBIN)/cvautomation_trials.tar
+	tar -cvf \$(CVBIN)/cvautomation_trials.tar --exclude '*.pyc' --exclude-vcs Web/CVTrials
+\$(CVBIN)/cvautomation_ediscovery.tar:changes
+	rm -f \$(CVBIN)/cvautomation_ediscovery.tar
+	tar -cvf \$(CVBIN)/cvautomation_ediscovery.tar --exclude '*.pyc' --exclude-vcs Web/ediscovery
+\$(CVBIN)/cvautomation_dynamicindex.tar:changes
+	rm -f \$(CVBIN)/cvautomation_dynamicindex.tar
+	tar -cvf \$(CVBIN)/cvautomation_dynamicindex.tar --exclude '*.pyc' --exclude-vcs dynamicindex
+	
+clean::
+	rm -f \$(CVBIN)/cvautomationutils.tar
+	rm -f \$(CVBIN)/cvautomation_coreutils.tar
+	rm -f \$(CVBIN)/cvautomationmask.tar
+	rm -f \$(CVBIN)/cvautomation_nas.tar
+	rm -f \$(CVBIN)/cvautomation_fs.tar
+	rm -f \$(CVBIN)/cvautomation_vsa.tar
+	rm -f \$(CVBIN)/cvautomation_admin_console.tar
+	rm -f \$(CVBIN)/cvautomation_web_console.tar
+	rm -f \$(CVBIN)/cvautomation_server.tar
+	rm -f \$(CVBIN)/cvautomation_application.tar
+	rm -f \$(CVBIN)/cvautomation_database.tar
+	rm -f \$(CVBIN)/cvautomation_ma.tar
+	rm -f \$(CVBIN)/cvautomation_testcases.tar
+	rm -f \$(CVBIN)/cvautomation_oracle.tar
+	rm -f \$(CVBIN)/cvautomation_custom.tar
+	rm -f \$(CVBIN)/cvautomation_indexing.tar
+	rm -f \$(CVBIN)/cvautomation_install.tar
+	rm -f \$(CVBIN)/cvautomation_laptop.tar
+	rm -f \$(CVBIN)/cvautomation_trials.tar
+	rm -f \$(CVBIN)/cvautomation_ediscovery.tar
+	rm -f \$(CVBIN)/cvautomation_dynamicindex.tar
+
+cleandeps::
+changes::
+	touch -c AutomationUtils
+	touch -c CoreUtils
+	touch -c cvautomationmask
+	touch -c NAS
+	touch -c FileSystem
+	touch -c Database
+	touch -c VirtualServer
+	touch -c Server
+	touch -c Application
+	touch -c MediaAgents
+	touch -c Testcases
+	touch -c Web/AdminConsole
+	touch -c Web/WebConsole
+	touch -c Oracle
+	touch -c Custom
+	touch -c Indexing
+	touch -c Install
+	touch -c Laptop
+	touch -c Web/CVTrials
+	touch -c Web/ediscovery
+	touch -c dynamicindex
+	"
+	;;
+*);;
+esac
+

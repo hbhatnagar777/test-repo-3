@@ -1,0 +1,546 @@
+{
+	"info": {
+		"_postman_id": "e4f57be9-45fe-4873-87a9-27154d47fb31",
+		"name": "AgentOperations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4331195"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"",
+							"",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							"",
+							"",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"ClientId\", jsonData.clientProperties[0].client.clientEntity.clientId);",
+							"console.log(\"Value of ClientId set to :\" ,postman.getEnvironmentVariable(\"ClientId\"));",
+							"postman.setEnvironmentVariable(\"ClientName\", jsonData.clientProperties[0].client.clientEntity.clientName);",
+							"console.log(\"Value of ClientName set to :\" ,postman.getEnvironmentVariable(\"ClientName\"));"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"client"
+					]
+				},
+				"description": "Get list of clients and set Client Id for next operation"
+			},
+			"response": []
+		},
+		{
+			"name": "agent by client Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating agentProperties tag\"] = responseBody.has(\"agentProperties\")))      //validate clientProperties tag",
+							"        console.log(\"agentProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validating AgentProperties tag\"] = responseBody.has(\"AgentProperties\")))      ",
+							"        console.log(\"AgentProperties tag is present\");",
+							"",
+							"if((tests[\"Validating idaActivityControl tag\"] = responseBody.has(\"idaActivityControl\")))      ",
+							"        console.log(\"idaActivityControl tag is present\");",
+							"        ",
+							"if((tests[\"Validating idaEntity tag\"] = responseBody.has(\"idaEntity\")))      ",
+							"        console.log(\"idaEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating client Id\"] = jsonData.agentProperties[0].idaEntity.clientId == postman.getEnvironmentVariable(\"ClientId\")))  ",
+							"        console.log(\"Client Id validated\");",
+							"",
+							"if((tests[\"Validating client name\"] = jsonData.agentProperties[0].idaEntity.clientName === postman.getEnvironmentVariable(\"ClientName\")))",
+							"        console.log(\"Client name validated\");",
+							"        ",
+							"if((tests[\"Validate appname tag\"] = responseBody.has(\"appName\"))); {",
+							"        console.log(\"appName is present\");",
+							"        tests[\"Validate appName\"] = (function() {",
+							"            for(i=0; i < jsonData.agentProperties.length; i++)",
+							"                if (jsonData.agentProperties[0].idaEntity.appName == \"File System\")",
+							"                    return true;",
+							"            return false",
+							"        });",
+							"}",
+							"",
+							"if(jsonData.agentProperties[0].idaActivityControl.activityControlOptions[0].enableActivityType === true)",
+							"     postman.setEnvironmentVariable(\"enableActivityType\", \"false\");",
+							"else",
+							"     postman.setEnvironmentVariable(\"enableActivityType\", \"true\");",
+							"     console.log(\"value of variable enableActivityType set to:\", postman.getEnvironmentVariable(\"enableActivityType\"));",
+							"",
+							"        "
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Agent?clientId={{ClientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Agent"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{ClientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "agent by clientname",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating agentProperties tag\"] = responseBody.has(\"agentProperties\")))      //validate clientProperties tag",
+							"        console.log(\"agentProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validating AgentProperties tag\"] = responseBody.has(\"AgentProperties\")))      ",
+							"        console.log(\"AgentProperties tag is present\");",
+							"",
+							"if((tests[\"Validating idaActivityControl tag\"] = responseBody.has(\"idaActivityControl\")))      ",
+							"        console.log(\"idaActivityControl tag is present\");",
+							"        ",
+							"if((tests[\"Validating idaEntity tag\"] = responseBody.has(\"idaEntity\")))      ",
+							"        console.log(\"idaEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating client Id\"] = jsonData.agentProperties[0].idaEntity.clientId == postman.getEnvironmentVariable(\"ClientId\")))  ",
+							"        console.log(\"Client Id validated\");",
+							"",
+							"if((tests[\"Validating client name\"] = jsonData.agentProperties[0].idaEntity.clientName === postman.getEnvironmentVariable(\"ClientName\")))",
+							"        console.log(\"Client name validated\");",
+							"        ",
+							"if((tests[\"Validate appname tag\"] = responseBody.has(\"appName\"))); {",
+							"        console.log(\"appName is present\");",
+							"        tests[\"Validate appName\"] = (function() {",
+							"            for(i=0; i < jsonData.agentProperties.length; i++)",
+							"                if (jsonData.agentProperties[0].idaEntity.appName == \"File System\")",
+							"                    return true;",
+							"            return false",
+							"        });",
+							"}",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Agent?clientName={{ClientName}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Agent"
+					],
+					"query": [
+						{
+							"key": "clientName",
+							"value": "{{ClientName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "agent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)//validate response time",
+							" console.log(\"Response time validated\");",
+							" ",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0));  ",
+							"        console.log(\"ErrorCode validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"association\":{\n\"entity\":[\n{\n\"clientName\":\"{{ClientName}}\",\"appName\":\"File System\"\n}\n]\n},\"agentProperties\":{\n\"idaActivityControl\":{\n\"activityControlOptions\":[\n{\n\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":{{enableActivityType}}\n}\n]\n}\n}\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Agent",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Agent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modified agent by clientname",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating agentProperties tag\"] = responseBody.has(\"agentProperties\")))      //validate clientProperties tag",
+							"        console.log(\"agentProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validating AgentProperties tag\"] = responseBody.has(\"AgentProperties\")))      ",
+							"        console.log(\"AgentProperties tag is present\");",
+							"",
+							"if((tests[\"Validating idaActivityControl tag\"] = responseBody.has(\"idaActivityControl\")))      ",
+							"        console.log(\"idaActivityControl tag is present\");",
+							"        ",
+							"if((tests[\"Validating idaEntity tag\"] = responseBody.has(\"idaEntity\")))      ",
+							"        console.log(\"idaEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validating client Id\"] = jsonData.agentProperties[0].idaEntity.clientId == postman.getEnvironmentVariable(\"ClientId\")))  ",
+							"        console.log(\"Client Id validated\");",
+							"",
+							"if((tests[\"Validating client name\"] = jsonData.agentProperties[0].idaEntity.clientName === postman.getEnvironmentVariable(\"ClientName\")))",
+							"        console.log(\"Client name validated\");",
+							"        ",
+							"if((tests[\"Validate appname tag\"] = responseBody.has(\"appName\"))); {",
+							"        console.log(\"appName is present\");",
+							"        tests[\"Validate appName\"] = (function() {",
+							"            for(i=0; i < jsonData.agentProperties.length; i++)",
+							"                if (jsonData.agentProperties[0].idaEntity.appName == \"File System\")",
+							"                    return true;",
+							"            return false",
+							"        });",
+							"}",
+							"",
+							"var eAT = (function() {",
+							"            for(i=0; i < jsonData.agentProperties.length; i++)",
+							"                if (jsonData.agentProperties[i].idaEntity.appName == \"File System\")",
+							"                    return jsonData.agentProperties[i].idaActivityControl.activityControlOptions[0].enableActivityType.toString();",
+							"            return null",
+							"        })();",
+							"console.log(eAT);",
+							"console.log(postman.getEnvironmentVariable(\"enableActivityType\"));",
+							"if((tests[\"validating modified properties\"] = eAT === postman.getEnvironmentVariable(\"enableActivityType\").toString()))",
+							"        console.log(\"Modified properties validated\");  //validate if client properties were modified",
+							"        ",
+							"if(eAT === true)",
+							"     postman.setEnvironmentVariable(\"enableActivityType\", false);",
+							"else",
+							"     postman.setEnvironmentVariable(\"enableActivityType\", true);",
+							"     console.log(\"value of variable enableActivityType set to:\", postman.getEnvironmentVariable(\"enableActivityType\"));"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Agent?clientName={{ClientName}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Agent"
+					],
+					"query": [
+						{
+							"key": "clientName",
+							"value": "{{ClientName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "agent --- set to originalvalue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"console.log(\"setting value of enableActivityType to original value\");",
+							"if ((tests[\"Validating if Response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\")) === true)//validate response time",
+							" console.log(\"Response time validated\");",
+							" ",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							"",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0));  ",
+							"        console.log(\"ErrorCode validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\"association\":{\r\"entity\":[\r{\r\"clientName\":\"{{ClientName}}\",\"appName\":\"File System\"\r}\r]\r},\"agentProperties\":{\r\"idaActivityControl\":{\r\"activityControlOptions\":[\r{\r\"activityType\":1,\"enableAfterADelay\":false,\"enableActivityType\":{{enableActivityType}}\r}\r]\r}\r}\r}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Agent",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Agent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

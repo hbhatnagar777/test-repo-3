@@ -1,0 +1,62 @@
+{
+	"vcenter": 		[
+		{
+			"host"					: 	"#####",
+			"user"					:	"<<username>>",
+			"password"				: 	"<<password>>",
+			"datacenter_name"		: 	"BLRVSA",
+			"resource_pool_name"	: 	"AkalyaAutoTestRP02",
+			"datastore_name"		: 	"ESX1-DS2"
+		}
+	],
+	"templates":	[
+		{
+			"VM Name"				: 	"BackupVMWindows",
+			"CPU"					:	"2",
+			"Cores"					: 	"None",
+			"Memory"				:	"8",
+			"Hard disk"				:	"2",
+			"Hard disk Capacity"	:	"65",
+			"Network adapter 1"		:	"VM Network 2",
+			"isBackupVM"			: 	"True",
+			"Operating System"		: 	"Windows"
+		},
+		{
+			"VM Name"				: 	"BackupVMLinux",
+			"CPU"					:	"2",
+			"Cores"					: 	"None",
+			"Memory"				:	"4",
+			"Hard disk"				:	"1",
+			"Hard disk Capacity"	:	"60",
+			"Network adapter 1"		:	"VM Network Amit",
+			"isBackupVM"			: 	"True",
+			"Operating System"		: 	"Linux"
+		},
+		{
+			"VM Name"				: 	"ControllerVMWindows",
+			"CPU"					:	"6",
+			"Cores"					: 	"3",
+			"Memory"				:	"4",
+			"Hard disk"				:	"1",
+			"Hard disk Capacity"	:	"65",
+			"Network adapter 1"		:	"VM Network",
+			"isBackupVM"			: 	"False",
+			"Operating System"		: 	"Windows",
+			"HostName"				: 	"ControllerVM01",
+			"DomainName"			:	"<<domain_name>>",
+			"DomainUserName"		: 	"<<username>>",
+			"DomainPassword"		: 	"<<password>>"
+		},
+		{
+			"VM Name"				: 	"ControllerVMLinux",
+			"CPU"					:	"6",
+			"Cores"					: 	"2",
+			"Memory"				:	"4",
+			"Hard disk"				:	"1",
+			"Hard disk Capacity"	:	"60",
+			"Network adapter 1"		:	"VM Network",
+			"isBackupVM"			: 	"False",
+			"Operating System"		: 	"Linux"
+		}
+	]
+}

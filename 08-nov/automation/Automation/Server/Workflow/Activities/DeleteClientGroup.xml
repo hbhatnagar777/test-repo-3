@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_SetActivityRequest>
+    <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+    <activity cellClass=""
+        className="commvault.cte.workflow.activities.CustomXMLOperationActivity"
+        definition="&lt;?xml version='1.0' encoding='UTF-8'?>&lt;Workflow_CustomOperationDefinition outputs=&quot;&amp;lt;outputs />&quot; inputs=&quot;&amp;lt;inputs>&amp;lt;ClientGroupName class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot;>&amp;lt;/ClientGroupName>&amp;lt;/inputs>&quot; operation=&quot;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot; standalone=&amp;quot;no&amp;quot; ?>&amp;#xd;&amp;#xa;&amp;lt;App_PerformClientGroupReq clientGroupOperationType=&amp;quot;3&amp;quot;>&amp;#xd;&amp;#xa;&amp;#x9;&amp;lt;clientGroupDetail description=&amp;quot;&amp;quot;>&amp;#xd;&amp;#xa;&amp;#x9;&amp;#x9;&amp;lt;clientGroup clientGroupName=&amp;quot;java:{activity.getInput(&amp;amp;quot;ClientGroupName&amp;amp;quot;)}:java&amp;quot;/>&amp;#xd;&amp;#xa;&amp;#x9;&amp;lt;/clientGroupDetail>&amp;#xd;&amp;#xa;&amp;lt;/App_PerformClientGroupReq>&quot;>&lt;script language=&quot;1&quot; script=&quot;/*&amp;#xa;to access xml response use: XML xml = activity.getXmlResponse();&amp;#xa;to retrieve values via xpath you can use: String value = xml.selectSingleNode(&amp;quot;string(/path/to/node)&amp;quot;);&amp;#xa;to set outputs of the activity use: activity.setOutput(&amp;quot;outputName&amp;quot;, value);&amp;#xa;*/&amp;#xa;&quot; />&lt;/Workflow_CustomOperationDefinition>"
+        description="Deletes a client group" displayName="" flags="0"
+        icon="" inbound="1" outbound="1" schema="">
+        <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+        <activity activityId="0" activityName="DeleteClientGroup"
+            schemaId="0" schemaNamespace="commvault.cte.workflow.activities"/>
+        <activityLocation locationType="0">
+            <location schemaLocationId="1" schemaLocationUrl="workflow_activities.jar"/>
+        </activityLocation>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0" name="" type=""/>
+            <inputs className="" defaultValue="" listType="0" name="" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    name="ClientGroupName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+    </activity>
+</Workflow_SetActivityRequest>

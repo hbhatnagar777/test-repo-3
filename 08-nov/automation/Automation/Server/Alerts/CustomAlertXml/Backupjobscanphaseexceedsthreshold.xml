@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<App_SetCustomRuleRequest>
+    <queryDetail doesQuerySupportOutputFilter="1" frequency="86400"
+        isDisabled="0" isOverwriteAssociationAtAlertAllowed="0"
+        isPrimaryKeyPresent="1" isQueryModifyEnabled="1"
+        isSystemCreated="0"
+        queryCriteriaName="Backup job scan phase exceeds threshold"
+        queryDescription="Job remains in scan phase and exceeds X Minutes threshold."
+        sqlQuery="SET NOCOUNT ON;&#xa; &#xa;DECLARE @triggerTimeInSec INT= @LRJMPhaseTriggerTime * 60;&#xa;DECLARE @currentTime INT= dbo.GetUnixTime(GETUTCDATE());&#xa;SELECT JMJobInFo.JobID,&#xa;       UmUsers.Name,&#xa;       APP_Application.clientId,&#xa;       APP_Application.AppTypeId,&#xa;       APP_Application.Instance,&#xa;       APP_Application.BackupSet,&#xa;       JMBkpJobInfo.ApplicationId,&#xa;      convert(varchar(50), dbo.UTCToLocalTime(dbo.GetDateTime(attemptStartTime), dbo.GetClientTimeZone(2)),100) ScanStartTime&#xa;FROM JMJobInFo WITH (READUNCOMMITTED)&#xa;     INNER JOIN JMBkpJobInfo WITH (READUNCOMMITTED) ON JMJobInFo.jobId = JMBkpJobInfo.jobid&#xa;     INNER JOIN APP_Application WITH (READUNCOMMITTED) ON JMBkpJobInfo.applicationId = APP_Application.id&#xa;     INNER JOIN UmUsers WITH (READUNCOMMITTED) ON UmUsers.id = JMJobInFo.userId&#xa;WHERE(@currentTime - CAST(attemptStartTime AS INT)) > @triggerTimeInSec&#xa;     AND attemptStartTime > 0&#xa;     AND CAST(currentPhasename AS NVARCHAR(1000)) = 'SCAN'&#xa;     AND [STATE] = 1&#xa;     AND (UmUsers.id = @userId&#xa;          OR dbo.isBkpJobVisible(@userId, JMJobInfo.commCellId, APP_Application.clientId, APP_Application.appTypeId, APP_Application.instance, APP_Application.backupSet, JMBkpJobInfo.applicationId) = 1) "
+        taskInfoXml="&lt;?xml version='1.0' encoding='UTF-8'?>&lt;TMMsg_TaskInfo>&lt;task description=&quot;&quot; ownerId=&quot;1&quot; runUserId=&quot;1&quot; taskType=&quot;2&quot; ownerName=&quot;Administrator&quot; alertId=&quot;0&quot; GUID=&quot;c5b39ae9-9e5c-4f3e-a860-18ab21cef069&quot; policyType=&quot;10&quot; associatedObjects=&quot;0&quot; taskName=&quot;&quot; taskId=&quot;0&quot;>&lt;securityAssociations>&lt;ownerAssociations />&lt;/securityAssociations>&lt;originalCC commCellId=&quot;2&quot; />&lt;taskSecurity>&lt;associatedUserGroups userGroupId=&quot;1&quot; _type_=&quot;15&quot; userGroupName=&quot;master&quot; />&lt;associatedUserGroups userGroupId=&quot;3&quot; _type_=&quot;15&quot; userGroupName=&quot;View All&quot; />&lt;ownerCapabilities />&lt;/taskSecurity>&lt;createAs>&lt;user>&lt;user userName=&quot;admin&quot; userId=&quot;1&quot; />&lt;/user>&lt;/createAs>&lt;taskFlags isEdgeDrive=&quot;0&quot; isEZOperation=&quot;0&quot; forDDB=&quot;0&quot; uninstalled=&quot;0&quot; isSystem=&quot;0&quot; disabled=&quot;0&quot; />&lt;task taskName=&quot;&quot; taskId=&quot;52112&quot; />&lt;/task>&lt;appGroup />&lt;subTasks>&lt;subTask subTaskOrder=&quot;0&quot; subTaskName=&quot;&quot; subTaskType=&quot;1&quot; flags=&quot;0&quot; operationType=&quot;5014&quot; subTaskId=&quot;0&quot;>&lt;subTask subtaskId=&quot;52116&quot; subtaskName=&quot;&quot; />&lt;/subTask>&lt;pattern active_end_occurence=&quot;0&quot; freq_subday_interval=&quot;900&quot; freq_type=&quot;2048&quot; patternId=&quot;3657&quot; flags=&quot;0&quot; description=&quot;Every week on Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday at 12:00 AM  and repeats every 0 hr(s) 15 min(s) until 11:59 PM&quot; active_end_time=&quot;86340&quot; active_end_date=&quot;0&quot; skipOccurence=&quot;0&quot; skipDayNumber=&quot;0&quot; active_start_time=&quot;0&quot; freq_restart_interval=&quot;0&quot; active_start_date=&quot;1516838400&quot; freq_interval=&quot;127&quot; freq_relative_interval=&quot;0&quot; name=&quot;&quot; freq_recurrence_factor=&quot;1&quot;>&lt;daysToRun week=&quot;0&quot; Monday=&quot;1&quot; Thursday=&quot;1&quot; Friday=&quot;1&quot; Sunday=&quot;1&quot; Wednesday=&quot;1&quot; Tuesday=&quot;1&quot; day=&quot;0&quot; Saturday=&quot;1&quot; />&lt;calendar calendarName=&quot;Standard&quot; calendarId=&quot;1&quot; />&lt;timeZone TimeZoneID=&quot;31&quot; />&lt;/pattern>&lt;options>&lt;backupOpts backupLevel=&quot;2&quot;>&lt;dataOpt autoCopy=&quot;0&quot; />&lt;/backupOpts>&lt;/options>&lt;/subTasks>&lt;/TMMsg_TaskInfo>" visibility="0">
+        <creator userId="1" userName="admin"/>
+        <securityAssociations>
+            <ownerAssociations/>
+        </securityAssociations>
+        <commcellAssociation>
+            <entity _type_="124" commCellId="2"/>
+        </commcellAssociation>
+        <additionalQueryDetails alertCriteria="0" alertType="0"
+            isHealthParam="0" querySeverity="3">
+            <scriptDescription
+                description="Job remains in scan phase and exceeds X Minutes threshold."
+                guid="BFAAA03A-EB45-40AA-8C70-13B1A4E35076"
+                reportName="Backup job scan phase exceeds threshold" revision="$Revision: 1.1.2.5 $"/>
+        </additionalQueryDetails>
+        <queryEntity queryId="0" queryName="Backup job scan phase exceeds threshold"/>
+        <queryParamsList>
+            <queryParamsList attribute="0" className="java.lang.Integer"
+                controlHidden="0" controlType="0"
+                displayName="Scan phase threshold (in Minutes)"
+                documentation="Backup Jobs exceeding threshold will be alerted upon."
+                hidden="0" inputName="LRJMPhaseTriggerTime"
+                inputType="java.lang.Integer" listType="0"
+                maximumValue="" minimumValue=""
+                name="LRJMPhaseTriggerTime" readOnly="0" required="1"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+        </queryParamsList>
+        <queryOutputColumns columnFriendlyName="JobID"
+            columnName="JobID" isColumnFilterable="1" isPrimaryKey="1" lmDataType="0">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="User name"
+            columnName="Name" isColumnFilterable="1" isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Client name"
+            columnName="clientId" isColumnFilterable="1"
+            isPrimaryKey="0" lmDataType="14">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Application type"
+            columnName="AppTypeId" isColumnFilterable="1"
+            isPrimaryKey="0" lmDataType="13">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Instance"
+            columnName="Instance" isColumnFilterable="1"
+            isPrimaryKey="0" lmDataType="12">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Backupset"
+            columnName="BackupSet" isColumnFilterable="1"
+            isPrimaryKey="0" lmDataType="11">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Subclient name"
+            columnName="ApplicationId" isColumnFilterable="1"
+            isPrimaryKey="0" lmDataType="10">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+        <queryOutputColumns columnFriendlyName="Scan start time"
+            columnName="ScanStartTime" isColumnFilterable="1"
+            isPrimaryKey="0" lmDataType="1">
+            <columnAdditionalDetails includeInAlertOutput="1" isAlertRecipient="0"/>
+        </queryOutputColumns>
+    </queryDetail>
+</App_SetCustomRuleRequest>

@@ -1,0 +1,3787 @@
+{
+	"info": {
+		"_postman_id": "6530cfc5-eaf1-4c67-9660-394e8c71c2bf",
+		"name": "Storage Policy Operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "Login__",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"snasim.abc@xyz.com\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Storage Policy-nonDedupeStoragePool",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if(tests[\"Validating if Response Body has copyName tag\"] = responseBody.has(\"copyName\"))",
+							"{",
+							"    console.log(\"Storage Policy's copy's name is: \"+jsonData.archiveGroupCopy.copyName);",
+							"}",
+							"if(tests[\"Validating if Response Body has storagePolicyName tag\"] = responseBody.has(\"storagePolicyName\"))",
+							"{",
+							"    console.log(\"Name of the newly created Storage Policy is: \"+jsonData.archiveGroupCopy.storagePolicyName);",
+							"    postman.setEnvironmentVariable(\"storagePolicyName\",jsonData.archiveGroupCopy.storagePolicyName);",
+							"}",
+							"if(tests[\"Validating if Response Body has storagePolicyId tag\"] = responseBody.has(\"storagePolicyId\"))",
+							"{",
+							"    console.log(\"id of the newly created Storage Policy is: \"+jsonData.archiveGroupCopy.storagePolicyId);",
+							"    postman.setEnvironmentVariable(\"storagePolicyId\",jsonData.archiveGroupCopy.storagePolicyId);",
+							"}",
+							"tests[\"Validating if the errorCode tag is present\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Validating if the errorCode is 0\"] = jsonData.error.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var d = new Date()",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",\"nonDedupeStoragePolicy\"+new Date().getTime());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"storagePolicyName\": \"{{storagePolicyName}}\",\r\n    \"type\": 1,\r\n    \"numberOfStreams\": 100,\r\n    \"copyName\": \"Primary\",\r\n    \"numberOfCopies\": 1,\r\n    \"commCell\": {\r\n        \"commCellId\": 0\r\n    },\r\n    \"logStoragePolicy\": {\r\n        \"storagePolicyName\": \"\",\r\n        \"storagePolicyId\": 0\r\n    },\r\n    \"storagePolicyCopyInfo\": {\r\n        \"hardwareEncryption\": 0,\r\n        \"copyType\": 1,\r\n        \"isFromGui\": true,\r\n        \"active\": 1,\r\n        \"isDefault\": 1,\r\n        \"isSnapCopy\": 0,\r\n        \"numberOfStreamsToCombine\": 1,\r\n        \"isMirrorCopy\": 0,\r\n        \"throttleNetworkBandWidthMBHR\": 0,\r\n        \"autoDetectMountPath\": false,\r\n        \"hardWareCompression\": 0,\r\n        \"blockCacheValidDays\": 0,\r\n        \"spareMediaGroup\": {\r\n            \"spareMediaGroupId\": 0\r\n        },\r\n        \"dedupeFlags\": {\r\n            \"enableDASHFull\": 1\r\n        },\r\n        \"storagePolicyFlags\": {},\r\n        \"retentionRules\": {\r\n            \"retainBackupDataForCycles\": 1,\r\n            \"jobs\": 0,\r\n            \"retainArchiverDataForDays\": -1,\r\n            \"retainBackupDataForDays\": 30,\r\n            \"retentionFlags\": {\r\n                \"enableDataAging\": 1\r\n            }\r\n        },\r\n        \"StoragePolicyCopy\": {\r\n            \"copyId\": 0,\r\n            \"storagePolicyId\": 0\r\n        },\r\n        \"extendedFlags\": {\r\n            \"useGlobalStoragePolicy\": 1\r\n        },\r\n        \"drivePool\": {\r\n            \"drivePoolId\": 0\r\n        },\r\n        \"copyFlags\": {},\r\n        \"snapLibrary\": {\r\n            \"libraryName\": \"N/A\",\r\n            \"libraryId\": 0\r\n        },\r\n        \"library\": {\r\n            \"libraryName\": \"\",\r\n            \"libraryId\": 0\r\n        },\r\n        \"startTime\": {\r\n            \"time\": 0\r\n        },\r\n        \"dataEncryption\": {\r\n            \"encryptionKeyLength\": 0,\r\n            \"encryptData\": 0,\r\n            \"encryptionType\": 0\r\n        },\r\n        \"dataVerification\": {\r\n            \"verificationExpiresAfterPeriod\": 0,\r\n            \"verificationExpiresAfterPeriodType\": 3,\r\n            \"jobsOnOrAfterDate\": {\r\n                \"time\": 0\r\n            }\r\n        },\r\n        \"useGlobalPolicy\": {\r\n            \"storagePolicyName\": \"{{nonDedupeStoragePool}}\"\r\n        }\r\n    },\r\n    \"incrementalStoragePolicy\": {\r\n        \"storagePolicyName\": \"\",\r\n        \"storagePolicyId\": 0\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Storage Policy14",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"storagePolicyName\": \"TestPolicy\",\n  \"type\": 1,\n  \"numberOfStreams\": 100,\n  \"copyName\": \"Primary\",\n  \"numberOfCopies\": 1,\n  \"storagePolicyCopyInfo\": {\n    \"copyType\": 1,\n    \"isFromGui\": false,\n    \"active\": 1,\n    \"isDefault\": 1,\n    \"numberOfStreamsToCombine\": 1,\n    \"dedupeFlags\": {\n      \"enableDASHFull\": 1,\n      \"useGlobalDedupStore\": 1,\n      \"enableDeduplication\": 1,\n      \"enableClientSideDedup\": 1\n    },\n    \"storagePolicyFlags\": {\n      \"blockLevelDedup\": 1\n    },\n    \"retentionRules\": {\n      \"retainBackupDataForCycles\": 1,\n      \"retainArchiverDataForDays\": -1,\n      \"retainBackupDataForDays\": 30,\n      \"retentionFlags\": {\n        \"enableDataAging\": 1\n      }\n    },\n    \"useGlobalPolicy\": {\n      \"storagePolicyId\": 47,\n      \"storagePolicyName\": \"VSAPool\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 09:22:33 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "236"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"responseType\": 2,\n    \"archiveGroupCopy\": {\n        \"copyId\": 60,\n        \"_type_\": 18,\n        \"copyName\": \"Primary\",\n        \"storagePolicyName\": \"TestPolicy\",\n        \"storagePolicyId\": 61\n    },\n    \"error\": {\n        \"errorMessage\": \"The Global Deduplication host copy does not exist.\",\n        \"errorCode\": 1\n    }\n}"
+				},
+				{
+					"name": "Storage Policy17.1",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"storagePolicyName\": \"TestPolicy\",\n  \"type\": 1,\n  \"numberOfStreams\": 100,\n  \"copyName\": \"Primary\",\n  \"numberOfCopies\": 1,\n  \"storagePolicyCopyInfo\": {\n    \"copyType\": 1,\n    \"isFromGui\": false,\n    \"active\": 1,\n    \"isDefault\": 1,\n    \"numberOfStreamsToCombine\": 1,\n    \"dedupeFlags\": {\n      \"enableDASHFull\": 1,\n      \"useGlobalDedupStore\": 1,\n      \"enableDeduplication\": 1,\n      \"enableClientSideDedup\": 1\n    },\n    \"storagePolicyFlags\": {\n      \"blockLevelDedup\": 1\n    },\n    \"retentionRules\": {\n      \"retainBackupDataForCycles\": 1,\n      \"retainArchiverDataForDays\": -1,\n      \"retainBackupDataForDays\": 30,\n      \"retentionFlags\": {\n        \"enableDataAging\": 1\n      }\n    }\n   \n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Feb 2020 05:15:35 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"responseType\": 2,\n    \"archiveGroupCopy\": {\n        \"copyId\": 65,\n        \"_type_\": 18,\n        \"copyName\": \"Primary\",\n        \"storagePolicyName\": \"TestPolicy\",\n        \"storagePolicyId\": 66\n    },\n    \"error\": {\n        \"errorMessage\": \"Unable to use the given Global Deduplication host policy due to a database error\",\n        \"errorCode\": 1\n    }\n}"
+				},
+				{
+					"name": "Storage Policy17",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"storagePolicyName\": \"TestPolicy\",\n  \"type\": 1,\n  \"numberOfStreams\": 100,\n  \"copyName\": \"Primary\",\n  \"numberOfCopies\": 1,\n  \"storagePolicyCopyInfo\": {\n    \"copyType\": 1,\n    \"isFromGui\": false,\n    \"active\": 1,\n    \"isDefault\": 1,\n    \"numberOfStreamsToCombine\": 1,\n    \"dedupeFlags\": {\n      \"enableDASHFull\": 1,\n      \"useGlobalDedupStore\": 1,\n      \"enableDeduplication\": 1,\n      \"enableClientSideDedup\": 1\n    },\n    \"storagePolicyFlags\": {\n      \"blockLevelDedup\": 1\n    },\n    \"retentionRules\": {\n      \"retainBackupDataForCycles\": 1,\n      \"retainArchiverDataForDays\": -1,\n      \"retainBackupDataForDays\": 30,\n      \"retentionFlags\": {\n        \"enableDataAging\": 1\n      }\n    },\n    \"useGlobalPolicy\": {\n      \"storagePolicyId\": 47,\n      \"storagePolicyName\": \"VSAPool\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 13:07:01 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"responseType\": 2,\n    \"error\": {\n        \"errorMessage\": \"Failed to fetch information from CommServ database.\",\n        \"errorCode\": 1\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Storage Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ) ;     //validate content-type",
+							"tests[\"Response Body contains policies\"] = responseBody.has(\"policies\");",
+							"tests[\"Response Body contains policies\"] = responseBody.has(\"storagePolicyName\");",
+							"tests[\"Response Body contains policies\"] = responseBody.has(\"storagePolicyId\");",
+							"//postman.setEnvironmentVariable(\"storagePolicyId\",jsonData.policies[0].storagePolicyId);",
+							"",
+							"tests[\"Newly created Storage Policy is present\"] = (function() {",
+							"    for( i=0; i < jsonData.policies.length; i++)",
+							"        if (jsonData.policies[i].storagePolicyId == postman.getEnvironmentVariable(\"storagePolicyId\"))",
+							"            return true;",
+							"    return false;",
+							"})();"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/StoragePolicy",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePolicy"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of storage policies.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_storage_policy.htm)"
+			},
+			"response": [
+				{
+					"name": "GET Storage Policy14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 08:51:54 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "537"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"policies\": [\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm105\",\n            \"storagePolicyId\": 20\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm106\",\n            \"storagePolicyId\": 23\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm107\",\n            \"storagePolicyId\": 26\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm108\",\n            \"storagePolicyId\": 29\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm105\",\n            \"storagePolicyId\": 3\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm106\",\n            \"storagePolicyId\": 21\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm107\",\n            \"storagePolicyId\": 24\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm108\",\n            \"storagePolicyId\": 27\n        }\n    ]\n}"
+				},
+				{
+					"name": "Storage Policy",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/StoragePolicy",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"StoragePolicy"
+							]
+						},
+						"description": "This operation returns a list of storage policies.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_storage_policy.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "236",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Jun 2017 07:43:00 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"policies\":[\r{\r\"storagePolicyName\":\"CSSP\",\"storagePolicyId\":3\r},{\r\"storagePolicyName\":\"FirewallMASP\",\"storagePolicyId\":4\r},{\r\"storagePolicyName\":\"fwma_3\",\"storagePolicyId\":6\r},{\r\"storagePolicyName\":\"IDCMA2SP\",\"storagePolicyId\":5\r}\r]\r}"
+				},
+				{
+					"name": "GET Storage Policy17",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 13:04:09 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"policies\": [\n        {\n            \"storagePolicyName\": \"newmanTestPolicy\",\n            \"storagePolicyId\": 55\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm105\",\n            \"storagePolicyId\": 20\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm106\",\n            \"storagePolicyId\": 23\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm107\",\n            \"storagePolicyId\": 26\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm108\",\n            \"storagePolicyId\": 29\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm105\",\n            \"storagePolicyId\": 3\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm106\",\n            \"storagePolicyId\": 21\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm107\",\n            \"storagePolicyId\": 24\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm108\",\n            \"storagePolicyId\": 27\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "StoragePolicy Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains storagePolicy\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"storagePolicy\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains storagePolicyName\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"storagePolicyName\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains storagePolicyId\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"storagePolicyId\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains copy\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"copy\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains retentionRules\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"retentionRules\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Body contains StoragePolicyCopy\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"StoragePolicyCopy\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Body contains library\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"library\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/StoragePolicy/{{storagePolicyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePolicy",
+						"{{storagePolicyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "V2 Storage Policy Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"if(tests[\"Validating if Response Body has storagePolicyName tag\"] = responseBody.has(\"storagePolicyName\"))",
+							"{",
+							"    console.log(\"The name of the storage policy is: \"+jsonData.policies[0].storagePolicy.storagePolicyName);",
+							"}",
+							"if(tests[\"Validating if Response Body has storagePolicyId tag\"] = responseBody.has(\"storagePolicyId\"))",
+							"{",
+							"    console.log(\"The name of the storage policy is: \"+jsonData.policies[0].storagePolicy.storagePolicyId);",
+							"}",
+							"tests[\"Validating if Response Body has errorMessage tag\"] = responseBody.has(\"errorMessage\");",
+							"tests[\"Validating if Response Body has errorCode tag\"] = responseBody.has(\"errorCode\") ;",
+							"tests[\"Validating if errorCode value is 0\"] = jsonData.error.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Storage Policy Details14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy",
+								"{{storagePolicyId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 09:34:49 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "504"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"policies\": [\n        {\n            \"timeZoneType\": 0,\n            \"description\": \"\",\n            \"type\": 1,\n            \"searchEngineName\": \"\",\n            \"searchEngineId\": 0,\n            \"numberOfStreams\": 14,\n            \"sidbBlockSizeKB\": 128,\n            \"auxCopyAlertGB\": 2,\n            \"numberOfCopies\": 1,\n            \"auxCopyAlertDays\": 2,\n            \"smReplicationProtocolType\": 0,\n            \"flag\": {\n                \"distributeDataEvenlyAmongStreams\": 1,\n                \"randomizeStream\": 1\n            },\n            \"incrementalStoragePolicy\": {\n                \"storagePolicyName\": \"\",\n                \"storagePolicyId\": 0\n            },\n            \"storagePolicy\": {\n                \"storagePolicyName\": \"newmanTestPolicy\",\n                \"storagePolicyId\": 55\n            }\n        }\n    ],\n    \"error\": {\n        \"errorMessage\": \"\",\n        \"errorCode\": 0\n    }\n}"
+				},
+				{
+					"name": "Storage Policy Details17",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy",
+								"{{storagePolicyId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Feb 2020 05:17:17 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"policies\": [\n        {\n            \"timeZoneType\": 0,\n            \"description\": \"\",\n            \"type\": 1,\n            \"searchEngineName\": \"\",\n            \"searchEngineId\": 0,\n            \"numberOfStreams\": 50,\n            \"sidbBlockSizeKB\": 128,\n            \"auxCopyAlertGB\": 0,\n            \"numberOfCopies\": 1,\n            \"auxCopyAlertDays\": 0,\n            \"smReplicationProtocolType\": 0,\n            \"flag\": {\n                \"distributeDataEvenlyAmongStreams\": 1,\n                \"randomizeStream\": 1\n            },\n            \"incrementalStoragePolicy\": {\n                \"storagePolicyName\": \"\",\n                \"storagePolicyId\": 0\n            },\n            \"storagePolicy\": {\n                \"storagePolicyName\": \"newmanTestPoli1cy\",\n                \"storagePolicyId\": 64\n            }\n        }\n    ],\n    \"error\": {\n        \"errorMessage\": \"\",\n        \"errorCode\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Storage Policy Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);",
+							"var libraryId = postman.getEnvironmentVariable(\"libraryId\");",
+							"postman.setEnvironmentVariable(\"libraryId\",libraryId);",
+							"var libraryName = postman.getEnvironmentVariable(\"libraryName\");",
+							"postman.setEnvironmentVariable(\"libraryName\",libraryName);",
+							"var mediaAgentName = postman.getEnvironmentVariable(\"mediaAgentName\");",
+							"postman.setEnvironmentVariable(\"mediaAgentName\",mediaAgentName);",
+							"var mediaAgentId = postman.getEnvironmentVariable(\"mediaAgentId\");",
+							"postman.setEnvironmentVariable(\"mediaAgentId\",mediaAgentId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Validate if Response Body has archiveGroupCopy tag\"] = responseBody.has(\"archiveGroupCopy\");",
+							"tests[\"Validate if Response Body has copyId tag\"] = responseBody.has(\"copyId\");",
+							"tests[\"Validate if Response Body has copyName tag\"] = responseBody.has(\"copyName\");",
+							"tests[\"Validate if Response Body has errorCode\"] = responseBody.has(\"errorCode\");",
+							"postman.setEnvironmentVariable(\"copyName\",jsonData.archiveGroupCopy.copyName);",
+							"postman.setEnvironmentVariable(\"copyId\",jsonData.archiveGroupCopy.copyId);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"copyName\": \"copyofnewmanpolicy\",\r\n    \"storagePolicyCopyInfo\": {\r\n        \"copyType\": 0,\r\n        \"isDefault\": 2,\r\n        \"isSnapCopy\": 2,\r\n        \"description\": \"Checking for automation\",\r\n        \"dedupeFlags\": {\r\n            \"useGlobalDedupStore\": 2\r\n        },\r\n        \"retentionRules\": {\r\n            \"retainBackupDataForCycles\": 1,\r\n            \"retainArchiverDataForDays\": -1,\r\n            \"retainBackupDataForDays\": 5\r\n        },\r\n        \"StoragePolicyCopy\": {\r\n            \"copyName\": \"copyofnewmanpolicy\",\r\n            \"storagePolicyName\": \"{{storagePolicyName}}\",\r\n            \"storagePolicyId\": {{storagePolicyId}}\r\n        },\r\n        \"extendedFlags\": {\r\n            \"useGlobalAuxCopyPolicy\": 2,\r\n            \"useGlobalStoragePolicy\": 1\r\n        },\r\n        \"copyFlags\": {\r\n            \"lastFull\": 1\r\n        },\r\n        \"startTime\": {\r\n            \"time\": -1\r\n        },\r\n        \"useGlobalPolicy\": {\r\n            \"_type_\": 17,\r\n            \"storagePolicyName\": \"{{storagePolicyName}}\",\r\n            \"storagePolicyId\": {{storagePolicyId}}\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/Copy",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"Copy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy Copy Details",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);",
+							"var copyName = postman.setEnvironmentVariable(\"copyName\");",
+							"postman.setEnvironmentVariable(\"copyName\",copyName);",
+							"var copyId = postman.getEnvironmentVariable(\"copyId\");",
+							"postman.setEnvironmentVariable(\"copyId\",copyId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Validate if Response Body has library tag\"] = responseBody.has(\"library\");",
+							"tests[\"Validate if Response Body has copy tag\"] = responseBody.has(\"copy\");",
+							"tests[\"Validate if Response Body has mediaAgent tag\"] = responseBody.has(\"mediaAgent\");",
+							"tests[\"Validate if Response Body has StoragePolicyCopy tag\"] = responseBody.has(\"StoragePolicyCopy\")",
+							"tests[\"Validate if Response Body has errorCode\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Validate if errorCode is 0\"] = jsonData.error.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/Copy/{{copyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"Copy",
+						"{{copyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy Copy Size",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Validating if Response Body has copyInfo tag\"] = responseBody.has(\"copyInfo\");",
+							"if (tests[\"Validating if Response Body has dataSizeInGB tag\"] = responseBody.has(\"dataSizeInGB\"))",
+							"{",
+							"    console.log(\"The data size (in GB) for the storage policy copy is: \"+jsonData.copyInfo[0].dataSizeInGB);",
+							"}",
+							"tests[\"Validating if Response Body has requiresBackupsOnOrAfterDate tag\"] = responseBody.has(\"requiresBackupsOnOrAfterDate\");",
+							"if(tests[\"Validating if Response Body has copyId tag\"] = responseBody.has(\"copyId\"))",
+							"{",
+							"    console.log(\"The copy id for storage policy copy is: \"+jsonData.copyInfo[0].spCopy.copyId);",
+							"}",
+							"if(tests[\"Validating if Response Body has copyName tag\"] = responseBody.has(\"copyName\"))",
+							"{",
+							"    console.log(\"The copy name for storage policy copy is: \"+jsonData.copyInfo[0].spCopy.copyName);",
+							"}",
+							"if(tests[\"Validating if Response Body has storagePolicyName tag\"] = responseBody.has(\"storagePolicyName\"))",
+							"{",
+							"    console.log(\"The Storage Policy Name for this copy is: \"+jsonData.copyInfo[0].spCopy.storagePolicyName);",
+							"}",
+							"if(tests[\"Validating if Response Body has storagePolicyId tag\"] = responseBody.has(\"storagePolicyId\"))",
+							"{",
+							"    console.log(\"The Storage Policy Id for this copy is: \"+jsonData.copyInfo[0].spCopy.storagePolicyId);",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/Copy/{{copyId}}/Size",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"Copy",
+						"{{copyId}}",
+						"Size"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy Search Engine List",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"); //validate content-type",
+							"tests[\"Validating if Response Body has ciProps\"] = responseBody.has(\"ciProps\");",
+							"tests[\"Validating if Response Body has allEntities\"] = responseBody.has(\"allEntities\");",
+							"if(tests[\"Validating if Response Body has error tag\"] = responseBody.has(\"error\"))",
+							"{",
+							"    console.log(\"The errorCode is :\"+jsonData.error.errorCode);",
+							"}",
+							"tests[\"Validating if Response Body has entityExtraction tag\"] = responseBody.has(\"entityExtraction\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/SearchEngineProperties",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"SearchEngineProperties"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy List for a MediaAgent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ) ;     //validate content-type",
+							"tests[\"Response Body contains storagePolicyInformationAssociatedToMA tag\"] = responseBody.has(\"storagePolicyInformationAssociatedToMA\");",
+							"tests[\"Response Body contains storagePolicyName tag\"] = responseBody.has(\"storagePolicyName\");",
+							"tests[\"Response Body contains storagePolicyId\"] = responseBody.has(\"storagePolicyId\");",
+							"tests[\"Newly created Storage Policy is present\"] = (function() {",
+							"    for( i=0; i < jsonData.storagePolicyInformationAssociatedToMA.length; i++)",
+							"        if (jsonData.storagePolicyInformationAssociatedToMA[i].storagePolicyAndCopy.storagePolicyName == postman.getEnvironmentVariable(\"storagePolicyName\"))",
+							"            return true;",
+							"    return false;",
+							"})();",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);",
+							"var libraryId = postman.getEnvironmentVariable(\"libraryId\");",
+							"postman.setEnvironmentVariable(\"libraryId\",libraryId);",
+							"var libraryName = postman.getEnvironmentVariable(\"libraryName\");",
+							"postman.setEnvironmentVariable(\"libraryName\",libraryName);",
+							"var mediaAgentName = postman.getEnvironmentVariable(\"mediaAgentName\");",
+							"postman.setEnvironmentVariable(\"mediaAgentName\",mediaAgentName);",
+							"var mediaAgentId = postman.getEnvironmentVariable(\"mediaAgentId\");",
+							"postman.setEnvironmentVariable(\"mediaAgentId\",mediaAgentId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/StoragePolicyListAssociatedToMediaAgent?MediaAgent={{mediaAgentId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePolicyListAssociatedToMediaAgent"
+					],
+					"query": [
+						{
+							"key": "MediaAgent",
+							"value": "{{mediaAgentId}}"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of storage policies associated with a MediaAgent.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_storage_policy_mediaagent.htm)"
+			},
+			"response": [
+				{
+					"name": "Storage Policy List for a MediaAgent14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePolicyListAssociatedToMediaAgent?MediaAgent={{mediaAgentId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePolicyListAssociatedToMediaAgent"
+							],
+							"query": [
+								{
+									"key": "MediaAgent",
+									"value": "{{mediaAgentId}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 08:55:36 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "888"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"errorCode\": 0\n    },\n    \"storagePolicyInformationAssociatedToMA\": [\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": true,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 27,\n                \"_type_\": 18,\n                \"copyName\": \"Primary\",\n                \"storagePolicyName\": \"GDP_smckb2pmm108\",\n                \"storagePolicyId\": 28\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 3439\n            }\n        },\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": true,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 28,\n                \"_type_\": 18,\n                \"copyName\": \"Primary\",\n                \"storagePolicyName\": \"SP_smckb2pmm108\",\n                \"storagePolicyId\": 29\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 3439\n            }\n        },\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": false,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 26,\n                \"_type_\": 18,\n                \"copyName\": \"1 次\",\n                \"storagePolicyName\": \"SP_SYS_smckb2pmm108\",\n                \"storagePolicyId\": 27\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 3439\n            }\n        }\n    ]\n}"
+				},
+				{
+					"name": "Storage Policy List for a MediaAgent17",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePolicyListAssociatedToMediaAgent?MediaAgent={{mediaAgentId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePolicyListAssociatedToMediaAgent"
+							],
+							"query": [
+								{
+									"key": "MediaAgent",
+									"value": "{{mediaAgentId}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 13:03:29 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"errorCode\": 0\n    },\n    \"storagePolicyInformationAssociatedToMA\": [\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": true,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 62,\n                \"_type_\": 18,\n                \"copyName\": \"New Disk SP_Primary\",\n                \"storagePolicyName\": \"New Diksk SP\",\n                \"storagePolicyId\": 63\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 2\n            }\n        },\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": true,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 53,\n                \"_type_\": 18,\n                \"copyName\": \"New Disk SP_Primary\",\n                \"storagePolicyName\": \"New Disk SP\",\n                \"storagePolicyId\": 54\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 2\n            }\n        },\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": false,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 54,\n                \"_type_\": 18,\n                \"copyName\": \"Primary\",\n                \"storagePolicyName\": \"newmanTestPolicy\",\n                \"storagePolicyId\": 55\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 2\n            }\n        }\n    ]\n}"
+				},
+				{
+					"name": "Storage Policy List for a MediaAgent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/StoragePolicyListAssociatedToMediaAgent?MediaAgent=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"StoragePolicyListAssociatedToMediaAgent"
+							],
+							"query": [
+								{
+									"key": "MediaAgent",
+									"value": "2"
+								}
+							]
+						},
+						"description": "This opeartion returns a list of storage policies associated with a MediaAgent.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_storage_policy_mediaagent.htm)\n\n"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "777",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Jun 2017 07:56:39 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><App_GetStoragePoliciesForMediaAgentResp><error errorCode=\"0\"/><storagePolicyInformationAssociatedToMA isMADDBHost=\"0\" isMADefaultDataPathInCopy=\"1\" isPrimaryCopy=\"1\" isProxyMAInCopy=\"0\"><mediaAgent mediaAgentId=\"2\"/><storagePolicyAndCopy _type_=\"18\" copyId=\"1\" copyName=\"Primary\" storagePolicyId=\"2\" storagePolicyName=\"CommServeDR\"/></storagePolicyInformationAssociatedToMA><storagePolicyInformationAssociatedToMA isMADDBHost=\"0\" isMADefaultDataPathInCopy=\"1\" isPrimaryCopy=\"1\" isProxyMAInCopy=\"0\"><mediaAgent mediaAgentId=\"2\"/><storagePolicyAndCopy _type_=\"18\" copyId=\"2\" copyName=\"Primary\" storagePolicyId=\"3\" storagePolicyName=\"CSSP\"/></storagePolicyInformationAssociatedToMA></App_GetStoragePoliciesForMediaAgentResp>"
+				}
+			]
+		},
+		{
+			"name": "Storage Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Validating if errorCode is 0\"] = jsonData.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auxCopyAlertDays\": 2,\r\n  \"description\": \"Description has been changed\",\r\n  \"newStoragePolicyName\": \"ChangedStoragePolicyName1{{$timestamp}}\",\r\n  \"numberOfStreams\": 14,\r\n  \"forceNextBkpToFull\": false,\r\n  \"auxCopyAlertGB\": 2,\r\n  \"flag\": {\r\n    \"enableAuxCopyAlert\": 2,\r\n    \"distributeDataEvenlyAmongStreams\": 2,\r\n    \"cacheResourceReservationForJobs\": 2,\r\n    \"storagePolicyLevelMediaPassword\": 2,\r\n    \"hideStoragePolicy\": 2,\r\n    \"randomizeStream\": 2\r\n  },\r\n  \"StoragePolicy\": {\r\n    \"storagePolicyName\": \"{{storagePolicyName}}\"\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Storage Policy14",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"auxCopyAlertDays\": 2,\n  \"description\": \"\",\n  \"newStoragePolicyName\": \"\",\n  \"numberOfStreams\": 14,\n  \"forceNextBkpToFull\": false,\n  \"auxCopyAlertGB\": 2,\n  \"flag\": {\n    \"enableAuxCopyAlert\": 2,\n    \"distributeDataEvenlyAmongStreams\": 2,\n    \"cacheResourceReservationForJobs\": 2,\n    \"storagePolicyLevelMediaPassword\": 2,\n    \"hideStoragePolicy\": 2,\n    \"randomizeStream\": 2\n  },\n  \"StoragePolicy\": {\n    \"storagePolicyName\": \"\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy",
+								"{{storagePolicyId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 09:31:29 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorCode\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Storage Policy Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);",
+							"var copyName = postman.setEnvironmentVariable(\"copyName\");",
+							"postman.setEnvironmentVariable(\"copyName\",copyName);",
+							"var copyId = postman.getEnvironmentVariable(\"copyId\");",
+							"postman.setEnvironmentVariable(\"copyId\",copyId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Validating if errorCode is 0\"] = jsonData.error.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"newCopyName\": \"StoragePolicyCopyModified{{$timestamp}}\",\r\n    \"storagePolicyCopyInfo\": {\r\n        \"dataPathConfiguration\": {\r\n            \"resourcesOfflineWaitTimeInHoursMinutes\": {},\r\n            \"resourcesBusyWaitTimeInHoursMinutes\": {}\r\n        },\r\n        \"mediaProperties\": {\r\n            \"multiplexingFactor\": 0,\r\n            \"mediaRefreshProperties\": {\r\n                \"percentage\": 51,\r\n                \"monthsBeforeMediaAged\": {\r\n                    \"months\": 3\r\n                },\r\n                \"refreshFlags\": {\r\n                    \"enableMediaRetirementThreshold\": 2\r\n                },\r\n                \"monthsAfterMediaWritten\": {\r\n                    \"months\": 12\r\n                }\r\n            }\r\n        },\r\n        \"sourceCopy\": {\r\n            \"copyName\": \"\",\r\n            \"storagePolicyName\": \"\"\r\n        },\r\n        \"StoragePolicyCopy\": {\r\n            \"copyName\": \"\",\r\n            \"storagePolicyName\": \"\"\r\n        },\r\n        \"extendedFlags\": {\r\n            \"spaceOptimizedAuxCopy\": 0,\r\n            \"overRideGACPRetention\": 2,\r\n            \"chunkLevelAuxCopy\": 2,\r\n            \"overRideGACPEncryption\": 2\r\n        },\r\n        \"copyFlags\": {\r\n            \"wormCopy\": 2,\r\n            \"enableMediaRefresh\": 2,\r\n            \"archiveCheckAll\": 2,\r\n            \"inlineAuxCopy\": 2,\r\n            \"noAuxCopyToSameLibrary\": 2,\r\n            \"sourceCopyForSnapToTape\": 2,\r\n            \"enableLanFreeReservationOnly\": 2,\r\n            \"roundRobbinDataPath\": 2,\r\n            \"lastFullWait\": 2,\r\n            \"useDirectAttachedNASDrivePool\": 2,\r\n            \"enableParallelCopy\": 2,\r\n            \"demultiplexOnCopy\": 2,\r\n            \"combineStreams\": 2,\r\n            \"switchIfOffline\": 2,\r\n            \"auxCopyReencryptData\": 2,\r\n            \"switchIfBusy\": 2,\r\n            \"useStreamsOverMultiplexing\": 2,\r\n            \"deleteCopyAfterJobsAreDeleted\": 2,\r\n            \"storeKeyOnMedia\": 2,\r\n            \"multiplexSourceStreams\": 2,\r\n            \"archiveCheckBitmap\": 2,\r\n            \"siloCopy\": 2,\r\n            \"autoAddDataPaths\": 2,\r\n            \"lastFull\": 2,\r\n            \"markMediaToBeErasedAfterRecycling\": 2,\r\n            \"archiveCheckFull\": 2,\r\n            \"noInlineCopyToSameLibrary\": 2,\r\n            \"useHardwareSnapshot\": 2\r\n        },\r\n        \"resourcePoolsList\": [\r\n            {\r\n                \"operation\": 1,\r\n                \"resourcePoolName\": \"\"\r\n            }\r\n        ],\r\n        \"startTime\": {\r\n            \"timeValue\": \"\"\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/Copy/{{copyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"Copy",
+						"{{copyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/Copy/{{copyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"Copy",
+						"{{copyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a storage policy.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_storage_policy.htm)"
+			},
+			"response": [
+				{
+					"name": "Storage Policy",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/StoragePolicy/CSSP-4",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"StoragePolicy",
+								"CSSP-4"
+							]
+						},
+						"description": "This operation deletes a storage policy.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_storage_policy.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "37",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Jun 2017 08:15:27 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "Deleted storage policy successfully.\n"
+				}
+			]
+		},
+		{
+			"name": "Storage Policy-DedupeStoragePool",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if(tests[\"Validating if Response Body has copyName tag\"] = responseBody.has(\"copyName\"))",
+							"{",
+							"    console.log(\"Storage Policy's copy's name is: \"+jsonData.archiveGroupCopy.copyName);",
+							"}",
+							"if(tests[\"Validating if Response Body has storagePolicyName tag\"] = responseBody.has(\"storagePolicyName\"))",
+							"{",
+							"    console.log(\"Name of the newly created Storage Policy is: \"+jsonData.archiveGroupCopy.storagePolicyName);",
+							"    postman.setEnvironmentVariable(\"storagePolicyName\",jsonData.archiveGroupCopy.storagePolicyName);",
+							"}",
+							"if(tests[\"Validating if Response Body has storagePolicyId tag\"] = responseBody.has(\"storagePolicyId\"))",
+							"{",
+							"    console.log(\"id of the newly created Storage Policy is: \"+jsonData.archiveGroupCopy.storagePolicyId);",
+							"    postman.setEnvironmentVariable(\"storagePolicyId\",jsonData.archiveGroupCopy.storagePolicyId);",
+							"}",
+							"tests[\"Validating if the errorCode tag is present\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Validating if the errorCode is 0\"] = jsonData.error.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var d = new Date()",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",\"dedupeStoragePolicy\"+new Date().getTime());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"storagePolicyName\": \"{{storagePolicyName}}\",\r\n    \"type\": 1,\r\n    \"numberOfStreams\": 100,\r\n    \"copyName\": \"Primary\",\r\n    \"numberOfCopies\": 1,\r\n    \"commCell\": {\r\n        \"commCellId\": 0\r\n    },\r\n    \"logStoragePolicy\": {\r\n        \"storagePolicyName\": \"\",\r\n        \"storagePolicyId\": 0\r\n    },\r\n    \"storagePolicyCopyInfo\": {\r\n        \"hardwareEncryption\": 0,\r\n        \"copyType\": 1,\r\n        \"isFromGui\": true,\r\n        \"active\": 1,\r\n        \"isDefault\": 1,\r\n        \"isSnapCopy\": 0,\r\n        \"numberOfStreamsToCombine\": 1,\r\n        \"isMirrorCopy\": 0,\r\n        \"throttleNetworkBandWidthMBHR\": 0,\r\n        \"autoDetectMountPath\": false,\r\n        \"hardWareCompression\": 0,\r\n        \"blockCacheValidDays\": 0,\r\n        \"spareMediaGroup\": {\r\n            \"spareMediaGroupId\": 0\r\n        },\r\n        \"dedupeFlags\": {\r\n            \"enableDASHFull\": 1,\r\n            \"useGlobalDedupStore\": 1,\r\n            \"enableDeduplication\": 1,\r\n            \"enableClientSideDedup\": 1\r\n        },\r\n        \"storagePolicyFlags\": {\r\n            \"blockLevelDedup\": 1\r\n        },\r\n        \"retentionRules\": {\r\n            \"retainBackupDataForCycles\": 1,\r\n            \"jobs\": 0,\r\n            \"retainArchiverDataForDays\": -1,\r\n            \"retainBackupDataForDays\": 30,\r\n            \"retentionFlags\": {\r\n                \"enableDataAging\": 1\r\n            }\r\n        },\r\n        \"StoragePolicyCopy\": {\r\n            \"copyId\": 0,\r\n            \"storagePolicyId\": 0\r\n        },\r\n        \"extendedFlags\": {},\r\n        \"drivePool\": {\r\n            \"drivePoolId\": 0\r\n        },\r\n        \"copyFlags\": {},\r\n        \"snapLibrary\": {\r\n            \"libraryName\": \"N/A\",\r\n            \"libraryId\": 0\r\n        },\r\n        \"library\": {\r\n            \"libraryName\": \"\",\r\n            \"libraryId\": 0\r\n        },\r\n        \"startTime\": {\r\n            \"time\": 0\r\n        },\r\n        \"dataEncryption\": {\r\n            \"encryptionKeyLength\": 0,\r\n            \"encryptData\": 0,\r\n            \"encryptionType\": 0\r\n        },\r\n        \"dataVerification\": {\r\n            \"verificationExpiresAfterPeriod\": 0,\r\n            \"verificationExpiresAfterPeriodType\": 3,\r\n            \"jobsOnOrAfterDate\": {\r\n                \"time\": 0\r\n            }\r\n        },\r\n        \"useGlobalPolicy\": {\r\n            \"storagePolicyName\": \"{{dedupeStoragePool}}\"\r\n        }\r\n    },\r\n    \"incrementalStoragePolicy\": {\r\n        \"storagePolicyName\": \"\",\r\n        \"storagePolicyId\": 0\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Storage Policy17.1",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"storagePolicyName\": \"TestPolicy\",\n  \"type\": 1,\n  \"numberOfStreams\": 100,\n  \"copyName\": \"Primary\",\n  \"numberOfCopies\": 1,\n  \"storagePolicyCopyInfo\": {\n    \"copyType\": 1,\n    \"isFromGui\": false,\n    \"active\": 1,\n    \"isDefault\": 1,\n    \"numberOfStreamsToCombine\": 1,\n    \"dedupeFlags\": {\n      \"enableDASHFull\": 1,\n      \"useGlobalDedupStore\": 1,\n      \"enableDeduplication\": 1,\n      \"enableClientSideDedup\": 1\n    },\n    \"storagePolicyFlags\": {\n      \"blockLevelDedup\": 1\n    },\n    \"retentionRules\": {\n      \"retainBackupDataForCycles\": 1,\n      \"retainArchiverDataForDays\": -1,\n      \"retainBackupDataForDays\": 30,\n      \"retentionFlags\": {\n        \"enableDataAging\": 1\n      }\n    }\n   \n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Feb 2020 05:15:35 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"responseType\": 2,\n    \"archiveGroupCopy\": {\n        \"copyId\": 65,\n        \"_type_\": 18,\n        \"copyName\": \"Primary\",\n        \"storagePolicyName\": \"TestPolicy\",\n        \"storagePolicyId\": 66\n    },\n    \"error\": {\n        \"errorMessage\": \"Unable to use the given Global Deduplication host policy due to a database error\",\n        \"errorCode\": 1\n    }\n}"
+				},
+				{
+					"name": "Storage Policy14",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"storagePolicyName\": \"TestPolicy\",\n  \"type\": 1,\n  \"numberOfStreams\": 100,\n  \"copyName\": \"Primary\",\n  \"numberOfCopies\": 1,\n  \"storagePolicyCopyInfo\": {\n    \"copyType\": 1,\n    \"isFromGui\": false,\n    \"active\": 1,\n    \"isDefault\": 1,\n    \"numberOfStreamsToCombine\": 1,\n    \"dedupeFlags\": {\n      \"enableDASHFull\": 1,\n      \"useGlobalDedupStore\": 1,\n      \"enableDeduplication\": 1,\n      \"enableClientSideDedup\": 1\n    },\n    \"storagePolicyFlags\": {\n      \"blockLevelDedup\": 1\n    },\n    \"retentionRules\": {\n      \"retainBackupDataForCycles\": 1,\n      \"retainArchiverDataForDays\": -1,\n      \"retainBackupDataForDays\": 30,\n      \"retentionFlags\": {\n        \"enableDataAging\": 1\n      }\n    },\n    \"useGlobalPolicy\": {\n      \"storagePolicyId\": 47,\n      \"storagePolicyName\": \"VSAPool\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 09:22:33 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "236"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"responseType\": 2,\n    \"archiveGroupCopy\": {\n        \"copyId\": 60,\n        \"_type_\": 18,\n        \"copyName\": \"Primary\",\n        \"storagePolicyName\": \"TestPolicy\",\n        \"storagePolicyId\": 61\n    },\n    \"error\": {\n        \"errorMessage\": \"The Global Deduplication host copy does not exist.\",\n        \"errorCode\": 1\n    }\n}"
+				},
+				{
+					"name": "Storage Policy17",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"storagePolicyName\": \"TestPolicy\",\n  \"type\": 1,\n  \"numberOfStreams\": 100,\n  \"copyName\": \"Primary\",\n  \"numberOfCopies\": 1,\n  \"storagePolicyCopyInfo\": {\n    \"copyType\": 1,\n    \"isFromGui\": false,\n    \"active\": 1,\n    \"isDefault\": 1,\n    \"numberOfStreamsToCombine\": 1,\n    \"dedupeFlags\": {\n      \"enableDASHFull\": 1,\n      \"useGlobalDedupStore\": 1,\n      \"enableDeduplication\": 1,\n      \"enableClientSideDedup\": 1\n    },\n    \"storagePolicyFlags\": {\n      \"blockLevelDedup\": 1\n    },\n    \"retentionRules\": {\n      \"retainBackupDataForCycles\": 1,\n      \"retainArchiverDataForDays\": -1,\n      \"retainBackupDataForDays\": 30,\n      \"retentionFlags\": {\n        \"enableDataAging\": 1\n      }\n    },\n    \"useGlobalPolicy\": {\n      \"storagePolicyId\": 47,\n      \"storagePolicyName\": \"VSAPool\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 13:07:01 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"responseType\": 2,\n    \"error\": {\n        \"errorMessage\": \"Failed to fetch information from CommServ database.\",\n        \"errorCode\": 1\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Storage Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ) ;     //validate content-type",
+							"tests[\"Response Body contains policies\"] = responseBody.has(\"policies\");",
+							"tests[\"Response Body contains policies\"] = responseBody.has(\"storagePolicyName\");",
+							"tests[\"Response Body contains policies\"] = responseBody.has(\"storagePolicyId\");",
+							"//postman.setEnvironmentVariable(\"storagePolicyId\",jsonData.policies[0].storagePolicyId);",
+							"",
+							"tests[\"Newly created Storage Policy is present\"] = (function() {",
+							"    for( i=0; i < jsonData.policies.length; i++)",
+							"        if (jsonData.policies[i].storagePolicyId == postman.getEnvironmentVariable(\"storagePolicyId\"))",
+							"            return true;",
+							"    return false;",
+							"})();"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/StoragePolicy",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePolicy"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of storage policies.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_storage_policy.htm)"
+			},
+			"response": [
+				{
+					"name": "GET Storage Policy14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 08:51:54 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "537"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"policies\": [\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm105\",\n            \"storagePolicyId\": 20\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm106\",\n            \"storagePolicyId\": 23\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm107\",\n            \"storagePolicyId\": 26\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm108\",\n            \"storagePolicyId\": 29\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm105\",\n            \"storagePolicyId\": 3\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm106\",\n            \"storagePolicyId\": 21\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm107\",\n            \"storagePolicyId\": 24\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm108\",\n            \"storagePolicyId\": 27\n        }\n    ]\n}"
+				},
+				{
+					"name": "GET Storage Policy17",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 13:04:09 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"policies\": [\n        {\n            \"storagePolicyName\": \"newmanTestPolicy\",\n            \"storagePolicyId\": 55\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm105\",\n            \"storagePolicyId\": 20\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm106\",\n            \"storagePolicyId\": 23\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm107\",\n            \"storagePolicyId\": 26\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm108\",\n            \"storagePolicyId\": 29\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm105\",\n            \"storagePolicyId\": 3\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm106\",\n            \"storagePolicyId\": 21\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm107\",\n            \"storagePolicyId\": 24\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm108\",\n            \"storagePolicyId\": 27\n        }\n    ]\n}"
+				},
+				{
+					"name": "Storage Policy",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/StoragePolicy",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"StoragePolicy"
+							]
+						},
+						"description": "This operation returns a list of storage policies.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_storage_policy.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "236",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Jun 2017 07:43:00 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"policies\":[\r{\r\"storagePolicyName\":\"CSSP\",\"storagePolicyId\":3\r},{\r\"storagePolicyName\":\"FirewallMASP\",\"storagePolicyId\":4\r},{\r\"storagePolicyName\":\"fwma_3\",\"storagePolicyId\":6\r},{\r\"storagePolicyName\":\"IDCMA2SP\",\"storagePolicyId\":5\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "V2 Storage Policy Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"if(tests[\"Validating if Response Body has storagePolicyName tag\"] = responseBody.has(\"storagePolicyName\"))",
+							"{",
+							"    console.log(\"The name of the storage policy is: \"+jsonData.policies[0].storagePolicy.storagePolicyName);",
+							"}",
+							"if(tests[\"Validating if Response Body has storagePolicyId tag\"] = responseBody.has(\"storagePolicyId\"))",
+							"{",
+							"    console.log(\"The name of the storage policy is: \"+jsonData.policies[0].storagePolicy.storagePolicyId);",
+							"}",
+							"tests[\"Validating if Response Body has errorMessage tag\"] = responseBody.has(\"errorMessage\");",
+							"tests[\"Validating if Response Body has errorCode tag\"] = responseBody.has(\"errorCode\") ;",
+							"tests[\"Validating if errorCode value is 0\"] = jsonData.error.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Storage Policy Details17",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy",
+								"{{storagePolicyId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Feb 2020 05:17:17 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"policies\": [\n        {\n            \"timeZoneType\": 0,\n            \"description\": \"\",\n            \"type\": 1,\n            \"searchEngineName\": \"\",\n            \"searchEngineId\": 0,\n            \"numberOfStreams\": 50,\n            \"sidbBlockSizeKB\": 128,\n            \"auxCopyAlertGB\": 0,\n            \"numberOfCopies\": 1,\n            \"auxCopyAlertDays\": 0,\n            \"smReplicationProtocolType\": 0,\n            \"flag\": {\n                \"distributeDataEvenlyAmongStreams\": 1,\n                \"randomizeStream\": 1\n            },\n            \"incrementalStoragePolicy\": {\n                \"storagePolicyName\": \"\",\n                \"storagePolicyId\": 0\n            },\n            \"storagePolicy\": {\n                \"storagePolicyName\": \"newmanTestPoli1cy\",\n                \"storagePolicyId\": 64\n            }\n        }\n    ],\n    \"error\": {\n        \"errorMessage\": \"\",\n        \"errorCode\": 0\n    }\n}"
+				},
+				{
+					"name": "Storage Policy Details14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy",
+								"{{storagePolicyId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 09:34:49 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "504"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"policies\": [\n        {\n            \"timeZoneType\": 0,\n            \"description\": \"\",\n            \"type\": 1,\n            \"searchEngineName\": \"\",\n            \"searchEngineId\": 0,\n            \"numberOfStreams\": 14,\n            \"sidbBlockSizeKB\": 128,\n            \"auxCopyAlertGB\": 2,\n            \"numberOfCopies\": 1,\n            \"auxCopyAlertDays\": 2,\n            \"smReplicationProtocolType\": 0,\n            \"flag\": {\n                \"distributeDataEvenlyAmongStreams\": 1,\n                \"randomizeStream\": 1\n            },\n            \"incrementalStoragePolicy\": {\n                \"storagePolicyName\": \"\",\n                \"storagePolicyId\": 0\n            },\n            \"storagePolicy\": {\n                \"storagePolicyName\": \"newmanTestPolicy\",\n                \"storagePolicyId\": 55\n            }\n        }\n    ],\n    \"error\": {\n        \"errorMessage\": \"\",\n        \"errorCode\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Storage Policy Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);",
+							"var libraryId = postman.getEnvironmentVariable(\"libraryId\");",
+							"postman.setEnvironmentVariable(\"libraryId\",libraryId);",
+							"var libraryName = postman.getEnvironmentVariable(\"libraryName\");",
+							"postman.setEnvironmentVariable(\"libraryName\",libraryName);",
+							"var mediaAgentName = postman.getEnvironmentVariable(\"mediaAgentName\");",
+							"postman.setEnvironmentVariable(\"mediaAgentName\",mediaAgentName);",
+							"var mediaAgentId = postman.getEnvironmentVariable(\"mediaAgentId\");",
+							"postman.setEnvironmentVariable(\"mediaAgentId\",mediaAgentId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Validate if Response Body has archiveGroupCopy tag\"] = responseBody.has(\"archiveGroupCopy\");",
+							"tests[\"Validate if Response Body has copyId tag\"] = responseBody.has(\"copyId\");",
+							"tests[\"Validate if Response Body has copyName tag\"] = responseBody.has(\"copyName\");",
+							"tests[\"Validate if Response Body has errorCode\"] = responseBody.has(\"errorCode\");",
+							"postman.setEnvironmentVariable(\"copyName\",jsonData.archiveGroupCopy.copyName);",
+							"postman.setEnvironmentVariable(\"copyId\",jsonData.archiveGroupCopy.copyId);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"copyName\": \"copyofnewmanpolicy\",\r\n    \"storagePolicyCopyInfo\": {\r\n        \"copyType\": 0,\r\n        \"isDefault\": 2,\r\n        \"isSnapCopy\": 2,\r\n        \"description\": \"Checking for automation\",\r\n        \"dedupeFlags\": {\r\n            \"useGlobalDedupStore\": 2\r\n        },\r\n        \"retentionRules\": {\r\n            \"retainBackupDataForCycles\": 1,\r\n            \"retainArchiverDataForDays\": -1,\r\n            \"retainBackupDataForDays\": 5\r\n        },\r\n        \"StoragePolicyCopy\": {\r\n            \"copyName\": \"copyofnewmanpolicy\",\r\n            \"storagePolicyName\": \"{{storagePolicyName}}\",\r\n            \"storagePolicyId\": {{storagePolicyId}}\r\n        },\r\n        \"extendedFlags\": {\r\n            \"useGlobalAuxCopyPolicy\": 2,\r\n            \"useGlobalStoragePolicy\": 1\r\n        },\r\n        \"copyFlags\": {\r\n            \"lastFull\": 1\r\n        },\r\n        \"startTime\": {\r\n            \"time\": -1\r\n        },\r\n        \"useGlobalPolicy\": {\r\n            \"_type_\": 17,\r\n            \"storagePolicyName\": \"{{storagePolicyName}}\",\r\n            \"storagePolicyId\": {{storagePolicyId}}\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/Copy",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"Copy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy Copy Details",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);",
+							"var copyName = postman.setEnvironmentVariable(\"copyName\");",
+							"postman.setEnvironmentVariable(\"copyName\",copyName);",
+							"var copyId = postman.getEnvironmentVariable(\"copyId\");",
+							"postman.setEnvironmentVariable(\"copyId\",copyId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Validate if Response Body has library tag\"] = responseBody.has(\"library\");",
+							"tests[\"Validate if Response Body has copy tag\"] = responseBody.has(\"copy\");",
+							"tests[\"Validate if Response Body has mediaAgent tag\"] = responseBody.has(\"mediaAgent\");",
+							"tests[\"Validate if Response Body has StoragePolicyCopy tag\"] = responseBody.has(\"StoragePolicyCopy\")",
+							"tests[\"Validate if Response Body has errorCode\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Validate if errorCode is 0\"] = jsonData.error.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/Copy/{{copyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"Copy",
+						"{{copyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy Copy Size",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Validating if Response Body has copyInfo tag\"] = responseBody.has(\"copyInfo\");",
+							"if (tests[\"Validating if Response Body has dataSizeInGB tag\"] = responseBody.has(\"dataSizeInGB\"))",
+							"{",
+							"    console.log(\"The data size (in GB) for the storage policy copy is: \"+jsonData.copyInfo[0].dataSizeInGB);",
+							"}",
+							"tests[\"Validating if Response Body has requiresBackupsOnOrAfterDate tag\"] = responseBody.has(\"requiresBackupsOnOrAfterDate\");",
+							"if(tests[\"Validating if Response Body has copyId tag\"] = responseBody.has(\"copyId\"))",
+							"{",
+							"    console.log(\"The copy id for storage policy copy is: \"+jsonData.copyInfo[0].spCopy.copyId);",
+							"}",
+							"if(tests[\"Validating if Response Body has copyName tag\"] = responseBody.has(\"copyName\"))",
+							"{",
+							"    console.log(\"The copy name for storage policy copy is: \"+jsonData.copyInfo[0].spCopy.copyName);",
+							"}",
+							"if(tests[\"Validating if Response Body has storagePolicyName tag\"] = responseBody.has(\"storagePolicyName\"))",
+							"{",
+							"    console.log(\"The Storage Policy Name for this copy is: \"+jsonData.copyInfo[0].spCopy.storagePolicyName);",
+							"}",
+							"if(tests[\"Validating if Response Body has storagePolicyId tag\"] = responseBody.has(\"storagePolicyId\"))",
+							"{",
+							"    console.log(\"The Storage Policy Id for this copy is: \"+jsonData.copyInfo[0].spCopy.storagePolicyId);",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/Copy/{{copyId}}/Size",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"Copy",
+						"{{copyId}}",
+						"Size"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy Search Engine List",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"); //validate content-type",
+							"tests[\"Validating if Response Body has ciProps\"] = responseBody.has(\"ciProps\");",
+							"tests[\"Validating if Response Body has allEntities\"] = responseBody.has(\"allEntities\");",
+							"if(tests[\"Validating if Response Body has error tag\"] = responseBody.has(\"error\"))",
+							"{",
+							"    console.log(\"The errorCode is :\"+jsonData.error.errorCode);",
+							"}",
+							"tests[\"Validating if Response Body has entityExtraction tag\"] = responseBody.has(\"entityExtraction\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/SearchEngineProperties",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"SearchEngineProperties"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy List for a MediaAgent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ) ;     //validate content-type",
+							"tests[\"Response Body contains storagePolicyInformationAssociatedToMA tag\"] = responseBody.has(\"storagePolicyInformationAssociatedToMA\");",
+							"tests[\"Response Body contains storagePolicyName tag\"] = responseBody.has(\"storagePolicyName\");",
+							"tests[\"Response Body contains storagePolicyId\"] = responseBody.has(\"storagePolicyId\");",
+							"tests[\"Newly created Storage Policy is present\"] = (function() {",
+							"    for( i=0; i < jsonData.storagePolicyInformationAssociatedToMA.length; i++)",
+							"        if (jsonData.storagePolicyInformationAssociatedToMA[i].storagePolicyAndCopy.storagePolicyName == postman.getEnvironmentVariable(\"storagePolicyName\"))",
+							"            return true;",
+							"    return false;",
+							"})();",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);",
+							"var libraryId = postman.getEnvironmentVariable(\"libraryId\");",
+							"postman.setEnvironmentVariable(\"libraryId\",libraryId);",
+							"var libraryName = postman.getEnvironmentVariable(\"libraryName\");",
+							"postman.setEnvironmentVariable(\"libraryName\",libraryName);",
+							"var mediaAgentName = postman.getEnvironmentVariable(\"mediaAgentName\");",
+							"postman.setEnvironmentVariable(\"mediaAgentName\",mediaAgentName);",
+							"var mediaAgentId = postman.getEnvironmentVariable(\"mediaAgentId\");",
+							"postman.setEnvironmentVariable(\"mediaAgentId\",mediaAgentId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/StoragePolicyListAssociatedToMediaAgent?MediaAgent={{mediaAgentId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePolicyListAssociatedToMediaAgent"
+					],
+					"query": [
+						{
+							"key": "MediaAgent",
+							"value": "{{mediaAgentId}}"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of storage policies associated with a MediaAgent.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_storage_policy_mediaagent.htm)"
+			},
+			"response": [
+				{
+					"name": "Storage Policy List for a MediaAgent",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/StoragePolicyListAssociatedToMediaAgent?MediaAgent=2",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"StoragePolicyListAssociatedToMediaAgent"
+							],
+							"query": [
+								{
+									"key": "MediaAgent",
+									"value": "2"
+								}
+							]
+						},
+						"description": "This opeartion returns a list of storage policies associated with a MediaAgent.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_storage_policy_mediaagent.htm)\n\n"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "777",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Jun 2017 07:56:39 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><App_GetStoragePoliciesForMediaAgentResp><error errorCode=\"0\"/><storagePolicyInformationAssociatedToMA isMADDBHost=\"0\" isMADefaultDataPathInCopy=\"1\" isPrimaryCopy=\"1\" isProxyMAInCopy=\"0\"><mediaAgent mediaAgentId=\"2\"/><storagePolicyAndCopy _type_=\"18\" copyId=\"1\" copyName=\"Primary\" storagePolicyId=\"2\" storagePolicyName=\"CommServeDR\"/></storagePolicyInformationAssociatedToMA><storagePolicyInformationAssociatedToMA isMADDBHost=\"0\" isMADefaultDataPathInCopy=\"1\" isPrimaryCopy=\"1\" isProxyMAInCopy=\"0\"><mediaAgent mediaAgentId=\"2\"/><storagePolicyAndCopy _type_=\"18\" copyId=\"2\" copyName=\"Primary\" storagePolicyId=\"3\" storagePolicyName=\"CSSP\"/></storagePolicyInformationAssociatedToMA></App_GetStoragePoliciesForMediaAgentResp>"
+				},
+				{
+					"name": "Storage Policy List for a MediaAgent17",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePolicyListAssociatedToMediaAgent?MediaAgent={{mediaAgentId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePolicyListAssociatedToMediaAgent"
+							],
+							"query": [
+								{
+									"key": "MediaAgent",
+									"value": "{{mediaAgentId}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 13:03:29 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"errorCode\": 0\n    },\n    \"storagePolicyInformationAssociatedToMA\": [\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": true,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 62,\n                \"_type_\": 18,\n                \"copyName\": \"New Disk SP_Primary\",\n                \"storagePolicyName\": \"New Diksk SP\",\n                \"storagePolicyId\": 63\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 2\n            }\n        },\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": true,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 53,\n                \"_type_\": 18,\n                \"copyName\": \"New Disk SP_Primary\",\n                \"storagePolicyName\": \"New Disk SP\",\n                \"storagePolicyId\": 54\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 2\n            }\n        },\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": false,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 54,\n                \"_type_\": 18,\n                \"copyName\": \"Primary\",\n                \"storagePolicyName\": \"newmanTestPolicy\",\n                \"storagePolicyId\": 55\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 2\n            }\n        }\n    ]\n}"
+				},
+				{
+					"name": "Storage Policy List for a MediaAgent14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePolicyListAssociatedToMediaAgent?MediaAgent={{mediaAgentId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePolicyListAssociatedToMediaAgent"
+							],
+							"query": [
+								{
+									"key": "MediaAgent",
+									"value": "{{mediaAgentId}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 08:55:36 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "888"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"errorCode\": 0\n    },\n    \"storagePolicyInformationAssociatedToMA\": [\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": true,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 27,\n                \"_type_\": 18,\n                \"copyName\": \"Primary\",\n                \"storagePolicyName\": \"GDP_smckb2pmm108\",\n                \"storagePolicyId\": 28\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 3439\n            }\n        },\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": true,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 28,\n                \"_type_\": 18,\n                \"copyName\": \"Primary\",\n                \"storagePolicyName\": \"SP_smckb2pmm108\",\n                \"storagePolicyId\": 29\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 3439\n            }\n        },\n        {\n            \"isMADefaultDataPathInCopy\": true,\n            \"isPrimaryCopy\": true,\n            \"isProxyMAInCopy\": false,\n            \"isMADDBHost\": false,\n            \"storagePolicyAndCopy\": {\n                \"copyId\": 26,\n                \"_type_\": 18,\n                \"copyName\": \"1 次\",\n                \"storagePolicyName\": \"SP_SYS_smckb2pmm108\",\n                \"storagePolicyId\": 27\n            },\n            \"mediaAgent\": {\n                \"mediaAgentId\": 3439\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Storage Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Validating if errorCode is 0\"] = jsonData.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"auxCopyAlertDays\": 2,\r\n  \"description\": \"Description has been changed\",\r\n  \"newStoragePolicyName\": \"ChangedStoragePolicyName1{{$timestamp}}\",\r\n  \"numberOfStreams\": 14,\r\n  \"forceNextBkpToFull\": false,\r\n  \"auxCopyAlertGB\": 2,\r\n  \"flag\": {\r\n    \"enableAuxCopyAlert\": 2,\r\n    \"distributeDataEvenlyAmongStreams\": 2,\r\n    \"cacheResourceReservationForJobs\": 2,\r\n    \"storagePolicyLevelMediaPassword\": 2,\r\n    \"hideStoragePolicy\": 2,\r\n    \"randomizeStream\": 2\r\n  },\r\n  \"StoragePolicy\": {\r\n    \"storagePolicyName\": \"{{storagePolicyName}}\"\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Storage Policy14",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"auxCopyAlertDays\": 2,\n  \"description\": \"\",\n  \"newStoragePolicyName\": \"\",\n  \"numberOfStreams\": 14,\n  \"forceNextBkpToFull\": false,\n  \"auxCopyAlertGB\": 2,\n  \"flag\": {\n    \"enableAuxCopyAlert\": 2,\n    \"distributeDataEvenlyAmongStreams\": 2,\n    \"cacheResourceReservationForJobs\": 2,\n    \"storagePolicyLevelMediaPassword\": 2,\n    \"hideStoragePolicy\": 2,\n    \"randomizeStream\": 2\n  },\n  \"StoragePolicy\": {\n    \"storagePolicyName\": \"\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"V2",
+								"StoragePolicy",
+								"{{storagePolicyId}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 09:31:29 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"errorCode\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Storage Policy Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);",
+							"var copyName = postman.setEnvironmentVariable(\"copyName\");",
+							"postman.setEnvironmentVariable(\"copyName\",copyName);",
+							"var copyId = postman.getEnvironmentVariable(\"copyId\");",
+							"postman.setEnvironmentVariable(\"copyId\",copyId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Validating if errorCode is 0\"] = jsonData.error.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"newCopyName\": \"StoragePolicyCopyModified{{$timestamp}}\",\r\n    \"storagePolicyCopyInfo\": {\r\n        \"dataPathConfiguration\": {\r\n            \"resourcesOfflineWaitTimeInHoursMinutes\": {},\r\n            \"resourcesBusyWaitTimeInHoursMinutes\": {}\r\n        },\r\n        \"mediaProperties\": {\r\n            \"multiplexingFactor\": 0,\r\n            \"mediaRefreshProperties\": {\r\n                \"percentage\": 51,\r\n                \"monthsBeforeMediaAged\": {\r\n                    \"months\": 3\r\n                },\r\n                \"refreshFlags\": {\r\n                    \"enableMediaRetirementThreshold\": 2\r\n                },\r\n                \"monthsAfterMediaWritten\": {\r\n                    \"months\": 12\r\n                }\r\n            }\r\n        },\r\n        \"sourceCopy\": {\r\n            \"copyName\": \"\",\r\n            \"storagePolicyName\": \"\"\r\n        },\r\n        \"StoragePolicyCopy\": {\r\n            \"copyName\": \"\",\r\n            \"storagePolicyName\": \"\"\r\n        },\r\n        \"extendedFlags\": {\r\n            \"spaceOptimizedAuxCopy\": 0,\r\n            \"overRideGACPRetention\": 2,\r\n            \"chunkLevelAuxCopy\": 2,\r\n            \"overRideGACPEncryption\": 2\r\n        },\r\n        \"copyFlags\": {\r\n            \"wormCopy\": 2,\r\n            \"enableMediaRefresh\": 2,\r\n            \"archiveCheckAll\": 2,\r\n            \"inlineAuxCopy\": 2,\r\n            \"noAuxCopyToSameLibrary\": 2,\r\n            \"sourceCopyForSnapToTape\": 2,\r\n            \"enableLanFreeReservationOnly\": 2,\r\n            \"roundRobbinDataPath\": 2,\r\n            \"lastFullWait\": 2,\r\n            \"useDirectAttachedNASDrivePool\": 2,\r\n            \"enableParallelCopy\": 2,\r\n            \"demultiplexOnCopy\": 2,\r\n            \"combineStreams\": 2,\r\n            \"switchIfOffline\": 2,\r\n            \"auxCopyReencryptData\": 2,\r\n            \"switchIfBusy\": 2,\r\n            \"useStreamsOverMultiplexing\": 2,\r\n            \"deleteCopyAfterJobsAreDeleted\": 2,\r\n            \"storeKeyOnMedia\": 2,\r\n            \"multiplexSourceStreams\": 2,\r\n            \"archiveCheckBitmap\": 2,\r\n            \"siloCopy\": 2,\r\n            \"autoAddDataPaths\": 2,\r\n            \"lastFull\": 2,\r\n            \"markMediaToBeErasedAfterRecycling\": 2,\r\n            \"archiveCheckFull\": 2,\r\n            \"noInlineCopyToSameLibrary\": 2,\r\n            \"useHardwareSnapshot\": 2\r\n        },\r\n        \"resourcePoolsList\": [\r\n            {\r\n                \"operation\": 1,\r\n                \"resourcePoolName\": \"\"\r\n            }\r\n        ],\r\n        \"startTime\": {\r\n            \"timeValue\": \"\"\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/Copy/{{copyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"Copy",
+						"{{copyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}/Copy/{{copyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}",
+						"Copy",
+						"{{copyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/V2/StoragePolicy/{{storagePolicyId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"StoragePolicy",
+						"{{storagePolicyId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a storage policy.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_storage_policy.htm)"
+			},
+			"response": [
+				{
+					"name": "Storage Policy",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/StoragePolicy/CSSP-4",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"StoragePolicy",
+								"CSSP-4"
+							]
+						},
+						"description": "This operation deletes a storage policy.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_storage_policy.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "37",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Jun 2017 08:15:27 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "Deleted storage policy successfully.\n"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

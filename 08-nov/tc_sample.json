@@ -1,0 +1,42 @@
+ 
+{
+    "commcell": {
+        "webconsoleHostname": "vsaweb03.testlab.commvault.com",
+        "commcellUsername": "",
+        "commcellPassword": ""
+    },
+    "email": {
+        "receiver": "tsharma@commvault.com",
+        "subject": "Command center - VMware streaming cases"
+    },
+    "testsetConfig": {
+        "THREADS": 1
+    },
+    "testsets": {
+        "Virtualization \\ VMware_AdminConsole": {
+            "TESTSET_PRODUCT_NAME": "Virtualization VMware",
+            "TESTSET_OS_TYPE": "NA",
+            "TESTSET_APPLICATION_VERSION": "",
+            "TESTSET_ADDITIONAL_PROP": "",
+            "testcaseConfig": {
+                "THREADS": 1,
+                "UpdateQA": false
+            },
+            "testCases": {
+                "1": {
+                    "InstanceName": "Google Cloud Platform",
+          "AgentName": "Virtual Server",
+          "ClientName": "",
+          "BackupsetName": "defaultBackupSet",
+          "SubclientName": "",
+          "ProjectID": "vsa-automation2",
+          "destination_network": "vsa-automation2-vpc",
+          "NetworkNic": "https://compute.googleapis.com/compute/v1/projects/vsa-automation2/global/networks/",
+          "NetworkSubnetNic": "https://compute.googleapis.com/compute/v1/projects/vsa-automation2/regions/us-east1/subnetworks/vsa-automation2-subnet",
+          "replicaZone": "us-east1-d"
+                }
+            }
+        }
+    }
+}
+ 

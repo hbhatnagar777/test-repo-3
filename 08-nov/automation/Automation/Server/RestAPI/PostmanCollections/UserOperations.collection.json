@@ -1,0 +1,2753 @@
+{
+	"info": {
+		"_postman_id": "a7c77047-2ec6-4417-8968-9a87d7f4d5e7",
+		"name": "UserOperations",
+		"description": "This collection verifies basic functionality of User Operations using REST API for JSON requests and responses.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/rest_api_authentication.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Client",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ) ;     //validate content-type",
+							"postman.setEnvironmentVariable(\"clientId\", jsonData.clientProperties[jsonData.clientProperties.length-1].client.clientEntity.clientId);          //set value of clientId1",
+							"postman.setEnvironmentVariable(\"clientName\", jsonData.clientProperties[jsonData.clientProperties.length-1].client.clientEntity.clientName);          //set value of clientId1",
+							"console.log(\"value of clientId set to:\", postman.getEnvironmentVariable(\"clientId\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Group",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains userGroups\"] = responseBody.has(\"userGroups\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",jsonData.userGroups[0].userGroupEntity.userGroupName);",
+							"postman.setEnvironmentVariable(\"userGroupName1\",jsonData.userGroups[0].userGroupEntity.userGroupName);",
+							"postman.setEnvironmentVariable(\"userGroupId1\",jsonData.userGroups[0].userGroupEntity.userGroupId);",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "238",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:26:48 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"userGroups\":[\r{\r\"userGroupEntity\":{\r\"userGroupId\":1,\"userGroupName\":\"master\"\r}\r},{\r\"userGroupEntity\":{\r\"userGroupId\":3,\"userGroupName\":\"View All\"\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"if((tests[\"Validating if user was created successfully\"] = jsonData.response[0].errorString === \"Successful\"))",
+							"    console.log(\"User was created successfully\");",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"if((tests[\"Validating username of created user\"] = responseBody.has(postman.getEnvironmentVariable(\"userName\"))))      ",
+							"            console.log(\"User Name of created user is present\");",
+							"",
+							"postman.setEnvironmentVariable(\"userId\", jsonData.response[0].entity.userId);",
+							"console.log(\"Value of userId set to:\", postman.getEnvironmentVariable(\"userId\"));",
+							"postman.setEnvironmentVariable(\"userName\", jsonData.response[0].entity.userName);",
+							"console.log(\"Value of userName set to:\", postman.getEnvironmentVariable(\"userName\"));",
+							"",
+							"postman.setEnvironmentVariable(\"passwd\", postman.getEnvironmentVariable(\"userPassword\"));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"userName\", \"testUser5\");",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);",
+							"pm.environment.set(\"userPassword\", \"Q29tbVZhdWx0QEAxMjM0NTY=\")",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"description\": \"backup admin user\",\r\n      \"agePasswordDays\": 10,\r\n      \"password\": \"{{userPassword}}\",\r\n      \"email\": \"{{$timestamp}}50981test@company.com\",\r\n      \"fullName\": \"Jane Doe\",\r\n      \"enableUser\": true,\r\n      \"associatedUserGroups\": [\r\n        {\r\n          \"userGroupName\": \"{{userGroupName}}\"\r\n        }\r\n      ],\r\n      \"userEntity\": {\r\n        \"userName\": \"{{userName}}50981{{$timestamp}}\"\r\n      }\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login testuser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"userName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{userName}}\",\r\n    \"password\":\"{{passwd}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/rest_api_authentication.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "User laptop ownership",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"tests[\"Temporary user does not own a laptop\"] = jsonData == false;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User/device/isOwner",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"device",
+						"isOwner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/rest_api_authentication.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "User Group",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"//postman.setEnvironmentVariable(\"userGroupName\", \"newmanUG\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body contains response\"] = responseBody.has(\"response\");",
+							"tests[\"Response Body contains errorString\"] = responseBody.has(\"errorString\");",
+							"tests[\"Response Body contains errorCode 0\"] = jsonData.response[0].errorCode === 0 ;",
+							"tests[\"Response Body contains entity\"] = responseBody.has(\"entity\");",
+							"tests[\"Response Body contains userGroupId\"] = responseBody.has(\"userGroupId\");",
+							"tests[\"Response Body contains userGroupName\"] = responseBody.has(\"userGroupName\");",
+							"tests[\"Validating if user group was created successfully\"] = jsonData.response[0].errorString === \"Successful\";",
+							"postman.setEnvironmentVariable(\"userGroupId\", jsonData.response[0].entity.userGroupId);",
+							"postman.setEnvironmentVariable(\"userGroupName\",jsonData.response[0].entity.userGroupName);",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"Creating a new user group\",\r\n      \"enabled\": true,\r\n      \"securityAssociations\": {\r\n        \"associationsOperationType\": 2,\r\n        \"associations\": [\r\n          {\r\n            \"entities\": {\r\n              \"entity\": [\r\n                {\r\n                  \"clientName\": \"{{clientName}}\"\r\n                }\r\n              ]\r\n            },\r\n            \"properties\": {\r\n              \"role\": {\r\n                \"roleName\": \"View\"\r\n              }\r\n            }\r\n          }\r\n        ]\r\n      },\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{$timestamp}}50981NewGroup\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"{{userName}}\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation creates a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"{{description}}\",\r\n      \"enabled\": true,\r\n      \"securityAssociations\": {\r\n        \"associationsOperationType\": 2,\r\n        \"associations\": [\r\n          {\r\n            \"entities\": {\r\n              \"entity\": [\r\n                {\r\n                  \"clientName\": \"{{clientName}}\"\r\n                }\r\n              ]\r\n            },\r\n            \"properties\": {\r\n              \"role\": {\r\n                \"roleName\": \"View\"\r\n              }\r\n            }\r\n          }\r\n        ]\r\n      },\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{userGroupName}}\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"admin\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation creates a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "202",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:30:08 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"response\":[\r{\r\"errorString\":\"Successful\",\"errorCode\":0,\"entity\":{\r\"userGroupName\":\"Testgroup\",\"userGroupId\":9\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating users tag\"] = responseBody.has(\"users\")))      ",
+							"            console.log(\"users tag is present\");",
+							"            ",
+							"postman.setEnvironmentVariable(\"userId1\", jsonData.users[0].userEntity.userId);",
+							"postman.setEnvironmentVariable(\"userName1\",jsonData.users[0].userEntity.userName);",
+							"console.log(\"Value of userId set to :\" ,postman.getEnvironmentVariable(\"userId1\"));",
+							"",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"            ",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"",
+							"if((tests[\"Validating userGUID tag\"] = responseBody.has(\"userGUID\")))      ",
+							"            console.log(\"userGUID tag is present\");",
+							"            ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"            console.log(\"userName tag is present\");",
+							"            ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "User",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/User",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"User"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "3956",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 27 Jul 2017 07:12:21 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"users\":[\r{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":2294,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":3,\"userEntity\":{\r\"userGUID\":\"EBEA9754-607C-4CA4-B047-C9F656A1ABB0\",\"userName\":\"admin\",\"userId\":1\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"59CBCFF9-ADA1-4A72-B74C-306B3427BD73\",\"userName\":\"ObjectStoreUser\",\"userId\":3\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"3792D8E7-BE0B-4F0E-8604-86D9860D4F32\",\"userName\":\"edgeuser\",\"userId\":4\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"2CA8B008-605C-4CF3-856C-0E24FB151890\",\"userName\":\"suggiedge\",\"userId\":11\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"CC0FCF25-D3B0-44EE-8C04-8003BF438442\",\"userName\":\"commvault-nj\\\\testiyer\",\"userId\":12\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"8B8B9C84-AC6C-447E-A39A-07567DA1A43E\",\"userName\":\"commvault-nj\\\\stavvavemamankantha\",\"userId\":13\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"41826F1F-398D-4925-9247-54BAFB9DD06C\",\"userName\":\"commvault-nj\\\\rpolapragada\",\"userId\":14\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"DDB1A347-9F34-4DCD-9CA0-DF1E4F31DFF1\",\"userName\":\"commvault-nj\\\\gbuilder\",\"userId\":15\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"C890A390-4AF0-4D14-91C0-5AD82D5B7D1E\",\"userName\":\"commvault-nj\\\\jbritto\",\"userId\":16\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"CFEC49BE-2B38-4401-91D3-FC58E42D7E46\",\"userName\":\"commvault-nj\\\\ymanokaran\",\"userId\":17\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"F62F8A51-3470-4A5C-A7CF-55B8D303D983\",\"userName\":\"commvault-nj\\\\snasim\",\"userId\":18\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"5A373A48-E9E3-467C-8447-2200BF524DD8\",\"userName\":\"commvault-nj\\\\shylas\",\"userId\":19\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"77670349-5BEC-4A77-A5D0-EBB053766BA9\",\"userName\":\"commvault-nj\\\\pmirje\",\"userId\":20\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"B036E398-8235-4717-9D6F-AD385CDD383A\",\"userName\":\"commvault-nj\\\\sujeethdev\",\"userId\":21\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Schedule Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"if(tests[\"Task Id present\"] = responseBody.has(\"taskId\"))",
+							"    postman.setEnvironmentVariable(\"taskId\", jsonData.taskId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var sp_token = \"NewmanTest111\";",
+							"postman.setEnvironmentVariable(\"taskName\", sp_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskInfo\": {\n        \"taskOperation\": 5,\n        \"task\": {\n            \"description\": \"checking for user association\",\n            \"taskType\": 4,\n            \"isEditing\": false,\n            \"policyType\": 0,\n            \"taskName\": \"User Validation{{$timestamp}}\",\n            \"taskId\": 0,\n            \"securityAssociations\": {\n                \"associationsOperationType\": 1,\n                \"associations\": [\n                    {\n                        \"userOrGroup\": [\n                            {\n                                \"userGroupName\": \"{{userGroupName}}\",\n                                \"userGroupId\": {{userGroupId}},\n                                \"_type_\": 15\n                            },\n                            {\n                                \"userId\": {{userId}},\n                                \"_type_\": 13,\n                                \"userName\": \"{{userName}}\"\n                            }\n                        ],\n                        \"properties\": {\n                            \"isCreatorAssociation\": false,\n                            \"role\": {\n                                \"_type_\": 120,\n                                \"roleId\": 3,\n                                \"roleName\": \"View\"\n                            },\n                            \"categoryPermission\": {}\n                        }\n                    }\n                ]\n            },\n            \"taskSecurity\": {},\n            \"alert\": {\n                \"alertName\": \"\",\n                \"alertId\": 0\n            },\n            \"taskFlags\": {\n                \"isEdgeDrive\": false,\n                \"isEZOperation\": false,\n                \"disabled\": false\n            }\n        },\n        \"appGroup\": {\n            \"appGroups\": [\n                {\n                    \"_type_\": 78,\n                    \"appGroupId\": 1\n                },\n                {\n                    \"_type_\": 78,\n                    \"appGroupId\": 5\n                }\n            ]\n        },\n        \"subTasks\": [\n            {\n                \"subTaskOperation\": 2,\n                \"subTask\": {\n                    \"subTaskName\": \"User Validation Schedule\",\n                    \"subTaskType\": 2,\n                    \"operationType\": 2,\n                    \"subTaskId\": 1\n                },\n                \"pattern\": {\n                    \"active_end_occurence\": 0,\n                    \"freq_subday_interval\": 0,\n                    \"freq_type\": 8,\n                    \"description\": \"Every week on Friday at 21:00  starting 17 March 2020 \",\n                    \"active_end_time\": 0,\n                    \"skipOccurence\": 0,\n                    \"skipDayNumber\": 0,\n                    \"active_start_time\": 75600,\n                    \"active_start_date\": 1584403200,\n                    \"calendarId\": 1,\n                    \"freq_interval\": 32,\n                    \"freq_relative_interval\": 0,\n                    \"tzId\": 42,\n                    \"freq_recurrence_factor\": 1,\n                    \"daysToRun\": {\n                        \"Friday\": true\n                    },\n                    \"calendar\": {\n                        \"calendarName\": \"Standard\",\n                        \"calendarId\": 1\n                    },\n                    \"timeZone\": {\n                        \"_type_\": 55,\n                        \"TimeZoneID\": 42,\n                        \"TimeZoneName\": \"(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi\"\n                    }\n                },\n                \"options\": {\n                    \"backupOpts\": {\n                        \"truncateLogsOnSource\": false,\n                        \"sybaseSkipFullafterLogBkp\": false,\n                        \"bkpLatestVersion\": true,\n                        \"notSynthesizeFullFromPrevBackup\": false,\n                        \"collectMetaInfo\": false,\n                        \"backupLevel\": 1,\n                        \"incLevel\": 1,\n                        \"adHocBackup\": false,\n                        \"runIncrementalBackup\": false,\n                        \"runSILOBackup\": false,\n                        \"doNotTruncateLog\": false,\n                        \"vsaBackupOptions\": {\n                            \"backupFailedVMsOnly\": false\n                        },\n                        \"cdrOptions\": {\n                            \"incremental\": false,\n                            \"moveConsistencyPointToTape\": false,\n                            \"cdrRecoveryPointType\": 0,\n                            \"createRecoveryPoint\": false,\n                            \"dataVerificationOnly\": false,\n                            \"full\": true\n                        },\n                        \"dataOpt\": {\n                            \"skipCatalogPhaseForSnapBackup\": true,\n                            \"useCatalogServer\": true,\n                            \"followMountPoints\": true,\n                            \"enforceTransactionLogUsage\": false,\n                            \"skipConsistencyCheck\": false,\n                            \"granularrecovery\": false,\n                            \"collectVMGranularRecoveryMetadataForBkpCopy\": false,\n                            \"createNewIndex\": true,\n                            \"autoCopy\": false\n                        },\n                        \"oracleOptions\": {\n                            \"level\": 1,\n                            \"cumulative\": false,\n                            \"deleteArchLogOptions\": {\n                                \"backupArchiveLogCriteria\": 0\n                            },\n                            \"backupArchLogOptions\": {\n                                \"backupArchiveLogCriteria\": 7,\n                                \"startLSN\": 1,\n                                \"endLSN\": 1,\n                                \"backupArchiveLog\": true\n                            }\n                        },\n                        \"distAppsBackupOptions\": {\n                            \"runLogBkp\": false,\n                            \"runDataBkp\": true\n                        },\n                        \"mediaOpt\": {},\n                        \"dbBackupOptions\": {\n                            \"maxDbBackupType\": 0\n                        }\n                    },\n                    \"adminOpts\": {\n                        \"contentIndexingOption\": {\n                            \"subClientBasedAnalytics\": false\n                        }\n                    },\n                    \"restoreOptions\": {\n                        \"commonOptions\": {\n                            \"syncRestore\": false\n                        }\n                    },\n                    \"commonOpts\": {\n                        \"perfJobOpts\": {}\n                    }\n                }\n            },\n            {\n                \"subTaskOperation\": 2,\n                \"subTask\": {\n                    \"subTaskName\": \"\",\n                    \"subTaskType\": 2,\n                    \"operationType\": 2,\n                    \"subTaskId\": 1\n                },\n                \"pattern\": {\n                    \"active_end_occurence\": 0,\n                    \"freq_subday_interval\": 0,\n                    \"freq_type\": 8,\n                    \"description\": \"Every week on Friday at 21:00  starting 17 March 2020 \",\n                    \"active_end_time\": 0,\n                    \"skipOccurence\": 0,\n                    \"skipDayNumber\": 0,\n                    \"active_start_time\": 75600,\n                    \"active_start_date\": 1584403200,\n                    \"calendarId\": 1,\n                    \"freq_interval\": 32,\n                    \"freq_relative_interval\": 0,\n                    \"tzId\": 42,\n                    \"freq_recurrence_factor\": 1,\n                    \"daysToRun\": {\n                        \"Friday\": true\n                    },\n                    \"calendar\": {\n                        \"calendarName\": \"Standard\",\n                        \"calendarId\": 1\n                    },\n                    \"timeZone\": {\n                        \"_type_\": 55,\n                        \"TimeZoneID\": 42,\n                        \"TimeZoneName\": \"(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi\"\n                    }\n                },\n                \"options\": {\n                    \"backupOpts\": {\n                        \"truncateLogsOnSource\": false,\n                        \"sybaseSkipFullafterLogBkp\": false,\n                        \"bkpLatestVersion\": true,\n                        \"notSynthesizeFullFromPrevBackup\": false,\n                        \"collectMetaInfo\": false,\n                        \"backupLevel\": 1,\n                        \"incLevel\": 1,\n                        \"adHocBackup\": false,\n                        \"runIncrementalBackup\": false,\n                        \"runSILOBackup\": false,\n                        \"doNotTruncateLog\": false,\n                        \"vsaBackupOptions\": {\n                            \"backupFailedVMsOnly\": false\n                        },\n                        \"cdrOptions\": {\n                            \"incremental\": false,\n                            \"moveConsistencyPointToTape\": false,\n                            \"cdrRecoveryPointType\": 0,\n                            \"createRecoveryPoint\": false,\n                            \"dataVerificationOnly\": false,\n                            \"full\": true\n                        },\n                        \"dataOpt\": {\n                            \"skipCatalogPhaseForSnapBackup\": true,\n                            \"useCatalogServer\": true,\n                            \"followMountPoints\": true,\n                            \"enforceTransactionLogUsage\": false,\n                            \"skipConsistencyCheck\": false,\n                            \"granularrecovery\": false,\n                            \"collectVMGranularRecoveryMetadataForBkpCopy\": false,\n                            \"createNewIndex\": true,\n                            \"autoCopy\": false\n                        },\n                        \"oracleOptions\": {\n                            \"level\": 1,\n                            \"cumulative\": false,\n                            \"deleteArchLogOptions\": {\n                                \"backupArchiveLogCriteria\": 0\n                            },\n                            \"backupArchLogOptions\": {\n                                \"backupArchiveLogCriteria\": 7,\n                                \"startLSN\": 1,\n                                \"endLSN\": 1,\n                                \"backupArchiveLog\": true\n                            }\n                        },\n                        \"distAppsBackupOptions\": {\n                            \"runLogBkp\": false,\n                            \"runDataBkp\": true\n                        },\n                        \"mediaOpt\": {},\n                        \"dbBackupOptions\": {\n                            \"maxDbBackupType\": 0\n                        }\n                    },\n                    \"adminOpts\": {\n                        \"contentIndexingOption\": {\n                            \"subClientBasedAnalytics\": false\n                        }\n                    },\n                    \"restoreOptions\": {\n                        \"commonOptions\": {\n                            \"syncRestore\": false\n                        }\n                    },\n                    \"commonOpts\": {\n                        \"perfJobOpts\": {}\n                    }\n                }\n            }\n        ]\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Task",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Task"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_schedule_policy.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Session Details",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var userId1 = postman.getEnvironmentVariable(\"userId1\");",
+							"postman.setEnvironmentVariable(\"userId1\",userId1);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if (responseBody.has(\"sessions\"))",
+							"{",
+							"    tests[\"Response Body has sessions tag\"] = responseBody.has(\"sessions\");",
+							"    tests[\"Response Body has location tag\"] = responseBody.has(\"location\");",
+							"    tests[\"Response Body has sessionId tag\"] = responseBody.has(\"sessionId\");",
+							"    tests[\"Response Body has user tag\"] = responseBody.has(\"user\");",
+							"    tests[\"Response Body has userName tag\"] = responseBody.has(\"userName\");",
+							"    tests[\"Response Body has userId tag\"] = responseBody.has(\"userId\");",
+							"    postman.setEnvironmentVariable(\"sessionId\",jsonData.sessions[jsonData.sessions.length-1].sessionId);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "ONLY-ACTIVE-SESSIONS",
+						"value": "true"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Session?userId={{userId1}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Session"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{userId1}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating users tag\"] = responseBody.has(\"users\")))      ",
+							"            console.log(\"users tag is present\");",
+							"            ",
+							"if((tests[\"Validating description tag\"] = responseBody.has(\"description\")))      ",
+							"            console.log(\"description tag is present\");",
+							"            ",
+							"if((tests[\"Validating email tag\"] = responseBody.has(\"email\")))      ",
+							"            console.log(\"email tag is present\");",
+							"            ",
+							"if((tests[\"Validating fullName tag\"] = responseBody.has(\"fullName\")))      ",
+							"            console.log(\"fullName tag is present\");",
+							"            ",
+							"            ",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"            ",
+							"if((tests[\"Validating userGUID tag\"] = responseBody.has(\"userGUID\")))      ",
+							"            console.log(\"userGUID tag is present\");",
+							"            ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"            console.log(\"userName tag is present\");",
+							"            ",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"            console.log(\"userId tag is present\");",
+							"            ",
+							"            ",
+							"if((tests[\"Validating userId in the response with the userId sent in the request \"] = jsonData.users[0].userEntity.userId == postman.getEnvironmentVariable(\"userId\")))",
+							"            console.log(\"userId in the response matches with the userId given in request URL\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UsersAndGroups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if((tests[\"Validating userGroups tag\"] = responseBody.has(\"userGroups\")))      ",
+							"            console.log(\"userGroups tag is present\");",
+							"if((tests[\"Validating users tag\"] = responseBody.has(\"users\")))      ",
+							"            console.log(\"users tag is present\");",
+							"pm.test(\"Body contains master\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"master\");",
+							"});",
+							"//if((tests[\"Validating user admin\"] = jsonData.users[0].associatedUserOrUserGroup.userName === \"admin\"))",
+							"//            console.log(\"User admin is present\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/UsersAndGroups",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UsersAndGroups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating if user was created successfully\"] = jsonData.response[0].errorString === \"Successful\"))",
+							"    console.log(\"User was created successfully\");",
+							"",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"    ",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"        ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"        ",
+							"if((tests[\"Validating username of modified user\"] = responseBody.has(postman.getEnvironmentVariable(\"userName\"))))      ",
+							"        console.log(\"User Name of modified user is present\");",
+							"        ",
+							"postman.setEnvironmentVariable(\"userId\",jsonData.response[0].entity.userId);",
+							"postman.setEnvironmentVariable(\"userName\",jsonData.response[0].entity.userName);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var userId = postman.getEnvironmentVariable(\"userId\");",
+							"postman.setEnvironmentVariable(\"userId\",userId);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"description\": \"Modifying description via REST\",\r\n      \"associatedUserGroupsOperationType\": 2,\r\n      \"agePasswordDays\": 120,\r\n      \"password\": \"{{userPassword}}\",\r\n      \"email\": \"test@company.com\",\r\n      \"fullName\": \"Jane Doe\",\r\n      \"enableUser\": true,\r\n      \"associatedUserGroups\": [\r\n        {\r\n          \"userGroupName\": \"{{userGroupName}}\"\r\n        }\r\n      ],\r\n      \"userEntity\": {\r\n        \"userName\": \"{{userName}}\"\r\n      },\r\n      \"validationParameters\": {\r\n        \"password\": \"{{Password}}\"\r\n      }\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate modified properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if((tests[\"Validating users tag\"] = responseBody.has(\"users\")))      ",
+							"            console.log(\"users tag is present\");",
+							"            ",
+							"if((tests[\"Validating description tag\"] = responseBody.has(\"description\")))      ",
+							"            console.log(\"description tag is present\");",
+							"            ",
+							"if((tests[\"Validating email tag\"] = responseBody.has(\"email\")))      ",
+							"            console.log(\"email tag is present\");",
+							"            ",
+							"if((tests[\"Validating fullName tag\"] = responseBody.has(\"fullName\")))      ",
+							"            console.log(\"fullName tag is present\");",
+							"            ",
+							"        ",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"            ",
+							"if((tests[\"Validating userGUID tag\"] = responseBody.has(\"userGUID\")))      ",
+							"            console.log(\"userGUID tag is present\");",
+							"            ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"            console.log(\"userName tag is present\");",
+							"            ",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"            console.log(\"userId tag is present\");",
+							"            ",
+							"            ",
+							"if((tests[\"Validating userId in the response with the userId sent in the request \"] = jsonData.users[0].userEntity.userId == postman.getEnvironmentVariable(\"userId\")))",
+							"            console.log(\"userId in the response matches with the userId given in request URL\");",
+							"            ",
+							"if((tests[\"Validating user name of newly created user\"] = jsonData.users[0].userEntity.userName === postman.getEnvironmentVariable(\"userName\")))",
+							"            console.log(\"User name of newly created user validated\");",
+							"            ",
+							"if((tests[\"Validating if user description was modified\"] = jsonData.users[0].description  === \"Modifying description via REST\"))",
+							"    console.log(\"User description was updated\");",
+							"",
+							"if((tests[\"Validating if agePasswordDays was modified\"] = jsonData.users[0].agePasswordDays  === 120))",
+							"    console.log(\"agePasswordDays was updated\");    ",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Disable User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;          ",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");   ",
+							"tests[\"Validating if response tag is present\"] = responseBody.has(\"response\");",
+							"tests[\"Validating if the Response Body contains errorCode tag\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Validating if the errorCode is 0\"] = jsonData.response[0].errorCode === 0 ;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}/Disable",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}",
+						"Disable"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate Disabled User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if((tests[\"Validating users tag\"] = responseBody.has(\"users\")))      ",
+							"            console.log(\"users tag is present\");",
+							"            ",
+							"if((tests[\"Validating description tag\"] = responseBody.has(\"description\")))      ",
+							"            console.log(\"description tag is present\");",
+							"            ",
+							"if((tests[\"Validating email tag\"] = responseBody.has(\"email\")))      ",
+							"            console.log(\"email tag is present\");",
+							"            ",
+							"if((tests[\"Validating fullName tag\"] = responseBody.has(\"fullName\")))      ",
+							"            console.log(\"fullName tag is present\");",
+							"            ",
+							"            ",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"            ",
+							"if((tests[\"Validating userGUID tag\"] = responseBody.has(\"userGUID\")))      ",
+							"            console.log(\"userGUID tag is present\");",
+							"            ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"            console.log(\"userName tag is present\");",
+							"            ",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"            console.log(\"userId tag is present\");",
+							"            ",
+							"            ",
+							"if((tests[\"Validating userId in the response with the userId sent in the request \"] = jsonData.users[0].userEntity.userId == postman.getEnvironmentVariable(\"userId\")))",
+							"            console.log(\"userId in the response matches with the userId given in request URL\");",
+							"            ",
+							"if((tests[\"Validating user name of newly created user\"] = jsonData.users[0].userEntity.userName === postman.getEnvironmentVariable(\"userName\")))",
+							"            console.log(\"User name of newly created user validated\");",
+							"",
+							"if((tests[\"Validating if the user has been disabled\"] = jsonData.users[0].enableUser == false))",
+							"{",
+							"    console.log(\"User has been disabled\")",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enable User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;          ",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");   ",
+							"tests[\"Validating if response tag is present\"] = responseBody.has(\"response\");",
+							"tests[\"Validating if the Response Body contains errorCode tag\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Validating if the errorCode is 0\"] = jsonData.response[0].errorCode === 0 ;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}/Enable",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}",
+						"Enable"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate Enabled User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"if((tests[\"Validating users tag\"] = responseBody.has(\"users\")))      ",
+							"            console.log(\"users tag is present\");",
+							"            ",
+							"if((tests[\"Validating description tag\"] = responseBody.has(\"description\")))      ",
+							"            console.log(\"description tag is present\");",
+							"            ",
+							"if((tests[\"Validating email tag\"] = responseBody.has(\"email\")))      ",
+							"            console.log(\"email tag is present\");",
+							"            ",
+							"if((tests[\"Validating fullName tag\"] = responseBody.has(\"fullName\")))      ",
+							"            console.log(\"fullName tag is present\");",
+							"            ",
+							"            ",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"            ",
+							"if((tests[\"Validating userGUID tag\"] = responseBody.has(\"userGUID\")))      ",
+							"            console.log(\"userGUID tag is present\");",
+							"            ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"            console.log(\"userName tag is present\");",
+							"            ",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"            console.log(\"userId tag is present\");",
+							"            ",
+							"            ",
+							"if((tests[\"Validating userId in the response with the userId sent in the request \"] = jsonData.users[0].userEntity.userId == postman.getEnvironmentVariable(\"userId\")))",
+							"            console.log(\"userId in the response matches with the userId given in request URL\");",
+							"            ",
+							"if((tests[\"Validating user name of newly created user\"] = jsonData.users[0].userEntity.userName === postman.getEnvironmentVariable(\"userName\")))",
+							"            console.log(\"User name of newly created user validated\");",
+							"",
+							"if((tests[\"Validating if the user has been disabled\"] = jsonData.users[0].enableUser == true))",
+							"{",
+							"    console.log(\"User has been enabled\");",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User and pass properties to another User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if((tests[\"Validating if user was deleted successfully\"] = jsonData.response[0].errorString === \"Success\"))",
+							"    console.log(\"User was deleted successfully\");",
+							"",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"    ",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"        ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"        ",
+							"if((tests[\"Validating userId in the response with the userId sent in the request \"] = jsonData.response[0].entity.userId == postman.getEnvironmentVariable(\"userId\")))",
+							"            console.log(\"userId in the response matches with the userId given in request URL\");",
+							"",
+							"if((tests[\"Validating username of created user\"] = jsonData.response[0].entity.userName == postman.getEnvironmentVariable(\"userName\")))    ",
+							"            console.log(\"User Name of deleted user is present\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}?newUserId={{userId1}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					],
+					"query": [
+						{
+							"key": "newUserId",
+							"value": "{{userId1}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate User deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"if((tests[\"Validating if Status code is 404\"] = responseCode.code === 404))\r",
+							"    console.log(\"Status code 404 validated\");\r",
+							" \r",
+							"if((tests[\"Validating errorMessage tag\"] = responseBody.has(\"errorMessage\")))      \r",
+							"        console.log(\"errorMessage tag says :\"+jsonData.errorMessage);\r",
+							"    \r",
+							"if((tests[\"Validating errorCode tag\"] = responseBody.has(\"errorCode\")))      \r",
+							"        console.log(\"errorCode tag is present\");\r",
+							"        \r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validating change in schedule policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"        ",
+							"if((tests[\"Validating _type_ tag\"] = responseBody.has(\"_type_\")))      ",
+							"        console.log(\"_type_ tag is present\");",
+							"        ",
+							"if((tests[\"Validating appGroup tag\"] = responseBody.has(\"appGroup\")))      ",
+							"        console.log(\"appGroup tag is present\");",
+							"        ",
+							"if((tests[\"Validating GUID tag\"] = responseBody.has(\"GUID\")))      ",
+							"        console.log(\"GUID tag is present\");",
+							"        ",
+							"if((tests[\"Validating taskName tag\"] = responseBody.has(\"taskName\")))      ",
+							"        console.log(\"taskName tag is present\");",
+							"        ",
+							"if((tests[\"taskId taskId tag\"] = responseBody.has(\"taskId\")))      ",
+							"        console.log(\"taskId tag is present\");",
+							"",
+							"if((tests[\"Validating subTasks tag\"] = responseBody.has(\"subTasks\")))      ",
+							"        console.log(\"subTasks tag is present\");",
+							"        ",
+							"if((tests[\"Validating pattern tag\"] = responseBody.has(\"pattern\")))      ",
+							"        console.log(\"pattern tag is present\");",
+							"        ",
+							"postman.setEnvironmentVariable(\"subTaskId\", jsonData.taskInfo.subTasks[0].subTask.subTaskId);",
+							"",
+							"tests[\"user is removed\"] = (function() {",
+							"    if (jsonData.taskInfo.task.securityAssociations.associations[0].userOrGroup.length === 1)",
+							"            return true;",
+							"    return false;",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); \r",
+							"postman.setEnvironmentVariable(\"Token\", token);\r",
+							"console.log(\"value of token set:\", token);\r",
+							"var taskId = postman.getEnvironmentVariable(\"taskId\"); \r",
+							"postman.setEnvironmentVariable(\"taskId\", taskId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/SchedulePolicy/{{taskId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SchedulePolicy",
+						"{{taskId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_schedule_policy_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Schedule Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Deletion validation\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); \r",
+							"postman.setEnvironmentVariable(\"Token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/SchedulePolicy/{{taskId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SchedulePolicy",
+						"{{taskId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_schedule_policy.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"if((tests[\"Validating if user was created successfully\"] = jsonData.response[0].errorString === \"Successful\"))",
+							"    console.log(\"User was created successfully\");",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"if((tests[\"Validating username of created user\"] = responseBody.has(postman.getEnvironmentVariable(\"userName\"))))      ",
+							"            console.log(\"User Name of created user is present\");",
+							"",
+							"postman.setEnvironmentVariable(\"userId\", jsonData.response[0].entity.userId);",
+							"console.log(\"Value of userId set to:\", postman.getEnvironmentVariable(\"userId\"));",
+							"postman.setEnvironmentVariable(\"userName\", jsonData.response[0].entity.userName);",
+							"console.log(\"Value of userName set to:\", postman.getEnvironmentVariable(\"userName\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"userName\", \"testUser5\");",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"description\": \"backup admin user\",\r\n      \"agePasswordDays\": 10,\r\n      \"password\": \"{{userPassword}}\",\r\n      \"email\": \"{{$timestamp}}50981test@company.com\",\r\n      \"fullName\": \"Jane Doe\",\r\n      \"enableUser\": true,\r\n      \"associatedUserGroups\": [\r\n        {\r\n          \"userGroupName\": \"{{userGroupName}}\"\r\n        }\r\n      ],\r\n      \"userEntity\": {\r\n        \"userName\": \"{{userName}}50981{{$timestamp}}\"\r\n      }\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schedule Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(tests[\"Content-Type is application/json\"] = (postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" || postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\" ));     //validate content-type",
+							"if(tests[\"Task Id present\"] = responseBody.has(\"taskId\"))",
+							"    postman.setEnvironmentVariable(\"taskId\", jsonData.taskId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var sp_token = \"NewmanTest111\";",
+							"postman.setEnvironmentVariable(\"taskName\", sp_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskInfo\": {\n        \"taskOperation\": 5,\n        \"task\": {\n            \"description\": \"checking for user association\",\n            \"taskType\": 4,\n            \"isEditing\": false,\n            \"policyType\": 0,\n            \"taskName\": \"User Validation{{$timestamp}}\",\n            \"taskId\": 0,\n            \"securityAssociations\": {\n                \"associationsOperationType\": 1,\n                \"associations\": [\n                    {\n                        \"userOrGroup\": [\n                            {\n                                \"userId\": {{userId}},\n                                \"_type_\": 13,\n                                \"userName\": \"{{userName}}\"\n                            },\n                            {\n                                \"userGroupName\": \"{{userGroupName}}\",\n                                \"userGroupId\": {{userGroupId}},\n                                \"_type_\": 15\n                            }\n                        ],\n                        \"properties\": {\n                            \"isCreatorAssociation\": false,\n                            \"role\": {\n                                \"_type_\": 120,\n                                \"roleId\": 3,\n                                \"roleName\": \"View\"\n                            },\n                            \"categoryPermission\": {}\n                        }\n                    }\n                ]\n            },\n            \"taskSecurity\": {},\n            \"alert\": {\n                \"alertName\": \"\",\n                \"alertId\": 0\n            },\n            \"taskFlags\": {\n                \"isEdgeDrive\": false,\n                \"isEZOperation\": false,\n                \"disabled\": false\n            }\n        },\n        \"appGroup\": {\n            \"appGroups\": [\n                {\n                    \"_type_\": 78,\n                    \"appGroupId\": 1\n                },\n                {\n                    \"_type_\": 78,\n                    \"appGroupId\": 5\n                }\n            ]\n        },\n        \"subTasks\": [\n            {\n                \"subTaskOperation\": 2,\n                \"subTask\": {\n                    \"subTaskName\": \"User Validation Schedule\",\n                    \"subTaskType\": 2,\n                    \"operationType\": 2,\n                    \"subTaskId\": 1\n                },\n                \"pattern\": {\n                    \"active_end_occurence\": 0,\n                    \"freq_subday_interval\": 0,\n                    \"freq_type\": 8,\n                    \"description\": \"Every week on Friday at 21:00  starting 17 March 2020 \",\n                    \"active_end_time\": 0,\n                    \"skipOccurence\": 0,\n                    \"skipDayNumber\": 0,\n                    \"active_start_time\": 75600,\n                    \"active_start_date\": 1584403200,\n                    \"calendarId\": 1,\n                    \"freq_interval\": 32,\n                    \"freq_relative_interval\": 0,\n                    \"tzId\": 42,\n                    \"freq_recurrence_factor\": 1,\n                    \"daysToRun\": {\n                        \"Friday\": true\n                    },\n                    \"calendar\": {\n                        \"calendarName\": \"Standard\",\n                        \"calendarId\": 1\n                    },\n                    \"timeZone\": {\n                        \"_type_\": 55,\n                        \"TimeZoneID\": 42,\n                        \"TimeZoneName\": \"(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi\"\n                    }\n                },\n                \"options\": {\n                    \"backupOpts\": {\n                        \"truncateLogsOnSource\": false,\n                        \"sybaseSkipFullafterLogBkp\": false,\n                        \"bkpLatestVersion\": true,\n                        \"notSynthesizeFullFromPrevBackup\": false,\n                        \"collectMetaInfo\": false,\n                        \"backupLevel\": 1,\n                        \"incLevel\": 1,\n                        \"adHocBackup\": false,\n                        \"runIncrementalBackup\": false,\n                        \"runSILOBackup\": false,\n                        \"doNotTruncateLog\": false,\n                        \"vsaBackupOptions\": {\n                            \"backupFailedVMsOnly\": false\n                        },\n                        \"cdrOptions\": {\n                            \"incremental\": false,\n                            \"moveConsistencyPointToTape\": false,\n                            \"cdrRecoveryPointType\": 0,\n                            \"createRecoveryPoint\": false,\n                            \"dataVerificationOnly\": false,\n                            \"full\": true\n                        },\n                        \"dataOpt\": {\n                            \"skipCatalogPhaseForSnapBackup\": true,\n                            \"useCatalogServer\": true,\n                            \"followMountPoints\": true,\n                            \"enforceTransactionLogUsage\": false,\n                            \"skipConsistencyCheck\": false,\n                            \"granularrecovery\": false,\n                            \"collectVMGranularRecoveryMetadataForBkpCopy\": false,\n                            \"createNewIndex\": true,\n                            \"autoCopy\": false\n                        },\n                        \"oracleOptions\": {\n                            \"level\": 1,\n                            \"cumulative\": false,\n                            \"deleteArchLogOptions\": {\n                                \"backupArchiveLogCriteria\": 0\n                            },\n                            \"backupArchLogOptions\": {\n                                \"backupArchiveLogCriteria\": 7,\n                                \"startLSN\": 1,\n                                \"endLSN\": 1,\n                                \"backupArchiveLog\": true\n                            }\n                        },\n                        \"distAppsBackupOptions\": {\n                            \"runLogBkp\": false,\n                            \"runDataBkp\": true\n                        },\n                        \"mediaOpt\": {},\n                        \"dbBackupOptions\": {\n                            \"maxDbBackupType\": 0\n                        }\n                    },\n                    \"adminOpts\": {\n                        \"contentIndexingOption\": {\n                            \"subClientBasedAnalytics\": false\n                        }\n                    },\n                    \"restoreOptions\": {\n                        \"commonOptions\": {\n                            \"syncRestore\": false\n                        }\n                    },\n                    \"commonOpts\": {\n                        \"perfJobOpts\": {}\n                    }\n                }\n            },\n            {\n                \"subTaskOperation\": 2,\n                \"subTask\": {\n                    \"subTaskName\": \"\",\n                    \"subTaskType\": 2,\n                    \"operationType\": 2,\n                    \"subTaskId\": 1\n                },\n                \"pattern\": {\n                    \"active_end_occurence\": 0,\n                    \"freq_subday_interval\": 0,\n                    \"freq_type\": 8,\n                    \"description\": \"Every week on Friday at 21:00  starting 17 March 2020 \",\n                    \"active_end_time\": 0,\n                    \"skipOccurence\": 0,\n                    \"skipDayNumber\": 0,\n                    \"active_start_time\": 75600,\n                    \"active_start_date\": 1584403200,\n                    \"calendarId\": 1,\n                    \"freq_interval\": 32,\n                    \"freq_relative_interval\": 0,\n                    \"tzId\": 42,\n                    \"freq_recurrence_factor\": 1,\n                    \"daysToRun\": {\n                        \"Friday\": true\n                    },\n                    \"calendar\": {\n                        \"calendarName\": \"Standard\",\n                        \"calendarId\": 1\n                    },\n                    \"timeZone\": {\n                        \"_type_\": 55,\n                        \"TimeZoneID\": 42,\n                        \"TimeZoneName\": \"(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi\"\n                    }\n                },\n                \"options\": {\n                    \"backupOpts\": {\n                        \"truncateLogsOnSource\": false,\n                        \"sybaseSkipFullafterLogBkp\": false,\n                        \"bkpLatestVersion\": true,\n                        \"notSynthesizeFullFromPrevBackup\": false,\n                        \"collectMetaInfo\": false,\n                        \"backupLevel\": 1,\n                        \"incLevel\": 1,\n                        \"adHocBackup\": false,\n                        \"runIncrementalBackup\": false,\n                        \"runSILOBackup\": false,\n                        \"doNotTruncateLog\": false,\n                        \"vsaBackupOptions\": {\n                            \"backupFailedVMsOnly\": false\n                        },\n                        \"cdrOptions\": {\n                            \"incremental\": false,\n                            \"moveConsistencyPointToTape\": false,\n                            \"cdrRecoveryPointType\": 0,\n                            \"createRecoveryPoint\": false,\n                            \"dataVerificationOnly\": false,\n                            \"full\": true\n                        },\n                        \"dataOpt\": {\n                            \"skipCatalogPhaseForSnapBackup\": true,\n                            \"useCatalogServer\": true,\n                            \"followMountPoints\": true,\n                            \"enforceTransactionLogUsage\": false,\n                            \"skipConsistencyCheck\": false,\n                            \"granularrecovery\": false,\n                            \"collectVMGranularRecoveryMetadataForBkpCopy\": false,\n                            \"createNewIndex\": true,\n                            \"autoCopy\": false\n                        },\n                        \"oracleOptions\": {\n                            \"level\": 1,\n                            \"cumulative\": false,\n                            \"deleteArchLogOptions\": {\n                                \"backupArchiveLogCriteria\": 0\n                            },\n                            \"backupArchLogOptions\": {\n                                \"backupArchiveLogCriteria\": 7,\n                                \"startLSN\": 1,\n                                \"endLSN\": 1,\n                                \"backupArchiveLog\": true\n                            }\n                        },\n                        \"distAppsBackupOptions\": {\n                            \"runLogBkp\": false,\n                            \"runDataBkp\": true\n                        },\n                        \"mediaOpt\": {},\n                        \"dbBackupOptions\": {\n                            \"maxDbBackupType\": 0\n                        }\n                    },\n                    \"adminOpts\": {\n                        \"contentIndexingOption\": {\n                            \"subClientBasedAnalytics\": false\n                        }\n                    },\n                    \"restoreOptions\": {\n                        \"commonOptions\": {\n                            \"syncRestore\": false\n                        }\n                    },\n                    \"commonOpts\": {\n                        \"perfJobOpts\": {}\n                    }\n                }\n            }\n        ]\n    }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Task",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Task"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_schedule_policy.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User and pass properties to User Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if((tests[\"Validating if user was deleted successfully\"] = jsonData.response[0].errorString === \"Success\"))",
+							"    console.log(\"User was deleted successfully\");",
+							"",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"    ",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"        ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"        ",
+							"if((tests[\"Validating userId in the response with the userId sent in the request \"] = jsonData.response[0].entity.userId == postman.getEnvironmentVariable(\"userId\")))",
+							"            console.log(\"userId in the response matches with the userId given in request URL\");",
+							"",
+							"if((tests[\"Validating username of created user\"] = jsonData.response[0].entity.userName == postman.getEnvironmentVariable(\"userName\")))    ",
+							"            console.log(\"User Name of deleted user is present\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}?newUserGroupId={{userGroupId1}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					],
+					"query": [
+						{
+							"key": "newUserGroupId",
+							"value": "{{userGroupId1}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate User deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"if((tests[\"Validating if Status code is 404\"] = responseCode.code === 404))\r",
+							"    console.log(\"Status code 404 validated\");\r",
+							" \r",
+							"if((tests[\"Validating errorMessage tag\"] = responseBody.has(\"errorMessage\")))      \r",
+							"        console.log(\"errorMessage tag says :\"+jsonData.errorMessage);\r",
+							"    \r",
+							"if((tests[\"Validating errorCode tag\"] = responseBody.has(\"errorCode\")))      \r",
+							"        console.log(\"errorCode tag is present\");\r",
+							"        \r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validating change in schedule policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200 ;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"",
+							"if((tests[\"Validating _type_ tag\"] = responseBody.has(\"_type_\")))      ",
+							"        console.log(\"_type_ tag is present\");",
+							"        ",
+							"if((tests[\"Validating appGroup tag\"] = responseBody.has(\"appGroup\")))      ",
+							"        console.log(\"appGroup tag is present\");",
+							"        ",
+							"if((tests[\"Validating GUID tag\"] = responseBody.has(\"GUID\")))      ",
+							"        console.log(\"GUID tag is present\");",
+							"        ",
+							"if((tests[\"Validating taskName tag\"] = responseBody.has(\"taskName\")))      ",
+							"        console.log(\"taskName tag is present\");",
+							"        ",
+							"if((tests[\"taskId taskId tag\"] = responseBody.has(\"taskId\")))      ",
+							"        console.log(\"taskId tag is present\");",
+							"",
+							"if((tests[\"Validating subTasks tag\"] = responseBody.has(\"subTasks\")))      ",
+							"        console.log(\"subTasks tag is present\");",
+							"        ",
+							"if((tests[\"Validating pattern tag\"] = responseBody.has(\"pattern\")))      ",
+							"        console.log(\"pattern tag is present\");",
+							"        ",
+							"postman.setEnvironmentVariable(\"subTaskId\", jsonData.taskInfo.subTasks[0].subTask.subTaskId);",
+							"tests[\"user is removed\"] = (function() {",
+							"    if (jsonData.taskInfo.task.securityAssociations.associations[0].userOrGroup.length === 1)",
+							"            return true;",
+							"    return false;",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); \r",
+							"postman.setEnvironmentVariable(\"Token\", token);\r",
+							"console.log(\"value of token set:\", token);\r",
+							"var taskId = postman.getEnvironmentVariable(\"taskId\"); \r",
+							"postman.setEnvironmentVariable(\"taskId\", taskId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/SchedulePolicy/{{taskId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SchedulePolicy",
+						"{{taskId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_schedule_policy_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Schedule Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Deletion validation\"] = jsonData.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); \r",
+							"postman.setEnvironmentVariable(\"Token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/SchedulePolicy/{{taskId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"SchedulePolicy",
+						"{{taskId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_schedule_policy.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"if((tests[\"Validating if user was created successfully\"] = jsonData.response[0].errorString === \"Successful\"))",
+							"    console.log(\"User was created successfully\");",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"if((tests[\"Validating username of created user\"] = responseBody.has(postman.getEnvironmentVariable(\"userName\"))))      ",
+							"            console.log(\"User Name of created user is present\");",
+							"",
+							"postman.setEnvironmentVariable(\"userId\", jsonData.response[0].entity.userId);",
+							"console.log(\"Value of userId set to:\", postman.getEnvironmentVariable(\"userId\"));",
+							"postman.setEnvironmentVariable(\"userName\", jsonData.response[0].entity.userName);",
+							"console.log(\"Value of userName set to:\", postman.getEnvironmentVariable(\"userName\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"userName\", \"testUser5\");",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"description\": \"backup admin user\",\r\n      \"agePasswordDays\": 10,\r\n      \"password\": \"{{userPassword}}\",\r\n      \"email\": \"{{$timestamp}}50981test@company.com\",\r\n      \"fullName\": \"Jane Doe\",\r\n      \"enableUser\": true,\r\n      \"associatedUserGroups\": [\r\n        {\r\n          \"userGroupName\": \"{{userGroupName}}\"\r\n        }\r\n      ],\r\n      \"userEntity\": {\r\n        \"userName\": \"{{$timestamp}}50981{{userName}}\"\r\n      }\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User and don't pass properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if((tests[\"Validating if user was deleted successfully\"] = jsonData.response[0].errorString === \"Success\"))",
+							"    console.log(\"User was deleted successfully\");",
+							"",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"    ",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"        ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"        ",
+							"if((tests[\"Validating userId in the response with the userId sent in the request \"] = jsonData.response[0].entity.userId == postman.getEnvironmentVariable(\"userId\")))",
+							"            console.log(\"userId in the response matches with the userId given in request URL\");",
+							"",
+							"if((tests[\"Validating username of created user\"] = jsonData.response[0].entity.userName == postman.getEnvironmentVariable(\"userName\")))    ",
+							"            console.log(\"User Name of deleted user is present\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate User deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"if((tests[\"Validating if Status code is 404\"] = responseCode.code === 404))\r",
+							"    console.log(\"Status code 404 validated\");\r",
+							" \r",
+							"if((tests[\"Validating errorMessage tag\"] = responseBody.has(\"errorMessage\")))      \r",
+							"        console.log(\"errorMessage tag says :\"+jsonData.errorMessage);\r",
+							"    \r",
+							"if((tests[\"Validating errorCode tag\"] = responseBody.has(\"errorCode\")))      \r",
+							"        console.log(\"errorCode tag is present\");\r",
+							"        \r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"if((tests[\"Validating if user was created successfully\"] = jsonData.response[0].errorString === \"Successful\"))",
+							"    console.log(\"User was created successfully\");",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"if((tests[\"Validating username of created user\"] = responseBody.has(postman.getEnvironmentVariable(\"userName\"))))      ",
+							"            console.log(\"User Name of created user is present\");",
+							"",
+							"postman.setEnvironmentVariable(\"userId\", jsonData.response[0].entity.userId);",
+							"console.log(\"Value of userId set to:\", postman.getEnvironmentVariable(\"userId\"));",
+							"postman.setEnvironmentVariable(\"userName\", jsonData.response[0].entity.userName);",
+							"console.log(\"Value of userName set to:\", postman.getEnvironmentVariable(\"userName\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"userName\", \"testUser5\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"description\": \"backup admin user\",\r\n      \"agePasswordDays\": 10,\r\n      \"password\": \"{{userPassword}}\",\r\n      \"email\": \"{{$timestamp}}50981test@company.com\",\r\n      \"fullName\": \"Jane Doe\",\r\n      \"enableUser\": true,\r\n      \"associatedUserGroups\": [\r\n        {\r\n          \"userGroupName\": \"{{userGroupName}}\"\r\n        }\r\n      ],\r\n      \"userEntity\": {\r\n        \"userName\": \"{{$timestamp}}50981{{userName}}\"\r\n      }\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Validating if Status code is 200\"] = responseCode.code === 200))",
+							"    console.log(\"Status code 200 validated\");",
+							" ",
+							"",
+							"if((tests[\"Validating if user was deleted successfully\"] = jsonData.response[0].errorString === \"Success\"))",
+							"    console.log(\"User was deleted successfully\");",
+							"",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"    ",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"        ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"        ",
+							"if((tests[\"Validating userId in the response with the userId sent in the request \"] = jsonData.response[0].entity.userId == postman.getEnvironmentVariable(\"userId\")))",
+							"            console.log(\"userId in the response matches with the userId given in request URL\");",
+							"        ",
+							"if((tests[\"Validating username of deleted user\"] = responseBody.has(postman.getEnvironmentVariable(\"userName\"))))      ",
+							"            console.log(\"User Name of deleted user is present\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"users\":[{\r\n\t\t\"transferInfo\":{\r\n\t\t\t\"transferAllFromOldUser\":true,\r\n\t\t\t\"newUser\": {\r\n\t\t\t\t\"userId\":0\r\n\t\t\t},\r\n\t\t\t\"oldUser\": {\r\n\t\t\t\t\"userId\":{{userId}}\r\n\t\t\t},\r\n\t\t\t\"newUserGroup\": {\r\n\t\t\t\t\"userGroupId\":0\r\n\t\t\t}\r\n\t\t},\r\n\t\t\"userEntity\":{\r\n\t\t\t\"userId\":{{userId}}\r\n\t\t}\r\n\t}\r\n\t]\r\n} "
+				},
+				"url": {
+					"raw": "{{ServerURL}}/User/action/delete",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"action",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate User deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"console.log(\"Response received:\", jsonData);\r",
+							"\r",
+							"if((tests[\"Validating if Status code is 404\"] = responseCode.code === 404))\r",
+							"    console.log(\"Status code 404 validated\");\r",
+							" \r",
+							"if((tests[\"Validating errorMessage tag\"] = responseBody.has(\"errorMessage\")))      \r",
+							"        console.log(\"errorMessage tag says :\"+jsonData.errorMessage);\r",
+							"    \r",
+							"if((tests[\"Validating errorCode tag\"] = responseBody.has(\"errorCode\")))      \r",
+							"        console.log(\"errorCode tag is present\");\r",
+							"        \r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User/{{userId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User Group",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);",
+							"var userGroupId = postman.getEnvironmentVariable(\"userGroupId\");",
+							"postman.setEnvironmentVariable(\"userGroupId\",userGroupId);",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body contains response\"] = responseBody.has(\"response\");",
+							"tests[\"Response Body contains errorString 0.\"] = jsonData.response[0].errorCode === 0;",
+							"tests[\"Response Body contains errorCode\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Response Body contains entity\"] = responseBody.has(\"entity\");",
+							"tests[\"Validate userGroupId in response body\"] = jsonData.response[0].entity.userGroupId == parseInt(postman.getEnvironmentVariable(\"userGroupId\"));",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"tests[\"Validate userGroupName in response body\"] = jsonData.response[0].entity.userGroupName == userGroupName;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup",
+						"{{userGroupId}}"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup/{{userGroupId}}?newUserId=1&newUserGroupId=0",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup",
+								"{{userGroupId}}"
+							],
+							"query": [
+								{
+									"key": "newUserId",
+									"value": "1"
+								},
+								{
+									"key": "newUserGroupId",
+									"value": "0"
+								}
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation deletes a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "192",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:36:03 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"response\":[\r{\r\"errorString\":\"\",\"errorCode\":0,\"entity\":{\r\"userGroupName\":\"Testgroup\",\"userGroupId\":9\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

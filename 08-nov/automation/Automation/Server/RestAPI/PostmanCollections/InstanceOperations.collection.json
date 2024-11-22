@@ -1,0 +1,1129 @@
+{
+	"info": {
+		"_postman_id": "91fbeb5b-6dbe-4fb5-9a5b-a2a5750a8dfd",
+		"name": "Instance Operations Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31953132",
+		"_collection_link": "https://lively-star-659605.postman.co/workspace/My-Workspace~abf30143-9e76-49c6-85a8-5b5b5cb040b4/collection/31953132-91fbeb5b-6dbe-4fb5-9a5b-a2a5750a8dfd?action=share&source=collection_link&creator=31953132"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"postman.setEnvironmentVariable(\"userGUID\",jsonData.userGUID);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Client",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"",
+							"if(tests[\"Validate clientProperties tag\"] = responseBody.has(\"clientProperties\") === true);      //validate clientProperties tag",
+							"        console.log(\"clientProperties tag is present\");",
+							"",
+							"    postman.setEnvironmentVariable(\"clientId\", jsonData.clientProperties[0].client.clientEntity.clientId);",
+							"    postman.setEnvironmentVariable(\"clientName\", jsonData.clientProperties[0].client.clientEntity.clientName);",
+							"    postman.setEnvironmentVariable(\"clientId1\", jsonData.clientProperties[1].client.clientEntity.clientId);",
+							"    postman.setEnvironmentVariable(\"hostName\", jsonData.clientProperties[0].client.clientEntity.hostName);",
+							"    postman.setEnvironmentVariable(\"hostName1\", jsonData.clientProperties[1].client.clientEntity.hostName);",
+							"    console.log(\"value of clientId set to:\", postman.getEnvironmentVariable(\"clientId\"));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/client",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Storage Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;         //validate status code",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"Response Body contains policies\"] = responseBody.has(\"policies\");",
+							"tests[\"Response Body contains policies\"] = responseBody.has(\"storagePolicyName\");",
+							"tests[\"Response Body contains policies\"] = responseBody.has(\"storagePolicyId\");",
+							"function getRandomInt(max) {",
+							"  return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"var randIndex = getRandomInt(jsonData.policies.length);",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",jsonData.policies[randIndex].storagePolicyId);",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",jsonData.policies[randIndex].storagePolicyName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/StoragePolicy",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePolicy"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of storage policies.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_storage_policy.htm)"
+			},
+			"response": [
+				{
+					"name": "Storage Policy",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/StoragePolicy",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"StoragePolicy"
+							]
+						},
+						"description": "This operation returns a list of storage policies.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_storage_policy.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "236",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 06 Jun 2017 07:43:00 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"policies\":[\r{\r\"storagePolicyName\":\"CSSP\",\"storagePolicyId\":3\r},{\r\"storagePolicyName\":\"FirewallMASP\",\"storagePolicyId\":4\r},{\r\"storagePolicyName\":\"fwma_3\",\"storagePolicyId\":6\r},{\r\"storagePolicyName\":\"IDCMA2SP\",\"storagePolicyId\":5\r}\r]\r}"
+				},
+				{
+					"name": "GET Storage Policy17",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 13:04:09 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"policies\": [\n        {\n            \"storagePolicyName\": \"newmanTestPolicy\",\n            \"storagePolicyId\": 55\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm105\",\n            \"storagePolicyId\": 20\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm106\",\n            \"storagePolicyId\": 23\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm107\",\n            \"storagePolicyId\": 26\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm108\",\n            \"storagePolicyId\": 29\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm105\",\n            \"storagePolicyId\": 3\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm106\",\n            \"storagePolicyId\": 21\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm107\",\n            \"storagePolicyId\": 24\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm108\",\n            \"storagePolicyId\": 27\n        }\n    ]\n}"
+				},
+				{
+					"name": "GET Storage Policy14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/StoragePolicy",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePolicy"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 08:51:54 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "537"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"policies\": [\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm105\",\n            \"storagePolicyId\": 20\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm106\",\n            \"storagePolicyId\": 23\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm107\",\n            \"storagePolicyId\": 26\n        },\n        {\n            \"storagePolicyName\": \"SP_smckb2pmm108\",\n            \"storagePolicyId\": 29\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm105\",\n            \"storagePolicyId\": 3\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm106\",\n            \"storagePolicyId\": 21\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm107\",\n            \"storagePolicyId\": 24\n        },\n        {\n            \"storagePolicyName\": \"SP_SYS_smckb2pmm108\",\n            \"storagePolicyId\": 27\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Instance",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"); ",
+							"if (responseBody.has(\"processinginstructioninfo\"))",
+							"{",
+							"    tests[\"Response Body has instanceId\"] = responseBody.has(\"instanceId\") ;",
+							"    tests[\"Response Body has instanceName\"] = jsonData.response.entity.instanceName;",
+							"    tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							"    postman.setEnvironmentVariable(\"instanceName\",jsonData.response.entity.instanceName);",
+							"    postman.setEnvironmentVariable(\"instanceId\",jsonData.response.entity.instanceId) ;",
+							"",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"appName\",\"SQL Server\");",
+							"var clientName = postman.getEnvironmentVariable(\"clientName\");",
+							"postman.setEnvironmentVariable(\"clientName\", clientName);",
+							"postman.setEnvironmentVariable(\"applicationId\",\"81\")"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"instanceProperties\": {\n    \"description\": \"\",\n    \"version\": \"\",\n    \"instance\": {\n      \"clientName\": \"{{clientName}}\",\n      \"instanceName\": \"NewmanInstance{{$timestamp}}\",\n      \"appName\": \"{{appName}}\",\n      \"applicationId\": {{applicationId}}\n    },\n    \"mssqlInstance\": {\n      \"vDITimeOut\": 300,\n      \"useVss\": false,\n      \"isOnDemand\": false,\n      \"overrideHigherLevelSettings\": {\n        \"useLocalSystemAccount\": true,\n        \"overrideGlobalAuthentication\": false,\n        \"userAccount\": {\n          \"password\": \"\",\n          \"userName\": \"\"\n        }\n      },\n      \"MSSQLStorageDevice\": {\n        \"logBackupStoragePolicy\": {\n          \"storagePolicyName\": \"{{storagePolicyName}}\"\n        },\n        \"commandLineStoragePolicy\": {\n          \"storagePolicyName\": \"{{storagePolicyName}}\"\n        }\n      }\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Instance",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Instance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Instance using clientId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"); ",
+							"if ((responseCode.code===200) && responseBody.has(\"instanceProperties\"))",
+							"{",
+							"    tests[\"The client has instances\"] = responseBody.has(\"instanceProperties\") ;",
+							"    tests[\"instanceActivityControl is present\"] = responseBody.has(\"instanceActivityControl\") ;",
+							"    tests[\"activityControlOptions is present\"] = responseBody.has(\"activityControlOptions\") ;",
+							"",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientId = postman.getEnvironmentVariable(\"clientId\");",
+							"postman.setEnvironmentVariable(\"clientId\", clientId);",
+							"var clientName = postman.getEnvironmentVariable(\"clientName\");",
+							"postman.setEnvironmentVariable(\"clientName\", clientName);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/instance?clientId={{clientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"instance"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{clientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Instance using client name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"); ",
+							"",
+							"if ((responseCode.code===200) && responseBody.has(\"instanceProperties\"))",
+							"{",
+							"    tests[\"The client has instances\"] = responseBody.has(\"instanceProperties\") ;",
+							"    tests[\"instanceActivityControl is present\"] = responseBody.has(\"instanceActivityControl\") ;",
+							"    tests[\"activityControlOptions is present\"] = responseBody.has(\"activityControlOptions\") ;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var clientId = postman.getEnvironmentVariable(\"clientId\");",
+							"postman.setEnvironmentVariable(\"clientId\", clientId);",
+							"var clientName = postman.getEnvironmentVariable(\"clientName\");",
+							"postman.setEnvironmentVariable(\"clientName\", clientName);",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/instance?clientName={{clientName}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"instance"
+					],
+					"query": [
+						{
+							"key": "clientName",
+							"value": "{{clientName}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Instance using parameters",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"); ",
+							"if ((responseCode.code===200) && responseBody.has(\"instanceProperties\"))",
+							"{",
+							"    tests[\"The client has instances\"] = responseBody.has(\"instanceProperties\") ;",
+							"    tests[\"instanceActivityControl is present\"] = responseBody.has(\"instanceActivityControl\") ;",
+							"    tests[\"activityControlOptions is present\"] = responseBody.has(\"activityControlOptions\") ;",
+							"    ",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var instanceName = postman.getEnvironmentVariable(\"instanceName\");",
+							"postman.setEnvironmentVariable(\"instanceName\",instanceName);",
+							"var appName = postman.getEnvironmentVariable(\"appName\");",
+							"postman.setEnvironmentVariable(\"appName\",appName);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/instance/byName(clientName='{{clientName}}',appName='{{appName}}'),instanceName='{{instanceName}}')",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"instance",
+						"byName(clientName='{{clientName}}',appName='{{appName}}'),instanceName='{{instanceName}}')"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Instance using InstanceId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"); ",
+							"if ((responseCode.code===200) && responseBody.has(\"instanceProperties\"))",
+							"{",
+							"    tests[\"The client has instances\"] = responseBody.has(\"instanceProperties\") ;",
+							"    tests[\"The client has instances\"] = responseBody.has(\"instanceProperties\") ;",
+							"    tests[\"instanceActivityControl is present\"] = responseBody.has(\"instanceActivityControl\") ;",
+							"    tests[\"activityControlOptions is present\"] = responseBody.has(\"activityControlOptions\") ;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var instanceName = postman.getEnvironmentVariable(\"instanceName\");",
+							"postman.setEnvironmentVariable(\"instanceName\",instanceName);",
+							"var instanceId = postman.getEnvironmentVariable(\"instanceId\");",
+							"postman.setEnvironmentVariable(\"instanceId\", instanceId) ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/instance/{{instanceId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"instance",
+						"{{instanceId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Group",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains userGroups\"] = responseBody.has(\"userGroups\");",
+							"postman.setEnvironmentVariable(\"userGroupId\", jsonData.userGroups[0].userGroupEntity.userGroupId);",
+							"postman.setEnvironmentVariable(\"userGroupName\", jsonData.userGroups[0].userGroupEntity.userGroupName);",
+							"tests[\"Newly created User group is present\"] = (function() {",
+							"    for( i=0; i < jsonData.userGroups.length; i++)",
+							"        if (jsonData.userGroups[i].userGroupEntity.userGroupId == postman.getEnvironmentVariable(\"userGroupId\"))",
+							"            return true;",
+							"    return false;",
+							"})();"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "238",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:26:48 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"userGroups\":[\r{\r\"userGroupEntity\":{\r\"userGroupId\":1,\"userGroupName\":\"master\"\r}\r},{\r\"userGroupEntity\":{\r\"userGroupId\":3,\"userGroupName\":\"View All\"\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "modify instance using instance id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"); ",
+							"if (responseBody.has(\"processinginstructioninfo\") && jsonData.response[0].errorCode === 0)",
+							"{",
+							"    console.log(\"The operation was successful.\") ;",
+							"    tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							"    tests[\"Response Body has warning code\"] = responseBody.has(\"warningCode\");",
+							"}",
+							"else",
+							"{",
+							"    console.log(\"Something went wrong.\")",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var userGroupId = postman.getEnvironmentVariable(\"userGroupId\");",
+							"postman.setEnvironmentVariable(\"userGroupId\",userGroupId);",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instanceProperties\": {\r\n    \"description\": \"\",\r\n    \"version\": \"\",\r\n    \"instance\": {\r\n      \"clientName\": \"{{clientName}}\",\r\n      \"instanceName\": \"{{instanceName}}\",\r\n      \"appName\": \"{{appName}}\"\r\n    },\r\n    \"securityAssociations\": {\r\n      \"ownerAssociations\": {}\r\n    },\r\n    \"billableDepartment\": {\r\n      \"name\": \"\"\r\n    },\r\n    \"instanceActivityControl\": {\r\n      \"activityControlOptions\": [\r\n        {\r\n          \"activityType\": 1,\r\n          \"enableAfterADelay\": false,\r\n          \"enableActivityType\": true\r\n        },\r\n        {\r\n          \"activityType\": 2,\r\n          \"enableAfterADelay\": false,\r\n          \"enableActivityType\": true\r\n        }\r\n      ]\r\n    },\r\n    \"security\": {\r\n      \"associatedUserGroups\": [\r\n        {\r\n          \"userGroupName\": \"{{userGroupName}}\"\r\n        },\r\n        {\r\n          \"userGroupName\": \"{{userGroupName}}\"\r\n        }\r\n      ],\r\n      \"ownerCapabilities\": {}\r\n    },\r\n    \"mssqlInstance\": {\r\n      \"vDITimeOut\": 400,\r\n      \"useVss\": true,\r\n      \"serverType\": \"DataBase Engine\",\r\n      \"enableSQLTransLogStaging\": true,\r\n      \"overrideHigherLevelSettings\": {\r\n        \"useLocalSystemAccount\": true,\r\n        \"overrideGlobalAuthentication\": false,\r\n        \"userAccount\": {\r\n          \"password\": \"\",\r\n          \"userName\": \"\"\r\n        }\r\n      },\r\n      \"agProperties\": {\r\n        \"SQLAvailabilityReplicasList\": {},\r\n        \"availabilityGroup\": {},\r\n        \"proxyClient\": {}\r\n      }\r\n    }\r\n  },\r\n  \"association\": {\r\n    \"entity\": [\r\n      {\r\n        \"clientName\": \"{{clientName}}\",\r\n        \"clientSidePackage\": true,\r\n        \"instanceName\": \"{{instanceName}}\",\r\n        \"appName\": \"{{appName}}\"\r\n      }\r\n    ]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/instance/{{instanceId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"instance",
+						"{{instanceId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modify Instance using name ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"); ",
+							"if (responseBody.has(\"processinginstructioninfo\") && jsonData.response[0].errorCode === 0)",
+							"{",
+							"    console.log(\"The operation was successful.\") ;",
+							"    tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							"    tests[\"Response Body has warning code\"] = responseBody.has(\"warningCode\");",
+							"}",
+							"else",
+							"{",
+							"    console.log(\"Something went wrong.\")",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var userGroupId = postman.getEnvironmentVariable(\"userGroupId\");",
+							"postman.setEnvironmentVariable(\"userGroupId\",userGroupId);",
+							"var userGroupName = postman.getEnvironmentVariable(\"userGroupName\");",
+							"postman.setEnvironmentVariable(\"userGroupName\",userGroupName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instanceProperties\": {\r\n    \"description\": \"\",\r\n    \"version\": \"\",\r\n    \"instance\": {\r\n      \"clientName\": \"{{clientName}}\",\r\n      \"instanceName\": \"{{instanceName}}\",\r\n      \"appName\": \"{{appName}}\"\r\n    },\r\n    \"securityAssociations\": {\r\n      \"ownerAssociations\": {}\r\n    },\r\n    \"billableDepartment\": {\r\n      \"name\": \"\"\r\n    },\r\n    \"instanceActivityControl\": {\r\n      \"activityControlOptions\": [\r\n        {\r\n          \"activityType\": 1,\r\n          \"enableAfterADelay\": false,\r\n          \"enableActivityType\": true\r\n        },\r\n        {\r\n          \"activityType\": 2,\r\n          \"enableAfterADelay\": false,\r\n          \"enableActivityType\": true\r\n        }\r\n      ]\r\n    },\r\n    \"security\": {\r\n      \"associatedUserGroups\": [\r\n        {\r\n          \"userGroupName\": \"{{userGroupName}}\"\r\n        },\r\n        {\r\n          \"userGroupName\": \"{{userGroupName}}\"\r\n        }\r\n      ],\r\n      \"ownerCapabilities\": {}\r\n    },\r\n    \"mssqlInstance\": {\r\n      \"vDITimeOut\": 400,\r\n      \"useVss\": true,\r\n      \"serverType\": \"DataBase Engine\",\r\n      \"enableSQLTransLogStaging\": true,\r\n      \"overrideHigherLevelSettings\": {\r\n        \"useLocalSystemAccount\": true,\r\n        \"overrideGlobalAuthentication\": false,\r\n        \"userAccount\": {\r\n          \"password\": \"\",\r\n          \"userName\": \"\"\r\n        }\r\n      },\r\n      \"agProperties\": {\r\n        \"SQLAvailabilityReplicasList\": {},\r\n        \"availabilityGroup\": {},\r\n        \"proxyClient\": {}\r\n      }\r\n    }\r\n  },\r\n  \"association\": {\r\n    \"entity\": [\r\n      {\r\n        \"clientName\": \"{{clientName}}\",\r\n        \"clientSidePackage\": true,\r\n        \"instanceName\": \"{{instanceName}\",\r\n        \"appName\": \"{{appName}}\"\r\n      }\r\n    ]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/instance/byName(clientName='{{clientName}}',appName='{{appName}}'),instanceName='{{instanceName}}')",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"instance",
+						"byName(clientName='{{clientName}}',appName='{{appName}}'),instanceName='{{instanceName}}')"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Instance",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"); ",
+							"if (responseBody.has(\"processinginstructioninfo\") && jsonData.response[0].errorCode === 0)",
+							"{",
+							"    console.log(\"The operation was successful.\") ;",
+							"    tests[\"Response Body has error code\"] = responseBody.has(\"errorCode\");",
+							"    tests[\"Response Body has warning code\"] = responseBody.has(\"warningCode\");",
+							"}",
+							"else",
+							"{",
+							"    console.log(\"Something went wrong.\")",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/instance/{{instanceId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"instance",
+						"{{instanceId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

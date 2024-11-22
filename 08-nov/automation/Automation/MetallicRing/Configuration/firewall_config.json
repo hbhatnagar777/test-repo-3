@@ -1,0 +1,162 @@
+{
+  "client_groups":[
+    {
+      "client_group_name": "Fw - Backup All (CS, & All MAs)*",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Commserve"},
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Media agents (All)"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Metallic - Laptops (All Tenants)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client", "filter_condition": "equal to", "filter_value": "Laptop Client", "value": "7"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Metallic - All Non-Pseudo/Non-Infrastructure/Tenant's Clients*",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "not equal", "filter_value": "Infrastructure (All)*"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "File System Core", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='1'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Metallic - Backup/Restore Clients (All)*",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Metallic - All Non-Pseudo/Non-Infrastructure/Tenant's Clients*"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Fw - Backup All (All Backup/Restore Clients)*",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Metallic - Backup/Restore Clients (All)*"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Fw - Backup All (All DMZ CvProxies)*",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Proxies (All,DMZ)"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Fw - CS-WC (All WebConsoles in DMZ)*",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Web Consoles (All,DMZ)"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Fw - CS-WC (CommServe)*",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - CommServe"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Fw - Default CS Communication (CS & Default/Global WS)*",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - CommServe"},
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Web Servers (All)"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Fw - Default CS Communication (Default/Global Proxies)*",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Proxies (All,DMZ)"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Fw - Default CS Communication [All Tenant Clients (Laptops, Proxies, & Servers)]*",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure (All)*"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "File System Core", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='1'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    }
+  ],
+  "topologies": {
+    "Network_Gateway": [
+      {
+        "topology_name": "Backup All",
+        "servers": "Fw - Backup All (All Backup/Restore Clients)*",
+        "DMZ_gateways": "Fw - Backup All (All DMZ CvProxies)*",
+        "Infrastructure_machines": "Fw - Backup All (CS, & All MAs)*",
+        "modified": 1663116682
+      },
+      {
+        "topology_name": "Default CS Communication",
+        "servers": "Fw - Default CS Communication [All Tenant Clients (Laptops, Proxies, & Servers)]*",
+        "DMZ_gateways": "Fw - Default CS Communication (Default/Global Proxies)*",
+        "Infrastructure_machines": "Fw - Default CS Communication (CS & Default/Global WS)*",
+        "modified": 1663116682
+      },
+      {
+        "topology_name": "Universal Installer",
+        "servers": "Universal Installer",
+        "DMZ_gateways": "Infrastructure - Proxies (All,DMZ)",
+        "Infrastructure_machines": "My CommServe Computer",
+        "modified": 1663116682
+      }
+    ],
+    "OneWay": [
+      {
+        "topology_name": "CommServe-WebConsole",
+        "servers": "Fw - CS-WC (CommServe)*",
+        "DMZ_gateways": "Fw - CS-WC (All WebConsoles in DMZ)*",
+        "modified": 1663116682
+      }
+    ]
+  }
+}

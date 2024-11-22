@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="1"
+    config="&lt;configuration>&lt;CONFIG_AUTH_USERS class=&quot;commvault.msgs.CvEntities.UserEntity&quot; _list_=&quot;true&quot;>&lt;userName />&lt;userId />&lt;/CONFIG_AUTH_USERS>&lt;CONFIG_AUTH_USER_GROUPS class=&quot;commvault.msgs.CvEntities.UserGroupEntity&quot; _list_=&quot;true&quot;>&lt;userGroupName />&lt;userGroupId />&lt;/CONFIG_AUTH_USER_GROUPS>&lt;/configuration>"
+    description="Processes the XML requests based on authorization."
+    executeOnWeb="0"
+    inputs="&lt;inputs>&lt;requestXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot; />&lt;RequestType class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_OBJECT class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_REQUEST_XML_TAG class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_ERROR_CODE_TO_CHECK class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_ERROR_STRING_TO_CHECK class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_CUSTOM_MESSAGE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>"
+    interactive="0" isHtmlDescription="0"
+    name="GetAndProcessAuthorization" outputs="&lt;outputs />"
+    revision="$Revision: 1.2 $" tags=""
+    uniqueGuid="62a8f22c-52eb-42e1-a85e-72bbb13cd3a4"
+    variables="&lt;variables>&lt;authorizedUsers class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_REQUEST_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;strRequest class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_OBJECT_TO_DELETE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_OBJECT_ID_TO_DELETE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_REQUEST_TYPE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_OBJECT class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_OBJECT_TYPE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_OBJECT_CLIENT class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_ERROR_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_CONFIG_USERS class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;VAR_CONFIG_USERGROUPS class=&quot;java.lang.String&quot; _list_=&quot;true&quot; />&lt;VAR_CONFIG_USER_GROUP class=&quot;commvault.msgs.CvEntities.UserGroupEntity&quot; _list_=&quot;true&quot;>&lt;userGroupName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;userGroupId class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot; />&lt;/VAR_CONFIG_USER_GROUP>&lt;VAR_LOOPBACK class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/variables>"
+    webHidden="0" workflowId="0">
+    <schema>
+        <outputs attribute="0" className="" listType="0" name="outputs"
+            required="1" type=""/>
+        <variables attribute="0" className="" listType="0"
+            name="variables" required="1" type="">
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="authorizedUsers" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_REQUEST_STRING" readOnly="0" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="strRequest" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_OBJECT_TO_DELETE" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_OBJECT_ID_TO_DELETE" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_REQUEST_TYPE" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_OBJECT" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_OBJECT_TYPE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_OBJECT_CLIENT" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_ERROR_STRING" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="1"
+                name="VAR_CONFIG_USERS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="1"
+                name="VAR_CONFIG_USERGROUPS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0"
+                className="commvault.msgs.CvEntities.UserGroupEntity"
+                controlType="2" defaultValue="" displayName=""
+                hidden="0"
+                inputType="commvault.msgs.CvEntities.UserGroupEntity"
+                listType="1" name="VAR_CONFIG_USER_GROUP" type="{commvault.msgs.CvEntities}UserGroupEntity">
+                <children attribute="0" className="java.lang.String"
+                    defaultValue="" inputType="java.lang.String"
+                    listType="0" name="userGroupName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.Integer"
+                    defaultValue="" inputType="java.lang.Integer"
+                    listType="0" name="userGroupId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            </children>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_LOOPBACK" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </variables>
+        <inputs attribute="0" className="" listType="0" name="inputs"
+            required="1" type="">
+            <children alignment="0" attribute="0"
+                className="workflow.types.XML" controlHidden="0"
+                controlType="1" displayName="Provide XML to Process:"
+                documentation="" hidden="0"
+                inputType="workflow.types.XML" listType="0"
+                maximumValue="" minimumValue="" name="requestXML"
+                readOnly="0" required="0" searchable="0" type="{workflow.types}XML"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="RequestType" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="INP_OBJECT" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="INP_REQUEST_XML_TAG" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="INP_ERROR_CODE_TO_CHECK" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="INP_ERROR_STRING_TO_CHECK" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="INP_CUSTOM_MESSAGE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </inputs>
+        <config attribute="0" className="" name="configuration" type="">
+            <children attribute="0"
+                className="commvault.msgs.CvEntities.UserEntity"
+                controlHidden="0" controlType="2" defaultValue=""
+                displayName="Users who can authenticate the request"
+                documentation="" hidden="0"
+                inputType="commvault.msgs.CvEntities.UserEntity"
+                listType="1" maximumValue="" minimumValue=""
+                name="CONFIG_AUTH_USERS" readOnly="0" required="0"
+                searchable="0" type="{commvault.msgs.CvEntities}UserEntity">
+                <children attribute="0" className="java.lang.String"
+                    defaultValue="" inputType="java.lang.String"
+                    listType="0" name="userName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.Integer"
+                    defaultValue="" inputType="java.lang.Integer"
+                    listType="0" name="userId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            </children>
+            <children attribute="0"
+                className="commvault.msgs.CvEntities.UserGroupEntity"
+                controlHidden="0" controlType="2" defaultValue=""
+                displayName="Users groups which can authenticate the request"
+                documentation="" hidden="0"
+                inputType="commvault.msgs.CvEntities.UserGroupEntity"
+                listType="1" maximumValue="" minimumValue=""
+                name="CONFIG_AUTH_USER_GROUPS" readOnly="0" required="0"
+                searchable="0" type="{commvault.msgs.CvEntities}UserGroupEntity">
+                <children attribute="0" className="java.lang.String"
+                    defaultValue="" inputType="java.lang.String"
+                    listType="0" name="userGroupName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.Integer"
+                    defaultValue="" inputType="java.lang.Integer"
+                    listType="0" name="userGroupId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            </children>
+        </config>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="55" x="12" y="66">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="ProcessBlock_1" commented="0"
+            originalStyle="" points="" sourceX="72" sourceY="59"
+            status="0" style="defaultEdge" targetX="161" targetY="29"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1481051531560"
+        description="creates a super process group"
+        displayName="TRY BLOCK" height="201" interactive="0" jobMode="0"
+        name="ProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="swimlane"
+        uniqueName="ProcessBlock_1" waitSetting="0" width="1106" x="122" y="11">
+        <inputs val="&lt;inputs>&lt;inputs />&lt;/inputs>"/>
+        <superProcess>
+            <Start commented="0" continueOnFailure="0"
+                created="1481051531560" description=""
+                displayName="Start" height="30" interactive="0"
+                jobMode="0" name="Start" originalStyle=""
+                skipAttempt="0"
+                style="label;fillColor=#FFFF33;gradientColor=#FFFF00"
+                uniqueName="Start_2" waitSetting="0" width="120" x="17" y="35">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="Script_2" commented="0"
+                    originalStyle="" points="" sourceX="78" sourceY="45"
+                    status="0" style="defaultEdge" targetX="212"
+                    targetY="46" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Start>
+            <Activity commented="0" continueOnFailure="0"
+                created="1445359537909" description=""
+                displayName="ProcessRequest" height="34" interactive="0"
+                jobMode="0" name="Execute"
+                namespaceUri="commvault.cte.workflow.activities.cmd.operation"
+                originalStyle="" skipAttempt="0"
+                style="label;image=Execute" uniqueName="Execute_1"
+                waitSetting="0" width="159" x="453" y="131">
+                <onExit language="1" script="&#xd;&#xa;"/>
+                <inputs val="&lt;inputs>&lt;inputXml class=&quot;java.lang.String&quot;>xpath:{/workflow/SignRequest_1/signedRequest}&lt;/inputXml>&lt;commandArgs class=&quot;java.lang.String&quot; />&lt;sessionOptions class=&quot;workflow.types.cmd.SessionOptions&quot;>&lt;useImpersonatedAccount class=&quot;java.lang.Boolean&quot;>true&lt;/useImpersonatedAccount>&lt;tokenFile class=&quot;java.lang.String&quot; />&lt;token class=&quot;java.lang.String&quot; />&lt;/sessionOptions>&lt;escapeXml class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/escapeXml>&lt;/inputs>"/>
+                <transition activity="Script_3" commented="0"
+                    originalStyle="" points="" sourceX="672"
+                    sourceY="148" status="0" style="defaultEdge"
+                    targetX="479" targetY="96" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="1"
+                created="1445631515045"
+                description="Sends an email to a list of users"
+                displayName="Declined Email" height="34" interactive="0"
+                jobMode="0" maxRestarts="0" name="Email"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=Email" uniqueName="Email_1"
+                waitSetting="0" width="127" x="971" y="34">
+                <onExit language="1" script="logger.info(&quot;INFO: Request declined by [&quot; + xpath:{/workflow/UserInput_1/completedBy/userName} + &quot;]&quot;);"/>
+                <inputs val="&lt;inputs>&lt;email class=&quot;workflow.types.Email&quot;>&lt;to class=&quot;java.lang.String&quot;>xpath:{/workflow/system/executor/userName}&lt;/to>&lt;cc class=&quot;java.lang.String&quot; />&lt;bcc class=&quot;java.lang.String&quot; />&lt;from class=&quot;java.lang.String&quot; />&lt;subject class=&quot;java.lang.String&quot;>xpath:{/workflow/inputs/RequestType}[ xpath:{/workflow/inputs/INP_OBJECT} ] was denied.&lt;/subject>&lt;body class=&quot;java.lang.String&quot;>&amp;lt;p&amp;gt;&#xd;&#xa;      xpath:{/workflow/inputs/RequestType} &#xd;&#xa;      [xpath:{/workflow/inputs/INP_OBJECT}] was denied by [ &#xd;&#xa;      xpath:{/workflow/UserInput_1/completedBy/userName} ]&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      xpath:{/workflow/inputs/INP_CUSTOM_MESSAGE}&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      Please take appropriate action/approval.&#xd;&#xa;    &amp;lt;/p&amp;gt;&lt;/body>&lt;attachments class=&quot;java.lang.Object&quot; />&lt;html class=&quot;java.lang.Boolean&quot;>true&lt;/html>&lt;repeatInterval class=&quot;java.lang.Integer&quot; />&lt;replyTo class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/email>&lt;/inputs>"/>
+            </Activity>
+            <Activity commented="0" continueOnFailure="1"
+                created="1445998947220"
+                description="Sends an email to a list of users"
+                displayName="Passed Email " height="34" interactive="0"
+                jobMode="0" maxRestarts="0" name="Email"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=Email" uniqueName="Email_2"
+                waitSetting="0" width="128" x="71" y="105">
+                <inputs val="&lt;inputs>&lt;email class=&quot;workflow.types.Email&quot;>&lt;to class=&quot;java.lang.String&quot;>xpath:{/workflow/system/executor/userName}&lt;/to>&lt;cc class=&quot;java.lang.String&quot; />&lt;bcc class=&quot;java.lang.String&quot; />&lt;from class=&quot;java.lang.String&quot; />&lt;subject class=&quot;java.lang.String&quot;>xpath:{/workflow/inputs/RequestType} [xpath:{/workflow/inputs/INP_OBJECT}] successful&lt;/subject>&lt;body class=&quot;java.lang.String&quot;>&amp;lt;p&amp;gt;&#xd;&#xa;      xpath:{/workflow/inputs/RequestType} &#xd;&#xa;      [xpath:{/workflow/inputs/INP_OBJECT}] request was authorized by [ &#xd;&#xa;      xpath:{/workflow/UserInput_1/completedBy/userName} ] and processed &#xd;&#xa;      successfully.&#xd;&#xa;    &amp;lt;/p&amp;gt;&lt;/body>&lt;attachments class=&quot;java.lang.Object&quot; />&lt;html class=&quot;java.lang.Boolean&quot;>true&lt;/html>&lt;repeatInterval class=&quot;java.lang.Integer&quot; />&lt;replyTo class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/email>&lt;/inputs>"/>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1445626990039" description=""
+                displayName="Get Authorization" height="34"
+                interactive="1" jobMode="0" name="UserInput"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=UserInput" uniqueName="UserInput_1"
+                waitSetting="0" width="200" x="550" y="34">
+                <onExit language="1" script="logger.info(&quot;INFO: User[&quot; + xpath:{/workflow/UserInput_1/completedBy/userName}+ &quot;] response [&quot;+ xpath:{/workflow/UserInput_1/actionSelected} + &quot;]&quot; );&#xd;&#xa;String completedByUser = xpath:{/workflow/UserInput_1/completedBy/userId}.toString();&#xd;&#xa;String executedByUser = xpath:{/workflow/system/executor/userId}.toString();&#xd;&#xa;logger.info(&quot;INFO: Executed by user [&quot; + xpath:{/workflow/system/executor/userName} + &quot;], id [&quot;+executedByUser+&quot;] &quot;); &#xd;&#xa;logger.info(&quot;INFO: [&quot;+xpath:{/workflow/UserInput_1/actionSelected}+&quot;] by user [&quot; + xpath:{/workflow/UserInput_1/completedBy/userName} + &quot;], id [&quot;+completedByUser+&quot;] &quot;);&#xd;&#xa;if (completedByUser.equals(executedByUser))&#xd;&#xa;{&#xd;&#xa;    logger.info(&quot;ERROR: Executing user and approving user cannot be the same&quot;);&#xd;&#xa;    workflow.setVariable(&quot;VAR_LOOPBACK&quot;, &quot;True&quot;);    &#xd;&#xa;}&#xd;&#xa;else&#xd;&#xa;{&#xd;&#xa;    workflow.setVariable(&quot;VAR_LOOPBACK&quot;, &quot;False&quot;);&#xd;&#xa;}    &#xd;&#xa;logger.info(&quot;INFO: Loopback to user interaction [&quot; + workflow.getVariable(&quot;VAR_LOOPBACK&quot;) + &quot;]&quot;); "/>
+                <inputs val="&lt;inputs>&lt;interactionUsers>xpath:{/workflow/variables/authorizedUsers}&lt;/interactionUsers>&lt;interactionUsers>xpath:{/workflow/variables/VAR_CONFIG_USERS}&lt;/interactionUsers>&lt;interactionUsers>xpath:{/workflow/variables/VAR_CONFIG_USER_GROUP}&lt;/interactionUsers>&lt;actions>&lt;name>Accept&lt;/name>&lt;validateForm>true&lt;/validateForm>&lt;/actions>&lt;actions>&lt;name>Decline&lt;/name>&lt;validateForm>true&lt;/validateForm>&lt;/actions>&lt;inputs>&lt;requestedBy class=&quot;java.lang.String&quot;>xpath:{/workflow/system/executor/userName}&lt;/requestedBy>&lt;objectName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_OBJECT} &lt;/objectName>&lt;CustomMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/INP_CUSTOM_MESSAGE}&lt;/CustomMessage>&lt;/inputs>&lt;subject>xpath:{/workflow/inputs/RequestType} [ xpath:{/workflow/inputs/INP_OBJECT} ] requested by [ xpath:{/workflow/system/executor/userName} ]&lt;/subject>&lt;sendEmail>true&lt;/sendEmail>&lt;approvalEnabled>false&lt;/approvalEnabled>&lt;email>&lt;from />&lt;to />&lt;cc />&lt;bcc />&lt;subject>xpath:{/workflow/inputs/RequestType} [ xpath:{/workflow/inputs/INP_OBJECT} ] requested by [ xpath:{/workflow/system/executor/userName} ]&lt;/subject>&lt;attachments />&lt;repeatInterval />&lt;body>&amp;lt;table width=&quot;100%&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&amp;gt;&amp;#xD;&#xd;&#xa;      &amp;lt;tr&amp;gt;&amp;#xD;&#xd;&#xa;        &amp;lt;td width=&quot;100%&quot; height=&quot;40&quot;&amp;gt;&amp;#xD;&#xd;&#xa;          &amp;#xD;&#xd;&#xa;        &amp;lt;/td&amp;gt;&amp;#xD;&#xd;&#xa;      &amp;lt;/tr&amp;gt;&amp;#xD;&#xd;&#xa;      &amp;lt;tr&amp;gt;&amp;#xD;&#xd;&#xa;        &amp;lt;td width=&quot;100%&quot; valign=&quot;top&quot;&amp;gt;&amp;#xD;&#xd;&#xa;          &amp;lt;table align=&quot;center&quot; bgcolor=&quot;#ffffff&quot; border=&quot;1&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; width=&quot;801&quot; style=&quot;border-left-color: #e9e9e9; border-left-style: solid; border-left-width: 2px; border-right-color: #e9e9e9; border-right-style: solid; border-right-width: 1px; border-top-color: #e9e9e9; border-top-style: solid; border-top-width: 2px&quot;&amp;gt;&amp;#xD;&#xd;&#xa;            &amp;lt;tr&amp;gt;&amp;#xD;&#xd;&#xa;              &amp;lt;td&amp;gt;&amp;#xD;&#xd;&#xa;                &amp;lt;table width=&quot;801&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&amp;gt;&amp;#xD;&#xd;&#xa;                  &amp;lt;tr&amp;gt;&amp;#xD;&#xd;&#xa;                    &amp;lt;td width=&quot;100%&quot; height=&quot;161&quot;&amp;gt;&amp;#xD;&#xd;&#xa;                      &amp;lt;img alt=&quot;commvault.com&quot; border=&quot;1&quot; src=&quot;https://world.commvault.com/saas_services_email_header.png&quot;&amp;gt;&amp;#xD;&#xd;&#xa;                      &amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;                      &amp;lt;table width=&quot;100%&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&amp;gt;&amp;#xD;&#xd;&#xa;                        &amp;lt;tr&amp;gt;&amp;#xD;&#xd;&#xa;                          &amp;lt;td width=&quot;100%&quot; height=&quot;40&quot;&amp;gt;&amp;#xD;&#xd;&#xa;                            &amp;#xD;&#xd;&#xa;                          &amp;lt;/td&amp;gt;&amp;#xD;&#xd;&#xa;                        &amp;lt;/tr&amp;gt;&amp;#xD;&#xd;&#xa;                        &amp;lt;tr&amp;gt;&amp;#xD;&#xd;&#xa;                          &amp;lt;td width=&quot;100%&quot; valign=&quot;top&quot;&amp;gt;&amp;#xD;&#xd;&#xa;                            &amp;lt;table align=&quot;center&quot; bgcolor=&quot;#ffffff&quot; border=&quot;1&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; width=&quot;801&quot; style=&quot;border-left-color: #e9e9e9; border-left-style: solid; border-left-width: 2px; border-right-color: #e9e9e9; border-right-style: solid; border-right-width: 1px; border-top-color: #e9e9e9; border-top-style: solid; border-top-width: 2px&quot;&amp;gt;&amp;#xD;&#xd;&#xa;                              &amp;lt;tr&amp;gt;&amp;#xD;&#xd;&#xa;                                &amp;lt;td&amp;gt;&amp;#xD;&#xd;&#xa;                                  &amp;lt;table width=&quot;801&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; border=&quot;1&quot;&amp;gt;&amp;#xD;&#xd;&#xa;                                    &amp;lt;tr&amp;gt;&amp;#xD;&#xd;&#xa;                                      &amp;lt;td width=&quot;100%&quot; height=&quot;161&quot;&amp;gt;&amp;#xD;&#xd;&#xa;                                        &amp;lt;br&amp;gt;&amp;#xD;&#xd;&#xa;                                        &amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;                                        &amp;lt;div&amp;gt;&amp;#xD;&#xd;&#xa;                                          Hello,&amp;lt;br&amp;gt;User &amp;#xD;&#xd;&#xa;                                          [xpath:{/workflow/system/executor/userName}] &amp;#xD;&#xd;&#xa;                                          has initiated a &amp;#xD;&#xd;&#xa;                                          xpath:{/workflow/inputs/RequestType} &amp;#xD;&#xd;&#xa;                                          request for &amp;#xD;&#xd;&#xa;                                          [xpath:{/workflow/inputs/INP_OBJECT}] &amp;#xD;&#xd;&#xa;                                          xpath:{/workflow/inputs/INP_CUSTOM_MESSAGE}&amp;lt;br&amp;gt;Please &amp;#xD;&#xd;&#xa;                                          click the appropriate action to &amp;lt;a href=&quot;action:{Accept}&quot;&amp;gt;Accept&amp;lt;/a&amp;gt; &amp;#xD;&#xd;&#xa;                                          or &amp;lt;a href=&quot;action:{Deny}&quot;&amp;gt;Deny&amp;lt;/a&amp;gt; &amp;#xD;&#xd;&#xa;                                          the request.&amp;lt;br&amp;gt;&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;                                          &amp;lt;p&amp;gt;&amp;#xD;&#xd;&#xa;                                            Thank you,&amp;#xD;&#xd;&#xa;                                          &amp;lt;/p&amp;gt;&amp;#xD;&#xd;&#xa;                                          &amp;lt;p&amp;gt;&amp;#xD;&#xd;&#xa;                                            Commvault Team&amp;#xD;&#xd;&#xa;                                          &amp;lt;/p&amp;gt;&amp;#xD;&#xd;&#xa;                                        &amp;lt;/div&amp;gt;&amp;#xD;&#xd;&#xa;                                      &amp;lt;/td&amp;gt;&amp;#xD;&#xd;&#xa;                                    &amp;lt;/tr&amp;gt;&amp;#xD;&#xd;&#xa;                                  &amp;lt;/table&amp;gt;&amp;#xD;&#xd;&#xa;                                &amp;lt;/td&amp;gt;&amp;#xD;&#xd;&#xa;                              &amp;lt;/tr&amp;gt;&amp;#xD;&#xd;&#xa;                            &amp;lt;/table&amp;gt;&amp;#xD;&#xd;&#xa;                          &amp;lt;/td&amp;gt;&amp;#xD;&#xd;&#xa;                        &amp;lt;/tr&amp;gt;&amp;#xD;&#xd;&#xa;                      &amp;lt;/table&amp;gt;&amp;#xD;&#xd;&#xa;                    &amp;lt;/td&amp;gt;&amp;#xD;&#xd;&#xa;                  &amp;lt;/tr&amp;gt;&amp;#xD;&#xd;&#xa;                &amp;lt;/table&amp;gt;&amp;#xD;&#xd;&#xa;              &amp;lt;/td&amp;gt;&amp;#xD;&#xd;&#xa;            &amp;lt;/tr&amp;gt;&amp;#xD;&#xd;&#xa;          &amp;lt;/table&amp;gt;&amp;#xD;&#xd;&#xa;        &amp;lt;/td&amp;gt;&amp;#xD;&#xd;&#xa;      &amp;lt;/tr&amp;gt;&amp;#xD;&#xd;&#xa;    &amp;lt;/table&amp;gt;&lt;/body>&lt;html>true&lt;/html>&lt;/email>&lt;formProperties>&amp;lt;?xml version='1.0' encoding='UTF-8'?&amp;gt;&amp;lt;Workflow_FormProperties css=&quot;&quot; javaScript=&quot;&quot; pageMode=&quot;0&quot; formVersion=&quot;0&quot;&amp;gt;&amp;lt;rules /&amp;gt;&amp;lt;/Workflow_FormProperties&amp;gt;&lt;/formProperties>&lt;/inputs>"/>
+                <activitySchema>
+                    <outputs attribute="0" className="" listType="0"
+                        name="outputs" required="1" type="">
+                        <children attribute="0"
+                            className="java.lang.String"
+                            controlHidden="0" controlType="0"
+                            defaultValue="" displayName="Requested By"
+                            documentation="User requesting to delete the xpath:{/workflow/variables/VAR_REQUEST_STRING}"
+                            hidden="0" inputType="java.lang.String"
+                            listType="0" maximumValue="" minimumValue=""
+                            name="requestedBy" readOnly="1" required="0"
+                            searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                        <children attribute="0"
+                            className="java.lang.String"
+                            controlHidden="0" controlType="1"
+                            defaultValue=""
+                            displayName="xpath:{/workflow/inputs/RequestType}"
+                            documentation="Request object" hidden="0"
+                            inputType="java.lang.String" listType="0"
+                            maximumValue="" minimumValue=""
+                            name="objectName" readOnly="1" required="0"
+                            searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                        <children attribute="0"
+                            className="java.lang.String"
+                            controlHidden="0" controlType="1"
+                            defaultValue=""
+                            displayName="Message to user"
+                            documentation="" hidden="0"
+                            inputType="java.lang.String" listType="0"
+                            maximumValue="" minimumValue=""
+                            name="CustomMessage" readOnly="1"
+                            required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                        <children
+                            className="commvault.msgs.CvEntities.UserEntity"
+                            inputType="commvault.msgs.CvEntities.UserEntity"
+                            name="completedBy" type="{commvault.msgs.CvEntities}UserEntity">
+                            <children className="java.lang.String"
+                                inputType="java.lang.String"
+                                name="userName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                            <children className="java.lang.Integer"
+                                inputType="java.lang.Integer"
+                                name="userId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                        </children>
+                        <children className="java.lang.String"
+                            inputType="java.lang.String"
+                            name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    </outputs>
+                    <inputs attribute="0" className="" listType="0"
+                        name="inputs" required="1" type="">
+                        <children attribute="0"
+                            className="java.lang.String"
+                            controlHidden="0" controlType="0"
+                            defaultValue="" displayName="Requested By"
+                            documentation="User requesting to delete the xpath:{/workflow/variables/VAR_REQUEST_STRING}"
+                            hidden="0" inputType="java.lang.String"
+                            listType="0" maximumValue="" minimumValue=""
+                            name="requestedBy" readOnly="1" required="0"
+                            searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                        <children attribute="0"
+                            className="java.lang.String"
+                            controlHidden="0" controlType="1"
+                            defaultValue=""
+                            displayName="xpath:{/workflow/inputs/RequestType}"
+                            documentation="Request object" hidden="0"
+                            inputType="java.lang.String" listType="0"
+                            maximumValue="" minimumValue=""
+                            name="objectName" readOnly="1" required="0"
+                            searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                        <children attribute="0"
+                            className="java.lang.String"
+                            controlHidden="0" controlType="1"
+                            defaultValue=""
+                            displayName="Message to user"
+                            documentation="" hidden="0"
+                            inputType="java.lang.String" listType="0"
+                            maximumValue="" minimumValue=""
+                            name="CustomMessage" readOnly="1"
+                            required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    </inputs>
+                </activitySchema>
+                <transition activity="InformationalMessage_2"
+                    commented="0" originalStyle="" points=""
+                    sourceX="650" sourceY="51" status="0"
+                    style="defaultEdge" targetX="749" targetY="98"
+                    transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="(xpath:{/workflow/variables/VAR_LOOPBACK}.equals(&quot;True&quot;));"/>
+                </transition>
+                <transition activity="EndUserSession_2" commented="0"
+                    originalStyle="" points="" sourceX="650"
+                    sourceY="51" status="0" style="defaultEdge"
+                    targetX="725" targetY="96" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="(xpath:{/workflow/variables/VAR_LOOPBACK}.equals(&quot;False&quot;));"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1445630636670"
+                description="if/else based decision"
+                displayName="Authorized?" height="39" interactive="0"
+                jobMode="0" name="Decision"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="rhombus;fontStyle=1" uniqueName="Decision_1"
+                waitSetting="0" width="104" x="779" y="32">
+                <inputs val="&lt;inputs>&lt;expression class=&quot;java.lang.String&quot;>String action = xpath:{/workflow/UserInput_1/actionSelected}; &amp;#xD;&#xd;&#xa;if( action != null &amp;amp;&amp;amp; action.equals(&quot;Accept&quot;))&amp;#xD;&#xd;&#xa;{&amp;#xD;&#xd;&#xa;    return true;&amp;#xD;&#xd;&#xa;}&amp;#xD;&#xd;&#xa;else&amp;#xD;&#xd;&#xa;{&amp;#xD;&#xd;&#xa;    return false;&amp;#xD;&#xd;&#xa;}&lt;/expression>&lt;scriptType class=&quot;workflow.types.ScriptType&quot; _list_=&quot;false&quot;>JAVA&lt;/scriptType>&lt;/inputs>"/>
+                <transition activity="Email_1" commented="0"
+                    displayName="no" originalStyle="" points=""
+                    sourceX="402" sourceY="533" status="0"
+                    style="defaultEdge;dashed=1" targetX="401"
+                    targetY="655" transitionIndex="0" value="false"
+                    x="149" y="12">
+                    <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+                <transition activity="SignRequest_1" commented="0"
+                    displayName="yes" originalStyle="" points=""
+                    sourceX="831" sourceY="51" status="0"
+                    style="defaultEdge;dashed=1" targetX="877"
+                    targetY="223" transitionIndex="0" value="true"
+                    x="28" y="-8">
+                    <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1445633532452"
+                description="executes queries against the commserv database"
+                displayName="Get authorized users" height="34"
+                interactive="0" jobMode="0" name="CommServDBQuery"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=CommServDBQuery"
+                uniqueName="CommServDBQuery_1" waitSetting="0"
+                width="200" x="326" y="34">
+                <onExit language="1" script="import java.util.ArrayList;&#xd;&#xa;import java.util.List;&#xd;&#xa;import commvault.msgs.CvEntities.UserEntity;&#xd;&#xa;&#xd;&#xa;List users = new ArrayList();&#xd;&#xa;&#xd;&#xa;if (activity.resultSets != null &amp;&amp; activity.resultSets.size() > 0)&#xd;&#xa;{&#xd;&#xa;    DataSet ds = activity.resultSets.get(0);&#xd;&#xa;    while (ds.hasNext())&#xd;&#xa;    {&#xd;&#xa;        UserEntity userEntity = new UserEntity();&#xd;&#xa;        userEntity.setUserId(ds.get(0));&#xd;&#xa;        userEntity.setUserName(ds.get(1));&#xd;&#xa;        users.add(userEntity);&#xd;&#xa;        logger.info(&quot;INFO: User [&quot;+ ds.get(1) + &quot;], id [&quot;+ ds.get(0) +&quot;] to authorize &quot;+xpath:{/workflow/inputs/RequestType}+&quot; request&quot;);&#xd;&#xa;    }&#xd;&#xa;    workflow.setVariable(&quot;authorizedUsers&quot;, users);&#xd;&#xa;}&#xd;&#xa;"/>
+                <inputs val="&lt;inputs>&lt;commCell />&lt;query>DECLARE @executorId INT = xpath:{/workflow/system/executor/userId}&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;SELECT users.id, users.login &amp;#xD;&#xd;&#xa;FROM UMDSGroups umdsGrp WITH(NOLOCK)&amp;#xD;&#xd;&#xa;INNER JOIN UMDSGroupMaps umdsGrpMap WITH(NOLOCK) ON umdsGrpMap.umDSgroupId = umdsGrp.id&amp;#xD;&#xd;&#xa;INNER JOIN UMDSUserGroup userGroups WITH(NOLOCK) ON userGroups.groupId = umdsGrp.id&amp;#xD;&#xd;&#xa;INNER JOIN UMUsers users WITH(NOLOCK) ON users.id = userGroups.userId&amp;#xD;&#xd;&#xa;WHERE umdsGrpMap.umgroupId = 1 AND userGroups.userId != @executorId&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;UNION&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;SELECT users.id, users.login &amp;#xD;&#xd;&#xa;FROM UMGroups userGroup WITH(NOLOCK)&amp;#xD;&#xd;&#xa;INNER JOIN UMUserGroup groupAssociation WITH(NOLOCK) ON userGroup.id = groupAssociation.groupId &amp;#xD;&#xd;&#xa;INNER JOIN UMUsers users WITH(NOLOCK) ON users.id = groupAssociation.userId&amp;#xD;&#xd;&#xa;WHERE userGroup.id = 1 AND users.id != @executorId and users.email != ''&lt;/query>&lt;/inputs>"/>
+                <transition activity="UserInput_1" commented="0"
+                    originalStyle="" points="" sourceX="401"
+                    sourceY="336" status="0" style="defaultEdge"
+                    targetX="605" targetY="529" transitionIndex="0"
+                    x="149" y="12">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1445894442223"
+                description="activity to execute code snippets in the selected language"
+                displayName="Set Vars" height="34" interactive="0"
+                jobMode="0" name="Script"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=Script" uniqueName="Script_2"
+                waitSetting="0" width="128" x="170" y="34">
+                <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;XML inXML = xpath:{/workflow/inputs/requestXML};&amp;#xD;&amp;#xA;XML reqXml = inXML.selectSingleNode(&amp;quot;/requestXML/*&amp;quot;);&amp;#xD;&amp;#xA;String authCode = reqXml.selectSingleNode(&amp;quot;string(//./processinginstructioninfo/attributes/@value)&amp;quot;);&amp;#xD;&amp;#xA;if( authCode != null &amp;amp;&amp;amp; !authCode.equals(&amp;quot;&amp;quot;))&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;authCode&amp;quot;, authCode);&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;else&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    authCode = &amp;quot;0&amp;quot;;&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;authCode&amp;quot;, authCode);    &amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;strRequest&amp;quot;, reqXml.toString());&amp;#xD;&amp;#xA;logger.info(&amp;quot;INFO: Request XML : [&amp;quot; + xpath:{/workflow/inputs/requestXML} + &amp;quot;] &amp;quot;);&amp;#xD;&amp;#xA;logger.info(&amp;quot;INFO: Request singleNode reqXml : [&amp;quot; + reqXml + &amp;quot;] &amp;quot;);&amp;#xD;&amp;#xA;logger.info(&amp;quot;INFO: Received request for &amp;quot;+xpath:{/workflow/inputs/RequestType}+&amp;quot; &amp;quot;+xpath:{/workflow/inputs/INP_OBJECT}+&amp;quot;, authcode[&amp;quot;+ authCode +&amp;quot;], by executor user[&amp;quot; + xpath:{/workflow/system/executor/userName} + &amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;if (xpath:{/workflow/configuration/CONFIG_AUTH_USERS/userName} != null &amp;amp;&amp;amp; xpath:{/workflow/configuration/CONFIG_AUTH_USERS/userName} != &amp;quot;&amp;quot;)&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;VAR_CONFIG_USERS&amp;quot;,xpath:{/workflow/configuration/CONFIG_AUTH_USERS/userName});&amp;#xD;&amp;#xA;    logger.info(&amp;quot;INFO: Sending email to users [&amp;quot;+ xpath:{/workflow/configuration/CONFIG_AUTH_USERS/userName} +&amp;quot;] to authorize &amp;quot;+xpath:{/workflow/inputs/RequestType}+&amp;quot; request&amp;quot;);&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;else&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;VAR_CONFIG_USERS&amp;quot;,&amp;quot;&amp;quot;);&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;if (xpath:{/workflow/configuration/CONFIG_AUTH_USER_GROUPS/userGroupName} != null &amp;amp;&amp;amp; xpath:{/workflow/configuration/CONFIG_AUTH_USER_GROUPS/userGroupName} != &amp;quot;&amp;quot;)&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;VAR_CONFIG_USER_GROUP&amp;quot;,xpath:{/workflow/configuration/CONFIG_AUTH_USER_GROUPS});&amp;#xD;&amp;#xA;    logger.info(&amp;quot;INFO: Sending email to users in user groups [&amp;quot;+ xpath:{/workflow/configuration/CONFIG_AUTH_USER_GROUPS/userGroupName} +&amp;quot;] to authorize &amp;quot;+xpath:{/workflow/inputs/RequestType}+&amp;quot; request&amp;quot;);  &amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;else&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;VAR_CONFIG_USER_GROUP&amp;quot;,&amp;quot;&amp;quot;);  &amp;#xD;&amp;#xA;}&quot; />&lt;/inputs>"/>
+                <transition activity="ImpersonateCreator_1"
+                    commented="0" originalStyle="" points=""
+                    sourceX="234" sourceY="51" status="0"
+                    style="defaultEdge" targetX="319" targetY="89"
+                    transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1480695390057"
+                description="generate authorization signature and sign the request xml"
+                displayName="SignRequest" height="34" interactive="0"
+                jobMode="0" name="SignRequest"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.SignRequest"
+                uniqueName="SignRequest_1" waitSetting="0" width="112"
+                x="845" y="130">
+                <inputs val="&lt;inputs>&lt;request class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/strRequest}&lt;/request>&lt;/inputs>"/>
+                <transition activity="ImpersonateExecutor_1"
+                    commented="0" originalStyle="" points=""
+                    sourceX="867" sourceY="148" status="0"
+                    style="defaultEdge" targetX="779" targetY="170"
+                    transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1481040584562"
+                description="Sends an email to a list of users"
+                displayName="Failed Email" height="34" interactive="0"
+                jobMode="0" name="Email"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.EmailActivity"
+                uniqueName="Email_3" waitSetting="0" width="128" x="70" y="160">
+                <inputs val="&lt;inputs>&lt;email class=&quot;workflow.types.Email&quot;>&lt;from class=&quot;java.lang.String&quot; />&lt;to class=&quot;java.lang.String&quot;>xpath:{/workflow/system/executor/userName}&lt;/to>&lt;cc class=&quot;java.lang.String&quot; />&lt;bcc class=&quot;java.lang.String&quot; />&lt;subject class=&quot;java.lang.String&quot;>xpath:{/workflow/inputs/RequestType} [xpath:{/workflow/inputs/INP_OBJECT}] failed&lt;/subject>&lt;attachments class=&quot;java.lang.Object&quot; />&lt;repeatInterval class=&quot;java.lang.Integer&quot; />&lt;body class=&quot;java.lang.String&quot;>&amp;lt;p&amp;gt;&#xd;&#xa;      xpath:{/workflow/inputs/RequestType} &#xd;&#xa;      [xpath:{/workflow/inputs/INP_OBJECT}] request was authorized by [ &#xd;&#xa;      xpath:{/workflow/UserInput_1/completedBy/userName} ] , but the server &#xd;&#xa;      failed to process the request.&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      xpath:{/workflow/inputs/INP_CUSTOM_MESSAGE}&#xd;&#xa;    &amp;lt;/p&amp;gt;&#xd;&#xa;    &amp;lt;p&amp;gt;&#xd;&#xa;      xpath:{/workflow/variables/VAR_ERROR_STRING}&#xd;&#xa;    &amp;lt;/p&amp;gt;&lt;/body>&lt;html class=&quot;java.lang.Boolean&quot;>true&lt;/html>&lt;replyTo class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/email>&lt;/inputs>"/>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1446138494485"
+                description="activity to execute code snippets in the selected language"
+                displayName="GetStatus" height="34" interactive="0"
+                jobMode="0" name="Script"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=Script" uniqueName="Script_3"
+                waitSetting="0" width="100" x="295" y="131">
+                <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;logger.info(&amp;quot;INFO: qoperation output[&amp;quot;+ xpath:{/workflow/Execute_1/outputXml} +&amp;quot;]&amp;quot;);&amp;#xD;&amp;#xA;XML response = utils.parseXml(xpath:{/workflow/Execute_1/outputXml});&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;String RequestErrorCode = response.selectSingleNode(xpath:{/workflow/inputs/INP_ERROR_CODE_TO_CHECK});&amp;#xD;&amp;#xA;String RequestErrorString = response.selectSingleNode(xpath:{/workflow/inputs/INP_ERROR_STRING_TO_CHECK});    &amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;logger.info(&amp;quot;INFO: RequestErrorCode = [&amp;quot;+ RequestErrorCode +&amp;quot;] &amp;quot;);&amp;#xD;&amp;#xA;logger.info(&amp;quot;INFO: RequestErrorString = [&amp;quot;+ RequestErrorString +&amp;quot;] &amp;quot;);&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;VAR_ERROR_STRING&amp;quot;,&amp;quot;&amp;quot;);&amp;#xD;&amp;#xA;if (RequestErrorString != null &amp;amp;&amp;amp; RequestErrorString != &amp;quot;&amp;quot;)&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;VAR_ERROR_STRING&amp;quot;,&amp;quot;Reason: &amp;quot;+RequestErrorString);&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;logger.info(&amp;quot;INFO: VAR_ERROR_STRING = [&amp;quot;+ workflow.getVariable(&amp;quot;VAR_ERROR_STRING&amp;quot;) +&amp;quot;] &amp;quot;);&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;if (xpath:{/workflow/inputs/INP_REQUEST_XML_TAG}.equals(&amp;quot;TMMsg_CreateTaskReq&amp;quot;))&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    if (RequestErrorCode.equals(&amp;quot;&amp;quot;) || RequestErrorCode == null)&amp;#xD;&amp;#xA;    {&amp;#xD;&amp;#xA;        return false;&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    else&amp;#xD;&amp;#xA;    {&amp;#xD;&amp;#xA;        return true;&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;else&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    if (RequestErrorCode.equals(&amp;quot;0&amp;quot;))&amp;#xD;&amp;#xA;    {&amp;#xD;&amp;#xA;        return true;&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;    else&amp;#xD;&amp;#xA;    {&amp;#xD;&amp;#xA;        return false;&amp;#xD;&amp;#xA;    }&amp;#xD;&amp;#xA;}            &amp;#xD;&amp;#xA;&quot; />&lt;/inputs>"/>
+                <transition activity="Email_2" commented="0"
+                    originalStyle="" points="" sourceX="467"
+                    sourceY="98" status="0" style="defaultEdge;dashed=1"
+                    targetX="181" targetY="122" transitionIndex="0"
+                    x="0" y="0">
+                    <condition language="1" script="(xpath:{/workflow/Script_3/output});"/>
+                </transition>
+                <transition activity="Email_3" commented="0"
+                    originalStyle="" points="" sourceX="467"
+                    sourceY="98" status="0" style="defaultEdge;dashed=1"
+                    targetX="165" targetY="187" transitionIndex="0"
+                    x="0" y="0">
+                    <condition language="1" script="!(xpath:{/workflow/Script_3/output});"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1485446384580"
+                description="impersonates the user who created the workflow"
+                displayName="ImpersonateCreator" height="34"
+                interactive="0" jobMode="0" name="ImpersonateCreator"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.ImpersonateCreator"
+                uniqueName="ImpersonateCreator_1" waitSetting="0"
+                width="145" x="244" y="82">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="CommServDBQuery_1" commented="0"
+                    originalStyle="" points="" sourceX="345"
+                    sourceY="100" status="0" style="defaultEdge"
+                    targetX="372" targetY="54" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1485447828048"
+                description="impersonates the user who executes the workflow"
+                displayName="ImpersonateExecutor" height="34"
+                interactive="0" jobMode="0" name="ImpersonateExecutor"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.ImpersonateUser"
+                uniqueName="ImpersonateExecutor_1" waitSetting="0"
+                width="153" x="650" y="131">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="Execute_1" commented="0"
+                    originalStyle="" points="" sourceX="718"
+                    sourceY="173" status="0" style="defaultEdge"
+                    targetX="549" targetY="147" transitionIndex="0"
+                    x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1547063490678"
+                description="displays an informational message to the user"
+                displayName="Info" height="34" interactive="0"
+                jobMode="0" name="InformationalMessage"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.InteractiveMessageActivity"
+                uniqueName="InformationalMessage_2" waitSetting="0"
+                width="69" x="590" y="82">
+                <inputs val="&lt;inputs>&lt;message>User initiating the request and user authorizing the request should be different.&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;Request initiated by user : xpath:{/workflow/system/executor/userName}&amp;#xD;&#xd;&#xa;Request authorizing user : xpath:{/workflow/UserInput_1/completedBy/userName}&lt;/message>&lt;dialogType>Popup&lt;/dialogType>&lt;iconType>Error&lt;/iconType>&lt;title>Error&lt;/title>&lt;html>false&lt;/html>&lt;formProperties />&lt;/inputs>"/>
+                <activitySchema>
+                    <outputs name="outputs">
+                        <children className="java.lang.String"
+                            inputType="java.lang.String"
+                            name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    </outputs>
+                    <inputs className="" defaultValue="" listType="0"
+                        name="inputs" type=""/>
+                </activitySchema>
+                <transition activity="EndUserSession_1" commented="0"
+                    originalStyle="" points="" sourceX="718"
+                    sourceY="101" status="0" style="defaultEdge"
+                    targetX="500" targetY="117" transitionIndex="0"
+                    x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+                <onEnter language="1" script="logger.info(&quot;INFO: Executing user : [&quot;+ xpath:{/workflow/system/executor/userName} +&quot;]&quot;);&#xd;&#xa;logger.info(&quot;INFO: Approving user : [&quot;+ xpath:{/workflow/UserInput_1/completedBy/userName} +&quot;]&quot;);"/>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1547063580744"
+                description="ends the interactive user session"
+                displayName="EUS" height="34" interactive="0"
+                jobMode="0" name="EndUserSession"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.InteractiveEndSessionActivity"
+                uniqueName="EndUserSession_1" waitSetting="0" width="63"
+                x="471" y="82">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="CommServDBQuery_1" commented="0"
+                    originalStyle="" points="" sourceX="497"
+                    sourceY="119" status="0" style="defaultEdge"
+                    targetX="447" targetY="53" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+            <Activity commented="0" continueOnFailure="0"
+                created="1547065327700"
+                description="ends the interactive user session"
+                displayName="EUS" height="34" interactive="0"
+                jobMode="0" name="EndUserSession"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.InteractiveEndSessionActivity"
+                uniqueName="EndUserSession_2" waitSetting="0" width="56"
+                x="690" y="81">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="Decision_1" commented="0"
+                    originalStyle="" points="" sourceX="718"
+                    sourceY="98" status="0" style="defaultEdge"
+                    targetX="834" targetY="52" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Activity>
+        </superProcess>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0"
+                name="outputs" type=""/>
+            <inputs className="" defaultValue="" listType="0"
+                name="inputs" type=""/>
+        </activitySchema>
+        <transition activity="ProcessBlock_2" commented="0"
+            displayName="Failed" originalStyle="" points=""
+            sourceX="675" sourceY="111" status="2"
+            style="defaultEdge;dashed=1" targetX="618" targetY="244"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1481051574591"
+        description="creates a super process group"
+        displayName="Catch Block" height="73" interactive="0"
+        jobMode="0" name="ProcessBlock"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="swimlane"
+        uniqueName="ProcessBlock_2" waitSetting="0" width="284" x="439" y="262">
+        <inputs val="&lt;inputs>&lt;inputs />&lt;/inputs>"/>
+        <superProcess>
+            <Start commented="0" continueOnFailure="0"
+                created="1481051574591" description=""
+                displayName="Start" height="35" interactive="0"
+                jobMode="0" name="Start" originalStyle=""
+                skipAttempt="0"
+                style="label;fillColor=#FFFF33;gradientColor=#FFFF00"
+                uniqueName="Start_3" waitSetting="0" width="85" x="18" y="30">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="Email_4" commented="0"
+                    originalStyle="" points="" sourceX="55" sourceY="42"
+                    status="0" style="defaultEdge" targetX="172"
+                    targetY="41" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Start>
+            <Activity commented="0" continueOnFailure="0"
+                created="1481051610195"
+                description="Sends an email to a list of users"
+                displayName="Failed Email" height="34" interactive="0"
+                jobMode="0" name="Email"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.EmailActivity"
+                uniqueName="Email_4" waitSetting="0" width="128" x="145" y="30">
+                <inputs val="&lt;inputs>&lt;email class=&quot;workflow.types.Email&quot;>&lt;from class=&quot;java.lang.String&quot; />&lt;to class=&quot;java.lang.String&quot;>xpath:{/workflow/system/executor/userName}&lt;/to>&lt;cc class=&quot;java.lang.String&quot; />&lt;bcc class=&quot;java.lang.String&quot; />&lt;subject class=&quot;java.lang.String&quot;>xpath:{/workflow/inputs/RequestType}[ xpath:{/workflow/inputs/INP_OBJECT} ] failed&lt;/subject>&lt;attachments class=&quot;java.lang.Object&quot; />&lt;repeatInterval class=&quot;java.lang.Integer&quot; />&lt;body class=&quot;java.lang.String&quot;>&amp;lt;p&amp;gt;&#xd;&#xa;      Failed to process request :: xpath:{/workflow/inputs/RequestType} [ &#xd;&#xa;      xpath:{/workflow/inputs/INP_OBJECT} ]&#xd;&#xa;    &amp;lt;/p&amp;gt;&lt;/body>&lt;html class=&quot;java.lang.Boolean&quot;>true&lt;/html>&lt;replyTo class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/email>&lt;/inputs>"/>
+            </Activity>
+        </superProcess>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0"
+                name="outputs" type=""/>
+            <inputs className="" defaultValue="" listType="0"
+                name="inputs" type=""/>
+        </activitySchema>
+    </Activity>
+    <formProperties css="" formVersion="0" javaScript=""/>
+</Workflow_WorkflowDefinition>

@@ -1,0 +1,608 @@
+{
+  "client_groups":[
+    {
+      "client_group_name": "Infrastructure",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client", "filter_condition": "equal to", "filter_value": "CS Client", "value": "11"},
+        {"filter_rule": "Client", "filter_condition": "equal to", "filter_value": "MediaAgent", "value": "5"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Content Analyzer;Content Extractor;Index Gateway;Index Store;Command Center;Web Server", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='726'/><packages val='729'/><packages val='259'/><packages val='263'/><packages val='55'/><packages val='252'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "Client acts as proxy", "filter_condition": "is true"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure (All)*",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client", "filter_condition": "equal to", "filter_value": "CS Client", "value": "11"},
+        {"filter_rule": "Client", "filter_condition": "equal to", "filter_value": "MediaAgent", "value": "5"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Content Analyzer;Content Extractor;Index Gateway;Index Store;Command Center;Web Server", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='726'/><packages val='729'/><packages val='259'/><packages val='263'/><packages val='55'/><packages val='252'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "Client acts as proxy", "filter_condition": "is true"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Azure Blob (All)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "blp"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Unix", "value": "2"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Cloud Apps", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='730'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - CommServe",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "M"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "CommServe", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='20'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Media Agents (All)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "mas"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "MediaAgent", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='51'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Azure MAs (Central US)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "region": "centralus",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "mas"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "c1us07"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "MediaAgent", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='51'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Azure MAs (East US2)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "region": "eastus2",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "mas"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "c1us02"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "MediaAgent", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='51'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Azure MAs (UK South)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "region": "uksouth",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "mas"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "c1uk01"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "MediaAgent", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='51'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Metallic Windows MAs",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "mas"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"},
+        {"filter_rule": "Clients associated to any company", "filter_condition": "is false"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "MediaAgent", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='51'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Metallic Linux MAs",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "mas"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Unix", "value": "2"},
+        {"filter_rule": "Clients associated to any company", "filter_condition": "is false"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "MediaAgent", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='51'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Tenant Linux MAs",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "mas"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Unix", "value": "2"},
+        {"filter_rule": "Clients associated to any company", "filter_condition": "is true"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "MediaAgent", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='51'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - D365 (All)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "dyp"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Office 365", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='734'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - D365 (US)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "dyp"},
+        {"filter_rule": "Client Display Name", "filter_condition": "ends with", "filter_value": "c1us02"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Office 365", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='734'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - D365 Index Servers (All)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "dyis"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Index Servers", "filter_condition": "is true"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Onedrive Agents (All)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "odp"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Onedrive Agents (US)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "odp"},
+        {"filter_rule": "Client Display Name", "filter_condition": "ends with", "filter_value": "c1us02"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Teams Agents (All)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "tsp"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Office 365", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='734'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Teams Agents (US)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "tsp"},
+        {"filter_rule": "Client Display Name", "filter_condition": "ends with", "filter_value": "c1us02"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Office 365", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='734'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - TeamsOnedrive Index Servers (All)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "tois"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Index Servers", "filter_condition": "is true"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Exchange Agents (All)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "exp"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Exchange Agents (US)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "exp"},
+        {"filter_rule": "Client Display Name", "filter_condition": "ends with", "filter_value": "c1us02"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Exchange Index Servers (All)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "exis"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Index Servers", "filter_condition": "is true"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Sharepoint Agents (All)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "shp"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "SharePoint;Cloud Apps; Office 365", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='730'/><packages val='734'/><packages val='101'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Sharepoint Agents (US)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "shp"},
+        {"filter_rule": "Client Display Name", "filter_condition": "ends with", "filter_value": "c1us02"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "SharePoint;Cloud Apps; Office 365", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='730'/><packages val='734'/><packages val='101'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Azure VM (East US2)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "vsp"},
+        {"filter_rule": "Client Display Name", "filter_condition": "ends with", "filter_value": "c1us02"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Virtual Server", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='713'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Azure VM (West Europe)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "vsp"},
+        {"filter_rule": "Client Display Name", "filter_condition": "ends with", "filter_value": "c1eu06"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Virtual Server", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='713'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - K8S (East US2)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "vsp"},
+        {"filter_rule": "Client Display Name", "filter_condition": "ends with", "filter_value": "c1us02"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Virtual Server", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='713'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - K8S (West Europe)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "vsp"},
+        {"filter_rule": "Client Display Name", "filter_condition": "ends with", "filter_value": "c1eu06"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Virtual Server", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='713'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - AzureAD (US)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "exp"},
+        {"filter_rule": "Client Display Name", "filter_condition": "ends with", "filter_value": "c1us02"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Active Directory; Office 365", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='703'/><packages val='734'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Compliance Search (All,DMZ)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "cmp"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Sharepoint Index Servers (All)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "shis"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Index Servers", "filter_condition": "is true"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - AzureAD Index Servers (All)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "exis"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Index Servers", "filter_condition": "is true"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - FileSystem Index Servers (All)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "exis"},
+        {"filter_rule": "Index Servers", "filter_condition": "is true"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Cloud-Laptop Index Servers (US)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "exi"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Index Store", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='55'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Activate Index Servers (All)",
+      "client_scope": "clients in this commcell",
+      "scope_value": "<<commcell_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "ais"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Index Servers", "filter_condition": "is true"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Web Consoles (All,DMZ)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "wec"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Command Center", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='726'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Web Servers (All)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "wes"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": "<<domain_name>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Windows", "value": "1"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Web Server", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='252'/></App_AdvanceKeyInfo>"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Proxies (All,DMZ)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Client Display Name", "filter_condition": "starts with", "filter_value": "nwp"},
+        {"filter_rule": "Hostname", "filter_condition": "ends with", "filter_value": ".commvault.com"},
+        {"filter_rule": "Client Display Name", "filter_condition": "contains", "filter_value": "<<ring_id>>"},
+        {"filter_rule": "OS Type", "filter_condition": "equal to", "filter_value": "Unix","value": "2"},
+        {"filter_rule": "Client acts as proxy", "filter_condition": "is true"}
+      ],
+      "criteria": "all",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - O365 (All)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Exchange Agents (All)"},
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Sharepoint Agents (All)"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - O365 (US)",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Exchange Agents (US)"},
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Sharepoint Agents (US)"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - External (All,DMZ)*",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Web Consoles (All,DMZ)"},
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Proxies (All,DMZ)"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    },
+    {
+      "client_group_name": "Infrastructure - Internal (All)*",
+      "client_scope": "Clients of User",
+      "scope_value": "<<user_name>>",
+      "description": "",
+      "filters": [
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Exchange Index Servers (All)"},
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Media Agents (All)"},
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Azure Blob (All)"},
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Web Servers (All)"},
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - TeamsOnedrive Index Servers (All)"},
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - Sharepoint Index Servers (All)"},
+        {"filter_rule": "Package Installed", "filter_condition": "any in selection", "filter_value": "Commserve Failover", "value": "<?xml version='1.0' encoding='UTF-8'?><App_AdvanceKeyInfo><packages val='24'/></App_AdvanceKeyInfo>"},
+        {"filter_rule": "Associated Client Group", "filter_condition": "equal to", "filter_value": "Infrastructure - O365 (All)"}
+      ],
+      "criteria": "any",
+      "modified": 1663116682
+    }
+  ]
+}

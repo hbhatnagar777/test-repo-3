@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0"
+    config="&lt;configuration>&lt;INP_MacPackageName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Mac_Client.pkg&lt;/INP_MacPackageName>&lt;INP_Macx86PackageName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Mac_Client.dmg&lt;/INP_Macx86PackageName>&lt;INP_Winx64PackageName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>WinX64_Client.exe&lt;/INP_Winx64PackageName>&lt;INP_WINx64ProxyPackageName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>WinX64_Proxy.exe&lt;/INP_WINx64ProxyPackageName>&lt;INP_WINx86PackageName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Win32_Client.exe&lt;/INP_WINx86PackageName>&lt;INP_Winx86ProxyPackageName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Win32_Proxy.exe&lt;/INP_Winx86ProxyPackageName>&lt;/configuration>"
+    description="" executeOnWeb="0"
+    inputs="&lt;inputs>&lt;INP_52996 class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>true&lt;/INP_52996>&lt;INP_EMAIL class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/INP_EMAIL>&lt;INP_CommcellUser class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/INP_CommcellUser>&lt;INP_NetworkPathToCopyPackages class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_53705 class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>true&lt;/INP_53705>&lt;INP_NetworkUser class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;INP_NetworkPassword class=&quot;workflow.types.EncryptedString&quot; _list_=&quot;false&quot; />&lt;INP_WebconsoleHostname class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/INP_WebconsoleHostname>&lt;Controller class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>&lt;clientName>&lt;/clientName>&lt;clientId />&lt;displayName>&lt;/displayName>&lt;/Controller>&lt;INP_CommcellPassword class=&quot;workflow.types.EncryptedString&quot; _list_=&quot;false&quot;>&lt;/INP_CommcellPassword>&lt;/inputs>"
+    interactive="0" isHtmlDescription="0"
+    name="Laptop Install Automation" outputs="&lt;outputs />"
+    revision="$Revision: 1.2 $" tags=""
+    uniqueGuid="f30950d6-398d-4c39-8752-56c6a21e6c87"
+    variables="&lt;variables>&lt;VAR_INSTALL_PATH class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_CVAUTOMATION class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_AUTO_LOCATION class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_JSON_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_NETWORK_PASSWORD class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_WORKFLOW_MESSAGE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_WORKFLOW_STATUS class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>COMPLETED&lt;/VAR_WORKFLOW_STATUS>&lt;VAR_USER_PASSWORD class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_INPUT_JSON_FILE class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/VAR_INPUT_JSON_FILE>&lt;/variables>"
+    webHidden="0" workflowId="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables attribute="0" className="" name="variables" type="">
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_INSTALL_PATH" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_CVAUTOMATION" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_AUTO_LOCATION" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_JSON_STRING" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_NETWORK_PASSWORD" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_WORKFLOW_MESSAGE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" name="VAR_WORKFLOW_STATUS" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" displayName=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_USER_PASSWORD" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_INPUT_JSON_FILE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </variables>
+        <inputs attribute="0" className="" name="inputs" type="">
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="5" defaultValue=""
+                displayName="[Company]: Install with authcode"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_52996" readOnly="1" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="5" defaultValue=""
+                displayName="[Company]: Install and register from tenant user"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_53705" readOnly="1" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0"
+                className="commvault.msgs.CvEntities.ClientEntity"
+                controlHidden="0" controlType="2" defaultValue=""
+                displayName="Select Automation Controller "
+                documentation="" hidden="0"
+                inputType="commvault.msgs.CvEntities.ClientEntity"
+                listType="0" maximumValue="" minimumValue=""
+                name="Controller" readOnly="0" required="1"
+                searchable="0" type="{commvault.msgs.CvEntities}ClientEntity">
+                <children attribute="0" className="java.lang.String"
+                    defaultValue="" inputType="java.lang.String"
+                    listType="0" name="clientName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    defaultValue="" inputType="java.lang.String"
+                    listType="0" name="displayName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.Integer"
+                    defaultValue="" inputType="java.lang.Integer"
+                    listType="0" name="clientId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            </children>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Webconsole hostname" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_WebconsoleHostname" readOnly="0" required="1"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Webconsole user " documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue="" name="INP_CommcellUser"
+                readOnly="0" required="1" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0"
+                className="workflow.types.EncryptedString"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Webconsole password" documentation=""
+                hidden="0" inputType="workflow.types.EncryptedString"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_CommcellPassword" readOnly="0" required="1"
+                searchable="0" type="{workflow.types}EncryptedString"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Email address to send the report"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_EMAIL" readOnly="0" required="1"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Network path to copy custom packages"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_NetworkPathToCopyPackages" readOnly="0"
+                required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="User having access to the network path"
+                documentation="" hidden="0" inputType="java.lang.String"
+                listType="0" maximumValue="" minimumValue=""
+                name="INP_NetworkUser" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0"
+                className="workflow.types.EncryptedString"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="Password to access the network path"
+                documentation="" hidden="0"
+                inputType="workflow.types.EncryptedString" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_NetworkPassword" readOnly="0" required="0"
+                searchable="0" type="{workflow.types}EncryptedString"/>
+        </inputs>
+        <config attribute="0" className="" name="configuration" type="">
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_MacPackageName" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_Macx86PackageName" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_Winx64PackageName" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_WINx86PackageName" readOnly="0" required="0"
+                searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_WINx64ProxyPackageName" readOnly="0"
+                required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlHidden="0" controlType="0" defaultValue=""
+                displayName="" documentation="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                maximumValue="" minimumValue=""
+                name="INP_Winx86ProxyPackageName" readOnly="0"
+                required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </config>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="58" x="-6" y="5">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="ImpersonateCreator_1" commented="0"
+            originalStyle="" points="" sourceX="23" sourceY="23"
+            status="0" style="defaultEdge" targetX="345" targetY="21"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="1"
+        created="1536163582665"
+        description="Execute a command on a remote machine"
+        displayName="Execute Automation" height="33" interactive="0"
+        jobMode="0" maxRestarts="0" name="ExecuteCommand"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ExecuteCommand"
+        uniqueName="ExecuteCommand_1" waitSetting="0" width="144" x="97" y="272">
+        <onExit language="1" script="if (xpath:{/workflow/ExecuteCommand_1/exitCode}!= 0 || xpath:{/workflow/ExecuteCommand_1/errorCode} != 0)&#xd;&#xa;{&#xd;&#xa;    logger.info(&quot;EXCEPTION: [&quot;+e+&quot;]&quot;);&#xd;&#xa;    workflow.setVariable(&quot;VAR_WORKFLOW_MESSAGE&quot;,&quot;Failed to execute Automation. Exception: &quot; + e);&#xd;&#xa;    workflow.setVariable(&quot;VAR_WORKFLOW_STATUS&quot;,&quot;FAILED&quot;);&#xd;&#xa;}    "/>
+        <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/Controller/clientName}&lt;/client>&lt;impersonateUserName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;impersonateUserPassword class=&quot;workflow.types.EncryptedString&quot; _list_=&quot;false&quot; />&lt;startUpPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;command class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>python &quot;xpath:{/workflow/variables/VAR_CVAUTOMATION}&quot;&lt;/command>&lt;arguments class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>--inputJSON &quot;xpath:{/workflow/variables/VAR_INPUT_JSON_FILE}&quot;&lt;/arguments>&lt;waitForProcessCompletion class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/waitForProcessCompletion>&lt;/inputs>"/>
+        <transition activity="ExecuteScript_3" commented="0"
+            originalStyle="" sourceX="180" sourceY="342" status="0"
+            style="defaultEdge;dashed=1" targetX="352" targetY="287"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="(xpath:{/workflow/inputs/INP_NetworkPathToCopyPackages} != null &amp;&amp; xpath:{/workflow/inputs/INP_NetworkPathToCopyPackages} != &quot;&quot;);"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1536164782998"
+        description="executes queries against a commcell database"
+        displayName="GetInstallPath" height="34" interactive="0"
+        jobMode="0" maxRestarts="0" name="CommServDBQuery"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.CommServDBQuery"
+        uniqueName="CommServDBQuery_1" waitSetting="0" width="144"
+        x="96" y="54">
+        <onExit language="1" script="import commvault.cte.util.*;&#xd;&#xa;&#xd;&#xa;try&#xd;&#xa;{&#xd;&#xa;    String install_path = xpath:{/workflow/CommServDBQuery_1/resultSets/row/col}.toString();&#xd;&#xa;    workflow.setVariable(&quot;VAR_INSTALL_PATH&quot;, install_path);&#xd;&#xa;    workflow.setVariable(&quot;VAR_AUTO_LOCATION&quot;, install_path + &quot;\\Automation&quot;);&#xd;&#xa;    workflow.setVariable(&quot;VAR_CVAUTOMATION&quot;, install_path + &quot;\\Automation\\CVAutomation.py&quot;);&#xd;&#xa;    workflow.setVariable(&quot;VAR_INPUT_JSON_FILE&quot;, install_path + &quot;\\Automation\\execute.json&quot;);&#xd;&#xa;    logger.info(&quot;VAR_INSTALL_PATH = [&quot;+install_path+&quot;]&quot;);&#xd;&#xa;    logger.info(&quot;VAR_AUTO_LOCATION = [&quot;+workflow.getVariable(&quot;VAR_AUTO_LOCATION&quot;)+&quot;]&quot;);&#xd;&#xa;    logger.info(&quot;VAR_CVAUTOMATION = [&quot;+workflow.getVariable(&quot;VAR_CVAUTOMATION&quot;)+&quot;]&quot;);&#xd;&#xa;    logger.info(&quot;VAR_INPUT_JSON_FILE = [&quot;+workflow.getVariable(&quot;VAR_INPUT_JSON_FILE&quot;)+&quot;]&quot;);&#xd;&#xa;    &#xd;&#xa;    if ( xpath:{/workflow/inputs/INP_NetworkPassword} != null &amp;&amp; xpath:{/workflow/inputs/INP_NetworkPassword} != &quot;&quot; )&#xd;&#xa;    {&#xd;&#xa;        String _pass = xpath:{/workflow/inputs/INP_NetworkPassword}.toString();    &#xd;&#xa;        _pass = utils.decryptString(_pass);&#xd;&#xa;        workflow.setVariable(&quot;VAR_NETWORK_PASSWORD&quot;, _pass);&#xd;&#xa;    }&#xd;&#xa;    &#xd;&#xa;    String _pass1 = xpath:{/workflow/inputs/INP_CommcellPassword}.toString();&#xd;&#xa;    _pass1 = utils.decryptString(_pass1);&#xd;&#xa;    workflow.setVariable(&quot;VAR_USER_PASSWORD&quot;, _pass1);    &#xd;&#xa;}&#xd;&#xa;catch(e)&#xd;&#xa;{&#xd;&#xa;    logger.info(&quot;EXCEPTION: [&quot;+e+&quot;]&quot;);&#xd;&#xa;    workflow.setVariable(&quot;VAR_WORKFLOW_MESSAGE&quot;,&quot;Failed to set install path. Exception: &quot; + e);&#xd;&#xa;    workflow.setVariable(&quot;VAR_WORKFLOW_STATUS&quot;,&quot;FAILED&quot;);&#xd;&#xa;}"/>
+        <inputs val="&lt;inputs>&lt;commCell />&lt;query>SELECT attrVal FROM APP_ClientProp WHERE attrName = 'Patch Local Location' AND componentNameId = ?&lt;/query>&lt;parameters>&lt;value>xpath:{/workflow/inputs/Controller/clientId}&lt;/value>&lt;type>OBJECT&lt;/type>&lt;/parameters>&lt;/inputs>"/>
+        <transition activity="ImpersonateExecutor_1" commented="0"
+            originalStyle="" points="" sourceX="168" sourceY="71"
+            status="0" style="defaultEdge;dashed=1" targetX="360"
+            targetY="74" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="!(xpath:{/workflow/variables/VAR_WORKFLOW_STATUS}.contains(&quot;FAILED&quot;));"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1537278269304"
+        description="Execute a script on a remote machine"
+        displayName="Copy Packages " height="31" interactive="0"
+        jobMode="0" maxRestarts="0" name="ExecuteScript"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ExecuteScript"
+        uniqueName="ExecuteScript_1" waitSetting="0" width="135" x="460" y="265">
+        <onExit language="1" script="if (xpath:{/workflow/ExecuteScript_1/exitCode} != 0 || xpath:{/workflow/ExecuteScript_1/errorCode} != 0)&#xd;&#xa;{&#xd;&#xa;    logger.info(&quot;EXCEPTION: [&quot;+e+&quot;]&quot;);&#xd;&#xa;    workflow.setVariable(&quot;VAR_WORKFLOW_MESSAGE&quot;,&quot;Failed to copy packages to network path. Exception: &quot; + e);&#xd;&#xa;    workflow.setVariable(&quot;VAR_WORKFLOW_STATUS&quot;,&quot;FAILED&quot;);&#xd;&#xa;}    "/>
+        <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/Controller/clientName}&lt;/client>&lt;impersonateUserName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;impersonateUserPassword class=&quot;workflow.types.EncryptedString&quot; _list_=&quot;false&quot; />&lt;startUpPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;scriptType class=&quot;commvault.msgs.App.ScriptType&quot; _list_=&quot;false&quot;>PowerShell&lt;/scriptType>&lt;script class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Copy-Item &quot;xpath:{/workflow/variables/VAR_AUTO_LOCATION}\\temp\\Mac_Client.pkg&quot; &quot;xpath:{/workflow/inputs/INP_NetworkPathToCopyPackages}\\xpath:{/workflow/configuration/INP_MacPackageName}&quot;&amp;#xD;&#xd;&#xa;Copy-Item &quot;xpath:{/workflow/variables/VAR_AUTO_LOCATION}\\temp\\WinX64_Client.exe&quot; &quot;xpath:{/workflow/inputs/INP_NetworkPathToCopyPackages}\\xpath:{/workflow/configuration/INP_Winx64PackageName}&quot;&amp;#xD;&#xd;&#xa;Copy-Item &quot;xpath:{/workflow/variables/VAR_AUTO_LOCATION}\\temp\\Win32_Client.exe&quot; &quot;xpath:{/workflow/inputs/INP_NetworkPathToCopyPackages}\\xpath:{/workflow/configuration/INP_WINx86PackageName}&quot;&amp;#xD;&#xd;&#xa;&lt;/script>&lt;arguments class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;waitForProcessCompletion class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/waitForProcessCompletion>&lt;/inputs>"/>
+        <transition activity="ExecuteScript_2" commented="0"
+            originalStyle="" points="613.0,280.0" sourceX="368"
+            sourceY="340" status="0" style="defaultEdge" targetX="372"
+            targetY="399" transitionIndex="0" x="198" y="-56">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1537283896575"
+        description="Execute a script on a remote machine"
+        displayName="Copy proxy  Packages " height="29" interactive="0"
+        jobMode="0" maxRestarts="0" name="ExecuteScript"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ExecuteScript"
+        uniqueName="ExecuteScript_2" waitSetting="0" width="164" x="636" y="266">
+        <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/Controller/clientName}&lt;/client>&lt;impersonateUserName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;impersonateUserPassword class=&quot;workflow.types.EncryptedString&quot; _list_=&quot;false&quot; />&lt;startUpPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;scriptType class=&quot;commvault.msgs.App.ScriptType&quot; _list_=&quot;false&quot;>PowerShell&lt;/scriptType>&lt;script class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>Copy-Item &quot;xpath:{/workflow/variables/VAR_AUTO_LOCATION}\temp\WinX64_Proxy.exe&quot; &quot;xpath:{/workflow/inputs/INP_NetworkPathToCopyPackages}\xpath:{/workflow/configuration/INP_WINx64ProxyPackageName}&quot;&amp;#xD;&#xd;&#xa;Copy-Item &quot;xpath:{/workflow/variables/VAR_AUTO_LOCATION}\temp\Win32_Proxy.exe&quot; &quot;xpath:{/workflow/inputs/INP_NetworkPathToCopyPackages}\xpath:{/workflow/configuration/INP_Winx86ProxyPackageName}&quot;&lt;/script>&lt;arguments class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;waitForProcessCompletion class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/waitForProcessCompletion>&lt;/inputs>"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="1"
+        created="1537285267949"
+        description="Execute a script on a remote machine"
+        displayName="Mount Network Path " height="26" interactive="0"
+        jobMode="0" maxRestarts="0" name="ExecuteScript"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ExecuteScript"
+        uniqueName="ExecuteScript_3" waitSetting="0" width="148" x="276" y="271">
+        <onExit language="1" script="if (xpath:{/workflow/ExecuteScript_3/exitCode} != 0 || xpath:{/workflow/ExecuteScript_3/errorCode} != 0)&#xd;&#xa;{&#xd;&#xa;    logger.info(&quot;EXCEPTION: [&quot;+e+&quot;]&quot;);&#xd;&#xa;    workflow.setVariable(&quot;VAR_WORKFLOW_MESSAGE&quot;,&quot;Failed to mount network path. Exception: &quot; + e);&#xd;&#xa;    workflow.setVariable(&quot;VAR_WORKFLOW_STATUS&quot;,&quot;FAILED&quot;);&#xd;&#xa;}    "/>
+        <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/Controller/clientName}&lt;/client>&lt;impersonateUserName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;impersonateUserPassword class=&quot;workflow.types.EncryptedString&quot; _list_=&quot;false&quot; />&lt;startUpPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;scriptType class=&quot;commvault.msgs.App.ScriptType&quot; _list_=&quot;false&quot;>PowerShell&lt;/scriptType>&lt;script class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>net use &quot;xpath:{/workflow/inputs/INP_NetworkPathToCopyPackages}&quot; /user:xpath:{/workflow/inputs/INP_NetworkUser} xpath:{/workflow/variables/VAR_NETWORK_PASSWORD}&lt;/script>&lt;arguments class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;waitForProcessCompletion class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/waitForProcessCompletion>&lt;/inputs>"/>
+        <transition activity="ExecuteScript_1" commented="0"
+            originalStyle="" points="445.0,283.0" sourceX="629"
+            sourceY="123" status="0"
+            style="defaultEdge;dashed=0;orthogonal=1" targetX="403"
+            targetY="264" transitionIndex="0" x="198" y="-56"/>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1537287285928"
+        description="executes a set of activities when the workflow completes"
+        displayName="OnWorkflowComplete" height="65" interactive="0"
+        jobMode="0" name="OnWorkflowComplete"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0" style="swimlane"
+        uniqueName="OnWorkflowComplete_1" waitSetting="0" width="191"
+        x="672" y="9">
+        <inputs val="&lt;inputs>&lt;inputs />&lt;/inputs>"/>
+        <superProcess>
+            <Start commented="0" continueOnFailure="0"
+                created="1537287285928" description=""
+                displayName="Start" height="21" interactive="0"
+                jobMode="0" name="Start" originalStyle=""
+                skipAttempt="0"
+                style="label;fillColor=#FFFF33;gradientColor=#FFFF00"
+                uniqueName="Start_3" waitSetting="0" width="58" x="13" y="33">
+                <inputs val="&lt;inputs />"/>
+                <transition activity="WorkflowEnd_1" commented="0"
+                    originalStyle="" points="" sourceX="56" sourceY="45"
+                    status="0" style="defaultEdge" targetX="59"
+                    targetY="111" transitionIndex="0" x="0" y="0">
+                    <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+                </transition>
+            </Start>
+            <Activity commented="0" continueOnFailure="0"
+                created="1537287295897" description="Ends the workflow"
+                displayName="END" height="19" interactive="0"
+                jobMode="0" name="WorkflowEnd"
+                namespaceUri="commvault.cte.workflow.activities"
+                originalStyle="" skipAttempt="0"
+                style="label;image=commvault.cte.workflow.activities.EndActivity"
+                uniqueName="WorkflowEnd_1" waitSetting="0" width="70"
+                x="98" y="34">
+                <inputs val="&lt;inputs>&lt;completionStatus class=&quot;workflow.types.WorkflowCompletionStatus&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_WORKFLOW_STATUS}&lt;/completionStatus>&lt;failureMessage class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_WORKFLOW_MESSAGE}&lt;/failureMessage>&lt;/inputs>"/>
+            </Activity>
+        </superProcess>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0"
+                name="outputs" type=""/>
+            <inputs className="" defaultValue="" listType="0"
+                name="inputs" type=""/>
+        </activitySchema>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1571663768195"
+        description="Execute a script on a remote machine"
+        displayName="Json File " height="34" interactive="0" jobMode="0"
+        name="ExecuteScript"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ExecuteScript"
+        uniqueName="ExecuteScript_4" waitSetting="0" width="140" x="98" y="153">
+        <onExit language="1" script="workflow.setVariable(&quot;VAR_JSON_STRING&quot;, xpath:{/workflow/ExecuteScript_4/commandOutput});&#xd;&#xa;logger.info(&quot;INFO: VAR_JSON_STRING = [&quot;+workflow.getVariable(&quot;VAR_JSON_STRING&quot;)+&quot;]&quot;);"/>
+        <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/Controller/clientName}&lt;/client>&lt;impersonateUserName class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;impersonateUserPassword class=&quot;workflow.types.EncryptedString&quot; _list_=&quot;false&quot; />&lt;startUpPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;scriptType class=&quot;commvault.msgs.App.ScriptType&quot; _list_=&quot;false&quot;>Python&lt;/scriptType>&lt;script class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>myjson = r&quot;&quot;&quot;{&amp;#xD;&#xd;&#xa;    &quot;commcell&quot;: {&amp;#xD;&#xd;&#xa;        &quot;webconsoleHostname&quot;: &quot;xpath:{/workflow/inputs/INP_WebconsoleHostname}&quot;,&amp;#xD;&#xd;&#xa;        &quot;commcellUsername&quot;: &quot;xpath:{/workflow/inputs/INP_CommcellUser}&quot;,&amp;#xD;&#xd;&#xa;        &quot;commcellPassword&quot;: &quot;xpath:{/workflow/variables/VAR_USER_PASSWORD}&quot;&amp;#xD;&#xd;&#xa;    },&amp;#xD;&#xd;&#xa;    &quot;email&quot;: {&amp;#xD;&#xd;&#xa;        &quot;receiver&quot;: &quot;xpath:{/workflow/inputs/INP_EMAIL}&quot;&amp;#xD;&#xd;&#xa;    },&amp;#xD;&#xd;&#xa;    &quot;testsetConfig&quot;: {&amp;#xD;&#xd;&#xa;        &quot;THREADS&quot;: 1&amp;#xD;&#xd;&#xa;    },&amp;#xD;&#xd;&#xa;    &quot;testsets&quot;: {&amp;#xD;&#xd;&#xa;        &quot;Laptop \\\\ User Centric &amp;amp; Device Centric Backup_WINDOWS&quot;: {&amp;#xD;&#xd;&#xa;            &quot;TESTSET_PRODUCT_NAME&quot;: &quot;Laptop \\\\ User Centric &amp;amp; Device Centric Backup&quot;,&amp;#xD;&#xd;&#xa;            &quot;TESTSET_OS_TYPE&quot;: &quot;WINDOWS&quot;,&amp;#xD;&#xd;&#xa;            &quot;TESTSET_ADDITIONAL_PROP&quot;: &quot;Don't Care&quot;,&amp;#xD;&#xd;&#xa;            &quot;TESTSET_APPLICATION_VERSION&quot;: &quot;&quot;,&amp;#xD;&#xd;&#xa;            &quot;testcaseConfig&quot;: {&amp;#xD;&#xd;&#xa;                &quot;UpdateQA&quot;: &quot;false&quot;,&amp;#xD;&#xd;&#xa;                &quot;THREADS&quot;: 1&amp;#xD;&#xd;&#xa;            },&amp;#xD;&#xd;&#xa;            &quot;testCases&quot;: {&amp;#xD;&#xd;&#xa;                &quot;53705&quot;: {},&amp;#xD;&#xd;&#xa;                &quot;52996&quot;: {}&amp;#xD;&#xd;&#xa;            }&amp;#xD;&#xd;&#xa;        },&amp;#xD;&#xd;&#xa;        &quot;Laptop \\\\ User Centric &amp;amp; Device Centric Backup_MAC&quot;: {&amp;#xD;&#xd;&#xa;            &quot;TESTSET_PRODUCT_NAME&quot;: &quot;Laptop \\\\ User Centric &amp;amp; Device Centric Backup&quot;,&amp;#xD;&#xd;&#xa;            &quot;TESTSET_OS_TYPE&quot;: &quot;MAC&quot;,&amp;#xD;&#xd;&#xa;            &quot;TESTSET_ADDITIONAL_PROP&quot;: &quot;Don't Care&quot;,&amp;#xD;&#xd;&#xa;            &quot;TESTSET_APPLICATION_VERSION&quot;: &quot;&quot;,&amp;#xD;&#xd;&#xa;            &quot;testcaseConfig&quot;: {&amp;#xD;&#xd;&#xa;                &quot;UpdateQA&quot;: &quot;false&quot;,&amp;#xD;&#xd;&#xa;                &quot;THREADS&quot;: 1&amp;#xD;&#xd;&#xa;            },&amp;#xD;&#xd;&#xa;            &quot;testCases&quot;: {&amp;#xD;&#xd;&#xa;                &quot;53705&quot;: {},&amp;#xD;&#xd;&#xa;                &quot;52996&quot;: {}&amp;#xD;&#xd;&#xa;            }&amp;#xD;&#xd;&#xa;        }&amp;#xD;&#xd;&#xa;    }&amp;#xD;&#xd;&#xa;}&quot;&quot;&quot;&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;print(myjson)&lt;/script>&lt;arguments class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;waitForProcessCompletion class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/waitForProcessCompletion>&lt;/inputs>"/>
+        <transition activity="ExecuteScript_6" commented="0"
+            originalStyle="" sourceX="168" sourceY="170" status="0"
+            style="defaultEdge;dashed=1" targetX="345" targetY="214"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="(!xpath:{/workflow/variables/VAR_WORKFLOW_STATUS}.contains(&quot;FAILED&quot;) &amp;&amp; xpath:{/workflow/ExecuteScript_4/exitCode} == 0 &amp;&amp; xpath:{/workflow/ExecuteScript_4/errorCode} == 0);"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1571767460678"
+        description="impersonates the user who created the workflow"
+        displayName="ImpersonateCreator" height="34" interactive="0"
+        jobMode="0" name="ImpersonateCreator"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ImpersonateCreator"
+        uniqueName="ImpersonateCreator_1" waitSetting="0" width="145"
+        x="92" y="6">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="CommServDBQuery_1" commented="0"
+            originalStyle="" points="" sourceX="384" sourceY="33"
+            status="0" style="defaultEdge" targetX="212" targetY="77"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1571767495336"
+        description="impersonates the user who executes the workflow"
+        displayName="ImpersonateExecutor" height="34" interactive="0"
+        jobMode="0" name="ImpersonateExecutor"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ImpersonateUser"
+        uniqueName="ImpersonateExecutor_1" waitSetting="0" width="153"
+        x="96" y="103">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="ExecuteScript_4" commented="0"
+            originalStyle="" points="" sourceX="389" sourceY="73"
+            status="0" style="defaultEdge" targetX="208" targetY="120"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1571941491236"
+        description="Execute a script on a remote machine"
+        displayName="Create json file" height="34" interactive="0"
+        jobMode="0" name="ExecuteScript"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ExecuteScript"
+        uniqueName="ExecuteScript_6" waitSetting="0" width="137" x="97" y="213">
+        <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/Controller/clientName}&lt;/client>&lt;impersonateUserName class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/impersonateUserName>&lt;impersonateUserPassword class=&quot;workflow.types.EncryptedString&quot; _list_=&quot;false&quot;>&lt;/impersonateUserPassword>&lt;startUpPath class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/startUpPath>&lt;scriptType class=&quot;commvault.msgs.App.ScriptType&quot; _list_=&quot;false&quot;>Python&lt;/scriptType>&lt;script class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>content = &quot;&quot;&quot;xpath:{/workflow/variables/VAR_JSON_STRING}&quot;&quot;&quot;&amp;#xD;&#xd;&#xa;&amp;#xD;&#xd;&#xa;f = open(&quot;xpath:{/workflow/variables/VAR_INPUT_JSON_FILE}&quot;, &quot;w&quot;)&amp;#xD;&#xd;&#xa;f.write(content)&amp;#xD;&#xd;&#xa;f.close()&lt;/script>&lt;arguments class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/arguments>&lt;waitForProcessCompletion class=&quot;java.lang.Boolean&quot; _list_=&quot;false&quot;>true&lt;/waitForProcessCompletion>&lt;/inputs>"/>
+        <transition activity="ExecuteCommand_1" commented="0"
+            originalStyle="" points="165.0,260.0" sourceX="165"
+            sourceY="230" status="0" style="defaultEdge;dashed=1"
+            targetX="158" targetY="339" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="!(xpath:{/workflow/variables/VAR_WORKFLOW_STATUS}.contains(&quot;FAILED&quot;));"/>
+        </transition>
+    </Activity>
+    <formProperties css="" formVersion="0" height="600" javaScript=""
+        pageMode="0" width="900">
+        <rules/>
+    </formProperties>
+</Workflow_WorkflowDefinition>

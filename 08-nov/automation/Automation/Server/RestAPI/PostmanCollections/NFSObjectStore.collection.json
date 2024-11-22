@@ -1,0 +1,584 @@
+{
+	"info": {
+		"_postman_id": "bcdfc626-cbb4-4f10-a268-9729ab10d6d4",
+		"name": "NFSObjectStore ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Validating logged in username\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							"",
+							"",
+							"tests[\"Validating if response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\") ;   //validate response time",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List NFS Servers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"response\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Key_mediaAgents_Exists\"] = responseBody.has(\"mediaAgents\");",
+							"tests[\"Key_mediaAgentId_Exists\"] = responseBody.has(\"mediaAgentId\");",
+							"tests[\"Key_mediaAgentName_Exists\"] = responseBody.has(\"mediaAgentName\");",
+							"",
+							"pm.test('has NFSServer name', function() {",
+							"    pm.expect(jsonData.value) === pm.environment.get(\"NFSServerName\") ;",
+							"});",
+							"",
+							"pm.test('has NFSServer clientID', function() {",
+							"    pm.expect(jsonData.value) === pm.environment.get(\"NFSServerMAId\") ;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/xml"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/NFSObjectStores/NFSServers",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"NFSObjectStores",
+						"NFSServers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Configured NFS Index Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"response\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Key_indexServers_Exists\"] = jsonData.indexServers !== null ;",
+							"tests[\"Key_clientId_Exists\"] = jsonData.indexServers.clientId !== null ;",
+							"tests[\"Key_ClientName_Exists\"] = jsonData.indexServers.ClientName !== null ;",
+							"",
+							"pm.test('has NFSIndexServer value', function() {",
+							"    pm.expect(jsonData.value) === pm.environment.get(\"NFSIndexServer\") ;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/NFSObjectStores/NFSIndexServers",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"NFSObjectStores",
+						"NFSIndexServers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cache information",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonResponse = JSON.parse(responseBody);",
+							"console.log(\"response\", jsonResponse);",
+							"tests[\"errorCodeCheck\"] = jsonResponse.error.errorCode === 0 ;",
+							"tests[\"Key_nfscache_Exists\"] = responseBody.has(\"nfscache\");",
+							"tests[\"key_cacheDirectory_Exists\"] = responseBody.has(\"cacheDirectory\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/NFSObjectStores/Cache?mediaAgentId={{NFSServerMAId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"NFSObjectStores",
+						"Cache"
+					],
+					"query": [
+						{
+							"key": "mediaAgentId",
+							"value": "{{NFSServerMAId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shares information",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonResponse = JSON.parse(responseBody);",
+							"console.log(jsonResponse);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"key_nfsShares_Exists\"] = responseBody.has(\"nfsShares\");",
+							"",
+							"pm.test('has nfsServerName value', function() {",
+							"    pm.expect(jsonResponse.value) === pm.environment.get(\"NFSIndexServer\") ;",
+							"});",
+							"",
+							"pm.test('has NFSShare name value', function() {",
+							"    pm.expect(jsonResponse.value) === pm.environment.get(\"NFSShareName\") ;",
+							"});",
+							"",
+							"pm.test('has NFSShare subclientId value', function() {",
+							"    pm.expect(jsonResponse.value) === pm.environment.get(\"NFSSubclientId\") ;",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/NFSObjectStores/Shares?mediaAgentId={{NFSServerMAId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"NFSObjectStores",
+						"Shares"
+					],
+					"query": [
+						{
+							"key": "mediaAgentId",
+							"value": "{{NFSServerMAId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List NFS Objectstore Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"json response:\"+jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"key_userList_Exists\"] = responseBody.has(\"userList\");",
+							"",
+							"pm.test('has NFSShare username value', function() {",
+							"    pm.expect(jsonData.value) === pm.environment.get(\"NFSShareName\") ;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/xml"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/NFSObjectStores/Users?mediaAgentId={{NFSServerMAId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"NFSObjectStores",
+						"Users"
+					],
+					"query": [
+						{
+							"key": "mediaAgentId",
+							"value": "{{NFSServerMAId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PointInTimeView",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"response:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"key_viewsXML_Exists\"] = responseBody.has(\"viewsXML\");",
+							"tests[\"response error code check\"] = jsonData.response.errorCode === 0 ;",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/xml"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/NFSObjectStores/PointInTimeView?subClientId={{NFSSubclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"NFSObjectStores",
+						"PointInTimeView"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "subClientId",
+							"value": "{{NFSSubclientId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PointInTimeView",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"response:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"response error code check\"] = jsonData.response.errorCode === 0 ;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<App_setPointInTimeViewsRequest viewsXML=\"&lt;SnapStart&gt;&lt;ToTime&gt;{{CurrentTime}}&lt;/ToTime&gt;&lt;MntPath&gt;/{{NFSShareName}}-{{POSTReqPITName}}&lt;/MntPath&gt;&lt;NFSClient&gt;1.1.1.1,::&lt;/NFSClient&gt;&lt;UID&gt;*&lt;/UID&gt;&lt;GID&gt;*&lt;/GID&gt;&lt;SnapName&gt;{{POSTReqPITName}}&lt;/SnapName&gt;&lt;NFSServer&gt;{{NFSServerName}}&lt;/NFSServer&gt;&lt;CopyPrecedence&gt;0&lt;/CopyPrecedence&gt;&lt;ReadOnly&gt;1&lt;/ReadOnly&gt;&lt;WritablePIT&gt;0&lt;/WritablePIT&gt;&lt;/SnapStart&gt;;\" pitName=\"/{{NFSShareName}}-{{POSTReqPITName}}\" operation=\"1\" nfsServer=\"{{NFSServerName}}\">\n    <subClient subclientId=\"{{NFSSubclientId}}\"/>\n</App_setPointInTimeViewsRequest>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ServerURL}}/NFSObjectStores/PointInTimeView",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"NFSObjectStores",
+						"PointInTimeView"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get NFS Share info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"response:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"key_nfsObjectStoreInfoList_Exists\"] = responseBody.has(\"nfsObjectStoreInfoList\");",
+							"",
+							"pm.test('has value NFSShare name ', function() {",
+							"    pm.expect(jsonData.value) === pm.environment.get(\"NFSShareName\") ;",
+							"});",
+							"",
+							"pm.test('has value NFSIndexServer name ', function() {",
+							"    pm.expect(jsonData.value) === pm.environment.get(\"NFSIndexServer\") ;",
+							"});",
+							"",
+							"pm.test('has value NFSSubclientId ', function() {",
+							"    pm.expect(jsonData.value) === pm.environment.get(\"NFSSubclientId\") ;",
+							"});",
+							"",
+							"pm.test('has value NFSServer name ', function() {",
+							"    pm.expect(jsonData.value) === pm.environment.get(\"NFSServerName\") ;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/NFSObjectStores/NFSSharesInfo",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"NFSObjectStores",
+						"NFSSharesInfo"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,2160 @@
+{
+	"info": {
+		"_postman_id": "e42b4a14-89cc-4bae-8ffc-7f7acd6560fd",
+		"name": "ObjectStore-FileandFolderOperationsforShares",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Environment Setup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"FolderName\", \"DemoFolder\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileData\", \"Demo File Content\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileSize\", \"17\");",
+							"",
+							"postman.setEnvironmentVariable(\"SecondFileSize\", \"34\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileModifiedtime\", \"1481595468\");",
+							"",
+							"postman.setEnvironmentVariable(\"ParentFolderPath\", \"XERlbW9Gb2xkZXI=\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName1\", \"RGVtb0ZpbGUxLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName2\", \"RGVtb0ZpbGUyLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"ShareParentFolderPath\", \"XA==\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/rest_api_authentication.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Create an ObjectStore",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"RootGuid\", jsonData.edgeDriveInfo.rootGUID);",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"FolderName\", \"DemoFolder\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileData\", \"Demo File Content\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileSize\", \"17\");",
+							"",
+							"postman.setEnvironmentVariable(\"SecondFileSize\", \"34\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileModifiedtime\", \"1481595468\");",
+							"",
+							"postman.setEnvironmentVariable(\"ParentFolderPath\", \"XERlbW9Gb2xkZXI=\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName1\", \"RGVtb0ZpbGUxLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"FileName2\", \"RGVtb0ZpbGUyLmRvYw==\");",
+							"",
+							"postman.setEnvironmentVariable(\"ShareParentFolderPath\", \"XA==\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore?type=testcontentstore",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "testcontentstore"
+						}
+					]
+				},
+				"description": "Use this operation to create an ObjectStore.\r\n\r\nhttp://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/put_contentstore.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Folder by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"FOLDERSHARE_GUID\", jsonData.fileResource.GUID);",
+							"",
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains folder name\"] = responseBody.has(\"name\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<App_FileResourceInfo name=\"DemoShareFolder\"/>"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{RootGuid}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{RootGuid}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_folder_by_folderid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Share Folder by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"shareId\", jsonData.shareInfo.shareFolder.syncWebFolderId);",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body contains syncWebFolderName\"] = responseBody.has(\"DemoShareFolder\");",
+							"",
+							"tests[\"Response Body contains syncWebFolderId\"] = responseBody.has(\"syncWebFolderId\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"status\":0,\r\n   \"sharedToOperationType\":2,\r\n   \"sharedTo\":[\r\n      {\r\n         \"permission\":1,\r\n         \"userType\":1,\r\n         \"user\":{\r\n            \"userName\":\"{{UserName}}\"\r\n         }\r\n      }\r\n   ],\r\n   \"shareFolder\":{\r\n      \"syncWebFolderName\":\"DemoShareFolder\"\r\n   },\r\n   \"browseInfo\":{\r\n      \"paths\":[\r\n         {\r\n            \"path\":\"\\\\DemoShareFolder\"\r\n         }\r\n      ],\r\n      \"emailInfo\":{\r\n         \"emailMessage\":\"\",\r\n         \"dontSendEmail\":true\r\n      }\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/action/share",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"action",
+						"share"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Shares",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body contains clientName\"] = responseBody.has(\"clientName\");",
+							"",
+							"tests[\"Response Body contains syncWebFolderName\"] = responseBody.has(\"syncWebFolderName\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Shared Files and Folders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body contains clientName\"] = responseBody.has(\"clientName\");",
+							"",
+							"tests[\"Response Body contains syncWebFolderName\"] = responseBody.has(\"syncWebFolderName\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share?shareId={{shareId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share"
+					],
+					"query": [
+						{
+							"key": "shareId",
+							"value": "{{shareId}}"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_shares.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Folder in a Share by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"",
+							"tests[\"Response Body contains parentGuid\"] = responseBody.has(\"parentGuid\");",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\":\"DemoShareFolder2\",\n  \"parentPath\":\"\\\\\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/action/createfolder",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"action",
+						"createfolder"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_folder_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Folder in a Share by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 201\"] = responseCode.code === 201;",
+							"",
+							"tests[\"Response Body contains parentGuid\"] = responseBody.has(\"parentGuid\");",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"SHAREFOLDER2_GUID\", jsonData.fileResource.GUID);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\":\"DemoShareFolder3\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{FOLDERSHARE_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{FOLDERSHARE_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_folder_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload File to Share",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains chunkOffset\"] = responseBody.has(\"chunkOffset\");",
+							"",
+							"tests[\"Response Body contains fileGUID\"] = responseBody.has(\"fileGUID\");",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"SHAREFILE_GUID\", jsonData.fileGUID);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "FileName",
+						"value": "{{FileName1}}"
+					},
+					{
+						"key": "FileSize",
+						"value": "{{FileSize}}"
+					},
+					{
+						"key": "ParentFolderPath",
+						"value": "{{ShareParentFolderPath}}"
+					},
+					{
+						"key": "FileModifiedtime",
+						"value": "{{FileModifiedtime}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{FileData}}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/action/upload?uploadType=fullFile",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"action",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "uploadType",
+							"value": "fullFile"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_folder_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload a File in Chunks to Share (1)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"requestId\", jsonData.requestId);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains chunkOffset\"] = responseBody.has(\"chunkOffset\");",
+							"",
+							"tests[\"Response Body Contains requestId\"] = responseBody.has(\"requestId\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "FileName",
+						"value": "{{FileName2}}"
+					},
+					{
+						"key": "ParentFolderPath",
+						"value": "{{ShareParentFolderPath}}"
+					},
+					{
+						"key": "FileModifiedtime",
+						"value": "{{FileModifiedtime}}"
+					},
+					{
+						"key": "FileSize",
+						"value": "{{FileSize}}"
+					},
+					{
+						"key": "FileEOF",
+						"value": "0"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/action/upload?uploadType=chunkedFile&forceRestart=true",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"action",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "uploadType",
+							"value": "chunkedFile"
+						},
+						{
+							"key": "forceRestart",
+							"value": "true"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_upload_header_request.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload a File in Chunks to Share (2)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains chunkOffset\"] = responseBody.has(\"chunkOffset\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Name",
+						"value": "{{FileName2}}"
+					},
+					{
+						"key": "FileEOF",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "Demo File Content"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/action/upload?uploadType=chunkedFile&requestId={{requestId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"action",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "uploadType",
+							"value": "chunkedFile"
+						},
+						{
+							"key": "requestId",
+							"value": "{{requestId}}"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_upload_header_request.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Share File by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body contains syncWebFolderName\"] = responseBody.has(\"DemoShareFolder\");",
+							"",
+							"tests[\"Response Body contains syncWebFolderId\"] = responseBody.has(\"syncWebFolderId\");",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"status\":0,\r\n   \"sharedToOperationType\":2,\r\n   \"sharedTo\":[\r\n      {\r\n         \"permission\":1,\r\n         \"userType\":1,\r\n         \"user\":{\r\n            \"userName\":\"admin\"\r\n         }\r\n      }\r\n   ],\r\n   \"shareFolder\":{\r\n      \"syncWebFolderName\":\"DemoShareFolder\"\r\n   },\r\n   \"browseInfo\":{\r\n      \"emailInfo\":{\r\n         \"emailMessage\":\"\",\r\n         \"dontSendEmail\":true\r\n      }\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{SHAREFILE_GUID}}/action/share",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{SHAREFILE_GUID}}",
+						"action",
+						"share"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "List Contents of a Folder in Share by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body contains syncWebFolderName\"] = responseBody.has(\"DemoShareFolder\");",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/folder/{{FOLDERSHARE_GUID}}/action/list",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"folder",
+						"{{FOLDERSHARE_GUID}}",
+						"action",
+						"list"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_list_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "List Contents of a Folder in Share by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body contains syncWebFolderName\"] = responseBody.has(\"DemoShareFolder\");",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/action/list?path=%5C",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"action",
+						"list"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5C"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_list_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Contents of a Folder in Share by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body contains syncWebFolderName\"] = responseBody.has(\"DemoShareFolder\");",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/folder/{{FOLDERSHARE_GUID}}/action/search",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"folder",
+						"{{FOLDERSHARE_GUID}}",
+						"action",
+						"search"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_search_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Contents of a Folder in Share by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body contains syncWebFolderName\"] = responseBody.has(\"DemoShareFolder\");",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/action/search?path=%5C",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"action",
+						"search"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5C"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_search_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Shared Folder Properties By ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body contains parentGuid\"] = responseBody.has(\"parentGuid\");",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{FOLDERSHARE_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{FOLDERSHARE_GUID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Shared File Versions By ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body contains Demo File Content\"] = responseBody.has(\"Demo File Content\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "text/html"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{SHAREFILE_GUID}}/action/preview",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{SHAREFILE_GUID}}",
+						"action",
+						"preview"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View File Properties in Share by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"",
+							"tests[\"Reponse Body Contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body Contains File Name\"] = responseBody.has(\"DemoFile1.doc\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{SHAREFILE_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{SHAREFILE_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_share_properties_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "View File Properties in Share by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"",
+							"tests[\"Reponse Body Contains GUID\"] = responseBody.has(\"GUID\");",
+							"",
+							"tests[\"Response Body Contains File Name\"] = responseBody.has(\"DemoFile1.doc\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/action/metadata?path=%5CDemoFile1.doc",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"action",
+						"metadata"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5CDemoFile1.doc"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_share_properties_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Download File in Share by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{SHAREFILE_GUID}}/action/download",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{SHAREFILE_GUID}}",
+						"action",
+						"download"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_share_download_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Download File in Share by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/action/download?path=%5CDemoFile1.doc",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"action",
+						"download"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "%5CDemoFile1.doc"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_share_download_by_path.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Download File Version in Share",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/version/{{SHAREFILE_GUID}}/action/download",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"version",
+						"{{SHAREFILE_GUID}}",
+						"action",
+						"download"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_share_download_version_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Preview File in Share by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Reponse Body contains DemoFile1\"] = responseBody.has(\"DemoFile1.doc\");",
+							"",
+							"tests[\"Reponse Body contains timestamp\"] = responseBody.has(\"timestamp\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{SHAREFILE_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{SHAREFILE_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_share_preview_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Preview File in Share by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Reponse Body contains DemoFile1\"] = responseBody.has(\"DemoFile1.doc\");",
+							"",
+							"tests[\"Reponse Body contains timestamp\"] = responseBody.has(\"timestamp\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{SHAREFILE_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{SHAREFILE_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_share_preview_by_filepath.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Tags to File in Share by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"values\":\"test_tag\",\r\n   \"fileFolderInfo\":[\r\n      {\r\n         \"fileGUID\":\"{{SHAREFILE_GUID}}\"\r\n      }\r\n   ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/tags",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"tags"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_tag_by_id.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "List Tags in a Share by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;",
+							"",
+							"tests[\"Response Body contains tag\"] = responseBody.has(\"test_tag\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{SHAREFILE_GUID}}/tags",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{SHAREFILE_GUID}}",
+						"tags"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_share_tag_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Tags in a Share",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"values\":\"test_tag\",\r\n   \"fileFolderInfo\":[\r\n      {\r\n         \"fileGUID\":\"{{SHAREFILE_GUID}}\"\r\n      }\r\n   ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/tags",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"tags"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_contentstore_share_tag.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Rename File in Share by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"path\":\"\\\\DemoFile1.doc\",\n  \"name\":\"DemoShareFile1Renamed.doc\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/action/rename",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"action",
+						"rename"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_folder_rename.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Rename File in Share by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\":\"DemoShareFile1Renamed.doc\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{SHAREFILE_GUID}}/action/rename",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{SHAREFILE_GUID}}",
+						"action",
+						"rename"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/put_contentstore_share_folder_rename.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Move File in Share by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"path\":\"\\\\DemoShareFile1Renamed.doc\",\n  \"parentPath\":\"\\\\DemoShareFolder2\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/action/move",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"action",
+						"move"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/put_contentstore_share_folder_move.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Move File in Share by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"parentGuid\":\"{{SHAREFOLDER2_GUID}}\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{SHAREFILE_GUID}}/action/move",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{SHAREFILE_GUID}}",
+						"action",
+						"move"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/put_contentstore_share_folder_move.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Custom Properties to File in a Share",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"customProps\":{\r\n      \"nameValues\":[\r\n         {\r\n            \"name\":\"testproperty1\",\r\n            \"value\":\"testvalue1\"\r\n         },\r\n         {\r\n            \"name\":\"testproperty2\",\r\n            \"value\":\"testvalue2\"\r\n         }\r\n      ]\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{SHAREFILE_GUID}}/properties",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{SHAREFILE_GUID}}",
+						"properties"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_contentstore_share_custom_prop_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "View Custom Properties of a Share",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{SHAREFILE_GUID}}/properties",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{SHAREFILE_GUID}}",
+						"properties"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_share_custom_prop_filter_by_fileid.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Custom Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"fileFolderInfo\":[\r\n      {\r\n         \"fileGUID\":\"{{SHAREFILE_GUID}}\"\r\n      }\r\n   ],\r\n   \"customProps\":{\r\n      \"nameValues\":[\r\n         {\r\n            \"name\":\"testproperty1\",\r\n            \"value\":\"testvalue1\"\r\n         },\r\n         {\r\n            \"name\":\"testproperty2\",\r\n            \"value\":\"testvalue2\"\r\n         }\r\n      ]\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/properties",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"properties"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_contentstore_share_custom_property.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Change Share Settings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"shareInfo\":{\r\n      \"status\":0,\r\n      \"sharedToOperationType\":1,\r\n      \"sharedTo\":[\r\n         {\r\n            \"permission\":1,\r\n            \"userType\":1,\r\n            \"user\":{\r\n               \"userName\":\"{{UserName}}\"\r\n            }\r\n         },\r\n         {\r\n            \"permission\":1,\r\n            \"userType\":2,\r\n            \"email\":\"\"\r\n         },\r\n         {\r\n            \"permission\":2,\r\n            \"userType\":3,\r\n            \"group\":{\r\n               \"userGroupName\":\"Testgroup\"\r\n            }\r\n         },\r\n         {\r\n            \"permission\":1,\r\n            \"userType\":1,\r\n            \"user\":{\r\n               \"userName\":\"admin\"\r\n            }\r\n         }\r\n      ],\r\n      \"shareFolder\":{\r\n         \"syncWebFolderName\":\"{{shareId}}\"\r\n      },\r\n      \"browseInfo\":{\r\n         \"emailInfo\":{\r\n            \"emailMessage\":\"\",\r\n            \"dontSendEmail\":true\r\n         }\r\n      }\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ShareFolder/{{shareId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ShareFolder",
+						"{{shareId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/put_share_update.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Folder in a Share by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/file/{{SHAREFOLDER2_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"file",
+						"{{SHAREFOLDER2_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_contentstore_folder.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Folder in a Share by Path",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"path\":\"\\\\DemoShareFolder2\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/share/{{shareId}}/action/delete",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"share",
+						"{{shareId}}",
+						"action",
+						"delete"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_contentstore_preview_by_filepath.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Sharing for Folder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/ShareFolder/{{shareId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ShareFolder",
+						"{{shareId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_contentstore_folder.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Share Folder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 200 || responseCode.code === 202;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/contentstore/file/{{FOLDERSHARE_GUID}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"contentstore",
+						"file",
+						"{{FOLDERSHARE_GUID}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/delete_contentstore_folder.htm"
+			},
+			"response": []
+		}
+	]
+}

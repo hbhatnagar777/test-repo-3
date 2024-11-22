@@ -1,0 +1,135 @@
+{
+    "1":{
+        "question": "How to Login to commserver?",
+        "answer": [
+            "POST /Login"
+        ]
+    },
+    "2":{
+        "question": "I need to view all file servers",
+        "answer":[
+            "GET /V4/FileServers"
+        ]
+    },
+    "3":{
+        "question":"How to view jobs in last 24 hours?",
+        "answer":[
+            "GET /cr/reportsplusengine/datasets/075e703a-b29f-46d6-ad29-7c1a60f7e4f3/data?cache=true&parameter.i_DashboardType=commcell&datasource=2"
+        ]
+    },
+    "4":{
+        "question":"How to view all the VM Groups?",
+        "answer":[
+            "GET /V4/VMGroups"
+        ],
+        "alternate":[
+            "GET /V4/VMGroups",
+            "GET /v2/vsa/vmgroups"
+        ]
+    },
+    "5":{
+        "question":"Add a file server",
+        "answer":[
+            "POST /InstallClient"
+        ]
+    },
+    "6":{
+        "question":"Get Commcell version",
+        "answer":[
+            "GET /commserv"
+        ]
+    },
+    "7":{
+        "question": "Delete a client",
+        "answer": [
+            "DELETE /client/{clientId}"
+        ]
+    },
+    "8":{
+        "question":"Delete a server group",
+        "answer":[
+            "DELETE /v4/servergroup/{servergroupid}"
+        ]
+    },
+    "9":{
+        "question":"Get all jobs",
+        "answer": [
+            "GET /Job"
+        ]
+    },
+    "10": {
+        "question": "Check readiness",
+        "answer": [
+            "GET /Client/{clientId}/checkreadiness"
+        ]
+    },
+    "11":{
+        "question": "See health report",
+        "answer":[
+            "GET /cr/reportsplusengine/datasets/b50b20ed-5fc4-4b4c-f7c4-fc6b84eb35cc/data?cache=true"
+        ]
+    },
+    "12":{
+        "question":"How to create azure hypervisor?",
+        "answer":[
+            "GET /v4/accessnodes",
+            "POST /v4/hypervisor"
+        ]
+    },
+    "13":{
+        "question": "How to disable activity control for my client xyz?",
+        "answer": [
+            "GET /Client",
+            "PUT /V4/Entity/{entityType}/{entityId}/ActivityControl/{activityType}/Action/Disable"
+        ]
+    },
+    "14":{
+        "question" :"How to trigger backup of my subclient in fileserver?",
+        "answer": [
+            "POST /subclient/{subclientId}/action/backup"
+        ]
+    },
+    "15":{
+        "question": "Show me SLA status",
+        "answer":[ 
+            "POST /SLAReport",
+            "GET /cr/reportsplusengine/datasets/GetSLACounts/data?cache=true&parameter.i_DashboardType=commcell&datasource=2"
+        ]
+    },
+    "16":{
+        "question": "How to login?",
+        "answer": [
+            "POST /Login"
+        ]
+    },
+    "17":{
+        "question": "Get alert details",
+        "answer": [
+            "GET /V4/AlertDefinitions",
+            "GET /V4/AlertDefinitions/{id}"
+        ],
+        "alternate": [
+            "GET /V4/AlertDefinitions/{id}",
+            "GET /AlertRule/{alertId2}"
+        ]
+    },
+    "18":
+    {
+        "question": "I would like to view security posture of commcell",
+        "answer": [
+            "GET /Security/Dashboard"
+        ]
+    },
+    "19":{
+        "question": "Trigger out of place restore on a subclient",
+        "answer": [
+            "POST /CreateTask"
+        ]
+    },
+    "20":{
+        "question": "I want to browse the backed up data on a subclient",
+        "answer": [
+            "GET /Subclient/{subclientId}/Browse"
+        ]
+    }
+}

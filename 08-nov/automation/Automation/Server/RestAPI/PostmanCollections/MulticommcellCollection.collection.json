@@ -1,0 +1,1921 @@
+{
+	"info": {
+		"_postman_id": "85baae16-3d73-4c23-9512-368541171fae",
+		"name": "MulticommcellCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login into IDP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Validating logged in username\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							"",
+							"",
+							"//tests[\"Validating if response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\") ;   //validate response time",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            ",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Register commcell for Routing",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"var errorCodeaftercreate = jsonData.resultCode;",
+							"",
+							"if((tests[\"validating service commcell registration for routing\"] = errorCodeaftercreate === 0))     ",
+							"            console.log(\"Service commcell is registered for routing successfully\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/xml"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " <EVGui_CN2CellRegReq>\r\n    <commcell ccClientName=\"{{SERVICECOMMCELL}}\" interfaceName=\"{{SERVICECOMMCELL}}\" adminUsr=\"{{SERVICEUNAME}}\" adminPwd=\"{{SERVICEPWD}}\" isRegisteredForRouting=\"1\" isGlobalIDPCommcell=\"0\">\r\n        <commCell commCellName=\"{{SERVICECOMMCELL}}\"/>\r\n    </commcell>\r\n</EVGui_CN2CellRegReq>\r\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/RegFrgnCell",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"RegFrgnCell"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Registered commcells",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"console.log(\"Verifying the registered commcell Info\");   ",
+							"if((tests[\"Validating registered commcell Info\"] = responseBody.has(\"csGUID\")))      ",
+							"            console.log(\"Registered commcell  Info is present\");",
+							"",
+							"var commcellname = postman.getEnvironmentVariable(\"SERVICECOMMCELL\");     ",
+							"jsonData.commcellsList.forEach(",
+							"   function(cc) {",
+							"      if(cc['interfaceName'] == commcellname) {",
+							"        console.log(\"ccClientId\");  ",
+							"        postman.setEnvironmentVariable(\"ccClientId\", cc['ccClientId']);",
+							"        postman.setEnvironmentVariable(\"ccClientName\", cc['ccClientName']);",
+							"        postman.setEnvironmentVariable(\"csGUID\", cc['commCell']['csGUID']);",
+							"        postman.setEnvironmentVariable(\"Type\", cc['commCell']['_type_']);",
+							"        postman.setEnvironmentVariable(\"commCellId\", cc['commCell']['commCellId']);",
+							"     }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/registered?getOnlyServiceCommcells=true",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"registered"
+					],
+					"query": [
+						{
+							"key": "getOnlyServiceCommcells",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login into Service registered for Routing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"SERVICETOKEN\", jsonData.token);",
+							"var username = postman.getEnvironmentVariable(\"SERVICEUNAME\");                  ",
+							"tests[\"Validating logged in username\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"SERVICETOKEN\"));",
+							"",
+							"",
+							"//tests[\"Validating if response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\") ;   //validate response time",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            ",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\n\t\"domain\": \"\",\n\t\"username\": \"{{SERVICEUNAME}}\",\n\t\"password\": \"{{SERVICEEPWD}}\",\n\t\"commserver\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/Login",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Check for user on service commcell",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"console.log(\"Checking if the user is present on service commcell or not\")",
+							"postman.setEnvironmentVariable(\"SCUNAME\",jsonData.users[0].userEntity.userName);",
+							"var scusername = postman.getEnvironmentVariable(\"SCUNAME\");  ",
+							"var serviceuname = postman.getEnvironmentVariable(\"SERVICEUNAME\")",
+							"",
+							"if((tests[\"validating on service commcell if user is present or no\"] = scusername === serviceuname))     ",
+							"            console.log(\"User is present on service commcell\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/ServiceCommcell/IsUserPresent?userName={{SERVICEUNAME}}",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"ServiceCommcell",
+						"IsUserPresent"
+					],
+					"query": [
+						{
+							"key": "userName",
+							"value": "{{SERVICEUNAME}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get redirect rules for user on IDP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"if ((tests[\"Validating if redirect rules are returned successfully\"] = jsonData.error.errorMessage === \"SUCCESS\"))",
+							"    console.log(\"Redirect rules returned successfully\");",
+							"var redirectp1 = \"http://\";",
+							"var servicename = postman.getEnvironmentVariable(\"SERVICECOMMCELL\");",
+							"var redirectp2 = \":80/webconsole\";",
+							"var redirecturl1 = redirectp1+servicename+redirectp2;",
+							"console.log(\"RedirectURL:\",redirecturl1);",
+							"var commcellname = postman.getEnvironmentVariable(\"ccClientName\");",
+							"jsonData.AvailableRedirects.forEach(",
+							"    function (cc) {",
+							"        if (cc['commcellName'] == commcellname) {",
+							"            postman.setEnvironmentVariable(\"SERVICEWEBURL\", cc['redirectUrl']);",
+							"            if ((tests[\"Validating if redirect rules are returned successfully\"] = cc['redirectUrl'] === redirecturl1))",
+							"                console.log(\"Redirect rules returned successfully\");",
+							"",
+							"        }",
+							"    });",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){\r",
+							"    console.log(\"10s sleep\");\r",
+							"},10000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommcellRedirect/RedirectListforUser?user={{SERVICEUNAME}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommcellRedirect",
+						"RedirectListforUser"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "{{SERVICEUNAME}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unregister commcell for Routing",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){\r",
+							"    console.log(\"10s sleep\");\r",
+							"},10000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Unregistration\"] = jsonData.resultCode === 0))     ",
+							"            console.log(\"Unregistration is done successfully\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<EVGui_CN2RemoveCellRegReq>\r\n    <commcell ccClientId=\"{{ccClientId}}\" ccClientName=\"{{ccClientName}}\" interfaceName=\"{{SERVICECOMMCELL}}\">\r\n        <commCell _type_=\"{{Type}}\" commCellId=\"{{commCellId}}\" csGUID=\"csGUID\"/>\r\n    </commcell>\r\n</EVGui_CN2RemoveCellRegReq>\r\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UnRegisterCommCell",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UnRegisterCommCell"
+					]
+				},
+				"description": "Creates a Monitoring policy"
+			},
+			"response": []
+		},
+		{
+			"name": "Register commcell for IDP",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){\r",
+							"    console.log(\"10s sleep\");\r",
+							"},10000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"validating service commcell registration for idp\"] = jsonData.resultCode === 0))     ",
+							"            console.log(\"Service commcell is registered for idp successfully\");",
+							"",
+							"var weburl = postman.getEnvironmentVariable(\"SERVICEWEBURL\")",
+							"",
+							"if((tests[\"validating  for idp returned webconsoleurl\"] = jsonData.webConsoleUrl === weburl))     ",
+							"            console.log(\"Service commcell is registered for idp returned webconsoleurl successfully\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/xml"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " <EVGui_CN2CellRegReq>\r\n    <commcell ccClientName=\"{{SERVICECOMMCELL}}\" interfaceName=\"{{SERVICECOMMCELL}}\" adminUsr=\"{{SERVICEUNAME}}\" adminPwd=\"{{SERVICEPWD}}\" isRegisteredForRouting=\"1\" isGlobalIDPCommcell=\"1\">\r\n        <commCell commCellName=\"{{SERVICECOMMCELL}}\"/>\r\n    </commcell>\r\n</EVGui_CN2CellRegReq>\r\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/RegFrgnCell",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"RegFrgnCell"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Registered commcells -IDP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"console.log(\"Verifying the registered commcell Info\");   ",
+							"if((tests[\"Validating registered commcell Info\"] = responseBody.has(\"csGUID\")))      ",
+							"            console.log(\"Registered commcell  Info is present\");",
+							"",
+							"var commcellname = postman.getEnvironmentVariable(\"SERVICECOMMCELL\");     ",
+							"jsonData.commcellsList.forEach(",
+							"   function(cc) {",
+							"      if(cc['interfaceName'] == commcellname) {",
+							"        postman.setEnvironmentVariable(\"ccClientId\", cc['ccClientId']);",
+							"        postman.setEnvironmentVariable(\"ccClientName\", cc['ccClientName']);",
+							"        postman.setEnvironmentVariable(\"csGUID\", cc['commCell']['csGUID']);",
+							"        postman.setEnvironmentVariable(\"Type\", cc['commCell']['_type_']);",
+							"        postman.setEnvironmentVariable(\"commCellId\", cc['commCell']['commCellId']);",
+							"        if((tests[\"validating IDP registration\"] = cc['isGlobalIDPCommcell'] === true))     ",
+							"            console.log(\"IDP Registration validation is successful\");",
+							"     }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/CommCell/registered?getOnlyServiceCommcells=true",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"CommCell",
+						"registered"
+					],
+					"query": [
+						{
+							"key": "getOnlyServiceCommcells",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verfiy Sync after IDP Registration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"console.log(\"Verifying Sync after Registration\")",
+							"if((tests[\"Validating sync after registration\"] = responseBody.has(\"userOrGroup\")))      ",
+							"            console.log(\"userOrGroup Information is synced\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/ServiceCommcell/Properties?commcellId={{commCellId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"ServiceCommcell",
+						"Properties"
+					],
+					"query": [
+						{
+							"key": "commcellId",
+							"value": "{{commCellId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SAML Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"console.log(\"Getting the SAML token and storing it into variable SAMLTOKEN\")",
+							"",
+							"postman.setEnvironmentVariable(\"SAMLTOKEN\", jsonData.token);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Commcell/SamlToken?featureType=0&validityInMins=5",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Commcell",
+						"SamlToken"
+					],
+					"query": [
+						{
+							"key": "featureType",
+							"value": "0"
+						},
+						{
+							"key": "validityInMins",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login into Service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"postman.setEnvironmentVariable(\"SERVICETOKEN\", jsonData.token);",
+							"",
+							"var username = postman.getEnvironmentVariable(\"SERVICEUNAME\");                  ",
+							"",
+							"tests[\"Validating logged in username\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"SERVICETOKEN\"));",
+							"",
+							"",
+							"//tests[\"Validating if response time is less than 10000ms\"] = responseTime < postman.getEnvironmentVariable(\"ResponseTime\") ;   //validate response time",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;            ",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Validating if Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<DM2ContentIndexing_CheckCredentialReq>\r\n    <autoLogin autoLoginType=\"5\" encryptedMessage=\"{{SAMLTOKEN}}\" />\r\n</DM2ContentIndexing_CheckCredentialReq>\r\n\r\n"
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/Login",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get Clients on Service -IDP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"if((tests[\"Validating client api using Token on service\"] = responseBody.has(\"clientProps\")))      ",
+							"            console.log(\"Client API is validated\");",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{SERVICEURL}}/Client",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"Client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User Group on Service",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"NewGroup\", \"NewUG\" + new Date().getTime());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body contains response\"] = responseBody.has(\"response\");",
+							"tests[\"Response Body contains errorString\"] = responseBody.has(\"errorString\");",
+							"tests[\"Response Body contains errorCode 0\"] = jsonData.response[0].errorCode === 0 ;",
+							"tests[\"Response Body contains entity\"] = responseBody.has(\"entity\");",
+							"tests[\"Response Body contains userGroupId\"] = responseBody.has(\"userGroupId\");",
+							"tests[\"Response Body contains userGroupName\"] = responseBody.has(\"userGroupName\");",
+							"tests[\"Validating if user group was created successfully\"] = jsonData.response[0].errorString === \"Successful\";",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"Creating a new user group\",\r\n      \"enabled\": true,\r\n      \"securityAssociations\": {\r\n        \"associationsOperationType\": 2,\r\n        \"associations\": [\r\n          {\r\n            \"entities\": {\r\n              \"entity\": [\r\n                {\r\n                  \"clientName\": \"{{ccClientName}}\"\r\n                }\r\n              ]\r\n            },\r\n            \"properties\": {\r\n              \"role\": {\r\n                \"roleName\": \"View\"\r\n              }\r\n            }\r\n          }\r\n        ]\r\n      },\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{NewGroup}}\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"{{SERVICEUNAME}}\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/UserGroup",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation creates a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"groups\": [\r\n    {\r\n      \"description\": \"{{description}}\",\r\n      \"enabled\": true,\r\n      \"securityAssociations\": {\r\n        \"associationsOperationType\": 2,\r\n        \"associations\": [\r\n          {\r\n            \"entities\": {\r\n              \"entity\": [\r\n                {\r\n                  \"clientName\": \"{{clientName}}\"\r\n                }\r\n              ]\r\n            },\r\n            \"properties\": {\r\n              \"role\": {\r\n                \"roleName\": \"View\"\r\n              }\r\n            }\r\n          }\r\n        ]\r\n      },\r\n      \"userGroupEntity\": {\r\n        \"userGroupName\": \"{{userGroupName}}\"\r\n      },\r\n      \"users\": [\r\n        {\r\n          \"userName\": \"###\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation creates a user group.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/post_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "202",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:30:08 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"response\":[\r{\r\"errorString\":\"Successful\",\"errorCode\":0,\"entity\":{\r\"userGroupName\":\"Testgroup\",\"userGroupId\":9\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get User Group on IDP",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains userGroups\"] = responseBody.has(\"userGroups\");",
+							"",
+							"var usergroupname = postman.getEnvironmentVariable(\"NewGroup\");",
+							"jsonData.userGroups.forEach(",
+							"    function (cc) {",
+							"        if (cc['userGroupEntity']['userGroupName'] == usergroupname) {",
+							"                if((tests[\"validating UserGroup\"] = cc['userGroupEntity']['userGroupName'] === usergroupname))     ",
+							"            console.log(\"Usergroup is present on IDP commcell\");",
+							"",
+							"        }",
+							"    });",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/UserGroup",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "238",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:26:48 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"userGroups\":[\r{\r\"userGroupEntity\":{\r\"userGroupId\":1,\"userGroupName\":\"master\"\r}\r},{\r\"userGroupEntity\":{\r\"userGroupId\":3,\"userGroupName\":\"View All\"\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get User Group on Service",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"tests[\"Response Body contains userGroups\"] = responseBody.has(\"userGroups\");",
+							"",
+							"var usergroupname = postman.getEnvironmentVariable(\"NewGroup\");",
+							"jsonData.userGroups.forEach(",
+							"    function (cc) {",
+							"        if (cc['userGroupEntity']['userGroupName'] == usergroupname) {",
+							"                if((tests[\"validating UserGroup\"] = cc['userGroupEntity']['userGroupName'] === usergroupname))     ",
+							"            console.log(\"Usergroup is present on Service commcell\");",
+							"",
+							"        }",
+							"    });",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "{{SERVICEURL}}/UserGroup",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"UserGroup"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation returns a list of user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group.htm)"
+			},
+			"response": [
+				{
+					"name": "User Group",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/UserGroup",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"UserGroup"
+							]
+						},
+						"description": "<h2>Description</h2>\nThis operation returns a list of user groups.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_user_group.htm)"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "238",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 May 2017 04:26:48 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"processinginstructioninfo\":{\r\"attributes\":[\r{\r\"name\":\"exitval\",\"value\":\"0\"\r}\r]\r},\"userGroups\":[\r{\r\"userGroupEntity\":{\r\"userGroupId\":1,\"userGroupName\":\"master\"\r}\r},{\r\"userGroupEntity\":{\r\"userGroupId\":3,\"userGroupName\":\"View All\"\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Create User on Service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"if((tests[\"Validating if user was created successfully\"] = jsonData.response[0].errorString === \"Successful\"))",
+							"    console.log(\"User was created successfully\");",
+							"if((tests[\"Validating error code\"] = jsonData.response[0].errorCode === 0))",
+							"    console.log(\"Error code returned is 0\");",
+							"if((tests[\"Validating entity tag\"] = responseBody.has(\"entity\")))      ",
+							"        console.log(\"entity tag is present\");",
+							"if((tests[\"Validating userId tag\"] = responseBody.has(\"userId\")))      ",
+							"        console.log(\"userId tag is present\");",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"        console.log(\"userName tag is present\");",
+							"if((tests[\"Validating username of created user\"] = responseBody.has(postman.getEnvironmentVariable(\"userName\"))))      ",
+							"            console.log(\"User Name of created user is present\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"userName\", \"NewUser\" + new Date().getTime());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"description\": \"backup admin user\",\r\n      \"agePasswordDays\": 10,\r\n      \"password\": \"{{Password}}\",\r\n      \"email\": \"test@company.com\",\r\n      \"fullName\": \"Jane Doe\",\r\n      \"enableUser\": true,\r\n      \"associatedUserGroups\": [\r\n        {\r\n          \"userGroupName\": \"{{userGroupName}}\"\r\n        }\r\n      ],\r\n      \"userEntity\": {\r\n        \"userName\": \"{{userName}}\"\r\n      }\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/User",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User on IDP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating users tag\"] = responseBody.has(\"users\")))      ",
+							"            console.log(\"users tag is present\");",
+							"            ",
+							"postman.setEnvironmentVariable(\"userId1\", jsonData.users[0].userEntity.userId);",
+							"postman.setEnvironmentVariable(\"userName1\",jsonData.users[0].userEntity.userName);",
+							"console.log(\"Value of userId set to :\" ,postman.getEnvironmentVariable(\"userId1\"));",
+							"",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"            ",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"",
+							"if((tests[\"Validating userGUID tag\"] = responseBody.has(\"userGUID\")))      ",
+							"            console.log(\"userGUID tag is present\");",
+							"            ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"            console.log(\"userName tag is present\");",
+							"",
+							"var username = postman.getEnvironmentVariable(\"userName\");",
+							"jsonData.users.forEach(",
+							"    function (cc) {",
+							"        if (cc['userEntity']['userName'] == username) {",
+							"                if((tests[\"validating UserGroup\"] = cc['userEntity']['userName'] === username))     ",
+							"            console.log(\"User is present on IDP commcell\");",
+							"",
+							"        }",
+							"    });",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/User",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "User",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/User",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"User"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "3956",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 27 Jul 2017 07:12:21 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"users\":[\r{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":2294,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":3,\"userEntity\":{\r\"userGUID\":\"EBEA9754-607C-4CA4-B047-C9F656A1ABB0\",\"userName\":\"admin\",\"userId\":1\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"59CBCFF9-ADA1-4A72-B74C-306B3427BD73\",\"userName\":\"ObjectStoreUser\",\"userId\":3\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"3792D8E7-BE0B-4F0E-8604-86D9860D4F32\",\"userName\":\"edgeuser\",\"userId\":4\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"2CA8B008-605C-4CF3-856C-0E24FB151890\",\"userName\":\"suggiedge\",\"userId\":11\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"CC0FCF25-D3B0-44EE-8C04-8003BF438442\",\"userName\":\"commvault-nj\\\\testiyer\",\"userId\":12\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"8B8B9C84-AC6C-447E-A39A-07567DA1A43E\",\"userName\":\"commvault-nj\\\\stavvavemamankantha\",\"userId\":13\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"41826F1F-398D-4925-9247-54BAFB9DD06C\",\"userName\":\"commvault-nj\\\\rpolapragada\",\"userId\":14\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"DDB1A347-9F34-4DCD-9CA0-DF1E4F31DFF1\",\"userName\":\"commvault-nj\\\\gbuilder\",\"userId\":15\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"C890A390-4AF0-4D14-91C0-5AD82D5B7D1E\",\"userName\":\"commvault-nj\\\\jbritto\",\"userId\":16\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"CFEC49BE-2B38-4401-91D3-FC58E42D7E46\",\"userName\":\"commvault-nj\\\\ymanokaran\",\"userId\":17\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"F62F8A51-3470-4A5C-A7CF-55B8D303D983\",\"userName\":\"commvault-nj\\\\snasim\",\"userId\":18\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"5A373A48-E9E3-467C-8447-2200BF524DD8\",\"userName\":\"commvault-nj\\\\shylas\",\"userId\":19\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"77670349-5BEC-4A77-A5D0-EBB053766BA9\",\"userName\":\"commvault-nj\\\\pmirje\",\"userId\":20\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"B036E398-8235-4717-9D6F-AD385CDD383A\",\"userName\":\"commvault-nj\\\\sujeethdev\",\"userId\":21\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Get User on Service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200; ",
+							"",
+							"if((tests[\"Validating users tag\"] = responseBody.has(\"users\")))      ",
+							"            console.log(\"users tag is present\");",
+							"            ",
+							"postman.setEnvironmentVariable(\"userId1\", jsonData.users[0].userEntity.userId);",
+							"postman.setEnvironmentVariable(\"userName1\",jsonData.users[0].userEntity.userName);",
+							"console.log(\"Value of userId set to :\" ,postman.getEnvironmentVariable(\"userId1\"));",
+							"",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"            ",
+							"if((tests[\"Validating userEntity tag\"] = responseBody.has(\"userEntity\")))      ",
+							"            console.log(\"userEntity tag is present\");",
+							"",
+							"if((tests[\"Validating userGUID tag\"] = responseBody.has(\"userGUID\")))      ",
+							"            console.log(\"userGUID tag is present\");",
+							"            ",
+							"if((tests[\"Validating userName tag\"] = responseBody.has(\"userName\")))      ",
+							"            console.log(\"userName tag is present\");",
+							"",
+							"",
+							"var username = postman.getEnvironmentVariable(\"userName\");",
+							"jsonData.users.forEach(",
+							"    function (cc) {",
+							"        if (cc['userEntity']['userName'] == username) {",
+							"                if((tests[\"validating UserGroup\"] = cc['userEntity']['userName'] === username))     ",
+							"            console.log(\"User is present on IDP commcell\");",
+							"",
+							"        }",
+							"    });",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{SERVICEURL}}/User",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"User"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "User",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/User",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"User"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "3956",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 27 Jul 2017 07:12:21 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"users\":[\r{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":2294,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":3,\"userEntity\":{\r\"userGUID\":\"EBEA9754-607C-4CA4-B047-C9F656A1ABB0\",\"userName\":\"admin\",\"userId\":1\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"59CBCFF9-ADA1-4A72-B74C-306B3427BD73\",\"userName\":\"ObjectStoreUser\",\"userId\":3\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"3792D8E7-BE0B-4F0E-8604-86D9860D4F32\",\"userName\":\"edgeuser\",\"userId\":4\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"2CA8B008-605C-4CF3-856C-0E24FB151890\",\"userName\":\"suggiedge\",\"userId\":11\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"CC0FCF25-D3B0-44EE-8C04-8003BF438442\",\"userName\":\"commvault-nj\\\\testiyer\",\"userId\":12\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"8B8B9C84-AC6C-447E-A39A-07567DA1A43E\",\"userName\":\"commvault-nj\\\\stavvavemamankantha\",\"userId\":13\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"41826F1F-398D-4925-9247-54BAFB9DD06C\",\"userName\":\"commvault-nj\\\\rpolapragada\",\"userId\":14\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"DDB1A347-9F34-4DCD-9CA0-DF1E4F31DFF1\",\"userName\":\"commvault-nj\\\\gbuilder\",\"userId\":15\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"C890A390-4AF0-4D14-91C0-5AD82D5B7D1E\",\"userName\":\"commvault-nj\\\\jbritto\",\"userId\":16\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"CFEC49BE-2B38-4401-91D3-FC58E42D7E46\",\"userName\":\"commvault-nj\\\\ymanokaran\",\"userId\":17\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"F62F8A51-3470-4A5C-A7CF-55B8D303D983\",\"userName\":\"commvault-nj\\\\snasim\",\"userId\":18\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"5A373A48-E9E3-467C-8447-2200BF524DD8\",\"userName\":\"commvault-nj\\\\shylas\",\"userId\":19\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"77670349-5BEC-4A77-A5D0-EBB053766BA9\",\"userName\":\"commvault-nj\\\\pmirje\",\"userId\":20\r}\r},{\r\"removeOtherActiveSessions\":true,\"associatedUserGroupsOperationType\":2,\"idleTime\":0,\"lastLogIntime\":0,\"associatedExternalUserGroupsOperationType\":2,\"loggedInMode\":0,\"userEntity\":{\r\"userGUID\":\"B036E398-8235-4717-9D6F-AD385CDD383A\",\"userName\":\"commvault-nj\\\\sujeethdev\",\"userId\":21\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Unregister commcell for IdP",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Response received:\", jsonData);",
+							"",
+							"if((tests[\"Unregistration\"] = jsonData.resultCode === 0))     ",
+							"            console.log(\"Unregistration is done successfully\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/xml"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<EVGui_CN2RemoveCellRegReq>\r\n    <commcell ccClientId=\"{{ccClientId}}\" ccClientName=\"{{ccClientName}}\" interfaceName=\"{{SERVICECOMMCELL}}\">\r\n        <commCell _type_=\"{{Type}}\" commCellId=\"{{commCellId}}\" csGUID=\"csGUID\"/>\r\n    </commcell>\r\n</EVGui_CN2RemoveCellRegReq>\r\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/UnRegisterCommCell",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"UnRegisterCommCell"
+					]
+				},
+				"description": "Creates a Monitoring policy"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout on Service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{SERVICETOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<DM2ContentIndexing_CheckCredentialReq hostName=\"{{IPMultiCommcell}}\" username=\"\" password=\"xxxxx\" mode=\"4\" flags=\"0\" clientType=\"19\" timeout=\"20160\">\r\n    <autoLogin autoLoginType=\"5\" encryptedMessage=\"{{SAMLTOKEN}}\" />\r\n</DM2ContentIndexing_CheckCredentialReq>\r\n\r\n"
+				},
+				"url": {
+					"raw": "{{SERVICEURL}}/Logout",
+					"host": [
+						"{{SERVICEURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Logout on IDP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Response received:\", responseBody);",
+							"tests[\"Validating if Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Validating if Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validating Logout\"] = responseBody.has(\"User logged out\")));      ",
+							"        console.log(\"Logout Validated\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<DM2ContentIndexing_CheckCredentialReq hostName=\"{{IPMultiCommcell}}\" username=\"\" password=\"xxxxx\" mode=\"4\" flags=\"0\" clientType=\"19\" timeout=\"20160\">\r\n    <autoLogin autoLoginType=\"5\" encryptedMessage=\"{{SAMLTOKEN}}\" />\r\n</DM2ContentIndexing_CheckCredentialReq>\r\n\r\n"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"mode\": \"{{Mode}}\",\n\t\"domain\": \"\",\n\t\"username\": \"{{UserName}}\",\n\t\"password\": \"{{Password}}\",\n\t\"commserver\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/Login",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "Text",
+					"header": [],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	]
+}

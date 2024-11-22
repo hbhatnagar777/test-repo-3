@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cvconfigmap-{{ include "mychart.name" . }}
+  lables:
+  {{- include "ma_chart.commvault-labels" . | nindent 4 }}
+data:
+  CV_MASVCNAME: commvault-ma-{{ include "mychart.name" . }}
+  CV_CSHOSTNAME: {{ .Values.commcell.cshostname | quote }} 
+  CV_CSIPADDR: {{ .Values.commcell.csipaddress | quote }} 
+  CV_CSCLIENTNAME: {{ .Values.commcell.csclientname | quote }} 
+{{- if .Values.commcell.authtoken }} 
+  CV_COMMCELL_AUTHTOKEN: {{ .Values.commcell.authtoken | quote }} 
+{{ else if .Values.commcell.user }} 
+  CV_COMMCELL_USER: {{ .Values.commcell.user | quote }} 
+  #Create and pass a docker secret with name cvpwd to docker instead to keep password secure
+  #Set following env variable if docker secret is not supported in your env
+  CV_COMMCELL_PWD: {{ .Values.commcell.password | quote }}
+{{ else }}
+  {{ required "A valid authtoken or user/ password  is required to authenticate with Commvault CommServer.!" .Values.commcell.user }}
+{{- end }}

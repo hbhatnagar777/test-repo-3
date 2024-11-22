@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />" description="" executeOnWeb="0" inputs="&lt;inputs>&lt;Data class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;/inputs>" interactive="1" isHtmlDescription="0" manualPercentageComplete="0" name="WF_V1V2" outputs="&lt;outputs />" revision="$Revision: 1.2 $" tags="" uniqueGuid="bc3678cc-b29b-4b39-bca6-e47ecaef0cc6" variables="&lt;variables />" webHidden="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables className="" name="variables" type=""/>
+        <inputs attribute="0" className="" name="inputs" type="">
+            <children attribute="0" className="java.lang.String" controlHidden="0" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" maximumValue="" minimumValue="" name="Data" readOnly="0" required="0" searchable="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </inputs>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start breakpoint="0" commented="0" continueOnFailure="0" created="0" description="" displayName="Start" height="36" interactive="0" jobMode="0" name="Start" originalStyle="" skipAttempt="0" style="image;image=/images/jgraphx/house.png" uniqueName="Start_1" waitSetting="0" width="58" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="PopupInput_2" commented="0" originalStyle="" points="" sourceX="74" sourceY="59" status="0" style="defaultEdge" targetX="174" targetY="144" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1583748282079" description="" displayName="UserInput" height="34" interactive="1" jobMode="0" name="UserInput" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.WebFormActivity" uniqueName="UserInput_1" waitSetting="0" width="100" x="599" y="127">
+        <inputs val="&lt;inputs>&lt;interactionUsers class=&quot;commvault.msgs.CvEntities.UserEntity&quot;>&lt;userName>admin&lt;/userName>&lt;userId>1&lt;/userId>&lt;/interactionUsers>&lt;actions>&lt;name>Yes&lt;/name>&lt;validateForm>true&lt;/validateForm>&lt;/actions>&lt;inputs>&lt;Press_Yes class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/Data}&lt;/Press_Yes>&lt;/inputs>&lt;subject>Testcase_validation&lt;/subject>&lt;sendEmail>true&lt;/sendEmail>&lt;approvalEnabled>false&lt;/approvalEnabled>&lt;email>&lt;from />&lt;to />&lt;cc />&lt;bcc />&lt;subject>Testcase_validation&lt;/subject>&lt;attachments />&lt;repeatInterval />&lt;body />&lt;html>true&lt;/html>&lt;/email>&lt;formProperties />&lt;/inputs>"/>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0" name="outputs" type="">
+                <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" name="Press_Yes" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children className="commvault.msgs.CvEntities.UserEntity" inputType="commvault.msgs.CvEntities.UserEntity" name="completedBy" type="{commvault.msgs.CvEntities}UserEntity">
+                    <children className="java.lang.String" inputType="java.lang.String" name="userName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                    <children className="java.lang.Integer" inputType="java.lang.Integer" name="userId" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                </children>
+                <children className="java.lang.String" inputType="java.lang.String" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs className="" defaultValue="" listType="0" name="inputs" type="">
+                <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" name="Press_Yes" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+        <transition activity="EndUserSession_1" commented="0" originalStyle="" points="" sourceX="649" sourceY="144" status="0" style="defaultEdge" targetX="854" targetY="348" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1583748286141" description="ends the interactive user session" displayName="EndUserSession" height="34" interactive="0" jobMode="0" name="EndUserSession" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.InteractiveEndSessionActivity" uniqueName="EndUserSession_1" waitSetting="0" width="124" x="792" y="331">
+        <inputs val="&lt;inputs />"/>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1583748744827" description="displays an informational message to the user" displayName="InformationalMessage" height="34" interactive="0" jobMode="0" name="InformationalMessage" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.InteractiveMessageActivity" uniqueName="InformationalMessage_2" waitSetting="0" width="157" x="282" y="333">
+        <inputs val="&lt;inputs>&lt;message>Testcase Validation&amp;#xD;&#xd;&#xa;&lt;/message>&lt;dialogType>Popup&lt;/dialogType>&lt;iconType>Information&lt;/iconType>&lt;title>INFO&lt;/title>&lt;html>false&lt;/html>&lt;actions>&lt;name>Ok&lt;/name>&lt;validateForm>true&lt;/validateForm>&lt;/actions>&lt;formProperties />&lt;/inputs>"/>
+        <activitySchema>
+            <outputs name="outputs">
+                <children className="java.lang.String" inputType="java.lang.String" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs className="" defaultValue="" listType="0" name="inputs" type=""/>
+        </activitySchema>
+        <transition activity="EndUserSession_2" commented="0" originalStyle="" points="" sourceX="360" sourceY="350" status="0" style="defaultEdge" targetX="457" targetY="233" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1583748866761" description="popups an input form for the user to fill out" displayName="PopupInput" height="34" interactive="0" jobMode="0" name="PopupInput" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.InteractiveInputActivity" uniqueName="PopupInput_2" waitSetting="0" width="100" x="152" y="154">
+        <inputs val="&lt;inputs>&lt;actions>&lt;name>Ok&lt;/name>&lt;validateForm>true&lt;/validateForm>&lt;/actions>&lt;inputs>&lt;Press_Ok class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/Data}&lt;/Press_Ok>&lt;/inputs>&lt;subject>Popping up&lt;/subject>&lt;formProperties />&lt;/inputs>"/>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0" name="outputs" type="">
+                <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" name="Press_Ok" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children className="java.lang.Boolean" inputType="java.lang.Boolean" name="okClicked" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+                <children className="java.lang.String" inputType="java.lang.String" name="actionSelected" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+            <inputs className="" defaultValue="" listType="0" name="inputs" type="">
+                <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" displayName="" documentation="" hidden="0" inputType="java.lang.String" listType="0" name="Press_Ok" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+        <transition activity="InformationalMessage_2" commented="0" originalStyle="" points="" sourceX="106" sourceY="235" status="0" style="defaultEdge" targetX="376" targetY="457" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1583752806215" description="ends the interactive user session" displayName="EndUserSession" height="34" interactive="0" jobMode="0" name="EndUserSession" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.InteractiveEndSessionActivity" uniqueName="EndUserSession_2" waitSetting="0" width="124" x="401" y="219">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="UserInput_1" commented="0" originalStyle="" points="" sourceX="463" sourceY="236" status="0" style="defaultEdge" targetX="662" targetY="145" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Activity>
+    <formProperties css="" formVersion="0" javaScript="" pageMode="0"/>
+</Workflow_WorkflowDefinition>

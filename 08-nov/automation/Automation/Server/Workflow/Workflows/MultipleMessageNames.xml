@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="1" businessLogic="1"
+    businessLogicExecutedBy="evmgrs,webserver"
+    businessLogicMessage="App_SetClientPropertiesRequest,App_UpdateSubClientPropertiesRequest"
+    businessLogicProcessing="Request" config="&lt;configuration />"
+    description="Workflow to authenticate excluding clients from SLA and disabling backup activity operations"
+    executeOnWeb="0"
+    inputs="&lt;inputs>&lt;requestXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/requestXML>&lt;processingInstruction class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/processingInstruction>&lt;responseXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/responseXML>&lt;/inputs>"
+    interactive="0" isHtmlDescription="0" manualPercentageComplete="0"
+    name="MultipleMessageNames"
+    outputs="&lt;outputs>&lt;returnCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>&lt;/returnCode>&lt;returnString class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/returnString>&lt;outputXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&lt;/outputXML>&lt;/outputs>"
+    revision="$Revision: 1.2 $" tags=""
+    uniqueGuid="1bcccc77-2e97-477a-9b25-c63df9bb0e17"
+    variables="&lt;variables>&lt;BL_PROCEED_WITH_INPUTXML class=&quot;java.lang.Integer&quot;>1&lt;/BL_PROCEED_WITH_INPUTXML>&lt;BL_DO_NOT_PROCEED class=&quot;java.lang.Integer&quot;>3&lt;/BL_DO_NOT_PROCEED>&lt;VAR_REQUEST_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_MESSAGE_STRING class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_REQUEST_TYPE class=&quot;java.lang.String&quot; _list_=&quot;false&quot; />&lt;VAR_OBJECT_ID class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/VAR_OBJECT_ID>&lt;/variables>"
+    webHidden="0" workflowId="0">
+    <schema>
+        <outputs attribute="0" className="" listType="0" name="outputs"
+            required="1" type="">
+            <children attribute="0" className="java.lang.Integer"
+                defaultValue="" hidden="0" inputType="java.lang.Integer"
+                listType="0" name="returnCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.String"
+                defaultValue="" hidden="0" inputType="java.lang.String"
+                listType="0" name="returnString" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="workflow.types.XML"
+                defaultValue="" hidden="0"
+                inputType="workflow.types.XML" listType="0"
+                name="outputXML" type="{workflow.types}XML"/>
+        </outputs>
+        <variables attribute="0" className="" listType="0"
+            name="variables" required="1" type="">
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" defaultValue="1" displayName=""
+                hidden="0" inputType="java.lang.Integer" listType="0"
+                name="BL_PROCEED_WITH_INPUTXML" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.Integer"
+                controlType="0" defaultValue="3" displayName=""
+                hidden="0" inputType="java.lang.Integer" listType="0"
+                name="BL_DO_NOT_PROCEED" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" documentation=""
+                hidden="0" inputType="java.lang.String" listType="0"
+                name="VAR_REQUEST_STRING" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_MESSAGE_STRING" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" displayName="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_REQUEST_TYPE" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            <children attribute="0" className="java.lang.String"
+                controlType="0" defaultValue="" hidden="0"
+                inputType="java.lang.String" listType="0"
+                name="VAR_OBJECT_ID" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </variables>
+        <inputs attribute="0" className="" listType="0" name="inputs"
+            required="1" type="">
+            <children attribute="0" className="workflow.types.XML"
+                defaultValue="" hidden="0"
+                inputType="workflow.types.XML" listType="0"
+                name="requestXML" type="{workflow.types}XML"/>
+            <children attribute="0" className="workflow.types.XML"
+                defaultValue="" hidden="0"
+                inputType="workflow.types.XML" listType="0"
+                name="processingInstruction" type="{workflow.types}XML"/>
+            <children attribute="0" className="workflow.types.XML"
+                defaultValue="" hidden="0"
+                inputType="workflow.types.XML" listType="0"
+                name="responseXML" type="{workflow.types}XML"/>
+        </inputs>
+        <config attribute="0" className="" name="configuration" type=""/>
+    </schema>
+    <Start commented="0" continueOnFailure="0" created="0"
+        description="" displayName="Start" height="36" interactive="0"
+        jobMode="0" name="Start" originalStyle="" skipAttempt="0"
+        style="image;image=/images/jgraphx/house.png"
+        uniqueName="Start_1" waitSetting="0" width="61" x="7" y="26">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="Script_3" commented="0" originalStyle=""
+            points="" sourceX="37" sourceY="44" status="0"
+            style="defaultEdge" targetX="91" targetY="241"
+            transitionIndex="0" x="0" y="0">
+            <condition language="1" script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity commented="0" continueOnFailure="0"
+        created="1452723299590"
+        description="ends the interactive user session"
+        displayName="Prevent Client " height="34" interactive="0"
+        jobMode="0" name="EndUserSessionWithOutputs"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=EndUserSessionWithOutputs"
+        uniqueName="EndUserSessionWithOutputs_1" waitSetting="0"
+        width="195" x="231" y="27">
+        <inputs val="&lt;inputs>&lt;returnCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/BL_DO_NOT_PROCEED}&lt;/returnCode>&lt;returnString class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_MESSAGE_STRING}&lt;/returnString>&lt;outputXML class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&amp;lt;App_SetClientPropertiesResponse&amp;gt;  &amp;#xD;&#xd;&#xa;    &amp;lt;response errorCode=&quot;xpath:{/workflow/variables/BL_DO_NOT_PROCEED}&quot; errorString=&quot;xpath:{/workflow/variables/VAR_MESSAGE_STRING}&quot;&amp;gt;  &amp;#xD;&#xd;&#xa;        &amp;lt;entity _type_=&quot;3&quot; clientId=&quot;xpath:{/workflow/variables/VAR_OBJECT_ID}&quot; clientName=&quot;&quot;/&amp;gt;  &amp;#xD;&#xd;&#xa;        &amp;lt;/response&amp;gt;&amp;#xD;&#xd;&#xa;&amp;lt;/App_SetClientPropertiesResponse&amp;gt;&lt;/outputXML>&lt;/inputs>"/>
+        <activitySchema>
+            <outputs attribute="0" className="" listType="0"
+                name="outputs" required="1" type="">
+                <children attribute="0" className="java.lang.Integer"
+                    controlType="0" defaultValue="" displayName=""
+                    documentation="" hidden="0"
+                    inputType="java.lang.Integer" listType="0"
+                    name="returnCode" readOnly="0" required="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="returnString" readOnly="0" required="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="outputXML" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </outputs>
+        </activitySchema>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1480697421231"
+        description="activity to execute code snippets in the selected language"
+        displayName="Set Vars" height="34" interactive="0" jobMode="0"
+        name="Script" namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.ScriptActivity"
+        uniqueName="Script_3" waitSetting="0" width="100" x="87" y="27">
+        <inputs val="&lt;inputs>&lt;script language=&quot;1&quot; script=&quot;XML inXML = xpath:{/workflow/inputs/requestXML};&amp;#xD;&amp;#xA;XML reqXml = inXML.selectSingleNode(&amp;quot;/requestXML/*&amp;quot;);&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;strRequest&amp;quot;, reqXml.toString());&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;VAR_REQUEST_TYPE&amp;quot;,reqXml.getName());&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;VAR_MESSAGE_STRING&amp;quot;,&amp;quot;Business logic workflow prevented &amp;quot; + workflow.getVariable(&amp;quot;VAR_REQUEST_TYPE&amp;quot;));&amp;#xD;&amp;#xA;workflow.setVariable(&amp;quot;VAR_OBJECT_ID&amp;quot;,reqXml.selectSingleNode(&amp;quot;string(//./entity/@clientId)&amp;quot;));&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;if (workflow.getVariable(&amp;quot;VAR_REQUEST_TYPE&amp;quot;).contains(&amp;quot;App_UpdateSubClientPropertiesRequest&amp;quot;))&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;VAR_OBJECT_ID&amp;quot;,reqXml.selectSingleNode(&amp;quot;string(//././entity/@subclientId)&amp;quot;));&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;else&amp;#xD;&amp;#xA;{&amp;#xD;&amp;#xA;    workflow.setVariable(&amp;quot;VAR_OBJECT_ID&amp;quot;,reqXml.selectSingleNode(&amp;quot;string(//./entity/@clientId)&amp;quot;));&amp;#xD;&amp;#xA;}&amp;#xD;&amp;#xA;logger.info(&amp;quot;INFO: Request XML : [&amp;quot; + xpath:{/workflow/inputs/requestXML} + &amp;quot;] &amp;quot;);&amp;#xD;&amp;#xA;logger.info(&amp;quot;INFO: Request singleNode reqXml : [&amp;quot; + reqXml + &amp;quot;] &amp;quot;);&amp;#xD;&amp;#xA;logger.info(&amp;quot;INFO: VAR_MESSAGE_STRING: &amp;quot;+workflow.getVariable(&amp;quot;VAR_MESSAGE_STRING&amp;quot;)+&amp;quot;&amp;quot;);&amp;#xD;&amp;#xA;logger.info(&amp;quot;INFO: strRequest: &amp;quot;+workflow.getVariable(&amp;quot;strRequest&amp;quot;)+&amp;quot;&amp;quot;); &amp;#xD;&amp;#xA;logger.info(&amp;quot;INFO: VAR_REQUEST_TYPE : [&amp;quot; + workflow.getVariable(&amp;quot;VAR_REQUEST_TYPE&amp;quot;) + &amp;quot;] &amp;quot;);&quot; />&lt;/inputs>"/>
+        <transition activity="EndUserSessionWithOutputs_2" commented="0"
+            originalStyle="" points="" sourceX="137" sourceY="44"
+            status="0" style="defaultEdge;dashed=1" targetX="231"
+            targetY="368" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="(xpath:{/workflow/variables/VAR_REQUEST_TYPE}.contains(&quot;App_UpdateSubClientPropertiesRequest&quot;));"/>
+        </transition>
+        <transition activity="EndUserSessionWithOutputs_1" commented="0"
+            originalStyle="" points="" sourceX="137" sourceY="44"
+            status="0" style="defaultEdge;dashed=1" targetX="610"
+            targetY="38" transitionIndex="0" x="0" y="0">
+            <condition language="1" script="(xpath:{/workflow/variables/VAR_REQUEST_TYPE}.contains(&quot;App_SetClientPropertiesRequest&quot;));"/>
+        </transition>
+    </Activity>
+    <Activity commented="0" continueOnFailure="0"
+        created="1579033816450"
+        description="ends the interactive user session"
+        displayName="Prevent subclient " height="34" interactive="0"
+        jobMode="0" name="EndUserSessionWithOutputs"
+        namespaceUri="commvault.cte.workflow.activities"
+        originalStyle="" skipAttempt="0"
+        style="label;image=commvault.cte.workflow.activities.InteractiveEndSessionOutputsActivity"
+        uniqueName="EndUserSessionWithOutputs_2" waitSetting="0"
+        width="195" x="89" y="120">
+        <inputs val="&lt;inputs>&lt;returnCode class=&quot;java.lang.Integer&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/BL_DO_NOT_PROCEED}&lt;/returnCode>&lt;returnString class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>xpath:{/workflow/variables/VAR_MESSAGE_STRING}&lt;/returnString>&lt;outputXML class=&quot;workflow.types.XML&quot; _list_=&quot;false&quot;>&amp;lt;App_UpdateSubClientPropertiesResponse&amp;gt;  &amp;#xD;&#xd;&#xa;    &amp;lt;response errorCode=&quot;xpath:{/workflow/variables/BL_DO_NOT_PROCEED}&quot; errorString=&quot;xpath:{/workflow/variables/VAR_MESSAGE_STRING}&quot;&amp;gt;  &amp;#xD;&#xd;&#xa;    &amp;lt;/response&amp;gt;  &amp;#xD;&#xd;&#xa;&amp;lt;/App_UpdateSubClientPropertiesResponse&amp;gt;&lt;/outputXML>&lt;/inputs>"/>
+        <activitySchema>
+            <outputs attribute="0" className="" listType="0"
+                name="outputs" required="1" type="">
+                <children attribute="0" className="java.lang.Integer"
+                    defaultValue="" displayName="" documentation=""
+                    hidden="0" inputType="java.lang.Integer"
+                    listType="0" name="returnCode" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                <children attribute="0" className="java.lang.String"
+                    defaultValue="" documentation="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="returnString" readOnly="0" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="workflow.types.XML"
+                    defaultValue="" displayName="" documentation=""
+                    hidden="0" inputType="workflow.types.XML"
+                    listType="0" name="outputXML" readOnly="0" type="{workflow.types}XML"/>
+            </outputs>
+        </activitySchema>
+    </Activity>
+    <formProperties css="" formVersion="0" javaScript="" pageMode="0">
+        <rules/>
+    </formProperties>
+</Workflow_WorkflowDefinition>

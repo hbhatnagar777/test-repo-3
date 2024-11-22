@@ -1,0 +1,3053 @@
+{
+	"info": {
+		"_postman_id": "fcddda61-e154-4820-917d-77a5551e4a91",
+		"name": "Plan Backup Content operations",
+		"description": "######/59209",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
+							"",
+							"//tests[\"Response time is less than 5000ms\"] = responseTime < 5000;   //validate response time",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"",
+							"var username = postman.getEnvironmentVariable(\"UserName\");                  ",
+							"",
+							"tests[\"Logged in User\"] = jsonData.userName === username;                //validate username of logged in user",
+							"",
+							"console.log(postman.getResponseHeader(\"Content-Type\"));",
+							"console.log(postman.getEnvironmentVariable(\"Token\"));",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"mode\":\"{{Mode}}\",\r\n    \"domain\":\"\",\r\n    \"username\":\"{{UserName}}\",\r\n    \"password\":\"{{Password}}\",\r\n    \"commserver\":\"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Login",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "LoginResp",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "1009",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Feb 2017 08:36:28 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"aliasName\":\"1\",\"userGUID\":\"907B1322-815B-4F81-BCAA-8ECB2D03AA0C\",\"loginAttempts\":0,\"remainingLockTime\":0,\"smtpAddress\":\"######\",\"userName\":\"admin\",\"providerType\":1,\"ccn\":0,\"token\":\"QSDK ...\",\"capability\":4328650366975,\"forcePasswordChange\":false,\"isAccountLocked\":false,\"ownerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"providerOrganization\":{\r\"providerId\":0,\"providerDomainName\":\"Qinetix Commcell\"\r},\"errList\":[\r\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "Library",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"Validating if Response Body has response tag\"] = responseBody.has(\"response\");",
+							"tests[\"Validating if Response Body has entityInfo tag\"] = responseBody.has(\"entityInfo\");",
+							"tests[\"Validating if Response Body has name tag\"] = responseBody.has(\"name\");",
+							"tests[\"Validating if Response Body has id tag\"] = responseBody.has(\"id\");",
+							"//var randIndex =(Math.random()*(jsonData.response.length));",
+							"//console.log(randIndex)",
+							"function getRandomInt(max) {",
+							"  return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"var randIndex = getRandomInt(jsonData.response.length);",
+							"console.log(randIndex);",
+							"postman.setEnvironmentVariable(\"libraryId\", jsonData.response[randIndex].entityInfo.id);",
+							"postman.setEnvironmentVariable(\"libraryName\", jsonData.response[randIndex].entityInfo.name);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Library",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Library"
+					]
+				},
+				"description": "<h2> Description </h2>\nThis operation returns a list of libraries.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_library.htm)"
+			},
+			"response": [
+				{
+					"name": "GET Library14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Library",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Library"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 06:33:06 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "458"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"response\": [\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_SYS_smckb2pmm108\",\n                \"id\": 8\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_smckb2pmm108\",\n                \"id\": 7\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_SYS_smckb2pmm107\",\n                \"id\": 6\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_smckb2pmm107\",\n                \"id\": 5\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_SYS_smckb2pmm106\",\n                \"id\": 4\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_smckb2pmm106\",\n                \"id\": 3\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_SYS_smckb2pmm105\",\n                \"id\": 2\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_smckb2pmm105\",\n                \"id\": 1\n            }\n        }\n    ]\n}"
+				},
+				{
+					"name": "Library",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/Library",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Library"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "206",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 14 Jun 2017 07:41:51 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "{\r\"response\":[\r{\r\"entityInfo\":{\r\"name\":\"fwMA_3lib\",\"id\":4\r}\r},{\r\"entityInfo\":{\r\"name\":\"IDCMA2Lib\",\"id\":3\r}\r},{\r\"entityInfo\":{\r\"name\":\"FirewallMALib\",\"id\":2\r}\r},{\r\"entityInfo\":{\r\"name\":\"CSLib\",\"id\":1\r}\r}\r]\r}"
+				},
+				{
+					"name": "GET Library17",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/Library",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"Library"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 12:53:59 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"response\": [\n        {\n            \"entityInfo\": {\n                \"name\": \"New Disk SPLibrary\",\n                \"id\": 16\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_SYS_smckb2pmm108\",\n                \"id\": 8\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_smckb2pmm108\",\n                \"id\": 7\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_SYS_smckb2pmm107\",\n                \"id\": 6\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_smckb2pmm107\",\n                \"id\": 5\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_SYS_smckb2pmm106\",\n                \"id\": 4\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_smckb2pmm106\",\n                \"id\": 3\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_SYS_smckb2pmm105\",\n                \"id\": 2\n            }\n        },\n        {\n            \"entityInfo\": {\n                \"name\": \"DL_smckb2pmm105\",\n                \"id\": 1\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "MediaAgent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+							"tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\";     //validate content-type",
+							"tests[\"Validating if Response Body has mediaAgentList tag\"] = responseBody.has(\"mediaAgentList\");",
+							"tests[\"Validating if Response Body has status tag\"] = responseBody.has(\"status\");",
+							"tests[\"Validating if Response Body has platform tag\"] = responseBody.has(\"platform\");",
+							"tests[\"Validating if Response Body has mediaAgentId tag\"] = responseBody.has(\"mediaAgentId\");",
+							"tests[\"Validating if Response Body has mediaAgentName tag\"] = responseBody.has(\"mediaAgentName\");",
+							"postman.setEnvironmentVariable(\"mediaAgentName\", jsonData.mediaAgentList[0].mediaAgent.mediaAgentName);",
+							"postman.setEnvironmentVariable(\"mediaAgentId\", jsonData.mediaAgentList[0].mediaAgent.mediaAgentId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"var libraryId = postman.getEnvironmentVariable(\"libraryId\"); ",
+							"postman.setEnvironmentVariable(\"libraryId\", libraryId);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/MediaAgentForLibrary?libraryId={{libraryId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"MediaAgentForLibrary"
+					],
+					"query": [
+						{
+							"key": "libraryId",
+							"value": "{{libraryId}}"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_mediaagent.htm"
+			},
+			"response": [
+				{
+					"name": "GET MediaAgent17",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/MediaAgentForLibrary?libraryId={{libraryId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"MediaAgentForLibrary"
+							],
+							"query": [
+								{
+									"key": "libraryId",
+									"value": "{{libraryId}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 12:59:15 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"mediaAgentList\": [\n        {\n            \"mediaAgentId\": 2,\n            \"osVersion\": \"Windows Server 2012 R2 Datacenter\",\n            \"description\": \"\",\n            \"libraryType\": 0,\n            \"mediaAgentName\": \"S-200128-93-0\",\n            \"platform\": \"WinX64\",\n            \"status\": \"Ready\",\n            \"mediaAgent\": {\n                \"mediaAgentId\": 2,\n                \"_type_\": 11,\n                \"displayName\": \"smckb2pmm101\",\n                \"mediaAgentName\": \"S-200128-93-0\"\n            }\n        }\n    ]\n}"
+				},
+				{
+					"name": "GET MediaAgent14",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerURL}}/MediaAgentForLibrary?libraryId={{libraryId}}",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"MediaAgentForLibrary"
+							],
+							"query": [
+								{
+									"key": "libraryId",
+									"value": "{{libraryId}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 07:04:46 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "224"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"mediaAgentList\": [\n        {\n            \"mediaAgentId\": 3439,\n            \"osVersion\": \"Windows Server 2016 Standard\",\n            \"description\": \"\",\n            \"libraryType\": 0,\n            \"mediaAgentName\": \"smckb2pmm108\",\n            \"platform\": \"WinX64\",\n            \"status\": \"Offline\",\n            \"mediaAgent\": {\n                \"_type_\": 11\n            }\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Storage Pool Dedupe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Response Body has archiveGroupCopy tag\"] = responseBody.has(\"archiveGroupCopy\");",
+							"if(tests[\"Response Body has newly created storage pool\"] = responseBody.has(\"storagePolicyName\"))",
+							"{",
+							"    console.log(\"The newly created storage pool is: \"+jsonData.archiveGroupCopy.storagePolicyName);",
+							"    postman.setEnvironmentVariable(\"storagePoolName\",jsonData.archiveGroupCopy.storagePolicyName);",
+							"}",
+							"if(tests[\"Response Body has id of the newly created storage pool.\"] = responseBody.has(\"storagePolicyId\"))",
+							"{",
+							"    console.log(\"The newly created storage pool's id is: \"+jsonData.archiveGroupCopy.storagePolicyId);",
+							"    postman.setEnvironmentVariable(\"storagePoolId\", jsonData.archiveGroupCopy.storagePolicyId);",
+							"}",
+							"if(tests[\"Response Body has newly create storage pool copy name\"] = responseBody.has(\"copyName\"))",
+							"{",
+							"    console.log(\"The newly created storage pool copy name is: \"+jsonData.archiveGroupCopy.copyName);",
+							"    postman.setEnvironmentVariable(\"copyName\",jsonData.archiveGroupCopy.copyName);",
+							"}",
+							"tests[\"Response Body has an error code\"] = responseBody.has(\"errorCode\");",
+							"tests[\"Response Body has an error code 0\"] = jsonData.error.errorCode === 0 ;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePolicyId = postman.getEnvironmentVariable(\"storagePolicyId\");",
+							"postman.setEnvironmentVariable(\"storagePolicyId\",storagePolicyId);",
+							"var storagePolicyName = postman.getEnvironmentVariable(\"storagePolicyName\");",
+							"postman.setEnvironmentVariable(\"storagePolicyName\",storagePolicyName);",
+							"var libraryId = postman.getEnvironmentVariable(\"libraryId\");",
+							"postman.setEnvironmentVariable(\"libraryId\",libraryId);",
+							"var libraryName = postman.getEnvironmentVariable(\"libraryName\");",
+							"postman.setEnvironmentVariable(\"libraryName\",libraryName);",
+							"var mediaAgentName = postman.getEnvironmentVariable(\"mediaAgentName\");",
+							"postman.setEnvironmentVariable(\"mediaAgentName\",mediaAgentName);",
+							"var mediaAgentId = postman.getEnvironmentVariable(\"mediaAgentId\");",
+							"postman.setEnvironmentVariable(\"mediaAgentId\",mediaAgentId);",
+							"var copyName = postman.setEnvironmentVariable(\"copyName\");",
+							"postman.setEnvironmentVariable(\"copyName\",copyName);",
+							"var copyId = postman.getEnvironmentVariable(\"copyId\");",
+							"postman.setEnvironmentVariable(\"copyId\",copyId);",
+							"postman.setEnvironmentVariable(\"path\",\"C:\\\\\\\\StoragePool\"+Date.now())",
+							"postman.setEnvironmentVariable(\"path1\",\"C:\\\\\\\\StoragePool1\"+Date.now())",
+							"var storagePoolName = \"DDStoragePoolForPlan\" + new Date().getTime();",
+							"postman.setEnvironmentVariable(\"tempStoragePoolName\", storagePoolName);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"storagePolicyName\": \"{{tempStoragePoolName}}\",\r\n  \"type\": 1,\r\n  \"copyName\": \"testDedupePool_primary\",\r\n  \"numberOfCopies\": 1,\r\n  \"clientGroup\": {\r\n    \"_type_\": 28,\r\n    \"clientGroupId\": 0,\r\n    \"clientGroupName\": \"\"\r\n  },\r\n  \"storage\": [\r\n    {\r\n      \"path\": \"{{path}}\",\r\n      \"mediaAgent\": {\r\n        \"mediaAgentId\": {{mediaAgentId}},\r\n        \"_type_\": 11,\r\n        \"mediaAgentName\": \"{{mediaAgentName}}\"\r\n      },\r\n      \"credentials\": {}\r\n    }\r\n  ],\r\n  \"storagePolicyCopyInfo\": {\r\n    \"copyType\": 1,\r\n    \"isFromGui\": true,\r\n    \"active\": 1,\r\n    \"isDefault\": 1,\r\n    \"numberOfStreamsToCombine\": 1,\r\n    \"dedupeFlags\": {\r\n      \"enableDASHFull\": 1,\r\n      \"hostGlobalDedupStore\": 1,\r\n      \"enableDeduplication\": 1\r\n    },\r\n    \"storagePolicyFlags\": {\r\n      \"blockLevelDedup\": 1,\r\n      \"enableGlobalDeduplication\": 1\r\n    },\r\n    \"DDBPartitionInfo\": {\r\n      \"maInfoList\": [\r\n        {\r\n          \"mediaAgent\": {\r\n            \"mediaAgentId\": {{mediaAgentId}},\r\n            \"_type_\": 11,\r\n            \"mediaAgentName\": \"{{mediaAgentName}}\"\r\n          },\r\n          \"subStoreList\": [\r\n            {\r\n              \"diskFreeWarningThreshholdMB\": 10240,\r\n              \"diskFreeThresholdMB\": 5120,\r\n              \"accessPath\": {\r\n                \"path\": \"{{path1}}\"\r\n              }\r\n            }\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"library\": {\r\n      \"libraryName\": \"{{libraryName}}\",\r\n      \"_type_\": 9,\r\n      \"libraryId\": {{libraryId}}\r\n    },\r\n    \"mediaAgent\": {\r\n      \"mediaAgentId\": {{mediaAgentId}},\r\n      \"_type_\": 11,\r\n      \"mediaAgentName\": \"{{mediaAgentName}}\"\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/StoragePool?Action=create",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePool"
+					],
+					"query": [
+						{
+							"key": "Action",
+							"value": "create"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Storage Pool17",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"storagePolicyName\": \"New Diksk SP\",\r\n  \"type\": 1,\r\n  \"copyName\": \"New Disk SP_Primary\",\r\n  \"numberOfCopies\": 1,\r\n  \"clientGroup\": {\r\n    \"_type_\": 28,\r\n    \"clientGroupId\": 0,\r\n    \"clientGroupName\": \"\"\r\n  },\r\n  \"storage\": [\r\n    {\r\n      \"path\": \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\lib\",\r\n      \"mediaAgent\": {\r\n        \"mediaAgentId\": 2,\r\n        \"_type_\": 11,\r\n        \"mediaAgentName\": \"S-200128-93-0\"\r\n      },\r\n      \"credentials\": {}\r\n    }\r\n  ],\r\n  \"storagePolicyCopyInfo\": {\r\n    \"copyType\": 1,\r\n    \"isFromGui\": true,\r\n    \"active\": 1,\r\n    \"isDefault\": 1,\r\n    \"numberOfStreamsToCombine\": 1,\r\n    \"dedupeFlags\": {\r\n      \"enableDASHFull\": 1,\r\n      \"hostGlobalDedupStore\": 1,\r\n      \"enableDeduplication\": 1\r\n    },\r\n    \"storagePolicyFlags\": {\r\n      \"blockLevelDedup\": 1,\r\n      \"enableGlobalDeduplication\": 1\r\n    },\r\n    \"DDBPartitionInfo\": {\r\n      \"maInfoList\": [\r\n        {\r\n          \"mediaAgent\": {\r\n            \"mediaAgentId\": 2,\r\n            \"_type_\": 11,\r\n            \"mediaAgentName\": \"S-200128-93-0\"\r\n          },\r\n          \"subStoreList\": [\r\n            {\r\n              \"diskFreeWarningThreshholdMB\": 10240,\r\n              \"diskFreeThresholdMB\": 5120,\r\n              \"accessPath\": {\r\n                \"path\": \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\dgdb3\"\r\n              }\r\n            }\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"library\": {\r\n      \"libraryName\": \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\lib\",\r\n      \"_type_\": 9,\r\n      \"libraryId\": 0\r\n    },\r\n    \"mediaAgent\": {\r\n      \"mediaAgentId\": 2,\r\n      \"_type_\": 11,\r\n      \"mediaAgentName\": \"S-200128-93-0\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/StoragePool?Action=create",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePool"
+							],
+							"query": [
+								{
+									"key": "Action",
+									"value": "create"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "private"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "WEBSERVERCORE-FLAG",
+							"value": "true"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 13:02:21 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"responseType\": 0,\n    \"archiveGroupCopy\": {\n        \"copyId\": 62,\n        \"_type_\": 18,\n        \"copyName\": \"New Disk SP_Primary\",\n        \"storagePolicyName\": \"New Diksk SP\",\n        \"storagePolicyId\": 63\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				},
+				{
+					"name": "Storage Pool14",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"storagePolicyName\": \"New Disk SP\",\r\n  \"type\": 1,\r\n  \"copyName\": \"New Disk SP_Primary\",\r\n  \"numberOfCopies\": 1,\r\n  \"clientGroup\": {\r\n    \"_type_\": 28,\r\n    \"clientGroupId\": 0,\r\n    \"clientGroupName\": \"\"\r\n  },\r\n  \"storage\": [\r\n    {\r\n      \"path\": \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\lib\",\r\n      \"mediaAgent\": {\r\n        \"mediaAgentId\": 2,\r\n        \"_type_\": 11,\r\n        \"mediaAgentName\": \"S-200128-93-0\"\r\n      },\r\n      \"credentials\": {}\r\n    }\r\n  ],\r\n  \"storagePolicyCopyInfo\": {\r\n    \"copyType\": 1,\r\n    \"isFromGui\": true,\r\n    \"active\": 1,\r\n    \"isDefault\": 1,\r\n    \"numberOfStreamsToCombine\": 1,\r\n    \"dedupeFlags\": {\r\n      \"enableDASHFull\": 1,\r\n      \"hostGlobalDedupStore\": 1,\r\n      \"enableDeduplication\": 1\r\n    },\r\n    \"storagePolicyFlags\": {\r\n      \"blockLevelDedup\": 1,\r\n      \"enableGlobalDeduplication\": 1\r\n    },\r\n    \"DDBPartitionInfo\": {\r\n      \"maInfoList\": [\r\n        {\r\n          \"mediaAgent\": {\r\n            \"mediaAgentId\": 2,\r\n            \"_type_\": 11,\r\n            \"mediaAgentName\": \"S-200128-93-0\"\r\n          },\r\n          \"subStoreList\": [\r\n            {\r\n              \"diskFreeWarningThreshholdMB\": 10240,\r\n              \"diskFreeThresholdMB\": 5120,\r\n              \"accessPath\": {\r\n                \"path\": \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\ddb3\"\r\n              }\r\n            }\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"library\": {\r\n      \"libraryName\": \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\lib\",\r\n      \"_type_\": 9,\r\n      \"libraryId\": 0\r\n    },\r\n    \"mediaAgent\": {\r\n      \"mediaAgentId\": 2,\r\n      \"_type_\": 11,\r\n      \"mediaAgentName\": \"S-200128-93-0\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{ServerURL}}/StoragePool?Action=create",
+							"host": [
+								"{{ServerURL}}"
+							],
+							"path": [
+								"StoragePool"
+							],
+							"query": [
+								{
+									"key": "Action",
+									"value": "create"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 05 Feb 2020 08:41:53 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "181"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"responseType\": 0,\n    \"archiveGroupCopy\": {\n        \"copyId\": 53,\n        \"_type_\": 18,\n        \"copyName\": \"New Disk SP_Primary\",\n        \"storagePolicyName\": \"New Disk SP\",\n        \"storagePolicyId\": 54\n    },\n    \"error\": {\n        \"errorCode\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "GET Plan template JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var planName = \"NewManPlan\" + new Date().getTime();",
+							"postman.setEnvironmentVariable(\"planName\", planName);",
+							"jsonData.plan.summary['description'] = planName;",
+							"jsonData.plan.summary.plan.planName = planName;",
+							"jsonData.plan.summary['rpoInMinutes'] = 1440;",
+							"jsonData.plan.storage.copy[0][\"useGlobalPolicy\"] =  {",
+							"    \"storagePolicyName\": pm.environment.get(\"storagePoolName\"),",
+							"    \"storagePolicyId\": parseInt(pm.environment.get(\"storagePoolId\"))",
+							"}",
+							"jsonData.plan.storage.copy[0][\"dedupeFlags\"][\"useGlobalDedupStore\"] = 1",
+							"pm.environment.set(\"dedupeJSON\", JSON.stringify(jsonData));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/V2/Plan/template?type=MSP&subType=Server",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"V2",
+						"Plan",
+						"template"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "MSP"
+						},
+						{
+							"key": "subType",
+							"value": "Server"
+						}
+					]
+				},
+				"description": "<h2> Description </h2>\nThis operation returns a list of storage pools.\n\n[_More Details_](http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_storagepool.htm)"
+			},
+			"response": [
+				{
+					"name": "Storage Pool",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{ServerUrl}}/StoragePool",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"StoragePool"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "xml",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "439",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/xml; charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 14 Jun 2017 07:59:57 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [],
+					"body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><Api_GetStoragePoolListResp><storagePoolList numberOfNodes=\"1\" reserved1=\"1\" status=\"Online\" storagePoolType=\"1\" totalCapacity=\"214383292579\" totalFreeSpace=\"112571092828\"><storagePool _type_=\"28\" clientGroupId=\"13\" clientGroupName=\"TestStoragePool\"/><storagePoolEntity _type_=\"160\" storagePoolId=\"13\" storagePoolName=\"TestStoragePool\"/></storagePoolList></Api_GetStoragePoolListResp>"
+				}
+			]
+		},
+		{
+			"name": "Dedupe Plan Creation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Response Body contains securityAssociations\"] = responseBody.has(\"securityAssociations\");",
+							"",
+							"tests[\"Response Body contains plan\"] = responseBody.has(\"plan\");",
+							"",
+							"tests[\"Response Body contains planOwner\"] = responseBody.has(\"planOwner\");",
+							"tests[\"Response Body contains errors\"] = responseBody.has(\"errors\");",
+							"",
+							"postman.setEnvironmentVariable(\"WinSubclientpolicy\", jsonData.plan.laptop.content.backupContent[0].subClientPolicy.backupSetEntity.backupsetId);",
+							"postman.setEnvironmentVariable(\"LinSubclientpolicy\", jsonData.plan.laptop.content.backupContent[1].subClientPolicy.backupSetEntity.backupsetId);",
+							"postman.setEnvironmentVariable(\"MacSubclientpolicy\", jsonData.plan.laptop.content.backupContent[2].subClientPolicy.backupSetEntity.backupsetId);",
+							"",
+							"postman.setEnvironmentVariable(\"planId\", jsonData.plan.summary.plan.planId);",
+							"postman.setEnvironmentVariable(\"planName\", jsonData.plan.summary.plan.planName);",
+							"",
+							"console.log(pm.environment.get(\"dedupeJSON\"))",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{dedupeJSON}}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/Plan",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"Plan"
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation creates a Plan."
+			},
+			"response": [
+				{
+					"name": "Default Server Plan With Secondary Storage Save Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"plan\": {\n\t\t\"summary\": {\n\t\t\t\"slaInMinutes\": 240,\n\t\t\t\"description\": \"NewServerPlan\",\n\t\t\t\"restrictions\": 1,\n\t\t\t\"type\": 2,\n\t\t\t\"subtype\": 33554437,\n\t\t\t\"planOwner\": {\n\t\t\t\t\"userGUID\": \"9DEB87C3-6FED-4B7F-9CC9-241F337081CD\",\n\t\t\t\t\"userName\": \"admin\",\n\t\t\t\t\"userId\": 1\n\t\t\t},\n\t\t\t\"plan\": {\n\t\t\t\t\"planName\": \"NewServerPlan\"\n\t\t\t}\n\t\t},\n\t\t\"inheritance\": {\n\t\t\t\"isSealed\": true\n\t\t},\n\t\t\"storage\": {\n\t\t\t\"storagePolicy\": {},\n\t\t\t\"copy\": [\n\t\t\t\t{\n\t\t\t\t\t\"active\": 1,\n\t\t\t\t\t\"isDefault\": 1,\n\t\t\t\t\t\"dedupeFlags\": {\n\t\t\t\t\t\t\"enableDASHFull\": 1,\n\t\t\t\t\t\t\"useGlobalDedupStore\": 1,\n\t\t\t\t\t\t\"enableDeduplication\": 1,\n\t\t\t\t\t\t\"enableClientSideDedup\": 1\n\t\t\t\t\t},\n\t\t\t\t\t\"storagePolicyFlags\": {\n\t\t\t\t\t\t\"blockLevelDedup\": 1\n\t\t\t\t\t},\n\t\t\t\t\t\"retentionRules\": {\n\t\t\t\t\t\t\"retainBackupDataForDays\": 30,\n\t\t\t\t\t\t\"retentionFlags\": {\n\t\t\t\t\t\t\t\"enableDataAging\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\t\"useGlobalPolicy\": {\n\t\t\t\t\t\t\"storagePolicyName\": \"NewStoragePool\",\n\t\t\t\t\t\t\"storagePolicyId\": 18\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"copyType\": 1,\n\t\t\t\t\t\"dedupeFlags\": {\n\t\t\t\t\t\t\"useGlobalDedupStore\": 1,\n\t\t\t\t\t\t\"enableDeduplication\": 1,\n\t\t\t\t\t\t\"enableClientSideDedup\": 1\n\t\t\t\t\t},\n\t\t\t\t\t\"storagePolicyFlags\": {\n\t\t\t\t\t\t\"blockLevelDedup\": 1\n\t\t\t\t\t},\n\t\t\t\t\t\"retentionRules\": {\n\t\t\t\t\t\t\"retainBackupDataForDays\": 30,\n\t\t\t\t\t\t\"retentionFlags\": {\n\t\t\t\t\t\t\t\"enableDataAging\": 1\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\t\"useGlobalPolicy\": {\n\t\t\t\t\t\t\"storagePolicyName\": \"NewStoragePool2\",\n\t\t\t\t\t\t\"storagePolicyId\": 20\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t\"schedule\": {\n\t\t\t\"task\": {\n\t\t\t\t\"taskType\": 4,\n\t\t\t\t\"taskFlags\": {\n\t\t\t\t\t\"isEdgeDrive\": false,\n\t\t\t\t\t\"isEZOperation\": false,\n\t\t\t\t\t\"disabled\": false\n\t\t\t\t}\n\t\t\t},\n\t\t\t\"subTasks\": [\n\t\t\t\t{\n\t\t\t\t\t\"subTask\": {\n\t\t\t\t\t\t\"subTaskName\": \"Daily Incremental\",\n\t\t\t\t\t\t\"subTaskType\": 2,\n\t\t\t\t\t\t\"flags\": 65536,\n\t\t\t\t\t\t\"operationType\": 2,\n\t\t\t\t\t\t\"subTaskId\": 1\n\t\t\t\t\t},\n\t\t\t\t\t\"pattern\": {\n\t\t\t\t\t\t\"freq_subday_interval\": 14400,\n\t\t\t\t\t\t\"freq_type\": 4,\n\t\t\t\t\t\t\"active_end_time\": 86340,\n\t\t\t\t\t\t\"active_start_time\": 0,\n\t\t\t\t\t\t\"freq_interval\": 1,\n\t\t\t\t\t\t\"name\": \"Daily Incremental\",\n\t\t\t\t\t\t\"freq_recurrence_factor\": 1\n\t\t\t\t\t},\n\t\t\t\t\t\"options\": {\n\t\t\t\t\t\t\"backupOpts\": {\n\t\t\t\t\t\t\t\"bkpLatestVersion\": true,\n\t\t\t\t\t\t\t\"backupLevel\": 2,\n\t\t\t\t\t\t\t\"incLevel\": 1,\n\t\t\t\t\t\t\t\"runIncrementalBackup\": true,\n\t\t\t\t\t\t\t\"doNotTruncateLog\": false,\n\t\t\t\t\t\t\t\"cdrOptions\": {\n\t\t\t\t\t\t\t\t\"incremental\": true,\n\t\t\t\t\t\t\t\t\"dataVerificationOnly\": false,\n\t\t\t\t\t\t\t\t\"full\": false\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"dataOpt\": {\n\t\t\t\t\t\t\t\t\"stopWinService\": true,\n\t\t\t\t\t\t\t\t\"stopDhcpService\": true,\n\t\t\t\t\t\t\t\t\"useCatalogServer\": true,\n\t\t\t\t\t\t\t\t\"optimizedBackup\": true,\n\t\t\t\t\t\t\t\t\"followMountPoints\": true,\n\t\t\t\t\t\t\t\t\"bkpFilesProctedByFS\": true,\n\t\t\t\t\t\t\t\t\"granularrecovery\": true,\n\t\t\t\t\t\t\t\t\"verifySynthFull\": true,\n\t\t\t\t\t\t\t\t\"daysBetweenSyntheticBackup\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"nasOptions\": {\n\t\t\t\t\t\t\t\t\"snapShotType\": 0,\n\t\t\t\t\t\t\t\t\"backupQuotas\": true\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"vaultTrackerOpt\": {\n\t\t\t\t\t\t\t\t\"mediaStatus\": {\n\t\t\t\t\t\t\t\t\t\"bad\": true,\n\t\t\t\t\t\t\t\t\t\"overwriteProtected\": true,\n\t\t\t\t\t\t\t\t\t\"full\": true\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"mediaOpt\": {\n\t\t\t\t\t\t\t\t\"numberofDays\": 30,\n\t\t\t\t\t\t\t\t\"retentionJobType\": 2,\n\t\t\t\t\t\t\t\t\"waitForInlineBackupResources\": true,\n\t\t\t\t\t\t\t\t\"allowOtherSchedulesToUseMediaSet\": true\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"commonOpts\": {\n\t\t\t\t\t\t\t\"jobRetryOpts\": {\n\t\t\t\t\t\t\t\t\"runningTime\": {\n\t\t\t\t\t\t\t\t\t\"totalRunningTime\": 3600\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"subTask\": {\n\t\t\t\t\t\t\"subTaskName\": \"Last Saturday of the Month Regular Full\",\n\t\t\t\t\t\t\"subTaskType\": 2,\n\t\t\t\t\t\t\"flags\": 0,\n\t\t\t\t\t\t\"operationType\": 2,\n\t\t\t\t\t\t\"subTaskId\": 1\n\t\t\t\t\t},\n\t\t\t\t\t\"pattern\": {\n\t\t\t\t\t\t\"freq_subday_interval\": 0,\n\t\t\t\t\t\t\"freq_type\": 32,\n\t\t\t\t\t\t\"active_start_time\": 72000,\n\t\t\t\t\t\t\"freq_interval\": 7,\n\t\t\t\t\t\t\"freq_relative_interval\": 5,\n\t\t\t\t\t\t\"name\": \"Last Saturday of the Month Regular Full\",\n\t\t\t\t\t\t\"freq_recurrence_factor\": 1,\n\t\t\t\t\t\t\"daysToRun\": {\n\t\t\t\t\t\t\t\"week\": 5,\n\t\t\t\t\t\t\t\"day\": 7\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\t\"options\": {\n\t\t\t\t\t\t\"backupOpts\": {\n\t\t\t\t\t\t\t\"truncateLogsOnSource\": false,\n\t\t\t\t\t\t\t\"sybaseSkipFullafterLogBkp\": false,\n\t\t\t\t\t\t\t\"bkpLatestVersion\": true,\n\t\t\t\t\t\t\t\"backupLevel\": 1,\n\t\t\t\t\t\t\t\"incLevel\": 1,\n\t\t\t\t\t\t\t\"runIncrementalBackup\": true,\n\t\t\t\t\t\t\t\"doNotTruncateLog\": false,\n\t\t\t\t\t\t\t\"vsaBackupOptions\": {\n\t\t\t\t\t\t\t\t\"backupFailedVMsOnly\": false\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"cdrOptions\": {\n\t\t\t\t\t\t\t\t\"incremental\": false,\n\t\t\t\t\t\t\t\t\"dataVerificationOnly\": false,\n\t\t\t\t\t\t\t\t\"full\": true\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"dataOpt\": {\n\t\t\t\t\t\t\t\t\"useCatalogServer\": true,\n\t\t\t\t\t\t\t\t\"followMountPoints\": true,\n\t\t\t\t\t\t\t\t\"enforceTransactionLogUsage\": false,\n\t\t\t\t\t\t\t\t\"skipConsistencyCheck\": false,\n\t\t\t\t\t\t\t\t\"createNewIndex\": true,\n\t\t\t\t\t\t\t\t\"daysBetweenSyntheticBackup\": 0,\n\t\t\t\t\t\t\t\t\"autoCopy\": false\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"mediaOpt\": {}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"commonOpts\": {\n\t\t\t\t\t\t\t\"perfJobOpts\": {}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"subTask\": {\n\t\t\t\t\t\t\"subTaskName\": \"Weekly Synthetic Fulls\",\n\t\t\t\t\t\t\"subTaskType\": 2,\n\t\t\t\t\t\t\"flags\": 0,\n\t\t\t\t\t\t\"operationType\": 2,\n\t\t\t\t\t\t\"subTaskId\": 1\n\t\t\t\t\t},\n\t\t\t\t\t\"pattern\": {\n\t\t\t\t\t\t\"freq_subday_interval\": 0,\n\t\t\t\t\t\t\"freq_type\": 8,\n\t\t\t\t\t\t\"active_start_time\": 72000,\n\t\t\t\t\t\t\"freq_interval\": 32,\n\t\t\t\t\t\t\"name\": \"Weekly Synthetic Fulls\",\n\t\t\t\t\t\t\"freq_recurrence_factor\": 1,\n\t\t\t\t\t\t\"daysToRun\": {\n\t\t\t\t\t\t\t\"Monday\": false,\n\t\t\t\t\t\t\t\"Thursday\": false,\n\t\t\t\t\t\t\t\"Friday\": true,\n\t\t\t\t\t\t\t\"Sunday\": false,\n\t\t\t\t\t\t\t\"Wednesday\": false,\n\t\t\t\t\t\t\t\"Tuesday\": false,\n\t\t\t\t\t\t\t\"Saturday\": false\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"repeatPattern\": [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\"exception\": true,\n\t\t\t\t\t\t\t\t\"onDay\": 64,\n\t\t\t\t\t\t\t\t\"occurrence\": 16\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t]\n\t\t\t\t\t},\n\t\t\t\t\t\"options\": {\n\t\t\t\t\t\t\"backupOpts\": {\n\t\t\t\t\t\t\t\"truncateLogsOnSource\": false,\n\t\t\t\t\t\t\t\"sybaseSkipFullafterLogBkp\": false,\n\t\t\t\t\t\t\t\"bkpLatestVersion\": true,\n\t\t\t\t\t\t\t\"backupLevel\": 4,\n\t\t\t\t\t\t\t\"incLevel\": 1,\n\t\t\t\t\t\t\t\"runIncrementalBackup\": true,\n\t\t\t\t\t\t\t\"doNotTruncateLog\": false,\n\t\t\t\t\t\t\t\"vsaBackupOptions\": {\n\t\t\t\t\t\t\t\t\"backupFailedVMsOnly\": false\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"cdrOptions\": {\n\t\t\t\t\t\t\t\t\"incremental\": false,\n\t\t\t\t\t\t\t\t\"dataVerificationOnly\": false,\n\t\t\t\t\t\t\t\t\"full\": false\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"dataOpt\": {\n\t\t\t\t\t\t\t\t\"useCatalogServer\": true,\n\t\t\t\t\t\t\t\t\"followMountPoints\": true,\n\t\t\t\t\t\t\t\t\"enforceTransactionLogUsage\": false,\n\t\t\t\t\t\t\t\t\"skipConsistencyCheck\": false,\n\t\t\t\t\t\t\t\t\"createNewIndex\": true,\n\t\t\t\t\t\t\t\t\"daysBetweenSyntheticBackup\": 0,\n\t\t\t\t\t\t\t\t\"autoCopy\": false\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"mediaOpt\": {}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"commonOpts\": {\n\t\t\t\t\t\t\t\"perfJobOpts\": {}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"subTask\": {\n\t\t\t\t\t\t\"subTaskName\": \"Daily aux copy\",\n\t\t\t\t\t\t\"subTaskType\": 1,\n\t\t\t\t\t\t\"flags\": 0,\n\t\t\t\t\t\t\"operationType\": 4003,\n\t\t\t\t\t\t\"subTaskId\": 1\n\t\t\t\t\t},\n\t\t\t\t\t\"pattern\": {\n\t\t\t\t\t\t\"freq_subday_interval\": 1800,\n\t\t\t\t\t\t\"freq_type\": 4,\n\t\t\t\t\t\t\"active_end_time\": 86340,\n\t\t\t\t\t\t\"active_start_time\": 0,\n\t\t\t\t\t\t\"freq_interval\": 1,\n\t\t\t\t\t\t\"name\": \"Daily aux copy\",\n\t\t\t\t\t\t\"freq_recurrence_factor\": 1\n\t\t\t\t\t},\n\t\t\t\t\t\"options\": {\n\t\t\t\t\t\t\"backupOpts\": {\n\t\t\t\t\t\t\t\"bkpLatestVersion\": true,\n\t\t\t\t\t\t\t\"backupLevel\": 2,\n\t\t\t\t\t\t\t\"incLevel\": 1,\n\t\t\t\t\t\t\t\"runIncrementalBackup\": true,\n\t\t\t\t\t\t\t\"doNotTruncateLog\": false,\n\t\t\t\t\t\t\t\"cdrOptions\": {\n\t\t\t\t\t\t\t\t\"incremental\": true,\n\t\t\t\t\t\t\t\t\"dataVerificationOnly\": false,\n\t\t\t\t\t\t\t\t\"full\": false\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"dataOpt\": {\n\t\t\t\t\t\t\t\t\"stopWinService\": true,\n\t\t\t\t\t\t\t\t\"stopDhcpService\": true,\n\t\t\t\t\t\t\t\t\"useCatalogServer\": true,\n\t\t\t\t\t\t\t\t\"optimizedBackup\": true,\n\t\t\t\t\t\t\t\t\"followMountPoints\": true,\n\t\t\t\t\t\t\t\t\"bkpFilesProctedByFS\": true,\n\t\t\t\t\t\t\t\t\"granularrecovery\": true,\n\t\t\t\t\t\t\t\t\"verifySynthFull\": true,\n\t\t\t\t\t\t\t\t\"daysBetweenSyntheticBackup\": 0\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"nasOptions\": {\n\t\t\t\t\t\t\t\t\"snapShotType\": 0,\n\t\t\t\t\t\t\t\t\"backupQuotas\": true\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"vaultTrackerOpt\": {\n\t\t\t\t\t\t\t\t\"mediaStatus\": {\n\t\t\t\t\t\t\t\t\t\"bad\": true,\n\t\t\t\t\t\t\t\t\t\"overwriteProtected\": true,\n\t\t\t\t\t\t\t\t\t\"full\": true\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\"mediaOpt\": {\n\t\t\t\t\t\t\t\t\"numberofDays\": 30,\n\t\t\t\t\t\t\t\t\"retentionJobType\": 2,\n\t\t\t\t\t\t\t\t\"waitForInlineBackupResources\": true,\n\t\t\t\t\t\t\t\t\"allowOtherSchedulesToUseMediaSet\": true\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"commonOpts\": {\n\t\t\t\t\t\t\t\"jobRetryOpts\": {\n\t\t\t\t\t\t\t\t\"runningTime\": {\n\t\t\t\t\t\t\t\t\t\"totalRunningTime\": 3600\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t]\n\t\t},\n\t\t\"options\": {\n\t\t\t\"quota\": 0\n\t\t}\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/v2/Plan",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"v2",
+								"Plan"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "11420",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 15 Sep 2017 17:42:05 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "930C162901E43496C2ED776C7233E414",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"plan\":{\r\"summary\":{\r\"slaInMinutes\":240,\"restrictions\":1,\"type\":2,\"planStatusFlag\":0,\"numDevices\":0,\"subtype\":33554437,\"numUsers\":0,\"permissions\":[\r{\r\"permissionId\":1\r},{\r\"permissionId\":2\r},{\r\"permissionId\":3\r},{\r\"permissionId\":4\r},{\r\"permissionId\":5\r},{\r\"permissionId\":6\r},{\r\"permissionId\":7\r},{\r\"permissionId\":8\r},{\r\"permissionId\":9\r},{\r\"permissionId\":10\r},{\r\"permissionId\":11\r},{\r\"permissionId\":12\r},{\r\"permissionId\":13\r},{\r\"permissionId\":15\r},{\r\"permissionId\":16\r},{\r\"permissionId\":18\r},{\r\"permissionId\":20\r},{\r\"permissionId\":22\r},{\r\"permissionId\":24\r},{\r\"permissionId\":25\r},{\r\"permissionId\":26\r},{\r\"permissionId\":27\r},{\r\"permissionId\":29\r},{\r\"permissionId\":31\r},{\r\"permissionId\":32\r},{\r\"permissionId\":33\r},{\r\"permissionId\":34\r},{\r\"permissionId\":35\r},{\r\"permissionId\":36\r},{\r\"permissionId\":38\r},{\r\"permissionId\":39\r},{\r\"permissionId\":40\r},{\r\"permissionId\":41\r},{\r\"permissionId\":42\r},{\r\"permissionId\":101\r},{\r\"permissionId\":102\r},{\r\"permissionId\":103\r},{\r\"permissionId\":107\r},{\r\"permissionId\":116\r},{\r\"permissionId\":117\r},{\r\"permissionId\":118\r},{\r\"permissionId\":134\r},{\r\"permissionId\":135\r},{\r\"permissionId\":136\r},{\r\"permissionId\":137\r},{\r\"permissionId\":139\r},{\r\"permissionId\":140\r},{\r\"permissionId\":142\r},{\r\"permissionId\":143\r},{\r\"permissionId\":145\r},{\r\"permissionId\":146\r},{\r\"permissionId\":147\r},{\r\"permissionId\":148\r},{\r\"permissionId\":149\r},{\r\"permissionId\":150\r},{\r\"permissionId\":157\r},{\r\"permissionId\":158\r},{\r\"permissionId\":159\r},{\r\"permissionId\":178\r},{\r\"permissionId\":215\r},{\r\"permissionId\":217\r},{\r\"permissionId\":178\r}\r],\"planOwner\":{\r\"_type_\":13,\"userName\":\"Administrator\",\"userId\":1\r},\"plan\":{\r\"_type_\":158,\"planName\":\"4304759e-ac1f-4d82-8879-abe6cadfb732\",\"planId\":14\r}\r},\"definesStorage\":{\r\"definesEntity\":true,\"overrideEntity\":0\r},\"securityAssociations\":{\r\"associations\":[\r{\r\"userOrGroup\":[\r{\r\"userId\":1,\"_type_\":13,\"userName\":\"admin\"\r}\r],\"properties\":{\r\"isCreatorAssociation\":true,\"role\":{\r\"_type_\":120,\"roleId\":10,\"roleName\":\"Plan Creator Role\"\r}\r}\r}\r],\"ownerAssociations\":{\r\r}\r},\"featureInfo\":{\r\"edgedriveInfo\":{\r\r},\"definesEdgeDriveInfo\":{\r\"definesEntity\":false,\"overrideEntity\":0\r}\r},\"inheritance\":{\r\"isSealed\":true\r},\"storage\":{\r\"storagePolicy\":{\r\"storagePolicyName\":\"4304759e-ac1f-4d82-8879-abe6cadfb732\",\"storagePolicyId\":27\r},\"copy\":[\r{\r\"copyType\":0,\"active\":1,\"isDefault\":1,\"copyPrecedence\":1,\"retentionRules\":{\r\"retainBackupDataForCycles\":1,\"jobs\":0,\"retainArchiverDataForDays\":0,\"retainBackupDataForDays\":30\r},\"StoragePolicyCopy\":{\r\"copyId\":29,\"copyName\":\"Primary\"\r},\"drivePool\":{\r\"drivePoolName\":\"DrivePool(testabc)7\",\"drivePoolId\":7\r},\"library\":{\r\"libraryName\":\"NewStoragePoolLibrary\",\"libraryId\":9\r},\"useGlobalPolicy\":{\r\"storagePolicyName\":\"NewStoragePool\",\"storagePolicyId\":18\r}\r},{\r\"copyType\":1,\"active\":1,\"isDefault\":0,\"copyPrecedence\":2,\"retentionRules\":{\r\"retainBackupDataForCycles\":1,\"jobs\":0,\"retainArchiverDataForDays\":0,\"retainBackupDataForDays\":30\r},\"StoragePolicyCopy\":{\r\"copyId\":30,\"copyName\":\"4304759e-ac1f-4d82-8879-abe6cadfb732 synchronous copy\"\r},\"drivePool\":{\r\"drivePoolName\":\"DrivePool(testabc)8\",\"drivePoolId\":8\r},\"library\":{\r\"libraryName\":\"NewStoragePool2Library\",\"libraryId\":10\r},\"useGlobalPolicy\":{\r\"storagePolicyName\":\"NewStoragePool2\",\"storagePolicyId\":20\r}\r}\r]\r},\"definesSchedule\":{\r\"definesEntity\":true,\"overrideEntity\":0\r},\"laptop\":{\r\"features\":{\r\"categoryPermission\":{\r\r}\r},\"accessPolicies\":{\r\"categoryPermission\":{\r\r}\r},\"definesAccessPolicies\":{\r\"definesEntity\":false,\"overrideEntity\":0\r},\"content\":{\r\"definesSubclientWin\":{\r\"definesEntity\":false,\"overrideEntity\":0\r},\"definesSubclientMac\":{\r\"definesEntity\":false,\"overrideEntity\":0\r},\"definesSubclientLin\":{\r\"definesEntity\":false,\"overrideEntity\":0\r}\r},\"users\":{\r\r},\"definesFeatures\":{\r\"definesEntity\":false,\"overrideEntity\":0\r}\r},\"alerts\":{\r\r},\"replicationTargets\":{\r\r},\"schedule\":{\r\"task\":{\r\"description\":\"\",\"ownerId\":1,\"runUserId\":1,\"taskType\":4,\"ownerName\":\"Administrator\",\"alertId\":0,\"GUID\":\"7966dbae-c5e9-4198-8a12-eb7486a72e4a\",\"policyType\":0,\"associatedObjects\":0,\"taskName\":\"4304759e-ac1f-4d82-8879-abe6cadfb732\",\"taskId\":497,\"securityAssociations\":{\r\"ownerAssociations\":{\r\r}\r},\"originalCC\":{\r\"commCellId\":2\r},\"taskSecurity\":{\r\"associatedUserGroups\":[\r{\r\"userGroupId\":1,\"_type_\":15,\"userGroupName\":\"master\"\r},{\r\"userGroupId\":3,\"_type_\":15,\"userGroupName\":\"View All\"\r}\r],\"ownerCapabilities\":{\r\r}\r},\"createAs\":{\r\"user\":{\r\"user\":{\r\"userName\":\"admin\",\"userId\":1\r}\r}\r},\"taskFlags\":{\r\"isEdgeDrive\":false,\"isEZOperation\":false,\"forDDB\":false,\"uninstalled\":false,\"isSystem\":false,\"disabled\":false\r},\"task\":{\r\"taskName\":\"4304759e-ac1f-4d82-8879-abe6cadfb732\",\"taskId\":497\r}\r},\"appGroup\":{\r\r},\"subTasks\":[\r{\r\"subTask\":{\r\"subTaskOrder\":0,\"subTaskName\":\"Daily Incremental\",\"subTaskType\":2,\"flags\":65536,\"operationType\":2,\"subTaskId\":506,\"subTask\":{\r\"subtaskId\":506,\"subtaskName\":\"Daily Incremental\"\r}\r},\"pattern\":{\r\"active_end_occurence\":0,\"freq_subday_interval\":14400,\"freq_type\":4,\"patternId\":83,\"flags\":0,\"description\":\"\",\"active_end_time\":86340,\"active_end_date\":0,\"skipOccurence\":0,\"skipDayNumber\":0,\"active_start_time\":0,\"freq_restart_interval\":0,\"active_start_date\":1505433600,\"freq_interval\":1,\"freq_relative_interval\":0,\"name\":\"Daily Incremental\",\"freq_recurrence_factor\":1,\"calendar\":{\r\"calendarName\":\"Standard\",\"calendarId\":1\r},\"timeZone\":{\r\"TimeZoneID\":1000\r}\r},\"options\":{\r\"backupOpts\":{\r\"bkpLatestVersion\":true,\"backupLevel\":2,\"incLevel\":1,\"runIncrementalBackup\":true,\"doNotTruncateLog\":false,\"cdrOptions\":{\r\"incremental\":true,\"dataVerificationOnly\":false,\"full\":false\r},\"dataOpt\":{\r\"stopWinService\":true,\"stopDhcpService\":true,\"useCatalogServer\":true,\"optimizedBackup\":true,\"followMountPoints\":true,\"bkpFilesProctedByFS\":true,\"granularrecovery\":true,\"verifySynthFull\":true,\"daysBetweenSyntheticBackup\":0\r},\"nasOptions\":{\r\"snapShotType\":0,\"backupQuotas\":true\r},\"vaultTrackerOpt\":{\r\"mediaStatus\":{\r\"bad\":true,\"overwriteProtected\":true,\"full\":true\r}\r},\"mediaOpt\":{\r\"numberofDays\":30,\"retentionJobType\":2,\"waitForInlineBackupResources\":true,\"allowOtherSchedulesToUseMediaSet\":true\r}\r},\"commonOpts\":{\r\"jobRetryOpts\":{\r\"runningTime\":{\r\"totalRunningTime\":3600\r}\r}\r}\r}\r},{\r\"subTask\":{\r\"subTaskOrder\":0,\"subTaskName\":\"Last Saturday of the Month Regular Full\",\"subTaskType\":2,\"flags\":0,\"operationType\":2,\"subTaskId\":507,\"subTask\":{\r\"subtaskId\":507,\"subtaskName\":\"Last Saturday of the Month Regular Full\"\r}\r},\"pattern\":{\r\"active_end_occurence\":0,\"freq_subday_interval\":0,\"freq_type\":32,\"patternId\":84,\"flags\":0,\"description\":\"\",\"active_end_time\":0,\"active_end_date\":0,\"skipOccurence\":0,\"skipDayNumber\":0,\"active_start_time\":72000,\"freq_restart_interval\":0,\"active_start_date\":1505433600,\"freq_interval\":7,\"freq_relative_interval\":5,\"name\":\"Last Saturday of the Month Regular Full\",\"freq_recurrence_factor\":1,\"daysToRun\":{\r\"week\":5,\"day\":7\r},\"calendar\":{\r\"calendarName\":\"Standard\",\"calendarId\":1\r},\"timeZone\":{\r\"TimeZoneID\":1000\r}\r},\"options\":{\r\"backupOpts\":{\r\"truncateLogsOnSource\":false,\"sybaseSkipFullafterLogBkp\":false,\"bkpLatestVersion\":true,\"backupLevel\":1,\"incLevel\":1,\"runIncrementalBackup\":true,\"doNotTruncateLog\":false,\"vsaBackupOptions\":{\r\"backupFailedVMsOnly\":false\r},\"cdrOptions\":{\r\"incremental\":false,\"dataVerificationOnly\":false,\"full\":true\r},\"dataOpt\":{\r\"useCatalogServer\":true,\"followMountPoints\":true,\"enforceTransactionLogUsage\":false,\"skipConsistencyCheck\":false,\"createNewIndex\":true,\"daysBetweenSyntheticBackup\":0,\"autoCopy\":false\r},\"mediaOpt\":{\r\r}\r},\"commonOpts\":{\r\"perfJobOpts\":{\r\r}\r}\r}\r},{\r\"subTask\":{\r\"subTaskOrder\":0,\"subTaskName\":\"Weekly Synthetic Fulls\",\"subTaskType\":2,\"flags\":0,\"operationType\":2,\"subTaskId\":508,\"subTask\":{\r\"subtaskId\":508,\"subtaskName\":\"Weekly Synthetic Fulls\"\r}\r},\"pattern\":{\r\"active_end_occurence\":0,\"freq_subday_interval\":0,\"freq_type\":8,\"patternId\":85,\"flags\":0,\"description\":\"\",\"active_end_time\":0,\"active_end_date\":0,\"skipOccurence\":0,\"skipDayNumber\":0,\"active_start_time\":72000,\"freq_restart_interval\":0,\"active_start_date\":1505433600,\"freq_interval\":32,\"freq_relative_interval\":0,\"name\":\"Weekly Synthetic Fulls\",\"freq_recurrence_factor\":1,\"daysToRun\":{\r\"week\":0,\"Friday\":true,\"day\":0\r},\"repeatPattern\":[\r{\r\"exception\":true,\"onDayNumber\":0,\"onDay\":64,\"description\":\"On Last - Saturday\",\"occurrence\":16,\"repeatOn\":0\r}\r],\"calendar\":{\r\"calendarName\":\"Standard\",\"calendarId\":1\r},\"timeZone\":{\r\"TimeZoneID\":1000\r}\r},\"options\":{\r\"backupOpts\":{\r\"truncateLogsOnSource\":false,\"sybaseSkipFullafterLogBkp\":false,\"bkpLatestVersion\":true,\"backupLevel\":4,\"incLevel\":1,\"runIncrementalBackup\":true,\"doNotTruncateLog\":false,\"vsaBackupOptions\":{\r\"backupFailedVMsOnly\":false\r},\"cdrOptions\":{\r\"incremental\":false,\"dataVerificationOnly\":false,\"full\":false\r},\"dataOpt\":{\r\"useCatalogServer\":true,\"followMountPoints\":true,\"enforceTransactionLogUsage\":false,\"skipConsistencyCheck\":false,\"createNewIndex\":true,\"daysBetweenSyntheticBackup\":0,\"autoCopy\":false\r},\"mediaOpt\":{\r\r}\r},\"commonOpts\":{\r\"perfJobOpts\":{\r\r}\r}\r}\r},{\r\"subTask\":{\r\"subTaskOrder\":0,\"subTaskName\":\"4304759e-ac1f-4d82-8879-abe6cadfb732 aux copy\",\"subTaskType\":1,\"flags\":0,\"operationType\":4003,\"subTaskId\":509,\"subTask\":{\r\"subtaskId\":509,\"subtaskName\":\"4304759e-ac1f-4d82-8879-abe6cadfb732 aux copy\",\"taskId\":498\r}\r},\"pattern\":{\r\"active_end_occurence\":0,\"freq_subday_interval\":1800,\"freq_type\":4,\"patternId\":86,\"flags\":0,\"description\":\"\",\"active_end_time\":86340,\"active_end_date\":0,\"skipOccurence\":0,\"skipDayNumber\":0,\"active_start_time\":0,\"freq_restart_interval\":0,\"active_start_date\":1505433600,\"freq_interval\":1,\"freq_relative_interval\":0,\"name\":\"Daily aux copy\",\"freq_recurrence_factor\":1,\"calendar\":{\r\"calendarName\":\"Standard\",\"calendarId\":1\r},\"timeZone\":{\r\"TimeZoneID\":1000\r}\r},\"options\":{\r\"backupOpts\":{\r\"bkpLatestVersion\":true,\"backupLevel\":2,\"incLevel\":1,\"runIncrementalBackup\":true,\"doNotTruncateLog\":false,\"cdrOptions\":{\r\"incremental\":true,\"dataVerificationOnly\":false,\"full\":false\r},\"dataOpt\":{\r\"stopWinService\":true,\"stopDhcpService\":true,\"useCatalogServer\":true,\"optimizedBackup\":true,\"followMountPoints\":true,\"bkpFilesProctedByFS\":true,\"granularrecovery\":true,\"verifySynthFull\":true,\"daysBetweenSyntheticBackup\":0\r},\"nasOptions\":{\r\"snapShotType\":0,\"backupQuotas\":true\r},\"vaultTrackerOpt\":{\r\"mediaStatus\":{\r\"bad\":true,\"overwriteProtected\":true,\"full\":true\r}\r},\"mediaOpt\":{\r\"numberofDays\":30,\"retentionJobType\":2,\"waitForInlineBackupResources\":true,\"allowOtherSchedulesToUseMediaSet\":true\r}\r},\"commonOpts\":{\r\"jobRetryOpts\":{\r\"runningTime\":{\r\"totalRunningTime\":3600\r}\r}\r}\r}\r}\r]\r},\"database\":{\r\"slaInMinutes\":0,\"scheduleLog\":{\r\"task\":{\r\r}\r},\"storageLog\":{\r\"storagePolicy\":{\r\r}\r},\"definesScheduleLog\":{\r\"definesEntity\":false,\"overrideEntity\":0\r},\"definesStorageLog\":{\r\"definesEntity\":false,\"overrideEntity\":0\r}\r},\"definesAlerts\":{\r\"definesEntity\":false,\"overrideEntity\":0\r},\"eDiscoveryInfo\":{\r\"definesContentAnalyzerCloud\":{\r\"definesEntity\":false,\"overrideEntity\":0\r},\"definesAnalyticsEngineCloud\":{\r\"definesEntity\":false,\"overrideEntity\":0\r}\r},\"options\":{\r\"forcedArchiving\":false,\"quota\":0\r},\"exchange\":{\r\"definesMBRetention\":{\r\"definesEntity\":false,\"overrideEntity\":0\r},\"definesMBCleanup\":{\r\"definesEntity\":false,\"overrideEntity\":0\r},\"definesMBArchiving\":{\r\"definesEntity\":false,\"overrideEntity\":0\r},\"definesMBJournal\":{\r\"definesEntity\":false,\"overrideEntity\":0\r}\r},\"definition\":{\r\"possible\":[\r1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,65537,65538,65539,65540,65541\r],\"required\":[\r1,4\r]\r}\r},\"errors\":[\r{\r\"entity\":{\r\r},\"status\":{\r\"errorMessage\":\"\",\"errorCode\":0\r}\r}\r]\r}"
+				}
+			]
+		},
+		{
+			"name": "GET Plans",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"checkForPlan = false;",
+							"",
+							"for (i = 0; i < jsonData.plans.length; i++) {",
+							"    if(jsonData.plans[i].plan.planId == postman.getEnvironmentVariable(\"planId\")) {",
+							"        checkForPlan = true;",
+							"        break;",
+							"    }    //validate subclients id",
+							"}",
+							"",
+							"if(tests[\"Input Plan exists in the JSON\"] = checkForPlan);"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v2/Plan",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"Plan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Plans details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validating securityAssociations tag\"] = responseBody.has(\"securityAssociations\")))      ",
+							"            console.log(\"securityAssociations tag is present\");",
+							"            ",
+							"if((tests[\"Validating inheritance tag\"] = responseBody.has(\"inheritance\")))      ",
+							"            console.log(\"inheritance tag is present\");",
+							"            ",
+							"if((tests[\"Validating storage tag\"] = responseBody.has(\"storage\")))      ",
+							"            console.log(\"storage tag is present\");",
+							"            ",
+							"if((tests[\"Validating slaInMinutes tag\"] = responseBody.has(\"slaInMinutes\")))      ",
+							"            console.log(\"slaInMinutes tag is present\");",
+							"            ",
+							"if((tests[\"Validating planOwner tag\"] = responseBody.has(\"planOwner\")))      ",
+							"            console.log(\"planOwner tag is present\");",
+							"            ",
+							"if((tests[\"Validating schedule tag\"] = responseBody.has(\"schedule\")))      ",
+							"            console.log(\"schedule tag is present\");",
+							"            ",
+							"if((tests[\"Validating storagePolicyId tag\"] = responseBody.has(\"storagePolicyId\")))      ",
+							"            console.log(\"storagePolicyId tag is present\");",
+							"            ",
+							"if((tests[\"Validating operationWindow tag\"] = responseBody.has(\"operationWindow\")))      ",
+							"            console.log(\"operationWindow tag is present\");",
+							"            ",
+							"if((tests[\"Validating type tag\"] = responseBody.has(\"type\")))      ",
+							"            console.log(\"type tag is present\");",
+							"            ",
+							"if((tests[\"Validating rpoInMinutes tag\"] = responseBody.has(\"rpoInMinutes\")))      ",
+							"            console.log(\"rpoInMinutes tag is present\");",
+							"",
+							"if((tests[\"Validating laptop tag\"] = responseBody.has(\"laptop\")))      ",
+							"            console.log(\"Laptop tag is present\");",
+							"",
+							"if ((tests[\"Windows ubclient policy validated\"] = pm.environment.get(\"WinSubclientpolicy\") == jsonData.plan.laptop.content.backupContent[0].subClientPolicy.backupSetEntity.backupsetId))",
+							"    console.log(\"Windows subclient policy validated\")",
+							"",
+							"if ((tests[\"Unix subclient policy validated\"] = pm.environment.get(\"LinSubclientpolicy\") == jsonData.plan.laptop.content.backupContent[1].subClientPolicy.backupSetEntity.backupsetId))",
+							"    console.log(\"Unix subclient policy validated\")",
+							"",
+							"if ((tests[\"Mac subclient policy validated\"] = pm.environment.get(\"MacSubclientpolicy\") == jsonData.plan.laptop.content.backupContent[2].subClientPolicy.backupSetEntity.backupsetId))",
+							"    console.log(\"Mac subclient policy validated\")"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v2/Plan/{{planId}}?propertyLevel=20",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"Plan",
+						"{{planId}}"
+					],
+					"query": [
+						{
+							"key": "propertyLevel",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET WindowsSubclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"pm.environment.set(\"WinSubclient\", jsonData.subClientPoliciesInfo.subClientPolicy.subClientList[0].subClientEntity.subclientId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/subclientpolicies/{{WinSubclientpolicy}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"subclientpolicies",
+						"{{WinSubclientpolicy}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET UnixSubclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"pm.environment.set(\"LinSubclient\", jsonData.subClientPoliciesInfo.subClientPolicy.subClientList[0].subClientEntity.subclientId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/subclientpolicies/{{LinSubclientpolicy}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"subclientpolicies",
+						"{{LinSubclientpolicy}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET MacdowsSubclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"pm.environment.set(\"MacSubclient\", jsonData.subClientPoliciesInfo.subClientPolicy.subClientList[0].subClientEntity.subclientId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/subclientpolicies/{{MacSubclientpolicy}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"subclientpolicies",
+						"{{MacSubclientpolicy}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST set WinSubclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"tests[\"operation success\"] = jsonData.response[0].errorCode == 0;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subClientProperties\": {\r\n        \"fsIncludeFilterOperationType\": 1,\r\n        \"fsContentOperationType\": 1,\r\n        \"subClientEntity\": {\r\n            \"subclientId\": {{WinSubclient}},\r\n            \"subclientName\": \"default\"\r\n        },\r\n        \"fsSubClientProp\": {\r\n            \"useVSSForSystemState\": true,\r\n            \"backupSystemState\": false,\r\n            \"backupSystemStateforFullBkpOnly\": false\r\n        },\r\n        \"content\": [\r\n            {\r\n                \"path\": \"C:\\\\CustomFolder\"\r\n            }\r\n        ]\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{WinSubclient}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{WinSubclient}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST set LinSubclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"tests[\"operation success\"] = jsonData.response[0].errorCode == 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subClientProperties\": {\r\n        \"fsIncludeFilterOperationType\": 1,\r\n        \"fsContentOperationType\": 1,\r\n        \"subClientEntity\": {\r\n            \"subclientId\": {{LinSubclient}},\r\n            \"subclientName\": \"default\"\r\n        },\r\n        \"fsSubClientProp\": {},\r\n        \"content\": [\r\n            {\r\n                \"path\": \"/usr/Custom/\"\r\n            }\r\n        ]\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{LinSubclient}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{LinSubclient}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST set MacSubclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"tests[\"operation success\"] = jsonData.response[0].errorCode == 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subClientProperties\": {\r\n        \"fsIncludeFilterOperationType\": 1,\r\n        \"fsContentOperationType\": 1,\r\n        \"subClientEntity\": {\r\n            \"subclientId\": {{MacSubclient}},\r\n            \"subclientName\": \"default\"\r\n        },\r\n        \"fsSubClientProp\": {},\r\n        \"content\": [\r\n            {\r\n                \"path\": \"/usr/Custom\"\r\n            }\r\n        ]\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{MacSubclient}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{MacSubclient}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Plans details Validate content",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validating securityAssociations tag\"] = responseBody.has(\"securityAssociations\")))      ",
+							"            console.log(\"securityAssociations tag is present\");",
+							"            ",
+							"if((tests[\"Validating inheritance tag\"] = responseBody.has(\"inheritance\")))      ",
+							"            console.log(\"inheritance tag is present\");",
+							"            ",
+							"if((tests[\"Validating storage tag\"] = responseBody.has(\"storage\")))      ",
+							"            console.log(\"storage tag is present\");",
+							"            ",
+							"if((tests[\"Validating slaInMinutes tag\"] = responseBody.has(\"slaInMinutes\")))      ",
+							"            console.log(\"slaInMinutes tag is present\");",
+							"            ",
+							"if((tests[\"Validating planOwner tag\"] = responseBody.has(\"planOwner\")))      ",
+							"            console.log(\"planOwner tag is present\");",
+							"            ",
+							"if((tests[\"Validating schedule tag\"] = responseBody.has(\"schedule\")))      ",
+							"            console.log(\"schedule tag is present\");",
+							"            ",
+							"if((tests[\"Validating storagePolicyId tag\"] = responseBody.has(\"storagePolicyId\")))      ",
+							"            console.log(\"storagePolicyId tag is present\");",
+							"            ",
+							"if((tests[\"Validating operationWindow tag\"] = responseBody.has(\"operationWindow\")))      ",
+							"            console.log(\"operationWindow tag is present\");",
+							"            ",
+							"if((tests[\"Validating type tag\"] = responseBody.has(\"type\")))      ",
+							"            console.log(\"type tag is present\");",
+							"            ",
+							"if((tests[\"Validating rpoInMinutes tag\"] = responseBody.has(\"rpoInMinutes\")))      ",
+							"            console.log(\"rpoInMinutes tag is present\");",
+							"",
+							"if((tests[\"Validating laptop tag\"] = responseBody.has(\"laptop\")))      ",
+							"            console.log(\"Laptop tag is present\");",
+							"",
+							"console.log(jsonData.plan.laptop.content.backupContent[0].subClientPolicy.subClientList[0])",
+							"if ((tests[\"Windows subclient policy validated\"] = jsonData.plan.laptop.content.backupContent[0].subClientPolicy.subClientList[0].content[0].path == \"C:\\\\CustomFolder\"))",
+							"    console.log(\"Windows subclient policy validated\")",
+							"",
+							"console.log(jsonData.plan.laptop.content.backupContent[0].subClientPolicy.subClientList[0])",
+							"if ((tests[\"Lin subclient policy validated\"] = jsonData.plan.laptop.content.backupContent[1].subClientPolicy.subClientList[0].content[0].path == \"/usr/Custom/\"))",
+							"    console.log(\"Lin subclient policy validated\")",
+							"",
+							"console.log(jsonData.plan.laptop.content.backupContent[0].subClientPolicy.subClientList[0])",
+							"if ((tests[\"Mac subclient policy validated\"] = jsonData.plan.laptop.content.backupContent[2].subClientPolicy.subClientList[0].content[0].path == \"/usr/Custom\"))",
+							"    console.log(\"Mac subclient policy validated\")"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v2/Plan/{{planId}}?propertyLevel=20",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"Plan",
+						"{{planId}}"
+					],
+					"query": [
+						{
+							"key": "propertyLevel",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"postman.setEnvironmentVariable(\"subclientId\", jsonData.subClientProperties[0].subClientEntity.subclientId);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient?clientId=2",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Subclient remove plan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"tests[\"operation success\"] = jsonData.response[0].errorCode == 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"subClientProperties\": {\r\n    \"removePlanAssociation\": true\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Subclient association",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"tests[\"operation success\"] = jsonData.response[0].errorCode == 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"subClientProperties\": {\r\n    \"planEntity\": {\r\n      \"_type_\": 158,\r\n      \"planId\": {{planId}}\r\n    },\r\n    \"useLocalContent\": true\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validate subClientProperties tag\"] = responseBody.has(\"subClientProperties\")));",
+							"        console.log(\"subClientProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validate subClientEntity tag\"] = responseBody.has(\"subClientEntity\")));",
+							"        console.log(\"subClientEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validate clientId tag\"] = responseBody.has(\"clientId\")));",
+							"        console.log(\"clientId tag is present\");",
+							"        ",
+							"if((tests[\"Validate fsSubClientProp tag\"] = responseBody.has(\"fsSubClientProp\")));",
+							"        console.log(\"fsSubClientProp tag is present\");",
+							"        ",
+							"if((tests[\"Validate content tag\"] = responseBody.has(\"content\")));",
+							"        console.log(\"content tag is present\");",
+							"        ",
+							"if((tests[\"Validate securityAssociations tag\"] = responseBody.has(\"securityAssociations\")));",
+							"        console.log(\"securityAssociations tag is present\");",
+							"        ",
+							"if((tests[\"Content is unchanged\"] = jsonData.subClientProperties[0].content[0].subclientPolicyPath = \"\\\\\"))",
+							"        console.log(\"Content is unchanged\");",
+							"        ",
+							"if((tests[\"Validate appname tag\"] = responseBody.has(\"appName\"))); {",
+							"        console.log(\"security tag is present\");",
+							"        tests[\"Validate appName\"] = jsonData.subClientProperties[0].subClientEntity.appName === \"File System\";",
+							"}",
+							"//tests[\"Validate clientName of subclient\"] = jsonData.subClientProperties[0].subClientEntity.clientName === postman.getEnvironmentVariable(\"clientName\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}?propertyLevel=30",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					],
+					"query": [
+						{
+							"key": "propertyLevel",
+							"value": "30"
+						}
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_subclient_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Subclient plan content",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"tests[\"operation success\"] = jsonData.response[0].errorCode == 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"subClientProperties\": {\r\n    \"planEntity\": {\r\n      \"_type_\": 158,\r\n      \"planId\": {{planId}}\r\n    },\r\n    \"useLocalContent\": false\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient validate content",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validate subClientProperties tag\"] = responseBody.has(\"subClientProperties\")));",
+							"        console.log(\"subClientProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validate subClientEntity tag\"] = responseBody.has(\"subClientEntity\")));",
+							"        console.log(\"subClientEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validate clientId tag\"] = responseBody.has(\"clientId\")));",
+							"        console.log(\"clientId tag is present\");",
+							"        ",
+							"if((tests[\"Validate fsSubClientProp tag\"] = responseBody.has(\"fsSubClientProp\")));",
+							"        console.log(\"fsSubClientProp tag is present\");",
+							"        ",
+							"if((tests[\"Validate content tag\"] = responseBody.has(\"content\")));",
+							"        console.log(\"content tag is present\");",
+							"        ",
+							"if((tests[\"Validate securityAssociations tag\"] = responseBody.has(\"securityAssociations\")));",
+							"        console.log(\"securityAssociations tag is present\");",
+							"        ",
+							"if((tests[\"Content is unchanged\"] = jsonData.subClientProperties[0].content[0].subclientPolicyPath == \"C:\\\\CustomFolder\"))",
+							"        console.log(\"Content is unchanged\");",
+							"        ",
+							"if((tests[\"Validate appname tag\"] = responseBody.has(\"appName\"))); {",
+							"        console.log(\"security tag is present\");",
+							"        tests[\"Validate appName\"] = jsonData.subClientProperties[0].subClientEntity.appName === \"File System\";",
+							"}",
+							"//tests[\"Validate clientName of subclient\"] = jsonData.subClientProperties[0].subClientEntity.clientName === postman.getEnvironmentVariable(\"clientName\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_subclient_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Update WinSubclient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"tests[\"operation success\"] = jsonData.response[0].errorCode == 0;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subClientProperties\": {\r\n        \"fsIncludeFilterOperationType\": 1,\r\n        \"fsContentOperationType\": 1,\r\n        \"subClientEntity\": {\r\n            \"subclientId\": {{WinSubclient}},\r\n            \"subclientName\": \"default\"\r\n        },\r\n        \"fsSubClientProp\": {\r\n            \"useVSSForSystemState\": true,\r\n            \"backupSystemState\": false,\r\n            \"backupSystemStateforFullBkpOnly\": false\r\n        },\r\n        \"content\": [\r\n            {\r\n                \"path\": \"C:\\\\CustomFolderUpdated\"\r\n            }\r\n        ]\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{WinSubclient}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{WinSubclient}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Subclient validate content Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							" ",
+							" console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if((tests[\"Validate subClientProperties tag\"] = responseBody.has(\"subClientProperties\")));",
+							"        console.log(\"subClientProperties tag is present\");",
+							"        ",
+							"if((tests[\"Validate subClientEntity tag\"] = responseBody.has(\"subClientEntity\")));",
+							"        console.log(\"subClientEntity tag is present\");",
+							"        ",
+							"if((tests[\"Validate clientId tag\"] = responseBody.has(\"clientId\")));",
+							"        console.log(\"clientId tag is present\");",
+							"        ",
+							"if((tests[\"Validate fsSubClientProp tag\"] = responseBody.has(\"fsSubClientProp\")));",
+							"        console.log(\"fsSubClientProp tag is present\");",
+							"        ",
+							"if((tests[\"Validate content tag\"] = responseBody.has(\"content\")));",
+							"        console.log(\"content tag is present\");",
+							"        ",
+							"if((tests[\"Validate securityAssociations tag\"] = responseBody.has(\"securityAssociations\")));",
+							"        console.log(\"securityAssociations tag is present\");",
+							"        ",
+							"if((tests[\"Content is unchanged\"] = jsonData.subClientProperties[0].content[0].subclientPolicyPath = \"C:\\\\CustomFolderUpdated\"))",
+							"        console.log(\"Content is unchanged\");",
+							"        ",
+							"if((tests[\"Validate appname tag\"] = responseBody.has(\"appName\"))); {",
+							"        console.log(\"security tag is present\");",
+							"        tests[\"Validate appName\"] = jsonData.subClientProperties[0].subClientEntity.appName === \"File System\";",
+							"}",
+							"//tests[\"Validate clientName of subclient\"] = jsonData.subClientProperties[0].subClientEntity.clientName === postman.getEnvironmentVariable(\"clientName\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				},
+				"description": "http://documentation.commvault.com/commvault/v11/article?p=features/rest_api/operations/get_subclient_properties.htm"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Plan subclient association validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"tests[\"Newly added subclient association is present\"] = (function() {",
+							"    for( i=0; i < jsonData.subclients.length; i++)",
+							"        if (jsonData.subclients[i].subclientId == postman.getEnvironmentVariable(\"subclientId\"))",
+							"            return true;",
+							"    return false;",
+							"})();"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/Plan/{{planId}}/Subclients",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Plan",
+						"{{planId}}",
+						"Subclients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Plan Associated entities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"if ((tests[\"Subclient exists in the associated enitites\"] = responseBody.has(pm.environment.get(\"subclientId\"))));",
+							"",
+							"if ((tests[\"defaultBackupSet exists in the associated enitites\"] = responseBody.has(\"defaultBackupSet\")));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{ServerURL}}/v2/Plan/{{planId}}/AssociatedEntities",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"Plan",
+						"{{planId}}",
+						"AssociatedEntities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Plan Subclient dissociate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"console.log(jsonData)",
+							"tests[\"operation success\"] = jsonData.response[0].errorCode == 0;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"planOperationType\": \"DELETE\",\r\n  \"entities\": [\r\n    {\r\n      \"subclientId\": {{subclientId}},\r\n      \"applicationId\": 33,\r\n      \"clientName\": \"auto\",\r\n      \"displayName\": \"default\",\r\n      \"instanceId\": 1,\r\n      \"clientId\": 2,\r\n      \"subclientName\": \"default\",\r\n      \"entityTypeName\": \"SUBCLIENT_ENTITY\",\r\n      \"backupsetName\": \"defaultBackupSet\",\r\n      \"instanceName\": \"DefaultInstanceName\",\r\n      \"appName\": \"File System\"\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/plan/{{planId}}/AssociatedEntities",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"plan",
+						"{{planId}}",
+						"AssociatedEntities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST set orginical backup content",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"/*if (tests[\"Response time is less than 5000ms\"] = responseTime < 5000 == true);//validate response time",
+							" {",
+							"     console.log(\"Response time validated\");",
+							" }",
+							"*/",
+							"console.log(tests[\"Status code is 200\"] = responseCode.code === 200);         //validate status code",
+							"",
+							"console.log(tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\"));",
+							"",
+							"console.log(tests[\"Content-Type is application/json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json;charset=utf-8\");     //validate content-type",
+							"",
+							"tests[\"operation success\"] = jsonData.response[0].errorCode == 0;",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subClientProperties\": {\r\n        \"fsIncludeFilterOperationType\": 1,\r\n        \"fsContentOperationType\": 1,\r\n        \"subClientEntity\": {\r\n            \"subclientId\": {{subclientId}},\r\n            \"subclientName\": \"default\"\r\n        },\r\n        \"fsSubClientProp\": {\r\n            \"useVSSForSystemState\": true,\r\n            \"backupSystemState\": false,\r\n            \"backupSystemStateforFullBkpOnly\": false\r\n        },\r\n        \"content\": [\r\n            {\r\n                \"path\": \"\\\\\"\r\n            }\r\n        ]\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Subclient/{{subclientId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Subclient",
+						"{{subclientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Plan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Validating error code\"] = Object.keys(jsonData).length === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{Accept}}"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/v2/Plan/{{planId}}?confirmDelete=true",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"v2",
+						"Plan",
+						"{{planId}}"
+					],
+					"query": [
+						{
+							"key": "confirmDelete",
+							"value": "true"
+						}
+					]
+				},
+				"description": "<h2>Description</h2>\nThis operation deletes a Plan."
+			},
+			"response": [
+				{
+					"name": "Delete Plan",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{Accept}}"
+							},
+							{
+								"key": "Authtoken",
+								"value": "{{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ServerUrl}}/Plan/{{PlanId}}?confirmDelete=true",
+							"host": [
+								"{{ServerUrl}}"
+							],
+							"path": [
+								"Plan",
+								"{{PlanId}}"
+							],
+							"query": [
+								{
+									"key": "confirmDelete",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "35",
+							"name": "Content-Length",
+							"description": ""
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8",
+							"name": "Content-Type",
+							"description": ""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 15 Sep 2017 17:51:53 GMT",
+							"name": "Date",
+							"description": ""
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/8.5",
+							"name": "Server",
+							"description": ""
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET",
+							"name": "X-Powered-By",
+							"description": ""
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "######",
+							"path": "/webconsole",
+							"secure": false,
+							"value": "930C162901E43496C2ED776C7233E414",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\r\"errorMessage\":\"\",\"errorCode\":0\r}"
+				}
+			]
+		},
+		{
+			"name": "Storage Pool",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var storagePoolId = postman.getEnvironmentVariable(\"storagePoolId\");",
+							"postman.setEnvironmentVariable(\"storagePoolId\",storagePoolId);",
+							"",
+							"// setTimeout(function(){//put your code in here to be delayed by 2 seconds",
+							"//     console.log(\"120s sleep\");",
+							"// },120000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;            //validate status code",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");     //validate content-type",
+							"if(tests[\"Response Body contains error code\"] = responseBody.has(\"errorCode\"))",
+							"{",
+							"    console.log(\"The error message is: \",jsonData.error.erroMessage);",
+							"}",
+							"tests[\"Storage pool deleted\"] = jsonData.error.errorCode === 0;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"type": "text",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/StoragePool/{{storagePoolId}}",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"StoragePool",
+						"{{storagePoolId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"Status code name has string\"] = responseCode.name.has(\"OK\");",
+							"",
+							"if((tests[\"Validate Logout\"] = responseBody.has(\"User logged out\")) === true);      ",
+							"        console.log(\"Logout Validated\");"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var token = postman.getEnvironmentVariable(\"Token\"); ",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Token\", token);",
+							"",
+							"console.log(\"value of token set:\", token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authtoken",
+						"value": "{{Token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ServerURL}}/Logout",
+					"host": [
+						"{{ServerURL}}"
+					],
+					"path": [
+						"Logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

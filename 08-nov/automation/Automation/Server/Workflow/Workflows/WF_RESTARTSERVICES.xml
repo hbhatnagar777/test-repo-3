@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_WorkflowDefinition apiMode="0" config="&lt;configuration />" description="" executeOnWeb="0" inputs="&lt;inputs>&lt;client class=&quot;java.lang.String&quot; _list_=&quot;false&quot;>&lt;/client>&lt;/inputs>" interactive="0" isHtmlDescription="0" manualPercentageComplete="0" name="WF_RESTARTSERVICES" outputs="&lt;outputs />" revision="$Revision: 1.2 $" tags="" uniqueGuid="78e3d14b-d371-49f5-8392-7770dbb17a96" variables="&lt;variables />" webHidden="0">
+    <schema>
+        <outputs className="" name="outputs" type=""/>
+        <variables className="" name="variables" type=""/>
+        <inputs attribute="0" className="" name="inputs" type="">
+            <children attribute="0" className="java.lang.String" controlType="0" defaultValue="" hidden="0" inputType="java.lang.String" listType="0" name="client" type="{http://www.w3.org/2001/XMLSchema}string"/>
+        </inputs>
+        <config className="" name="configuration" type=""/>
+    </schema>
+    <Start breakpoint="0" commented="0" continueOnFailure="0" created="0" description="" displayName="Start" height="36" interactive="0" jobMode="0" name="Start" originalStyle="" skipAttempt="0" style="image;image=/images/jgraphx/house.png" uniqueName="Start_1" waitSetting="0" width="55" x="45" y="41">
+        <inputs val="&lt;inputs />"/>
+        <transition activity="RestartServices_1" commented="0" originalStyle="" points="" sourceX="72" sourceY="59" status="0" style="defaultEdge" targetX="276" targetY="72" transitionIndex="0" x="0" y="0">
+            <condition script="/*&#xa;The expression should return a boolean. Use the variable name &quot;activity&quot; to refer to the previous activity object. Example:&#xa;activity.exitCode==0;&#xa;*/&#xa;"/>
+        </transition>
+    </Start>
+    <Activity breakpoint="0" commented="0" continueOnFailure="0" created="1593029643500" description="restarts all commvault services on the client" displayName="RestartServices" height="34" interactive="0" jobMode="0" name="RestartServices" namespaceUri="commvault.cte.workflow.activities" originalStyle="" skipAttempt="0" style="label;image=commvault.cte.workflow.activities.RestartServicesActivity" uniqueName="RestartServices_1" waitSetting="0" width="122" x="215" y="55">
+        <inputs val="&lt;inputs>&lt;client class=&quot;commvault.msgs.CvEntities.ClientEntity&quot; _list_=&quot;false&quot;>xpath:{/workflow/inputs/client}&lt;/client>&lt;/inputs>"/>
+    </Activity>
+</Workflow_WorkflowDefinition>

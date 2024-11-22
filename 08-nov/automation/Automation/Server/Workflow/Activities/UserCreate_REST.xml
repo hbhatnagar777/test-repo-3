@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow_SetActivityRequest>
+    <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+    <activity cellClass=""
+        className="commvault.cte.workflow.activities.CustomHttpClientActivity"
+        definition="&lt;?xml version='1.0' encoding='UTF-8'?>&lt;Workflow_CustomOperationDefinition outputs=&quot;&amp;lt;outputs>&amp;lt;output class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;statusCode class=&amp;quot;java.lang.Integer&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;statusText class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;headers class=&amp;quot;workflow.types.data.DataRow&amp;quot; _list_=&amp;quot;false&amp;quot;>&amp;lt;col class=&amp;quot;java.lang.Object&amp;quot; _list_=&amp;quot;true&amp;quot; />&amp;lt;/headers>&amp;lt;/outputs>&quot; inputs=&quot;&amp;lt;inputs>&amp;lt;username class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;fullname class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;email class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;password class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;username class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;email class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;password class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;fullname class=&amp;quot;java.lang.String&amp;quot; _list_=&amp;quot;false&amp;quot; />&amp;lt;/inputs>&quot; operation=&quot;&amp;lt;request>&amp;lt;url>/SearchSvc/CVWebService.svc/User&amp;lt;/url>&amp;lt;method>POST&amp;lt;/method>&amp;lt;postType>Raw&amp;lt;/postType>&amp;lt;postContent>&amp;amp;lt;App_CreateUserRequest&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;users&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;userEntity&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;userName&amp;amp;gt;java:{activity.getInput(&amp;quot;username&amp;quot;)}:java&amp;amp;lt;/userName&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;/userEntity&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;enableUser/&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;agePasswordDays/&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;email&amp;amp;gt;java:{activity.getInput(&amp;quot;email&amp;quot;)}:java&amp;amp;lt;/email&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;password&amp;amp;gt;java:{activity.getInput(&amp;quot;password&amp;quot;)}:java&amp;amp;lt;/password&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;fullName&amp;amp;gt;java:{activity.getInput(&amp;quot;fullname&amp;quot;)}:java&amp;amp;lt;/fullName&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;description/&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;associatedUserGroups&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;userGroupName/&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;/associatedUserGroups&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;/users&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;amp;lt;/App_CreateUserRequest&amp;amp;gt;&amp;#xd;&amp;#xa;&amp;lt;/postContent>&amp;lt;postContentType>application/xml; charset=UTF-8&amp;lt;/postContentType>&amp;lt;headers>&amp;lt;name>Authtoken&amp;lt;/name>&amp;lt;value>QSDKONLY xpath:{/workflow/system/token}&amp;lt;/value>&amp;lt;/headers>&amp;lt;/request>&quot;>&lt;script language=&quot;1&quot; script=&quot;/*&amp;#xd;&amp;#xa;to access xml response use: XML xml = activity.getXmlResponse();&amp;#xd;&amp;#xa;to retrieve values via xpath you can use: String value = xml.selectSingleNode(&amp;quot;string(/path/to/node)&amp;quot;);&amp;#xd;&amp;#xa;to set outputs of the activity use: activity.setOutput(&amp;quot;outputName&amp;quot;, value);&amp;#xd;&amp;#xa;*/&amp;#xd;&amp;#xa;&amp;#xd;&amp;#xa;XML xml = activity.getXmlResponse();&amp;#xd;&amp;#xa;if (xml != null) &amp;#xd;&amp;#xa;{&amp;#xd;&amp;#xa;    if (xml.getName().equals(&amp;quot;App_CreateUserResponse&amp;quot;))&amp;#xd;&amp;#xa;    {&amp;#xd;&amp;#xa;        int errorCode = 0;&amp;#xd;&amp;#xa;        String strCode = xml.selectSingleNode(&amp;quot;string(/App_CreateUserResponse/response/@errorCode)&amp;quot;);&amp;#xd;&amp;#xa;        if (strCode != null &amp;amp;&amp;amp; strCode.length() > 0)&amp;#xd;&amp;#xa;        {&amp;#xd;&amp;#xa;            errorCode = Integer.parseInt(strCode);&amp;#xd;&amp;#xa;        }&amp;#xd;&amp;#xa;        &amp;#xd;&amp;#xa;        if (errorCode != 0)&amp;#xd;&amp;#xa;        {&amp;#xd;&amp;#xa;            String errorMsg = xml.selectSingleNode(&amp;quot;string(/App_CreateUserResponse/response/@errorString)&amp;quot;);&amp;#xd;&amp;#xa;            if (errorMsg == null || errorMsg.length() == 0)&amp;#xd;&amp;#xa;            {&amp;#xd;&amp;#xa;                errorMsg = &amp;quot;error code [&amp;quot; + errorCode + &amp;quot;]&amp;quot;;&amp;#xd;&amp;#xa;            }&amp;#xd;&amp;#xa;            throw new Exception(errorMsg);&amp;#xd;&amp;#xa;        }&amp;#xd;&amp;#xa;    }&amp;#xd;&amp;#xa;    else &amp;#xd;&amp;#xa;    {&amp;#xd;&amp;#xa;        throw new Exception(xml.selectSingleNode(&amp;quot;string(//@errorMessage)&amp;quot;));  &amp;#xd;&amp;#xa;    }&amp;#xd;&amp;#xa;} &amp;#xd;&amp;#xa;else &amp;#xd;&amp;#xa;{&amp;#xd;&amp;#xa;    throw new Exception(&amp;quot;missing xml response&amp;quot;);&amp;#xd;&amp;#xa;}&amp;#xd;&amp;#xa;&quot; />&lt;/Workflow_CustomOperationDefinition>"
+        description="creates a user via the rest api" displayName=""
+        flags="0" icon="" inbound="1" outbound="1" schema="">
+        <activitySet activitySetId="19" activitySetName="WORKFLOW ACTIVITIES"/>
+        <activity activityId="0" activityName="UserCreate_REST"
+            schemaId="0" schemaNamespace="commvault.cte.workflow.activities"/>
+        <activityLocation locationType="0">
+            <location schemaLocationId="1" schemaLocationUrl="workflow_activities.jar"/>
+        </activityLocation>
+        <activitySchema>
+            <outputs className="" defaultValue="" listType="0" name="" type="">
+                <children attribute="0" className="java.lang.String"
+                    defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="output" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.Integer"
+                    defaultValue="" hidden="0"
+                    inputType="java.lang.Integer" listType="0"
+                    name="statusCode" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+                <children attribute="0" className="java.lang.String"
+                    defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="statusText" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0"
+                    className="workflow.types.data.DataRow"
+                    defaultValue="" hidden="0"
+                    inputType="workflow.types.data.DataRow" listType="0"
+                    name="headers" type="{workflow.types.data}DataRow">
+                    <children attribute="0" className="java.lang.Object"
+                        defaultValue="" hidden="0"
+                        inputType="java.lang.Object" listType="1"
+                        name="col" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
+                </children>
+            </outputs>
+            <inputs className="" defaultValue="" listType="0" name="" type="">
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    name="username" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    name="email" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" displayName=""
+                    hidden="0" inputType="java.lang.String" listType="0"
+                    name="password" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                <children attribute="0" className="java.lang.String"
+                    controlType="0" defaultValue="" hidden="0"
+                    inputType="java.lang.String" listType="0"
+                    name="fullname" type="{http://www.w3.org/2001/XMLSchema}string"/>
+            </inputs>
+        </activitySchema>
+    </activity>
+</Workflow_SetActivityRequest>
